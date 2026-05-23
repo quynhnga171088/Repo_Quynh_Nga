@@ -1,0 +1,1563 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quy trình xây dựng một website | Quỳnh Nga BrSE Japan</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #F8F7F3;
+            --bg-card: #FFFFFF;
+            --bg-step: #FAFAF7;
+            --bg-note: #FFF8E7;
+            --bg-code: #F3F2EE;
+            --text-primary: #1C1C1C;
+            --text-secondary: #404040;
+            --text-muted: #767676;
+            --accent-blue: #1D4ED8;
+            --accent-blue-light: #DBEAFE;
+            --accent-green: #166534;
+            --accent-green-light: #DCFCE7;
+            --accent-orange: #9A3412;
+            --accent-orange-light: #FFEDD5;
+            --accent-purple: #5B21B6;
+            --accent-purple-light: #EDE9FE;
+            --accent-red: #991B1B;
+            --accent-red-light: #FEE2E2;
+            --accent-teal: #0F766E;
+            --accent-teal-light: #CCFBF1;
+            --border-light: #E5E3DC;
+            --shadow-sm: 0 1px 4px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+            --shadow-lg: 0 8px 32px rgba(0,0,0,0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Lexend', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.8;
+            font-weight: 400;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .page-wrapper {
+            max-width: 920px;
+            margin: 0 auto;
+            padding: 40px 24px 100px;
+        }
+
+        /* ========== HEADER ========== */
+        .header {
+            text-align: center;
+            background: linear-gradient(135deg, #FFFFFF 0%, #F0EDE6 50%, #E8F4EC 100%);
+            border-radius: 20px;
+            padding: 60px 48px;
+            margin-bottom: 48px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow-md);
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -60px; right: -60px;
+            width: 200px; height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(22,101,52,0.07) 0%, transparent 70%);
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -40px; left: -40px;
+            width: 150px; height: 150px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(29,78,216,0.06) 0%, transparent 70%);
+        }
+
+        .header-badge {
+            display: inline-block;
+            background: #2D8B5E;
+            color: #fff;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 6px 18px;
+            border-radius: 20px;
+            margin-bottom: 24px;
+        }
+
+        .header h1 {
+            font-family: 'Source Serif 4', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.3;
+            margin-bottom: 16px;
+        }
+
+        .header-sub {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+
+        .header-trainer {
+            font-size: 0.95rem;
+            color: #2D8B5E;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .header-meta {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+
+        /* ========== SECTION TITLE ========== */
+        .section-label {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent-blue);
+            margin-bottom: 8px;
+        }
+
+        .section-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 24px;
+        }
+
+        /* ========== FLOW OVERVIEW ========== */
+        .flow-overview {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            padding: 36px 40px;
+            margin-bottom: 48px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .flow-diagram {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+            margin-top: 24px;
+        }
+
+        .flow-node {
+            background: var(--accent-blue-light);
+            border: 1.5px solid #BFDBFE;
+            color: var(--accent-blue);
+            font-size: 13px;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 8px;
+            white-space: nowrap;
+        }
+
+        .flow-arrow {
+            color: var(--text-muted);
+            font-size: 18px;
+            font-weight: 300;
+        }
+
+        .flow-phases {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 28px;
+        }
+
+        .flow-phase {
+            border-radius: 12px;
+            padding: 16px 20px;
+        }
+
+        .flow-phase.phase-1 { background: #EFF6FF; border: 1.5px solid #BFDBFE; }
+        .flow-phase.phase-2 { background: #F0FDF4; border: 1.5px solid #BBF7D0; }
+        .flow-phase.phase-3 { background: #FFF7ED; border: 1.5px solid #FED7AA; }
+
+        .phase-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .phase-1 .phase-label { color: #1D4ED8; }
+        .phase-2 .phase-label { color: #166534; }
+        .phase-3 .phase-label { color: #9A3412; }
+
+        .phase-steps {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* ========== STEP CARD ========== */
+        .phase-section {
+            margin-bottom: 56px;
+        }
+
+        .phase-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 18px 28px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+        }
+
+        .phase-header.ph-1 { background: #EFF6FF; border-left: 4px solid #1D4ED8; }
+        .phase-header.ph-2 { background: #F0FDF4; border-left: 4px solid #166534; }
+        .phase-header.ph-3 { background: #FFF7ED; border-left: 4px solid #9A3412; }
+
+        .phase-num {
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .ph-1 .phase-num { color: #1D4ED8; }
+        .ph-2 .phase-num { color: #166534; }
+        .ph-3 .phase-num { color: #9A3412; }
+
+        .phase-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .step-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            padding: 32px 36px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-sm);
+            position: relative;
+        }
+
+        .step-card:hover {
+            box-shadow: var(--shadow-md);
+            transition: box-shadow 0.2s ease;
+        }
+
+        .step-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 18px;
+            margin-bottom: 20px;
+        }
+
+        .step-num-badge {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+
+        .badge-blue { background: var(--accent-blue-light); color: var(--accent-blue); }
+        .badge-green { background: var(--accent-green-light); color: var(--accent-green); }
+        .badge-orange { background: var(--accent-orange-light); color: var(--accent-orange); }
+        .badge-purple { background: var(--accent-purple-light); color: var(--accent-purple); }
+        .badge-red { background: var(--accent-red-light); color: var(--accent-red); }
+        .badge-teal { background: var(--accent-teal-light); color: var(--accent-teal); }
+        .badge-indigo { background: #E0E7FF; color: #3730A3; }
+        .badge-gray { background: #F3F4F6; color: #374151; }
+
+        .step-title-wrap { flex: 1; }
+
+        .step-num-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .step-title {
+            font-size: 19px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .step-body p {
+            font-size: 15px;
+            color: var(--text-secondary);
+            margin-bottom: 14px;
+        }
+
+        .step-body p:last-child { margin-bottom: 0; }
+
+        /* ========== CALLOUT ========== */
+        .callout {
+            border-radius: 10px;
+            padding: 14px 18px;
+            font-size: 14px;
+            margin-bottom: 18px;
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .callout-icon { font-size: 17px; flex-shrink: 0; margin-top: 1px; }
+
+        .callout.important {
+            background: #FEF2F2;
+            border: 1px solid #FECACA;
+            color: var(--accent-red);
+        }
+
+        .callout.tip {
+            background: #FFFBEB;
+            border: 1px solid #FDE68A;
+            color: #92400E;
+        }
+
+        .callout.info {
+            background: #EFF6FF;
+            border: 1px solid #BFDBFE;
+            color: #1E40AF;
+        }
+
+        /* ========== LIST ========== */
+        .check-list {
+            list-style: none;
+            margin: 14px 0;
+        }
+
+        .check-list li {
+            font-size: 14.5px;
+            color: var(--text-secondary);
+            padding: 6px 0 6px 28px;
+            position: relative;
+            border-bottom: 1px solid #F0EEE8;
+        }
+
+        .check-list li:last-child { border-bottom: none; }
+
+        .check-list li::before {
+            content: '→';
+            position: absolute;
+            left: 4px;
+            color: var(--accent-blue);
+            font-weight: 700;
+        }
+
+        /* ========== TABLE ========== */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            margin: 16px 0;
+        }
+
+        .data-table th {
+            background: #F1F0EC;
+            color: var(--text-primary);
+            font-weight: 700;
+            font-size: 13px;
+            padding: 10px 16px;
+            text-align: left;
+            border-bottom: 2px solid var(--border-light);
+        }
+
+        .data-table td {
+            padding: 10px 16px;
+            border-bottom: 1px solid #F0EEE8;
+            color: var(--text-secondary);
+            vertical-align: top;
+        }
+
+        .data-table tr:last-child td { border-bottom: none; }
+
+        .data-table tr:nth-child(even) td { background: #FAFAF7; }
+
+        /* ========== CODE BLOCK ========== */
+        .code-block {
+            background: #1E293B;
+            color: #E2E8F0;
+            border-radius: 10px;
+            padding: 16px 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.7;
+            margin: 14px 0;
+            overflow-x: auto;
+        }
+
+        .code-block .comment { color: #94A3B8; }
+        .code-block .keyword { color: #7DD3FC; }
+        .code-block .string { color: #86EFAC; }
+
+        /* ========== FLOW VISUAL ========== */
+        .mini-flow {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 6px;
+            margin: 14px 0;
+            padding: 14px 18px;
+            background: var(--bg-code);
+            border-radius: 10px;
+            border: 1px solid var(--border-light);
+        }
+
+        .mini-flow-node {
+            background: #fff;
+            border: 1.5px solid var(--border-light);
+            color: var(--text-primary);
+            font-size: 13px;
+            font-weight: 500;
+            padding: 5px 12px;
+            border-radius: 6px;
+        }
+
+        .mini-flow-arrow {
+            color: var(--text-muted);
+            font-size: 16px;
+        }
+
+        /* ========== OUTPUT BOX ========== */
+        .output-box {
+            background: var(--accent-green-light);
+            border: 1.5px solid #BBF7D0;
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin-top: 16px;
+        }
+
+        .output-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--accent-green);
+            margin-bottom: 8px;
+        }
+
+        .output-box ul {
+            list-style: none;
+            margin: 0;
+        }
+
+        .output-box ul li {
+            font-size: 14px;
+            color: #166534;
+            padding: 3px 0 3px 20px;
+            position: relative;
+        }
+
+        .output-box ul li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            font-weight: 700;
+        }
+
+        /* ========== ENV TABLE ========== */
+        .env-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin: 16px 0;
+        }
+
+        .env-card {
+            border-radius: 10px;
+            padding: 14px 16px;
+            text-align: center;
+        }
+
+        .env-card.local  { background: #F3F4F6; border: 1.5px solid #D1D5DB; }
+        .env-card.dev    { background: #EFF6FF; border: 1.5px solid #BFDBFE; }
+        .env-card.staging{ background: #FFF7ED; border: 1.5px solid #FED7AA; }
+        .env-card.prod   { background: #FEF2F2; border: 1.5px solid #FECACA; }
+
+        .env-name {
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .env-card.local .env-name  { color: #374151; }
+        .env-card.dev .env-name    { color: #1D4ED8; }
+        .env-card.staging .env-name{ color: #9A3412; }
+        .env-card.prod .env-name   { color: #991B1B; }
+
+        .env-desc { font-size: 12px; color: var(--text-muted); }
+
+        /* ========== DIVIDER ========== */
+        .divider {
+            border: none;
+            border-top: 1px solid var(--border-light);
+            margin: 40px 0;
+        }
+
+        /* ========== SUMMARY ========== */
+        .summary-section {
+            background: linear-gradient(135deg, #1E3A8A 0%, #1D4ED8 100%);
+            border-radius: 20px;
+            padding: 40px 44px;
+            margin-bottom: 48px;
+            color: #fff;
+            box-shadow: 0 8px 32px rgba(29, 78, 216, 0.25);
+        }
+
+        .summary-section h2 {
+            font-size: 22px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 24px;
+        }
+
+        .summary-flow-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .summary-step {
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 10px;
+            padding: 14px 16px;
+            text-align: center;
+        }
+
+        .summary-step-num {
+            font-size: 22px;
+            font-weight: 800;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 4px;
+        }
+
+        .summary-step-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #fff;
+            line-height: 1.3;
+        }
+
+        .summary-note {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 10px;
+            padding: 16px 20px;
+            font-size: 14px;
+            color: rgba(255,255,255,0.85);
+            line-height: 1.7;
+        }
+
+        /* ========== QUIZ ========== */
+        .quiz-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 20px;
+            padding: 40px 44px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .quiz-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 2px solid var(--border-light);
+        }
+
+        .quiz-icon {
+            width: 52px;
+            height: 52px;
+            background: linear-gradient(135deg, #1D4ED8, #7C3AED);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .quiz-title { font-size: 22px; font-weight: 800; color: var(--text-primary); }
+        .quiz-subtitle { font-size: 14px; color: var(--text-muted); margin-top: 3px; }
+
+        .question-block {
+            margin-bottom: 32px;
+            padding-bottom: 32px;
+            border-bottom: 1px solid #F0EEE8;
+        }
+
+        .question-block:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .question-num {
+            display: inline-block;
+            background: var(--accent-blue-light);
+            color: var(--accent-blue);
+            font-size: 12px;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+
+        .question-text {
+            font-size: 15.5px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 14px;
+            line-height: 1.5;
+        }
+
+        .options {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 16px;
+            border: 1.5px solid var(--border-light);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            background: var(--bg-step);
+            font-size: 14.5px;
+            color: var(--text-secondary);
+            user-select: none;
+        }
+
+        .option:hover {
+            border-color: #93C5FD;
+            background: #EFF6FF;
+            color: var(--accent-blue);
+        }
+
+        .option.selected {
+            border-color: #93C5FD;
+            background: #EFF6FF;
+            color: var(--accent-blue);
+        }
+
+        .option.correct {
+            border-color: #86EFAC;
+            background: #F0FDF4;
+            color: #166534;
+        }
+
+        .option.wrong {
+            border-color: #FECACA;
+            background: #FEF2F2;
+            color: #991B1B;
+        }
+
+        .option-letter {
+            width: 26px;
+            height: 26px;
+            border-radius: 6px;
+            background: var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            flex-shrink: 0;
+            color: var(--text-muted);
+        }
+
+        .option.correct .option-letter { background: #BBF7D0; color: #166534; }
+        .option.wrong .option-letter { background: #FECACA; color: #991B1B; }
+        .option.selected .option-letter { background: #BFDBFE; color: #1D4ED8; }
+
+        .answer-feedback {
+            margin-top: 10px;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 13.5px;
+            display: none;
+        }
+
+        .answer-feedback.show { display: block; }
+        .answer-feedback.correct { background: #F0FDF4; border: 1px solid #BBF7D0; color: #166534; }
+        .answer-feedback.wrong { background: #FEF2F2; border: 1px solid #FECACA; color: #991B1B; }
+
+        .check-btn {
+            margin-top: 12px;
+            padding: 9px 22px;
+            background: var(--accent-blue);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Lexend', sans-serif;
+            font-size: 13.5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.15s ease;
+        }
+
+        .check-btn:hover { background: #1E40AF; }
+        .check-btn:disabled { background: #9CA3AF; cursor: default; }
+
+        .quiz-result-box {
+            margin-top: 32px;
+            padding: 28px 32px;
+            background: linear-gradient(135deg, #1D4ED8, #7C3AED);
+            border-radius: 14px;
+            text-align: center;
+            color: #fff;
+            display: none;
+        }
+
+        .quiz-result-box.show { display: block; }
+
+        .result-score {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .result-label {
+            font-size: 16px;
+            color: rgba(255,255,255,0.85);
+            margin-bottom: 16px;
+        }
+
+        .result-comment {
+            font-size: 14px;
+            color: rgba(255,255,255,0.75);
+            line-height: 1.6;
+        }
+
+        .retake-btn {
+            margin-top: 20px;
+            padding: 10px 28px;
+            background: rgba(255,255,255,0.15);
+            border: 1.5px solid rgba(255,255,255,0.35);
+            border-radius: 8px;
+            color: #fff;
+            font-family: 'Lexend', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.15s ease;
+        }
+
+        .retake-btn:hover { background: rgba(255,255,255,0.25); }
+
+        /* ========== FOOTER ========== */
+        .footer {
+            text-align: center;
+            padding: 32px;
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-top: 24px;
+        }
+
+        .footer strong { color: var(--text-secondary); }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 680px) {
+            .header { padding: 36px 28px; }
+            .header h1 { font-size: 24px; }
+            .flow-phases { grid-template-columns: 1fr; }
+            .summary-flow-grid { grid-template-columns: repeat(2, 1fr); }
+            .env-grid { grid-template-columns: repeat(2, 1fr); }
+            .step-card { padding: 24px 24px; }
+            .quiz-section { padding: 28px 24px; }
+        }
+
+        @media print {
+            body { background: #fff; }
+            .step-card, .flow-overview, .quiz-section { box-shadow: none; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="page-wrapper">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="header-badge">Tài liệu đào tạo · IT cơ bản</div>
+        <h1>Quy trình xây dựng<br>một website</h1>
+        <p class="header-sub">Từ ý tưởng ban đầu đến khi user thật sự dùng được</p>
+        <p class="header-trainer">Quỳnh Nga BrSE Japan — Đồng Hành Cùng Bạn</p>
+        <p class="header-meta">Dành cho người mới &bull; ~15 phút &bull; Dễ hiểu &bull; Thực tế</p>
+    </div>
+
+    <!-- FLOW OVERVIEW -->
+    <div class="flow-overview">
+        <div class="section-label">Toàn cảnh</div>
+        <div class="section-title">Website được tạo ra theo quy trình nào?</div>
+
+        <p style="font-size:15px; color:var(--text-secondary); margin-bottom:20px;">
+            Nhiều người nghĩ làm website chỉ là "gọi mấy bạn dev code thôi". Thực ra không phải vậy.
+            Trước khi code 1 dòng, cần rất nhiều bước chuẩn bị. Và sau khi code xong, vẫn còn nhiều việc phải làm.
+        </p>
+
+        <div class="flow-diagram">
+            <div class="flow-node">Ý tưởng</div>
+            <div class="flow-arrow">›</div>
+            <div class="flow-node">Requirement</div>
+            <div class="flow-arrow">›</div>
+            <div class="flow-node">System Design</div>
+            <div class="flow-arrow">›</div>
+            <div class="flow-node">Tech Stack</div>
+            <div class="flow-arrow">›</div>
+            <div class="flow-node">Setup Môi trường</div>
+            <div class="flow-arrow">›</div>
+            <div class="flow-node">Coding</div>
+            <div class="flow-arrow">›</div>
+            <div class="flow-node">Testing</div>
+            <div class="flow-arrow">›</div>
+            <div class="flow-node">Deploy</div>
+            <div class="flow-arrow">›</div>
+            <div class="flow-node">Vận hành</div>
+        </div>
+
+        <div class="flow-phases">
+            <div class="flow-phase phase-1">
+                <div class="phase-label">Giai đoạn 1 · Chuẩn bị</div>
+                <div class="phase-steps">Bước 1 · Requirement<br>Bước 2 · System Design<br>Bước 3 · Tech Stack</div>
+            </div>
+            <div class="flow-phase phase-2">
+                <div class="phase-label">Giai đoạn 2 · Phát triển</div>
+                <div class="phase-steps">Bước 4 · Setup môi trường<br>Bước 5 · Coding<br>Bước 6 · Testing</div>
+            </div>
+            <div class="flow-phase phase-3">
+                <div class="phase-label">Giai đoạn 3 · Ra mắt & Vận hành</div>
+                <div class="phase-steps">Bước 7 · Deploy<br>Bước 8 · Vận hành</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== GIAI ĐOẠN 1 ===== -->
+    <div class="phase-section">
+        <div class="phase-header ph-1">
+            <div>
+                <div class="phase-num">Giai đoạn 1</div>
+                <div class="phase-name">Chuẩn bị — trước khi code 1 dòng nào</div>
+            </div>
+        </div>
+
+        <!-- BƯỚC 1 -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-num-badge badge-blue">1</div>
+                <div class="step-title-wrap">
+                    <div class="step-num-label">Bước 1</div>
+                    <div class="step-title">Xác định yêu cầu (Requirement)</div>
+                </div>
+            </div>
+            <div class="step-body">
+                <div class="callout important">
+                    <span class="callout-icon">🔥</span>
+                    <span>Đây là bước quan trọng nhất trong toàn bộ quy trình. Làm sai ở đây — tất cả các bước sau sẽ sai theo.</span>
+                </div>
+
+                <p>Trước khi bất kỳ ai viết 1 dòng code, cần trả lời được 3 câu hỏi căn bản:</p>
+
+                <ul class="check-list">
+                    <li><strong>Website dùng để làm gì?</strong> — Bán hàng online? Quản lý nội bộ công ty? Hay chỉ là trang giới thiệu (landing page)?</li>
+                    <li><strong>Ai là người dùng?</strong> — Khách hàng bên ngoài? Nhân viên nội bộ? Hay cả hai?</li>
+                    <li><strong>Cần những chức năng gì?</strong> — Đăng ký, đăng nhập, thanh toán, upload ảnh, quản lý đơn hàng...</li>
+                </ul>
+
+                <div class="callout tip">
+                    <span class="callout-icon">💡</span>
+                    <span><strong>Ví dụ thực tế:</strong> Khách Nhật yêu cầu "làm website bán hàng". Nếu không hỏi rõ, dev có thể làm ra một website mà khách chưa từng muốn. Requirement rõ ràng = tiết kiệm hàng trăm giờ làm lại.</span>
+                </div>
+
+                <div class="output-box">
+                    <div class="output-label">Output của bước này</div>
+                    <ul>
+                        <li>Spec (仕様書) — tài liệu mô tả chi tiết từng chức năng</li>
+                        <li>Wireframe — bản phác thảo giao diện các màn hình</li>
+                        <li>Flow nghiệp vụ — luồng xử lý theo từng tình huống</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- BƯỚC 2 -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-num-badge badge-purple">2</div>
+                <div class="step-title-wrap">
+                    <div class="step-num-label">Bước 2</div>
+                    <div class="step-title">Thiết kế hệ thống (System Design)</div>
+                </div>
+            </div>
+            <div class="step-body">
+                <p>Từ requirement, đội kỹ thuật bắt đầu vẽ ra "bản thiết kế" cho hệ thống — giống như bản vẽ kỹ thuật trước khi xây nhà.</p>
+
+                <p>Thiết kế hệ thống gồm 3 phần:</p>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Phần</th>
+                            <th>Nội dung</th>
+                            <th>Ví dụ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Architecture</strong><br><span style="color:var(--text-muted);font-size:12px">Kiến trúc tổng thể</span></td>
+                            <td>Hệ thống gồm những tầng nào, kết nối ra sao</td>
+                            <td>Frontend → Backend → Database -> Integration</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Database Design</strong><br><span style="color:var(--text-muted);font-size:12px">Thiết kế cơ sở dữ liệu</span></td>
+                            <td>Cần lưu trữ dữ liệu gì, bảng nào, quan hệ thế nào</td>
+                            <td>Bảng users, orders, products...</td>
+                        </tr>
+                        <tr>
+                            <td><strong>API Design</strong><br><span style="color:var(--text-muted);font-size:12px">Thiết kế giao tiếp</span></td>
+                            <td>Giao diện và server trao đổi dữ liệu bằng gì</td>
+                            <td>GET /users · POST /login</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="callout info">
+                    <span class="callout-icon">ℹ️</span>
+                    <span><strong>Giải thích đơn giản:</strong> API giống như "bồi bàn" trong nhà hàng — giao diện (FE) gọi món, bồi bàn (API) chuyển yêu cầu xuống bếp (Backend/DB), rồi mang kết quả về.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- BƯỚC 3 -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-num-badge badge-teal">3</div>
+                <div class="step-title-wrap">
+                    <div class="step-num-label">Bước 3</div>
+                    <div class="step-title">Chọn công nghệ (Tech Stack)</div>
+                </div>
+            </div>
+            <div class="step-body">
+                <p>Giống như chọn nguyên liệu và dụng cụ trước khi nấu ăn. Mỗi loại đều phù hợp với một mục đích khác nhau.</p>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Tầng</th>
+                            <th>Vai trò</th>
+                            <th>Lựa chọn phổ biến</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Frontend</strong></td>
+                            <td>Phần user nhìn thấy và tương tác</td>
+                            <td>React, Vue.js, Next.js</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Backend</strong></td>
+                            <td>Xử lý logic, kết nối database</td>
+                            <td>Laravel (PHP), Node.js, Spring Boot</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Database</strong></td>
+                            <td>Lưu trữ dữ liệu</td>
+                            <td>MySQL, PostgreSQL</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Server / Cloud</strong></td>
+                            <td>Nơi chạy toàn bộ hệ thống</td>
+                            <td>AWS, GCP, DigitalOcean</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="callout tip">
+                    <span class="callout-icon">💡</span>
+                    <span>Chọn tech stack không phải chọn cái "xịn nhất" — mà chọn cái <strong>phù hợp với team, với quy mô, và với ngân sách</strong> của dự án.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== GIAI ĐOẠN 2 ===== -->
+    <div class="phase-section">
+        <div class="phase-header ph-2">
+            <div>
+                <div class="phase-num">Giai đoạn 2</div>
+                <div class="phase-name">Phát triển — bắt đầu code</div>
+            </div>
+        </div>
+
+        <!-- BƯỚC 4 -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-num-badge badge-green">4</div>
+                <div class="step-title-wrap">
+                    <div class="step-num-label">Bước 4</div>
+                    <div class="step-title">Setup môi trường (Environment Setup)</div>
+                </div>
+            </div>
+            <div class="step-body">
+                <p>Trước khi code thật, cần chuẩn bị "sân chơi". Một dự án thường có 4 môi trường tách biệt để tránh lẫn lộn:</p>
+
+                <div class="env-grid">
+                    <div class="env-card local">
+                        <div class="env-name">Local</div>
+                        <div class="env-desc">Máy tính cá nhân của dev. Chỉ dev đó thấy được.</div>
+                    </div>
+                    <div class="env-card dev">
+                        <div class="env-name">Dev</div>
+                        <div class="env-desc">Môi trường phát triển, là môi trường dùng chung của team. Merge code vào đây.</div>
+                    </div>
+                    <div class="env-card staging">
+                        <div class="env-name">Staging</div>
+                        <div class="env-desc">Giống production nhất có thể. QA test ở đây.</div>
+                    </div>
+                    <div class="env-card prod">
+                        <div class="env-name">Production</div>
+                        <div class="env-desc">Hệ thống thật. User thật đang dùng.</div>
+                    </div>
+                </div>
+
+                <div class="callout important">
+                    <span class="callout-icon">⚠️</span>
+                    <span>Không bao giờ test trực tiếp trên Production. Đó là lý do tại sao cần Staging.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- BƯỚC 5 -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-num-badge badge-indigo">5</div>
+                <div class="step-title-wrap">
+                    <div class="step-num-label">Bước 5</div>
+                    <div class="step-title">Coding (Phát triển)</div>
+                </div>
+            </div>
+            <div class="step-body">
+                <p>Đây là bước nhiều người hay nghĩ là "làm phần mềm". Nhưng thực ra nó chỉ là 1 trong 8 bước.</p>
+
+                <ul class="check-list">
+                    <li>Backend developer viết API — xử lý logic, kết nối database</li>
+                    <li>Frontend developer xây dựng giao diện — những gì user nhìn thấy</li>
+                    <li>Hai bên kết nối với nhau thông qua API</li>
+                </ul>
+
+                <p style="margin-top:16px;">Hãy xem một ví dụ đơn giản — khi user bấm nút "Đăng nhập":</p>
+
+                <div class="mini-flow">
+                    <div class="mini-flow-node">User bấm Login</div>
+                    <div class="mini-flow-arrow">→</div>
+                    <div class="mini-flow-node">FE gọi API POST /login</div>
+                    <div class="mini-flow-arrow">→</div>
+                    <div class="mini-flow-node">BE kiểm tra DB</div>
+                    <div class="mini-flow-arrow">→</div>
+                    <div class="mini-flow-node">Trả token</div>
+                    <div class="mini-flow-arrow">→</div>
+                    <div class="mini-flow-node">FE lưu & chuyển trang</div>
+                </div>
+
+                <div class="callout info">
+                    <span class="callout-icon">ℹ️</span>
+                    <span>Toàn bộ flow trên xảy ra trong chưa đến 1 giây. Đó là sức mạnh của thiết kế hệ thống tốt ở bước 2.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- BƯỚC 6 -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-num-badge badge-orange">6</div>
+                <div class="step-title-wrap">
+                    <div class="step-num-label">Bước 6</div>
+                    <div class="step-title">Kiểm thử (Testing)</div>
+                </div>
+            </div>
+            <div class="step-body">
+                <div class="callout important">
+                    <span class="callout-icon">🚨</span>
+                    <span>Bỏ qua bước này = bug sẽ xuất hiện ngay trên production — khi user thật đang dùng.</span>
+                </div>
+
+                <p>Có 3 loại kiểm thử thường gặp trong dự án:</p>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Loại</th>
+                            <th>Ai làm?</th>
+                            <th>Kiểm tra gì?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Unit Test</strong></td>
+                            <td>Developer</td>
+                            <td>Từng hàm nhỏ hoạt động đúng không</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Integration Test</strong></td>
+                            <td>QA / Tester</td>
+                            <td>Các phần kết hợp lại có hoạt động không</td>
+                        </tr>
+                        <tr>
+                            <td><strong>System Test</strong></td>
+                            <td>QA / Tester</td>
+                            <td>Kiểm tra toàn bộ hệ thống end-to-end theo spec (luồng chính, luồng lỗi, quyền truy cập, hiệu năng cơ bản)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== GIAI ĐOẠN 3 ===== -->
+    <div class="phase-section">
+        <div class="phase-header ph-3">
+            <div>
+                <div class="phase-num">Giai đoạn 3</div>
+                <div class="phase-name">Ra mắt & Vận hành</div>
+            </div>
+        </div>
+
+        <!-- BƯỚC 7 -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-num-badge badge-red">7</div>
+                <div class="step-title-wrap">
+                    <div class="step-num-label">Bước 7</div>
+                    <div class="step-title">Deploy — đưa website lên internet</div>
+                </div>
+            </div>
+            <div class="step-body">
+                <p>Code đã xong, test đã qua — giờ là lúc đưa website lên internet để user thật có thể truy cập.</p>
+
+                <p>Trước khi deploy, cần có 3 thứ:</p>
+
+                <ul class="check-list">
+                    <li><strong>Server</strong> — máy tính (hoặc cloud) nơi code thật sự chạy. Ví dụ: AWS, Google Cloud, DigitalOcean</li>
+                    <li><strong>Domain</strong> — địa chỉ website. Ví dụ: <code style="background:#F3F2EE;padding:2px 6px;border-radius:4px;font-size:13px">myshop.com</code> thay vì gõ địa chỉ IP như <code style="background:#F3F2EE;padding:2px 6px;border-radius:4px;font-size:13px">103.45.67.89</code></li>
+                    <li><strong>Hosting</strong> — dịch vụ cung cấp và quản lý server cho bạn</li>
+                </ul>
+
+                <p style="margin-top:16px;">Quy trình deploy thông thường:</p>
+
+                <div class="mini-flow">
+                    <div class="mini-flow-node">Push code lên Git</div>
+                    <div class="mini-flow-arrow">→</div>
+                    <div class="mini-flow-node">CI/CD tự chạy</div>
+                    <div class="mini-flow-arrow">→</div>
+                    <div class="mini-flow-node">Build</div>
+                    <div class="mini-flow-arrow">→</div>
+                    <div class="mini-flow-node">Deploy lên server</div>
+                    <div class="mini-flow-arrow">→</div>
+                    <div class="mini-flow-node">Website live!</div>
+                </div>
+
+                <p style="margin-top:20px; font-weight:600; color:var(--text-primary);">Khi user gõ địa chỉ web — điều gì xảy ra?</p>
+
+                <div class="mini-flow">
+                    <div class="mini-flow-node">User nhập myshop.com</div>
+                    <div class="mini-flow-arrow">→</div>
+                    <div class="mini-flow-node">DNS tra IP server</div>
+                    <div class="mini-flow-arrow">→</div>
+                    <div class="mini-flow-node">Gửi request tới server</div>
+                    <div class="mini-flow-arrow">→</div>
+                    <div class="mini-flow-node">Server xử lý</div>
+                    <div class="mini-flow-arrow">→</div>
+                    <div class="mini-flow-node">Trả HTML về browser</div>
+                    <div class="mini-flow-arrow">→</div>
+                    <div class="mini-flow-node">Hiển thị trang web</div>
+                </div>
+
+                <div class="callout tip">
+                    <span class="callout-icon">💡</span>
+                    <span><strong>DNS</strong> (Domain Name System) hoạt động như danh bạ điện thoại: bạn tìm tên → DNS trả về số điện thoại (địa chỉ IP). Không có DNS, bạn phải nhớ IP thay vì tên miền.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- BƯỚC 8 -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-num-badge badge-gray">8</div>
+                <div class="step-title-wrap">
+                    <div class="step-num-label">Bước 8</div>
+                    <div class="step-title">Vận hành (Operation)</div>
+                </div>
+            </div>
+            <div class="step-body">
+                <div class="callout important">
+                    <span class="callout-icon">📌</span>
+                    <span>Release xong không có nghĩa là công việc kết thúc. 
+                        Giai đoạn vận hành và bảo trì có thể kéo dài tùy theo hợp đồng.</span>
+                </div>
+
+                <p>Sau khi website đã lên sóng, team cần liên tục:</p>
+
+                <ul class="check-list">
+                    <li><strong>Monitor hệ thống</strong> — theo dõi CPU, RAM, error log để phát hiện vấn đề sớm</li>
+                    <li><strong>Fix bug</strong> — xử lý lỗi phát sinh từ user thật trong môi trường thật</li>
+                    <li><strong>Update tính năng</strong> — thêm chức năng mới theo yêu cầu thực tế</li>
+                    <li><strong>Backup dữ liệu</strong> — đảm bảo không mất dữ liệu khi có sự cố</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="summary-section">
+        <h2>Tóm lại — toàn bộ quy trình trong 1 trang</h2>
+        <div class="summary-flow-grid">
+            <div class="summary-step">
+                <div class="summary-step-num">01</div>
+                <div class="summary-step-name">Requirement</div>
+            </div>
+            <div class="summary-step">
+                <div class="summary-step-num">02</div>
+                <div class="summary-step-name">System Design</div>
+            </div>
+            <div class="summary-step">
+                <div class="summary-step-num">03</div>
+                <div class="summary-step-name">Tech Stack</div>
+            </div>
+            <div class="summary-step">
+                <div class="summary-step-num">04</div>
+                <div class="summary-step-name">Environment Setup</div>
+            </div>
+            <div class="summary-step">
+                <div class="summary-step-num">05</div>
+                <div class="summary-step-name">Coding</div>
+            </div>
+            <div class="summary-step">
+                <div class="summary-step-num">06</div>
+                <div class="summary-step-name">Testing</div>
+            </div>
+            <div class="summary-step">
+                <div class="summary-step-num">07</div>
+                <div class="summary-step-name">Deploy</div>
+            </div>
+            <div class="summary-step">
+                <div class="summary-step-num">08</div>
+                <div class="summary-step-name">Vận hành</div>
+            </div>
+        </div>
+        <div class="summary-note">
+            <strong>Điểm quan trọng cần nhớ:</strong> Bước 1 (Requirement) là bước quan trọng và tốn kém nhất nếu làm sai. Một dự án thất bại thường không phải vì code kém — mà vì requirement không rõ ràng từ đầu.
+        </div>
+    </div>
+
+    <!-- QUIZ -->
+    <div class="quiz-section">
+        <div class="quiz-header">
+            <div class="quiz-icon">📝</div>
+            <div>
+                <div class="quiz-title">Kiểm tra kiến thức</div>
+                <div class="quiz-subtitle">10 câu hỏi — chọn đáp án đúng rồi bấm "Kiểm tra"</div>
+            </div>
+        </div>
+
+        <!-- Q1 -->
+        <div class="question-block" id="q1">
+            <div class="question-num">Câu 1</div>
+            <div class="question-text">Bước nào được coi là quan trọng nhất trong quy trình xây dựng website?</div>
+            <ul class="options" data-correct="b">
+                <li class="option" data-val="a" onclick="selectOption(this)"><span class="option-letter">A</span> Coding</li>
+                <li class="option" data-val="b" onclick="selectOption(this)"><span class="option-letter">B</span> Requirement và Specs</li>
+                <li class="option" data-val="c" onclick="selectOption(this)"><span class="option-letter">C</span> Deploy</li>
+                <li class="option" data-val="d" onclick="selectOption(this)"><span class="option-letter">D</span> Testing</li>
+            </ul>
+            <button class="check-btn" onclick="checkAnswer(this, 'q1')">Kiểm tra</button>
+            <div class="answer-feedback" id="fb-q1"></div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="question-block" id="q2">
+            <div class="question-num">Câu 2</div>
+            <div class="question-text">Output (kết quả đầu ra) của bước Requirement gồm những gì?</div>
+            <ul class="options" data-correct="c">
+                <li class="option" data-val="a" onclick="selectOption(this)"><span class="option-letter">A</span> Source code và database</li>
+                <li class="option" data-val="b" onclick="selectOption(this)"><span class="option-letter">B</span> Server và domain</li>
+                <li class="option" data-val="c" onclick="selectOption(this)"><span class="option-letter">C</span> Spec, Wireframe, Flow nghiệp vụ</li>
+                <li class="option" data-val="d" onclick="selectOption(this)"><span class="option-letter">D</span> Unit test và Integration test</li>
+            </ul>
+            <button class="check-btn" onclick="checkAnswer(this, 'q2')">Kiểm tra</button>
+            <div class="answer-feedback" id="fb-q2"></div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="question-block" id="q3">
+            <div class="question-num">Câu 3</div>
+            <div class="question-text">API trong hệ thống web có vai trò gì?</div>
+            <ul class="options" data-correct="b">
+                <li class="option" data-val="a" onclick="selectOption(this)"><span class="option-letter">A</span> Lưu trữ toàn bộ dữ liệu của website</li>
+                <li class="option" data-val="b" onclick="selectOption(this)"><span class="option-letter">B</span> Làm cầu nối giữa Frontend và Backend</li>
+                <li class="option" data-val="c" onclick="selectOption(this)"><span class="option-letter">C</span> Hiển thị giao diện cho người dùng</li>
+                <li class="option" data-val="d" onclick="selectOption(this)"><span class="option-letter">D</span> Quản lý server và domain</li>
+            </ul>
+            <button class="check-btn" onclick="checkAnswer(this, 'q3')">Kiểm tra</button>
+            <div class="answer-feedback" id="fb-q3"></div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="question-block" id="q4">
+            <div class="question-num">Câu 4</div>
+            <div class="question-text">Môi trường nào được dùng để QA test — gần giống với hệ thống thật nhất?</div>
+            <ul class="options" data-correct="c">
+                <li class="option" data-val="a" onclick="selectOption(this)"><span class="option-letter">A</span> Local</li>
+                <li class="option" data-val="b" onclick="selectOption(this)"><span class="option-letter">B</span> Dev</li>
+                <li class="option" data-val="c" onclick="selectOption(this)"><span class="option-letter">C</span> Staging</li>
+                <li class="option" data-val="d" onclick="selectOption(this)"><span class="option-letter">D</span> Production</li>
+            </ul>
+            <button class="check-btn" onclick="checkAnswer(this, 'q4')">Kiểm tra</button>
+            <div class="answer-feedback" id="fb-q4"></div>
+        </div>
+
+        <!-- Q5 -->
+        <div class="question-block" id="q5">
+            <div class="question-num">Câu 5</div>
+            <div class="question-text">Frontend trong một website đảm nhiệm vai trò nào?</div>
+            <ul class="options" data-correct="a">
+                <li class="option" data-val="a" onclick="selectOption(this)"><span class="option-letter">A</span> Xây dựng giao diện mà user nhìn thấy và tương tác</li>
+                <li class="option" data-val="b" onclick="selectOption(this)"><span class="option-letter">B</span> Lưu trữ dữ liệu trong database</li>
+                <li class="option" data-val="c" onclick="selectOption(this)"><span class="option-letter">C</span> Quản lý domain và server</li>
+                <li class="option" data-val="d" onclick="selectOption(this)"><span class="option-letter">D</span> Viết unit test cho hệ thống</li>
+            </ul>
+            <button class="check-btn" onclick="checkAnswer(this, 'q5')">Kiểm tra</button>
+            <div class="answer-feedback" id="fb-q5"></div>
+        </div>
+
+        <!-- Q6 -->
+        <div class="question-block" id="q6">
+            <div class="question-num">Câu 6</div>
+            <div class="question-text">DNS (Domain Name System) có chức năng gì?</div>
+            <ul class="options" data-correct="b">
+                <li class="option" data-val="a" onclick="selectOption(this)"><span class="option-letter">A</span> Lưu trữ source code của website</li>
+                <li class="option" data-val="b" onclick="selectOption(this)"><span class="option-letter">B</span> Chuyển đổi tên miền thành địa chỉ IP của server</li>
+                <li class="option" data-val="c" onclick="selectOption(this)"><span class="option-letter">C</span> Kiểm tra lỗi trong code</li>
+                <li class="option" data-val="d" onclick="selectOption(this)"><span class="option-letter">D</span> Chạy unit test tự động</li>
+            </ul>
+            <button class="check-btn" onclick="checkAnswer(this, 'q6')">Kiểm tra</button>
+            <div class="answer-feedback" id="fb-q6"></div>
+        </div>
+
+        <!-- Q7 -->
+        <div class="question-block" id="q7">
+            <div class="question-num">Câu 7</div>
+            <div class="question-text">Tại sao không nên test trực tiếp trên môi trường Production?</div>
+            <ul class="options" data-correct="d">
+                <li class="option" data-val="a" onclick="selectOption(this)"><span class="option-letter">A</span> Vì Production chạy chậm hơn Staging</li>
+                <li class="option" data-val="b" onclick="selectOption(this)"><span class="option-letter">B</span> Vì Production không có database</li>
+                <li class="option" data-val="c" onclick="selectOption(this)"><span class="option-letter">C</span> Vì Production không kết nối được internet</li>
+                <li class="option" data-val="d" onclick="selectOption(this)"><span class="option-letter">D</span> Vì Production là hệ thống thật — lỗi sẽ ảnh hưởng trực tiếp đến user đang dùng</li>
+            </ul>
+            <button class="check-btn" onclick="checkAnswer(this, 'q7')">Kiểm tra</button>
+            <div class="answer-feedback" id="fb-q7"></div>
+        </div>
+
+        <!-- Q8 -->
+        <div class="question-block" id="q8">
+            <div class="question-num">Câu 8</div>
+            <div class="question-text">"Deploy" trong phát triển phần mềm có nghĩa là gì?</div>
+            <ul class="options" data-correct="c">
+                <li class="option" data-val="a" onclick="selectOption(this)"><span class="option-letter">A</span> Viết tài liệu kỹ thuật</li>
+                <li class="option" data-val="b" onclick="selectOption(this)"><span class="option-letter">B</span> Thiết kế giao diện website</li>
+                <li class="option" data-val="c" onclick="selectOption(this)"><span class="option-letter">C</span> Đưa source code lên server để hệ thống chạy thật</li>
+                <li class="option" data-val="d" onclick="selectOption(this)"><span class="option-letter">D</span> Xác định yêu cầu từ khách hàng</li>
+            </ul>
+            <button class="check-btn" onclick="checkAnswer(this, 'q8')">Kiểm tra</button>
+            <div class="answer-feedback" id="fb-q8"></div>
+        </div>
+
+        <!-- Q9 -->
+        <div class="question-block" id="q9">
+            <div class="question-num">Câu 9</div>
+            <div class="question-text">Giai đoạn Vận hành (Operation) bao gồm công việc nào dưới đây?</div>
+            <ul class="options" data-correct="a">
+                <li class="option" data-val="a" onclick="selectOption(this)"><span class="option-letter">A</span> Monitor hệ thống, fix bug, cập nhật tính năng, backup dữ liệu</li>
+                <li class="option" data-val="b" onclick="selectOption(this)"><span class="option-letter">B</span> Viết spec và wireframe cho chức năng mới</li>
+                <li class="option" data-val="c" onclick="selectOption(this)"><span class="option-letter">C</span> Chọn tech stack cho hệ thống</li>
+                <li class="option" data-val="d" onclick="selectOption(this)"><span class="option-letter">D</span> Setup môi trường Local và Dev</li>
+            </ul>
+            <button class="check-btn" onclick="checkAnswer(this, 'q9')">Kiểm tra</button>
+            <div class="answer-feedback" id="fb-q9"></div>
+        </div>
+
+        <!-- Q10 -->
+        <div class="question-block" id="q10">
+            <div class="question-num">Câu 10</div>
+            <div class="question-text">Tại sao một dự án phần mềm thường thất bại — dù code không sai?</div>
+            <ul class="options" data-correct="b">
+                <li class="option" data-val="a" onclick="selectOption(this)"><span class="option-letter">A</span> Vì chọn sai ngôn ngữ lập trình</li>
+                <li class="option" data-val="b" onclick="selectOption(this)"><span class="option-letter">B</span> Vì requirement không rõ ràng từ đầu</li>
+                <li class="option" data-val="c" onclick="selectOption(this)"><span class="option-letter">C</span> Vì không dùng cloud server</li>
+                <li class="option" data-val="d" onclick="selectOption(this)"><span class="option-letter">D</span> Vì không viết đủ unit test</li>
+            </ul>
+            <button class="check-btn" onclick="checkAnswer(this, 'q10')">Kiểm tra</button>
+            <div class="answer-feedback" id="fb-q10"></div>
+        </div>
+
+        <!-- Result -->
+        <div class="quiz-result-box" id="quiz-result">
+            <div class="result-score" id="result-score">0/10</div>
+            <div class="result-label" id="result-label">Kết quả</div>
+            <div class="result-comment" id="result-comment"></div>
+            <button class="retake-btn" onclick="retakeQuiz()">Làm lại từ đầu</button>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        <p><strong>Quỳnh Nga BrSE Japan</strong> · Đồng Hành Cùng Bạn</p>
+        <p style="margin-top:6px;">Tài liệu đào tạo IT cơ bản · Quy trình xây dựng một website</p>
+    </div>
+
+</div>
+
+<script>
+    const answers = {
+        q1: 'b', q2: 'c', q3: 'b', q4: 'c', q5: 'a',
+        q6: 'b', q7: 'd', q8: 'c', q9: 'a', q10: 'b'
+    };
+
+    const feedbacks = {
+        q1: { correct: 'Đúng rồi! Requirement là nền tảng — làm sai ở đây thì mọi bước sau đều sai theo.', wrong: 'Chưa đúng. Đáp án là Requirement. Coding chỉ là 1 trong 8 bước, và không phải bước quan trọng nhất.' },
+        q2: { correct: 'Chính xác! Ba tài liệu này là kết quả bắt buộc phải có sau bước Requirement.', wrong: 'Chưa đúng. Output của Requirement gồm: Spec (tài liệu mô tả), Wireframe (bản phác thảo màn hình), và Flow nghiệp vụ.' },
+        q3: { correct: 'Đúng! API là cầu nối giữa Frontend và Backend — như bồi bàn trong nhà hàng.', wrong: 'Chưa đúng. API làm cầu nối giữa Frontend (giao diện) và Backend (xử lý logic/dữ liệu).' },
+        q4: { correct: 'Đúng rồi! Staging được thiết kế giống Production nhất có thể, để QA test trong điều kiện gần thật.', wrong: 'Chưa đúng. Môi trường dùng để test gần giống thật là Staging — không phải Production (dễ ảnh hưởng user thật).' },
+        q5: { correct: 'Chính xác! Frontend xây dựng tất cả những gì user nhìn thấy và tương tác trên trình duyệt.', wrong: 'Chưa đúng. Frontend là phần giao diện người dùng — những gì hiển thị trên trình duyệt.' },
+        q6: { correct: 'Đúng! DNS như danh bạ điện thoại: bạn tìm tên miền, DNS trả về địa chỉ IP để kết nối đến server.', wrong: 'Chưa đúng. DNS chuyển đổi tên miền (vd: google.com) thành địa chỉ IP của server tương ứng.' },
+        q7: { correct: 'Chính xác! Production đang phục vụ user thật — bất kỳ lỗi nào cũng ảnh hưởng ngay đến người dùng thực.', wrong: 'Chưa đúng. Lý do là Production là môi trường thật, user thật đang dùng — không được phép gây lỗi ở đây.' },
+        q8: { correct: 'Đúng rồi! Deploy là quá trình đưa code đã được test lên server để chạy thật cho user.', wrong: 'Chưa đúng. Deploy là đưa source code lên server để hệ thống chạy thật trên internet.' },
+        q9: { correct: 'Chính xác! Vận hành là giai đoạn dài nhất và không bao giờ kết thúc trong vòng đời của một sản phẩm.', wrong: 'Chưa đúng. Vận hành gồm: monitor hệ thống, fix bug, cập nhật tính năng, và backup dữ liệu.' },
+        q10: { correct: 'Đúng! Requirement mờ nhạt là nguyên nhân số 1 khiến dự án thất bại — dù team dev rất giỏi.', wrong: 'Chưa đúng. Dự án thất bại thường do requirement không rõ ràng — xây đúng kỹ thuật nhưng sai thứ khách hàng cần.' }
+    };
+
+    let answered = {};
+    let score = 0;
+
+    function selectOption(el) {
+        const block = el.closest('.question-block');
+        const qId = block.id;
+        if (answered[qId]) return;
+        block.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+        el.classList.add('selected');
+    }
+
+    function checkAnswer(btn, qId) {
+        if (answered[qId]) return;
+        const block = document.getElementById(qId);
+        const selected = block.querySelector('.option.selected');
+        if (!selected) {
+            const fb = document.getElementById('fb-' + qId);
+            fb.textContent = 'Bạn chưa chọn đáp án nào.';
+            fb.className = 'answer-feedback wrong show';
+            return;
+        }
+
+        const userVal = selected.getAttribute('data-val');
+        const correctVal = answers[qId];
+        const fb = document.getElementById('fb-' + qId);
+
+        answered[qId] = userVal;
+
+        block.querySelectorAll('.option').forEach(o => {
+            if (o.getAttribute('data-val') === correctVal) o.classList.add('correct');
+        });
+
+        if (userVal === correctVal) {
+            selected.classList.add('correct');
+            fb.textContent = '✓ ' + feedbacks[qId].correct;
+            fb.className = 'answer-feedback correct show';
+            score++;
+        } else {
+            selected.classList.add('wrong');
+            fb.textContent = '✗ ' + feedbacks[qId].wrong;
+            fb.className = 'answer-feedback wrong show';
+        }
+
+        btn.disabled = true;
+
+        if (Object.keys(answered).length === 10) showResult();
+    }
+
+    function showResult() {
+        const resultBox = document.getElementById('quiz-result');
+        const scoreEl = document.getElementById('result-score');
+        const labelEl = document.getElementById('result-label');
+        const commentEl = document.getElementById('result-comment');
+
+        scoreEl.textContent = score + '/10';
+
+        if (score === 10) {
+            labelEl.textContent = 'Xuất sắc! 🎉';
+            commentEl.textContent = 'Bạn đã nắm vững toàn bộ quy trình. Tiếp tục học sâu hơn về từng bước nhé!';
+        } else if (score >= 8) {
+            labelEl.textContent = 'Rất tốt!';
+            commentEl.textContent = 'Bạn hiểu tốt quy trình. Xem lại những câu sai để nắm chắc hơn.';
+        } else if (score >= 6) {
+            labelEl.textContent = 'Khá — cần ôn thêm';
+            commentEl.textContent = 'Bạn đã hiểu nền tảng. Đọc lại phần bạn trả lời sai và làm lại quiz nhé.';
+        } else {
+            labelEl.textContent = 'Cần học lại';
+            commentEl.textContent = 'Đừng nản — đọc lại tài liệu từ đầu, chú ý các ví dụ thực tế, rồi thử lại.';
+        }
+
+        resultBox.classList.add('show');
+        resultBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function retakeQuiz() {
+        answered = {};
+        score = 0;
+        document.querySelectorAll('.question-block').forEach(block => {
+            block.querySelectorAll('.option').forEach(o => {
+                o.className = 'option';
+            });
+            const fb = block.querySelector('.answer-feedback');
+            fb.className = 'answer-feedback';
+            fb.textContent = '';
+            const btn = block.querySelector('.check-btn');
+            btn.disabled = false;
+        });
+        document.getElementById('quiz-result').classList.remove('show');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>

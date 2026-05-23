@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BrSE Kiêm Vai Trò PM – Công việc theo 3 giai đoạn dự án | Tài liệu đào tạo BrSE</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #F8F7F3;
+      --bg-card: #FFFFFF;
+      --bg-step: #FAFAF7;
+      --text-primary: #1C1C1C;
+      --text-secondary: #404040;
+      --text-muted: #767676;
+      --accent-blue: #1D4ED8;
+      --accent-blue-light: #DBEAFE;
+      --accent-green: #2D8B5E;
+      --accent-green-light: #D1FAE5;
+      --border-light: #E5E3DC;
+      --shadow-sm: 0 1px 4px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+      --radius-xl: 20px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Lexend', sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.8;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page-wrapper {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 40px 24px 100px;
+    }
+
+    /* ===== Header ===== */
+    .header {
+      text-align: center;
+      background: linear-gradient(135deg, #FFFFFF 0%, #F0EDE6 50%, #E8F4EC 100%);
+      border-radius: var(--radius-xl);
+      padding: 60px 48px;
+      margin-bottom: 36px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-md);
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(22,101,52,0.07) 0%, transparent 70%);
+    }
+
+    .header::after {
+      content: '';
+      position: absolute;
+      bottom: -40px; left: -40px;
+      width: 150px; height: 150px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(29,78,216,0.06) 0%, transparent 70%);
+    }
+
+    .header-badge {
+      display: inline-block;
+      background: #2D8B5E;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 6px 18px;
+      border-radius: 20px;
+      margin-bottom: 24px;
+    }
+
+    .header h1 {
+      font-family: 'Source Serif 4', serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.3;
+      margin-bottom: 14px;
+    }
+
+    .header-sub {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+      line-height: 1.7;
+    }
+
+    .header-trainer {
+      font-size: 0.95rem;
+      color: #2D8B5E;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .header-meta {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-weight: 300;
+    }
+
+    /* ===== Cards ===== */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-sm);
+      padding: 32px 36px;
+      margin-bottom: 24px;
+    }
+
+    .section-label {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent-blue);
+      margin-bottom: 10px;
+    }
+
+    .section-label-green {
+      color: var(--accent-green);
+    }
+
+    .section-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 14px;
+      line-height: 1.35;
+    }
+
+    .section-desc {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.85;
+    }
+
+    /* ===== Lesson blocks ===== */
+    .lesson-block {
+      border-top: 1px solid #F0EEE8;
+      padding-top: 22px;
+      margin-top: 22px;
+    }
+
+    .lesson-block:first-child {
+      border-top: none;
+      padding-top: 0;
+      margin-top: 0;
+    }
+
+    .block-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .bullets {
+      margin-top: 10px;
+      padding-left: 20px;
+      color: var(--text-secondary);
+      font-size: 14.5px;
+      line-height: 1.9;
+    }
+
+    .bullets li { margin-bottom: 4px; }
+
+    .callout {
+      margin-top: 14px;
+      border-radius: 12px;
+      padding: 12px 16px;
+      background: #EFF6FF;
+      border: 1px solid #BFDBFE;
+      color: #1E40AF;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .callout-green {
+      background: #F0FDF4;
+      border-color: #BBF7D0;
+      color: #14532D;
+    }
+
+    .callout-orange {
+      background: #FFF7ED;
+      border-color: #FED7AA;
+      color: #9A3412;
+    }
+
+    /* ===== Phase timeline bar ===== */
+    .phase-timeline {
+      display: flex;
+      gap: 0;
+      margin: 22px 0 28px;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--border-light);
+    }
+
+    .phase-item {
+      flex: 1;
+      padding: 14px 10px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.4;
+    }
+
+    .phase-start  { background: #EFF6FF; color: #1D4ED8; border-right: 1px solid var(--border-light); }
+    .phase-mid    { background: #F0FDF4; color: #15803D; border-right: 1px solid var(--border-light); }
+    .phase-end    { background: #FFF7ED; color: #C2410C; }
+
+    .phase-item .phase-tag {
+      display: block;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      opacity: 0.7;
+      margin-bottom: 3px;
+    }
+
+    /* ===== 4 Axis grid ===== */
+    .axis-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .axis-card {
+      border-radius: 14px;
+      padding: 16px 18px;
+      border: 1px solid var(--border-light);
+    }
+
+    .axis-card-blue   { background: #EFF6FF; border-color: #BFDBFE; }
+    .axis-card-green  { background: #F0FDF4; border-color: #BBF7D0; }
+    .axis-card-yellow { background: #FEFCE8; border-color: #FDE68A; }
+    .axis-card-red    { background: #FFF7ED; border-color: #FED7AA; }
+
+    .axis-icon { font-size: 20px; margin-bottom: 6px; }
+
+    .axis-title {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .axis-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* ===== Phase section header ===== */
+    .phase-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .phase-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .phase-badge-blue   { background: #DBEAFE; }
+    .phase-badge-green  { background: #D1FAE5; }
+    .phase-badge-orange { background: #FFEDD5; }
+
+    .phase-header-text .phase-number {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+
+    .phase-header-text .phase-name {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text-primary);
+      line-height: 1.3;
+    }
+
+    /* ===== Step list ===== */
+    .step-list {
+      counter-reset: step;
+      margin-top: 16px;
+    }
+
+    .step-item {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 16px 0;
+      border-bottom: 1px solid #F4F2EC;
+    }
+
+    .step-item:last-child { border-bottom: none; }
+
+    .step-num {
+      counter-increment: step;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #1D4ED8;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .step-num-green  { background: #16A34A; }
+    .step-num-orange { background: #EA580C; }
+
+    .step-content {}
+
+    .step-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+    }
+
+    .step-desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.75;
+    }
+
+    .step-bullets {
+      margin-top: 8px;
+      padding-left: 16px;
+      color: var(--text-secondary);
+      font-size: 13.5px;
+      line-height: 1.85;
+    }
+
+    .step-bullets li { margin-bottom: 3px; }
+
+    /* ===== Checklist ===== */
+    .checklist {
+      margin-top: 12px;
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.75;
+      margin-bottom: 6px;
+    }
+
+    .checklist li::before {
+      content: '☐';
+      color: #9CA3AF;
+      font-size: 14px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* ===== Tag group ===== */
+    .tag-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12.5px;
+      font-weight: 600;
+      border: 1px solid;
+    }
+
+    .tag-blue   { background: #EFF6FF; color: #1D4ED8; border-color: #BFDBFE; }
+    .tag-green  { background: #F0FDF4; color: #15803D; border-color: #BBF7D0; }
+    .tag-gray   { background: #F9FAFB; color: #374151; border-color: #E5E7EB; }
+    .tag-purple { background: #F5F3FF; color: #6D28D9; border-color: #DDD6FE; }
+
+    /* ===== Two-col layout ===== */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .col-box {
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      padding: 14px 16px;
+      background: var(--bg-step);
+    }
+
+    .col-box-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
+    .col-box ul {
+      padding-left: 16px;
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      line-height: 1.8;
+    }
+
+    /* ===== Folder tree ===== */
+    .folder-tree {
+      margin-top: 12px;
+      background: #1E1E2E;
+      border-radius: 12px;
+      padding: 16px 20px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      color: #CDD6F4;
+      line-height: 1.9;
+    }
+
+    .folder-tree .dir  { color: #89B4FA; }
+    .folder-tree .file { color: #A6E3A1; }
+
+    /* ===== Quiz link ===== */
+    .quiz-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-xl);
+      padding: 24px 28px;
+      box-shadow: var(--shadow-sm);
+      margin: 24px 0 36px;
+    }
+
+    .quiz-link-left { display: flex; gap: 14px; align-items: flex-start; }
+
+    .quiz-link-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #1D4ED8, #7C3AED);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .quiz-link-title {
+      font-size: 16px;
+      font-weight: 900;
+      margin-bottom: 4px;
+      color: var(--text-primary);
+    }
+
+    .quiz-link-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .quiz-link a {
+      text-decoration: none;
+      background: var(--accent-blue);
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .quiz-link a:hover { background: #1E40AF; }
+
+    /* ===== Closing ===== */
+    .closing {
+      background: linear-gradient(135deg, #FFFFFF 0%, #F0EDE6 50%, #E8F4EC 100%);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-md);
+      padding: 40px 44px;
+      margin-top: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .closing::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 180px; height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(29,78,216,0.06) 0%, transparent 70%);
+    }
+
+    .closing-title {
+      font-family: 'Source Serif 4', serif;
+      font-size: 1.7rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text-primary);
+      line-height: 1.3;
+    }
+
+    .closing-text {
+      color: var(--text-secondary);
+      font-size: 15px;
+      line-height: 1.85;
+      margin-bottom: 14px;
+    }
+
+    .closing-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 14px;
+      border: 1px solid var(--border-light);
+      background: #fff;
+      color: var(--text-primary);
+    }
+
+    .btn-primary {
+      background: var(--accent-blue);
+      color: #fff;
+      border-color: #1D4ED8;
+    }
+
+    .btn-primary:hover { background: #1E40AF; }
+
+    .footer {
+      text-align: center;
+      padding: 32px;
+      color: var(--text-muted);
+      font-size: 13px;
+      margin-top: 24px;
+    }
+
+    .footer strong { color: var(--text-secondary); }
+
+    @media (max-width: 680px) {
+      .header { padding: 36px 28px; }
+      .header h1 { font-size: 1.6rem; }
+      .card { padding: 24px 22px; }
+      .quiz-link { padding: 20px 18px; flex-direction: column; align-items: flex-start; }
+      .closing { padding: 28px 24px; }
+      .axis-grid { grid-template-columns: 1fr; }
+      .two-col { grid-template-columns: 1fr; }
+      .phase-timeline { flex-direction: column; }
+      .phase-item { border-right: none !important; border-bottom: 1px solid var(--border-light); }
+    }
+
+    @media print {
+      body { background: #fff; }
+      .header, .card, .closing { box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrapper">
+
+    <!-- ===== COVERPAGE ===== -->
+    <div class="header" id="cover">
+      <div class="header-badge">Tài liệu đào tạo · BrSE nâng cao</div>
+      <h1>BrSE Kiêm Vai Trò PM – Công việc theo 3 giai đoạn dự án</h1>
+      <p class="header-sub">Khi BrSE tự kiêm PM hoặc hỗ trợ PM ít kinh nghiệm trong dự án outsource/offshore,<br>cần nắm rõ công việc theo từng giai đoạn để giữ dự án đúng hướng.</p>
+      <p class="header-trainer">Quỳnh Nga BrSE Japan — Đồng Hành Cùng Bạn</p>
+      <p class="header-meta">Dành cho BrSE · ~40 phút · Thực chiến · Outsource / Offshore</p>
+    </div>
+
+    <!-- ===== THEORY ===== -->
+    <section id="theory">
+
+      <!-- 1. Mục tiêu bài học -->
+      <div class="card">
+        <div class="section-label">Mục tiêu bài học</div>
+        <div class="section-title">Sau bài này bạn biết cần làm gì, ở giai đoạn nào</div>
+        <p class="section-desc">
+          Trong dự án outsource/offshore, BrSE đôi khi phải đảm nhận thêm vai trò PM hoặc "lấp chỗ trống" khi PM thiếu kinh nghiệm. Bài học này giúp bạn hiểu rõ công việc cụ thể theo 3 giai đoạn dự án, tránh tình trạng vào việc mà không biết bắt đầu từ đâu.
+        </p>
+
+        <div class="lesson-block">
+          <div class="block-title">Bạn sẽ nắm được</div>
+          <ul class="bullets">
+            <li>4 trục công việc cốt lõi mà BrSE cần chủ động khi kiêm/hỗ trợ PM</li>
+            <li>Toàn bộ danh sách việc cần làm ở giai đoạn <strong>Start dự án</strong> (Initiating + Planning)</li>
+            <li>Công việc theo dõi và điều phối ở giai đoạn <strong>Giữa dự án</strong> (Executing + Monitoring)</li>
+            <li>Checklist delivery, nghiệm thu và đóng dự án ở giai đoạn <strong>Cuối dự án</strong> (Closing)</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 2. Tổng quan -->
+      <div class="card">
+        <div class="section-label">Tổng quan</div>
+        <div class="section-title">1. BrSE hoạt động trên 4 trục chính, xuyên suốt 3 giai đoạn</div>
+        <p class="section-desc">
+          Dù BrSE tự kiêm PM hay chỉ hỗ trợ PM, công việc đều xoay quanh 4 trục cốt lõi sau. Đây không phải danh sách task — đây là <strong>tư duy</strong> bạn cần giữ liên tục trong suốt dự án.
+        </p>
+
+        <div class="axis-grid">
+          <div class="axis-card axis-card-blue">
+            <div class="axis-icon">🔍</div>
+            <div class="axis-title">Làm rõ thông tin</div>
+            <div class="axis-desc">Không để thông tin mơ hồ đi vào dev/test. Hỏi trước, ghi lại, xác nhận với khách.</div>
+          </div>
+          <div class="axis-card axis-card-green">
+            <div class="axis-icon">📡</div>
+            <div class="axis-title">Điều phối giao tiếp</div>
+            <div class="axis-desc">Làm cầu nối khách – PM – dev – tester. Dịch, diễn giải, chuẩn hóa, ghi minutes.</div>
+          </div>
+          <div class="axis-card axis-card-yellow">
+            <div class="axis-icon">📊</div>
+            <div class="axis-title">Theo dõi tiến độ & chất lượng</div>
+            <div class="axis-desc">Cập nhật Jira/Backlog, so sánh actual vs plan, theo dõi bug trend, review test evidence.</div>
+          </div>
+          <div class="axis-card axis-card-red">
+            <div class="axis-icon">🛡️</div>
+            <div class="axis-title">Kiểm soát rủi ro & thay đổi</div>
+            <div class="axis-desc">Phát hiện sớm issue/risk, đánh giá impact change request, không để dev tự xử mà chưa confirm.</div>
+          </div>
+        </div>
+
+        <div class="lesson-block">
+          <div class="block-title">3 giai đoạn của dự án outsource/offshore</div>
+          <p class="section-desc" style="margin-bottom:0">Nội dung bài học sẽ đi qua từng giai đoạn theo thứ tự thời gian:</p>
+          <div class="phase-timeline">
+            <div class="phase-item phase-start">
+              <span class="phase-tag">Giai đoạn 1</span>
+              🚀 Start dự án<br>
+              <span style="font-weight:400; font-size:12px;">Initiating + Planning</span>
+            </div>
+            <div class="phase-item phase-mid">
+              <span class="phase-tag">Giai đoạn 2</span>
+              ⚙️ Giữa dự án<br>
+              <span style="font-weight:400; font-size:12px;">Executing + Monitoring</span>
+            </div>
+            <div class="phase-item phase-end">
+              <span class="phase-tag">Giai đoạn 3</span>
+              🏁 Cuối dự án<br>
+              <span style="font-weight:400; font-size:12px;">Closing</span>
+            </div>
+          </div>
+          <div class="callout">
+            <strong>Lưu ý:</strong> Trong thực tế, không phải lúc nào 3 giai đoạn cũng tách rõ ràng — nhưng về mặt tư duy, BrSE cần biết mình đang ở đâu để ưu tiên đúng việc.
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Giai đoạn Start -->
+      <div class="card">
+        <div class="phase-header">
+          <div class="phase-badge phase-badge-blue">🚀</div>
+          <div class="phase-header-text">
+            <div class="phase-number">Giai đoạn 1</div>
+            <div class="phase-name">2. Giai Đoạn Start Dự Án</div>
+          </div>
+        </div>
+
+        <p class="section-desc">
+          Mục tiêu: <strong>làm rõ cách vận hành dự án trước khi team bắt đầu dev/test thật sự.</strong> BrSE cần hỗ trợ PM để tránh tình trạng vào dự án rồi mới hỏi: nói chuyện ở đâu, tài liệu ở đâu, source nào là mới nhất, ai confirm, test theo mức nào.
+        </p>
+
+        <div class="lesson-block">
+          <div class="block-title">Luồng thời gian đề xuất cho giai đoạn Start</div>
+          <div class="tag-group">
+            <span class="tag tag-blue">① Xác nhận thông tin nền</span>
+            <span class="tag tag-blue">② Communication</span>
+            <span class="tag tag-blue">③ Meeting cadence</span>
+            <span class="tag tag-blue">④ Lưu trữ tài liệu</span>
+            <span class="tag tag-blue">⑤ Source code & môi trường</span>
+            <span class="tag tag-blue">⑥ Tool quản lý task/bug</span>
+            <span class="tag tag-blue">⑦ Deliverable & template</span>
+            <span class="tag tag-blue">⑧ Test strategy</span>
+            <span class="tag tag-blue">⑨ Kickoff document</span>
+            <span class="tag tag-blue">⑩ Detail schedule</span>
+          </div>
+        </div>
+
+        <!-- Step 1 -->
+        <div class="lesson-block">
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-num">1</div>
+              <div class="step-content">
+                <div class="step-title">Xác nhận thông tin nền của dự án</div>
+                <div class="step-desc">Trước tiên cần nắm rõ bức tranh tổng thể để mọi quyết định tiếp theo không bị lệch hướng.</div>
+                <div class="two-col">
+                  <div class="col-box">
+                    <div class="col-box-title">Về dự án</div>
+                    <ul>
+                      <li>Mục tiêu: phát triển mới, maintain, migration, upgrade, fix bug, refactor, takeover?</li>
+                      <li>Scope ban đầu gồm những gì</li>
+                      <li>Output/deliverable khách kỳ vọng</li>
+                      <li>Timeline/milestone lớn đã có chưa</li>
+                    </ul>
+                  </div>
+                  <div class="col-box">
+                    <div class="col-box-title">Về stakeholder</div>
+                    <ul>
+                      <li><strong>Phía khách:</strong> PO, PM, tech lead, reviewer, tester, người approve</li>
+                      <li><strong>Phía ta:</strong> PM, BrSE, dev lead, tech lead, tester, PQA, manager</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="step-item">
+              <div class="step-num">2</div>
+              <div class="step-content">
+                <div class="step-title">Thống nhất kênh communication</div>
+                <div class="step-desc">Mỗi dự án cần quy tắc rõ ràng về kênh liên lạc, tránh thông tin thất lạc hoặc confirm sai chỗ.</div>
+                <ul class="step-bullets">
+                  <li>Dùng công cụ nào: Slack, Microsoft Teams, Skype, email, Backlog, Jira comment...</li>
+                  <li>Group chat do bên nào tạo, ai được add vào</li>
+                  <li><strong>Chat:</strong> hỏi nhanh, confirm nhỏ &nbsp;|&nbsp; <strong>Email:</strong> nội dung chính thức, quyết định quan trọng</li>
+                  <li><strong>Jira/Backlog:</strong> quản lý task, bug, Q&A &nbsp;|&nbsp; <strong>Meeting:</strong> discuss vấn đề phức tạp</li>
+                  <li>Ngôn ngữ sử dụng: Nhật, Việt, Anh, hoặc song ngữ</li>
+                  <li>Thời gian phản hồi kỳ vọng: trong ngày, trong 24h, urgent thì gọi trực tiếp</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="step-item">
+              <div class="step-num">3</div>
+              <div class="step-content">
+                <div class="step-title">Thống nhất meeting cadence</div>
+                <div class="step-desc">Xác định lịch họp định kỳ để tránh tình trạng "họp khi có vấn đề" — khi đó thường đã muộn.</div>
+                <ul class="step-bullets">
+                  <li>Daily meeting: có không, lúc mấy giờ, ai tham gia</li>
+                  <li>Weekly meeting: có không, format thế nào</li>
+                  <li>Sprint planning/review/retro nếu chạy Agile/Scrum</li>
+                  <li>Meeting với khách và meeting nội bộ: tách riêng hay gộp</li>
+                  <li>Ai chuẩn bị agenda, ai ghi minutes, ai follow action item</li>
+                </ul>
+                <div class="callout callout-green">
+                  <strong>BrSE hỗ trợ PM:</strong> Chuẩn bị agenda, phiên dịch/diễn giải ý khách, ghi lại decision/action item và nhắc follow-up.
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="step-item">
+              <div class="step-num">4</div>
+              <div class="step-content">
+                <div class="step-title">Thống nhất nơi lưu trữ tài liệu</div>
+                <div class="step-desc">Tài liệu không có "nhà" sẽ bị thất lạc hoặc mỗi người giữ một bản riêng.</div>
+                <ul class="step-bullets">
+                  <li>Tài liệu chung với khách: Google Drive, Box, SharePoint, Confluence, Notion...</li>
+                  <li>Bên nào tạo folder, quyền truy cập của từng người</li>
+                  <li>Quy tắc đặt tên file/version, tài liệu chính thức nằm ở đâu</li>
+                  <li>Tài liệu nội bộ tách khỏi tài liệu share khách</li>
+                  <li>Nếu có PQA: request PQA tạo folder/project theo quy định</li>
+                </ul>
+                <p class="step-desc" style="margin-top:10px;">Gợi ý cấu trúc thư mục nội bộ:</p>
+                <div class="folder-tree">
+<span class="dir">📁 Project_Name/</span>
+  <span class="dir">├── 01_Contract_Scope/</span>
+  <span class="dir">├── 02_Requirement/</span>
+  <span class="dir">├── 03_Schedule/</span>
+  <span class="dir">├── 04_Meeting_Minutes/</span>
+  <span class="dir">├── 05_Design/</span>
+  <span class="dir">├── 06_Test/</span>
+  <span class="dir">├── 07_Report/</span>
+  <span class="dir">├── 08_Deliverable/</span>
+  <span class="dir">└── 09_Retrospective/</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 5 -->
+            <div class="step-item">
+              <div class="step-num">5</div>
+              <div class="step-content">
+                <div class="step-title">Xác nhận source code và môi trường</div>
+                <div class="step-desc">Không có quyền access source code ngay từ đầu sẽ gây delay nghiêm trọng khi dev bắt đầu.</div>
+                <ul class="step-bullets">
+                  <li>Source code mới nhất đang ở đâu: GitHub, GitLab, Bitbucket, Azure DevOps, server riêng</li>
+                  <li>Team đã có quyền access chưa — nếu chưa, nhờ khách cung cấp ngay</li>
+                  <li>Branch chính, branch dev, release branch là gì</li>
+                  <li>Cách clone source, VPN, IP allowlist, mở port nếu cần</li>
+                  <li>Tạo ticket mở port/request quyền truy cập theo quy trình nội bộ</li>
+                  <li>README/setup guide có đủ không</li>
+                  <li>Môi trường dev/staging/production và quyền truy cập từng môi trường</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Step 6 -->
+            <div class="step-item">
+              <div class="step-num">6</div>
+              <div class="step-content">
+                <div class="step-title">Thống nhất tool quản lý task/bug</div>
+                <div class="step-desc">Xác nhận rõ tool và workflow trước khi dự án chạy, không để mỗi người tự tạo ticket theo cách riêng.</div>
+                <ul class="step-bullets">
+                  <li>Dùng Jira, Backlog, Redmine, GitHub Issues, Azure Boards hay tool của khách</li>
+                  <li>Dự án do mình tạo hay khách tạo</li>
+                  <li>Workflow ticket: To Do → In Progress → Review → QA → Done</li>
+                  <li>Loại ticket: task, bug, story, Q&A, change request</li>
+                  <li>Quy tắc assign, due date, priority, status. Ai được quyền close ticket</li>
+                  <li>Bug severity/priority: định nghĩa cụ thể (Critical / High / Medium / Low)</li>
+                </ul>
+                <div class="callout">
+                  Nếu công ty có Ksystem hoặc tool nội bộ, BrSE/PM request PQA tạo project để quản lý nội bộ song song theo process công ty.
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 7 -->
+            <div class="step-item">
+              <div class="step-num">7</div>
+              <div class="step-content">
+                <div class="step-title">Xác định deliverable và chuẩn bị template tài liệu</div>
+                <div class="step-desc">Cần xác nhận output cuối gồm gì trước khi lập detail schedule, tránh thiếu tài liệu khi gần delivery.</div>
+                <div class="two-col">
+                  <div class="col-box">
+                    <div class="col-box-title">Deliverable cần xác nhận</div>
+                    <ul>
+                      <li>Source code / Build / Package</li>
+                      <li>Design document</li>
+                      <li>Test case / Test report</li>
+                      <li>Release note</li>
+                      <li>Operation / Migration manual</li>
+                      <li>QA evidence</li>
+                      <li>Weekly report / Meeting minutes</li>
+                      <li>Q&A list / Bug list</li>
+                      <li>Handover document</li>
+                    </ul>
+                  </div>
+                  <div class="col-box">
+                    <div class="col-box-title">Template cần chuẩn bị</div>
+                    <ul>
+                      <li><strong>BrSE/PM:</strong> Kickoff doc, weekly report, meeting minutes, Q&A list, issue/risk list</li>
+                      <li><strong>Tester/QA:</strong> Test case, test result/report, bug report</li>
+                      <li><strong>Dev/Tech lead:</strong> Basic/detail design, API spec, DB design, setup guide, release note — xác nhận với dev lead/tech lead</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 8 -->
+            <div class="step-item">
+              <div class="step-num">8</div>
+              <div class="step-content">
+                <div class="step-title">Thống nhất test strategy</div>
+                <div class="step-desc">Quyết định cần làm loại test nào, ai làm, evidence lưu ở đâu — trước khi dev bắt đầu code.</div>
+                <ul class="step-bullets">
+                  <li>Unit Test: có cần không, ai viết, coverage yêu cầu bao nhiêu</li>
+                  <li>Integration Test / System Test / Regression Test: có không</li>
+                  <li>UAT: có cần hỗ trợ khách không</li>
+                  <li>Ai tạo test case, ai review test case</li>
+                  <li>Test evidence cần lưu như thế nào</li>
+                  <li>Bug được report ở đâu (tool nào, ticket type nào)</li>
+                  <li>Tiêu chí pass/fail và release criteria là gì</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Step 9 -->
+            <div class="step-item">
+              <div class="step-num">9</div>
+              <div class="step-content">
+                <div class="step-title">Tạo kickoff document và tổ chức kickoff meeting</div>
+                <div class="step-desc">Kickoff document là tài liệu tổng kết mọi thống nhất đầu dự án — cần tạo sau khi đã có đủ thông tin ở các bước trên.</div>
+                <ul class="step-bullets">
+                  <li>Background / Mục tiêu dự án</li>
+                  <li>Scope / Out-of-scope</li>
+                  <li>Team structure và role</li>
+                  <li>Communication rule &amp; meeting schedule</li>
+                  <li>Tool sử dụng / Deliverable</li>
+                  <li>Milestone / Schedule tổng quan</li>
+                  <li>Risk/issue ban đầu</li>
+                  <li>Quy trình quản lý change request và quy trình confirm/approve</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Step 10 -->
+            <div class="step-item">
+              <div class="step-num">10</div>
+              <div class="step-content">
+                <div class="step-title">Tạo detail schedule</div>
+                <div class="step-desc">Sau khi rõ scope, deliverable, team, test strategy và milestone, BrSE hỗ trợ PM tạo schedule chi tiết với các thành phần:</div>
+                <ul class="step-bullets">
+                  <li>WBS / task list — Người phụ trách — Estimate</li>
+                  <li>Start/end date — Dependency — Milestone</li>
+                  <li>Review point — Test period — Buffer — Delivery date</li>
+                </ul>
+                <div class="callout callout-green">
+                  <strong>Luồng confirm schedule:</strong> BrSE/PM tạo draft → Dev lead/test lead review tính khả thi → Manager nội bộ confirm → Gửi khách confirm.
+                </div>
+              </div>
+            </div>
+
+          </div><!-- end step-list -->
+        </div>
+      </div>
+
+      <!-- 4. Giai đoạn Giữa -->
+      <div class="card">
+        <div class="phase-header">
+          <div class="phase-badge phase-badge-green">⚙️</div>
+          <div class="phase-header-text">
+            <div class="phase-number">Giai đoạn 2</div>
+            <div class="phase-name">3. Giai Đoạn Giữa Dự Án</div>
+          </div>
+        </div>
+
+        <p class="section-desc">
+          Mục tiêu: <strong>giữ dự án chạy đúng scope, đúng tiến độ, đúng chất lượng</strong> và không để thông tin bị lệch giữa khách – PM – dev – tester.
+        </p>
+
+        <div class="lesson-block">
+          <div class="block-title">① Điều phối communication hằng ngày</div>
+          <ul class="bullets">
+            <li>Theo dõi câu hỏi từ khách — dịch/diễn giải yêu cầu cho dev/tester</li>
+            <li>Chuẩn hóa câu trả lời trước khi gửi khách, hạn chế cam kết vượt quyền</li>
+            <li>Ghi lại decision quan trọng vào ticket/minutes/document</li>
+            <li>Nhắc khách confirm các điểm còn pending</li>
+          </ul>
+        </div>
+
+        <div class="lesson-block">
+          <div class="block-title">② Quản lý requirement và Q&A</div>
+          <ul class="bullets">
+            <li>Làm rõ requirement chưa rõ, tách thành ticket/task dễ hiểu</li>
+            <li>Theo dõi Q&A list, phân loại: business / UI/UX / API / DB / logic / test / operation</li>
+            <li>Xác nhận ảnh hưởng khi khách thay đổi yêu cầu</li>
+            <li>Hỗ trợ PM đánh giá change request: ảnh hưởng scope, schedule, cost, quality</li>
+          </ul>
+        </div>
+
+        <div class="lesson-block">
+          <div class="block-title">③ Theo dõi schedule và progress</div>
+          <ul class="bullets">
+            <li>Cập nhật tiến độ task trên Jira/Backlog, so sánh actual với plan</li>
+            <li>Phát hiện task delay, nhắc assignee update status</li>
+            <li>Tổng hợp blocker, báo PM các rủi ro về tiến độ</li>
+            <li>Chuẩn bị nội dung daily/weekly report</li>
+          </ul>
+        </div>
+
+        <div class="lesson-block">
+          <div class="block-title">④ Hỗ trợ quản lý chất lượng</div>
+          <ul class="bullets">
+            <li>Theo dõi bug trend, cùng tester/dev lead kiểm tra bug nghiêm trọng</li>
+            <li>Xác nhận bug có đúng requirement hay do hiểu sai</li>
+            <li>Hỗ trợ triage bug: priority, severity, target fix version</li>
+            <li>Theo dõi test case/test result/test evidence</li>
+            <li>Đảm bảo UT/IT/ST được thực hiện đúng strategy đã thống nhất</li>
+          </ul>
+        </div>
+
+        <div class="lesson-block">
+          <div class="block-title">⑤ Hỗ trợ quản lý issue/risk</div>
+          <ul class="bullets">
+            <li>Ghi nhận issue/risk sớm, làm rõ owner và deadline xử lý</li>
+            <li>Báo cáo PM khi có rủi ro ảnh hưởng delivery</li>
+            <li>Chuẩn bị cách giải thích với khách</li>
+            <li>Đề xuất phương án: giảm scope, tăng resource, đổi ưu tiên, chia phase, xin thêm thời gian</li>
+          </ul>
+        </div>
+
+        <div class="lesson-block">
+          <div class="block-title">⑥ Chuẩn bị và gửi báo cáo định kỳ (Weekly report)</div>
+          <p class="section-desc" style="margin-bottom:8px;">Weekly report cần có đủ các mục sau:</p>
+          <ul class="bullets">
+            <li>Tổng quan trạng thái: <strong style="color:#16A34A;">Green</strong> / <strong style="color:#CA8A04;">Yellow</strong> / <strong style="color:#DC2626;">Red</strong></li>
+            <li>Tiến độ tuần này — Kế hoạch tuần sau</li>
+            <li>Task đã hoàn thành — Task delay</li>
+            <li>Issue/risk — Q&A/chờ khách confirm</li>
+            <li>Bug/test status (nếu đang trong phase test)</li>
+            <li>Request cần khách hỗ trợ</li>
+          </ul>
+        </div>
+
+        <div class="lesson-block">
+          <div class="block-title">⑦ Quản lý thay đổi (Change management)</div>
+          <div class="callout callout-orange">
+            <strong>Điểm BrSE rất hay phải xử lý:</strong> Khi khách nói <em>"chỉ sửa nhỏ thôi"</em> — cần xác nhận ngay đó là bug, change request hay scope ban đầu.
+          </div>
+          <ul class="bullets" style="margin-top:10px;">
+            <li>Nếu là change request: ghi nhận nội dung, lý do, impact, estimate, deadline</li>
+            <li>Không để dev tự làm khi chưa có PM/khách confirm</li>
+            <li>Không từ chối cứng, nhưng cũng không cam kết ngay nếu chưa đánh giá impact</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 5. Giai đoạn Cuối -->
+      <div class="card">
+        <div class="phase-header">
+          <div class="phase-badge phase-badge-orange">🏁</div>
+          <div class="phase-header-text">
+            <div class="phase-number">Giai đoạn 3</div>
+            <div class="phase-name">4. Giai Đoạn Cuối Dự Án</div>
+          </div>
+        </div>
+
+        <p class="section-desc">
+          Mục tiêu: <strong>delivery rõ ràng, nghiệm thu rõ ràng, tài liệu đầy đủ,</strong> tri thức được bàn giao và dự án được đóng chính thức.
+        </p>
+
+        <div class="lesson-block">
+          <div class="block-title">① Xác nhận trạng thái deliverable</div>
+          <p class="section-desc" style="margin-bottom:8px;">BrSE hỗ trợ PM kiểm tra checklist trước khi declare "ready for delivery":</p>
+          <ul class="checklist">
+            <li>Source code đã merge đúng branch chưa</li>
+            <li>Build/package đúng version chưa</li>
+            <li>Test case đã hoàn thành chưa</li>
+            <li>Test report đã đủ chưa</li>
+            <li>Bug còn open không — known issue có được khách chấp nhận không</li>
+            <li>Document cần giao đã đủ chưa</li>
+            <li>Release note có chưa</li>
+            <li>Hướng dẫn deploy/operation có chưa</li>
+          </ul>
+        </div>
+
+        <div class="lesson-block">
+          <div class="block-title">② Hỗ trợ final test/release</div>
+          <ul class="bullets">
+            <li>Theo dõi regression test, kiểm tra bug fix confirmation</li>
+            <li>Hỗ trợ khách UAT nếu có, tổng hợp lỗi còn lại</li>
+            <li>Xác nhận tiêu chí release, chuẩn bị release note</li>
+            <li>Hỗ trợ communication khi có lỗi sát ngày release</li>
+          </ul>
+        </div>
+
+        <div class="lesson-block">
+          <div class="block-title">③ Chuẩn bị nghiệm thu / sign-off</div>
+          <ul class="bullets">
+            <li>Ai là người approve phía khách</li>
+            <li>Approve bằng hình thức nào: email, ticket, biên bản nghiệm thu hay tool nội bộ</li>
+            <li>Điều kiện nghiệm thu là gì</li>
+            <li>Còn item pending nào được carry over sang phase sau không</li>
+            <li>Nếu có known issue: khách có đồng ý release không — cần ghi lại bằng văn bản</li>
+          </ul>
+        </div>
+
+        <div class="lesson-block">
+          <div class="block-title">④ Bàn giao tài liệu và tri thức</div>
+          <p class="section-desc" style="margin-bottom:8px;">Tài liệu cuối dự án thường gồm:</p>
+          <div class="two-col">
+            <div class="col-box">
+              <div class="col-box-title">Tài liệu kỹ thuật</div>
+              <ul>
+                <li>Source / repository information</li>
+                <li>Environment information</li>
+                <li>Setup / deploy guide</li>
+                <li>Design document bản cuối</li>
+                <li>Test case / test report</li>
+                <li>Release note</li>
+                <li>Operation manual (nếu có)</li>
+              </ul>
+            </div>
+            <div class="col-box">
+              <div class="col-box-title">Tài liệu quản lý</div>
+              <ul>
+                <li>Bug list</li>
+                <li>Remaining issue / known issue</li>
+                <li>Handover document</li>
+                <li>Account / access list (theo security policy)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="lesson-block">
+          <div class="block-title">⑤ Đóng tool và lưu trữ</div>
+          <ul class="checklist">
+            <li>Jira/Backlog ticket được close đúng trạng thái</li>
+            <li>Export/archive tài liệu cần lưu</li>
+            <li>Lưu meeting minutes, Q&A, report, deliverable vào folder đúng chỗ</li>
+            <li>Thu hồi quyền access nếu dự án kết thúc và policy yêu cầu</li>
+            <li>Đóng project trên Ksystem/tool nội bộ nếu có quy trình</li>
+            <li>Xác nhận folder nội bộ đã đủ tài liệu cho audit/PQA</li>
+          </ul>
+        </div>
+
+        <div class="lesson-block">
+          <div class="block-title">⑥ Retrospective / Lessons learned</div>
+          <p class="section-desc" style="margin-bottom:8px;">BrSE hỗ trợ PM tổng hợp để dự án sau làm tốt hơn:</p>
+          <ul class="bullets">
+            <li>Điểm làm tốt trong dự án</li>
+            <li>Vấn đề phát sinh, nguyên nhân delay/bug/rework</li>
+            <li>Cách cải thiện communication, estimate, schedule, test</li>
+            <li>Lesson learned cho dự án sau</li>
+            <li>Feedback từ khách nếu có</li>
+          </ul>
+          <div class="callout callout-green">
+            Retrospective không phải để "chỉ trích" — mà để cả team cùng học từ dự án vừa xong và áp dụng cho lần sau.
+          </div>
+        </div>
+      </div>
+
+    </section><!-- end theory -->
+
+    <!-- ===== QUIZ LINK ===== -->
+    <section id="quiz">
+      <div class="quiz-link">
+        <div class="quiz-link-left">
+          <div class="quiz-link-icon">📝</div>
+          <div>
+            <div class="quiz-link-title">Kiểm tra kiến thức</div>
+            <div class="quiz-link-desc">Bài kiểm tra về công việc BrSE kiêm PM theo 3 giai đoạn dự án.<br>Dự kiến ~10 câu hỏi · 10–15 phút.</div>
+          </div>
+        </div>
+        <a href="brse-kiem-vai-tro-pm-quiz.html">Làm bài →</a>
+      </div>
+    </section>
+
+    <!-- ===== CLOSING ===== -->
+    <section id="closing">
+      <div class="closing">
+        <div class="section-label">Kết bài</div>
+        <div class="closing-title">Tóm lại: BrSE kiêm PM cần làm gì?</div>
+        <p class="closing-text">
+          BrSE không chỉ là cầu nối ngôn ngữ — mà là người giữ cho thông tin, tiến độ và chất lượng không bị rơi vỡ giữa 3 bên: khách hàng, PM và team dev/test. Khi nắm rõ công việc theo từng giai đoạn, bạn sẽ không bị bất ngờ và chủ động hơn trong mỗi tình huống.
+        </p>
+
+        <div class="lesson-block">
+          <div class="block-title">5 điểm then chốt cần nhớ</div>
+          <ul class="bullets">
+            <li><strong>Start dự án:</strong> Làm rõ mọi thứ trước khi code — communication, tool, source, test strategy, schedule. Đừng để mày mò khi đã vào dev.</li>
+            <li><strong>Kickoff document:</strong> Đây là "hợp đồng vận hành nội bộ" — ai làm gì, dùng gì, lưu ở đâu, họp lúc nào. Phải có trước khi sprint 1 bắt đầu.</li>
+            <li><strong>Giữa dự án:</strong> Chủ động theo dõi 4 trục: communication, requirement, tiến độ, chất lượng. Không chờ vấn đề nổ ra mới xử lý.</li>
+            <li><strong>Change request:</strong> "Sửa nhỏ thôi" là câu nguy hiểm nhất. Luôn xác nhận: bug hay CR? Impact là gì? Confirm xong mới dev làm.</li>
+            <li><strong>Cuối dự án:</strong> Delivery và đóng dự án phải có quy trình rõ: checklist deliverable, nghiệm thu đúng cách, tài liệu đầy đủ, retrospective để học.</li>
+          </ul>
+        </div>
+
+        <div class="closing-actions">
+          <a class="btn btn-primary" href="brse-kiem-vai-tro-pm-quiz.html">📝 Làm bài kiểm tra</a>
+          <a class="btn" href="#cover">↑ Về đầu trang</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      <p><strong>Tài liệu đào tạo bởi Quỳnh Nga BrSE Japan — Đồng Hành Cùng Bạn</strong></p>
+      <p style="margin-top:6px;">Outsource / Offshore · Cập nhật 2026</p>
+    </div>
+  </div>
+</body>
+</html>

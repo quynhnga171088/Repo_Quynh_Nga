@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Playwright Test Guide — Kari Inspector</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Nunito:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#1a2847;--navy-l:#253561;--navy-d:#111d38;
+  --cream:#f8f4ed;--cream-d:#ede8de;
+  --coral:#e85d26;--gold:#c9871e;--mint:#0ea87a;--red:#d63031;--indigo:#5b5fcf;
+  --slate:#5a6a7e;--slate-l:#8899aa;
+  --white:#fff;--text:#2a3345;
+  --sw:290px;--r:10px;
+  --sh:0 2px 16px rgba(26,40,71,.09);--sh2:0 6px 32px rgba(26,40,71,.15)
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text);line-height:1.7;display:flex;min-height:100vh}
+#pbar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--coral),var(--gold));z-index:999;transition:width .1s}
+/* SIDEBAR */
+#sb{position:fixed;top:0;left:0;width:var(--sw);height:100vh;background:var(--navy);overflow-y:auto;z-index:100;display:flex;flex-direction:column;padding-bottom:2rem}
+#sb::-webkit-scrollbar{width:4px}
+#sb::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:4px}
+.sb-head{padding:1.75rem 1.5rem 1.25rem;border-bottom:1px solid rgba(255,255,255,.08)}
+.sb-logo{display:flex;align-items:center;gap:10px;margin-bottom:.35rem}
+.sb-icon{width:34px;height:34px;background:var(--coral);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.sb-brand{font-family:'Fraunces',serif;font-size:1.1rem;color:#fff;font-weight:700;letter-spacing:-.02em}
+.sb-sub{font-size:.68rem;color:var(--slate-l);letter-spacing:.08em;text-transform:uppercase;padding-left:44px}
+.sb-nav{flex:1;padding:.75rem 0}
+.ng-label{font-size:.62rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--slate-l);padding:.65rem 1.5rem .2rem}
+.ni{display:flex;align-items:center;gap:9px;padding:.48rem 1.5rem;color:rgba(255,255,255,.62);text-decoration:none;font-size:.82rem;font-weight:500;transition:all .18s;border-left:3px solid transparent;cursor:pointer}
+.ni:hover{color:#fff;background:rgba(255,255,255,.06)}
+.ni.active{color:#fff;background:rgba(232,93,38,.16);border-left-color:var(--coral)}
+.ni .ico{font-size:.95rem;width:18px;text-align:center;flex-shrink:0}
+.ni.sub{padding-left:2.75rem;font-size:.78rem}
+.nb{margin-left:auto;background:var(--coral);color:#fff;font-size:.62rem;font-weight:700;padding:2px 6px;border-radius:4px}
+/* MAIN */
+#main{margin-left:var(--sw);flex:1;padding:0 3.5rem 6rem;max-width:calc(var(--sw) + 860px)}
+.sec{padding-top:4.5rem}
+.stag{display:inline-block;font-size:.68rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--coral);margin-bottom:.5rem}
+h1{font-family:'Fraunces',serif;font-size:2.6rem;font-weight:700;color:var(--navy);line-height:1.18;letter-spacing:-.03em;margin-bottom:.9rem}
+h2{font-family:'Fraunces',serif;font-size:1.75rem;font-weight:700;color:var(--navy);line-height:1.25;letter-spacing:-.02em;margin-bottom:.5rem}
+h3{font-family:'Fraunces',serif;font-size:1.15rem;font-weight:600;color:var(--navy);margin-bottom:.4rem}
+p{margin-bottom:.9rem;color:#374455}
+ul,ol{padding-left:1.5rem;margin-bottom:.9rem;color:#374455}
+li{margin-bottom:.3rem}
+/* HERO */
+.hero{background:linear-gradient(135deg,var(--navy-d) 0%,var(--navy-l) 100%);border-radius:14px;padding:3rem 3.5rem;margin-top:1.5rem;margin-bottom:2.5rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-60px;right:-60px;width:260px;height:260px;border-radius:50%;background:rgba(232,93,38,.13)}
+.hero::after{content:'';position:absolute;bottom:-40px;right:80px;width:160px;height:160px;border-radius:50%;background:rgba(201,135,30,.1)}
+.hero-tag{display:inline-block;background:rgba(232,93,38,.2);color:#ff9060;font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:1rem}
+.hero h1{color:#fff;font-size:2.3rem;margin-bottom:.8rem}
+.hero p{color:rgba(255,255,255,.72);font-size:1rem;max-width:520px;margin-bottom:0}
+.hero-stats{display:flex;gap:2.5rem;margin-top:2rem;flex-wrap:wrap}
+.hstat .n{font-family:'Fraunces',serif;font-size:1.9rem;font-weight:700;color:var(--coral);display:block}
+.hstat .l{font-size:.72rem;color:rgba(255,255,255,.5);font-weight:600;letter-spacing:.05em}
+/* CARDS */
+.card{background:#fff;border-radius:var(--r);padding:1.6rem;box-shadow:var(--sh);margin-bottom:1rem}
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2rem}
+.icard{background:#fff;border-radius:var(--r);padding:1.3rem;box-shadow:var(--sh);border-left:4px solid var(--coral)}
+.icard.mint{border-left-color:var(--mint)}
+.icard.gold{border-left-color:var(--gold)}
+.icard.navy{border-left-color:var(--navy)}
+.icard.indigo{border-left-color:var(--indigo)}
+.icard .ci{font-size:1.7rem;margin-bottom:.6rem}
+.icard h3{font-size:.95rem;margin-bottom:.3rem}
+.icard p{font-size:.82rem;color:var(--slate);margin-bottom:0}
+/* TERMINAL */
+.term{background:#0e1726;border-radius:var(--r);overflow:hidden;margin:1rem 0;box-shadow:var(--sh2)}
+.th{background:#182035;padding:9px 14px;display:flex;align-items:center;gap:8px}
+.tdots{display:flex;gap:5px}
+.tdots span{width:11px;height:11px;border-radius:50%}
+.tdots span:nth-child(1){background:#ff5f57}
+.tdots span:nth-child(2){background:#ffbd2e}
+.tdots span:nth-child(3){background:#28c840}
+.ttitle{margin-left:8px;font-size:.7rem;color:rgba(255,255,255,.3);font-family:'JetBrains Mono',monospace}
+.cbtn{margin-left:auto;background:rgba(255,255,255,.08);border:none;color:rgba(255,255,255,.45);font-size:.7rem;padding:3px 9px;border-radius:5px;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .2s}
+.cbtn:hover{background:rgba(255,255,255,.14);color:#fff}
+.cbtn.done{background:rgba(14,168,122,.2);color:var(--mint)}
+.tb{padding:1.1rem 1.4rem;font-family:'JetBrains Mono',monospace;font-size:.8rem;line-height:1.9}
+.tb .cmd{color:#7dd3fc}
+.tb .cmt{color:#3d5068;font-style:italic}
+.tb .out{color:#6a7d90}
+.tb .hi{color:#ffd080}
+.tb .ok{color:#5eed9f}
+.tb .pr{color:var(--coral)}
+.tb .warn{color:#fbbf24}
+.tb .ts{color:#a5f3fc}
+/* STEPS */
+.steps{margin:1.25rem 0}
+.step{display:flex;gap:.9rem;margin-bottom:.2rem;position:relative}
+.step:not(:last-child)::after{content:'';position:absolute;left:13px;top:28px;bottom:-4px;width:2px;background:var(--cream-d)}
+.sn{width:28px;height:28px;background:var(--coral);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;flex-shrink:0;position:relative;z-index:1}
+.sc{flex:1;padding-bottom:.9rem}
+.sc strong{display:block;font-weight:700;color:var(--navy);font-size:.9rem;margin-bottom:.2rem}
+.sc p{font-size:.85rem;margin-bottom:.4rem}
+/* CALLOUTS */
+.callout{border-radius:9px;padding:1rem 1.3rem;margin:1rem 0;display:flex;gap:.9rem;align-items:flex-start}
+.callout.tip{background:rgba(14,168,122,.07);border:1px solid rgba(14,168,122,.2)}
+.callout.warn{background:rgba(201,135,30,.07);border:1px solid rgba(201,135,30,.2)}
+.callout.danger{background:rgba(214,48,49,.06);border:1px solid rgba(214,48,49,.18)}
+.callout.info{background:rgba(26,40,71,.05);border:1px solid rgba(26,40,71,.12)}
+.callout-ico{font-size:1.2rem;flex-shrink:0;margin-top:.1rem}
+.callout-b strong{display:block;font-size:.83rem;font-weight:700;margin-bottom:.2rem;color:var(--navy)}
+.callout-b p{font-size:.83rem;color:var(--slate);margin:0}
+/* ACCORDION */
+.acc{border:1px solid var(--cream-d);border-radius:9px;margin:.8rem 0;overflow:hidden}
+.acc-h{padding:.9rem 1.3rem;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-weight:600;font-size:.88rem;color:var(--navy);user-select:none;transition:background .2s}
+.acc-h:hover{background:var(--cream-d)}
+.acc-ico{font-size:.72rem;transition:transform .3s;color:var(--slate-l)}
+.acc.open .acc-ico{transform:rotate(180deg)}
+.acc-b{display:none;padding:1rem 1.3rem;border-top:1px solid var(--cream-d);background:#fafaf8;font-size:.85rem}
+.acc.open .acc-b{display:block}
+/* TABLE */
+.tbl-wrap{overflow-x:auto;margin:1.25rem 0;border-radius:var(--r);box-shadow:var(--sh)}
+table{width:100%;border-collapse:collapse;background:#fff;font-size:.84rem}
+th{background:var(--navy);color:#fff;font-weight:700;padding:11px 15px;text-align:left;font-size:.78rem;letter-spacing:.05em}
+td{padding:10px 15px;border-bottom:1px solid var(--cream-d);vertical-align:top}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(248,244,237,.6)}
+code{font-family:'JetBrains Mono',monospace;font-size:.78em;background:rgba(26,40,71,.07);color:#c7453c;padding:2px 5px;border-radius:4px}
+/* SCREENSHOT */
+.img-demo{margin:1rem 0;border-radius:10px;overflow:hidden;box-shadow:var(--sh2);border:1px solid var(--cream-d)}
+.img-demo img{width:100%;display:block}
+.img-demo figcaption{background:var(--navy);color:rgba(255,255,255,.75);font-size:.76rem;padding:.65rem 1rem;display:flex;align-items:center;gap:.6rem;line-height:1.5}
+/* PROMPT */
+.prompt-box{background:#0e1726;border:1px solid rgba(91,95,207,.4);border-radius:10px;padding:16px;margin:12px 0}
+.prompt-label{font-size:.7rem;font-weight:800;color:var(--indigo);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;color:#a5b4fc}
+.prompt-text{font-size:.78rem;color:#c7d2fe;line-height:1.85;white-space:pre-wrap;font-family:'JetBrains Mono',monospace}
+/* DIVIDER */
+.divider{height:1px;background:var(--cream-d);margin:2.5rem 0}
+/* DIAG / FLOW */
+.diag{background:#fff;border-radius:var(--r);padding:1.75rem;margin:1.25rem 0;box-shadow:var(--sh);overflow-x:auto}
+.flow-box{background:#fff;border-radius:var(--r);padding:1.5rem 1.75rem;margin:1.25rem 0;box-shadow:var(--sh);font-size:.88rem}
+.flow-step{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;padding:.45rem 0}
+.flow-step:not(:last-child){border-bottom:1px solid var(--cream-d)}
+.flow-node{background:var(--navy);color:#fff;padding:5px 14px;border-radius:20px;font-size:.78rem;font-weight:600;white-space:nowrap}
+.flow-node.ok{background:var(--mint)}
+.flow-node.warn{background:var(--gold)}
+.flow-arr{color:var(--slate-l);font-size:.9rem}
+/* TAG */
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin-left:4px}
+.tag.b{background:rgba(14,168,122,.12);color:var(--mint)}
+.tag.m{background:rgba(201,135,30,.12);color:var(--gold)}
+.tag.r{background:rgba(214,48,49,.1);color:var(--red)}
+/* PRIORITY PYRAMID */
+.pyramid{background:#0e1726;border-radius:10px;padding:1.2rem 1.4rem;margin:1rem 0;font-family:'JetBrains Mono',monospace;font-size:.8rem;line-height:2}
+.py1{color:#5eed9f;font-weight:600}
+.py2{color:#7dd3fc}
+.py3{color:#ffd080}
+.py4{color:#f9a8d4}
+/* MOBILE */
+#mtog{display:none;position:fixed;top:.9rem;left:.9rem;z-index:200;background:var(--navy);color:#fff;border:none;width:38px;height:38px;border-radius:8px;cursor:pointer;font-size:1.1rem;align-items:center;justify-content:center}
+@media(max-width:900px){:root{--sw:260px}#main{padding:0 1.75rem 4rem}}
+@media(max-width:700px){
+  #sb{transform:translateX(-100%);transition:transform .3s}
+  #sb.open{transform:translateX(0)}
+  #main{margin-left:0;padding:1rem 1rem 4rem}
+  #mtog{display:flex}
+  .cgrid{grid-template-columns:1fr}
+  .hero{padding:1.75rem}
+  .hero h1{font-size:1.7rem}
+  #main{padding-top:3.5rem}
+}
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .45s ease,transform .45s ease}
+.reveal.vis{opacity:1;transform:none}
+</style>
+</head>
+<body>
+<div id="pbar"></div>
+<button id="mtog" onclick="document.getElementById('sb').classList.toggle('open')">☰</button>
+
+<!-- SIDEBAR -->
+<nav id="sb">
+  <div class="sb-head">
+    <div class="sb-logo">
+      <div class="sb-icon">🎭</div>
+      <span class="sb-brand">Playwright Guide</span>
+    </div>
+    <div class="sb-sub">Kari Inspector · Auto Test</div>
+  </div>
+  <div class="sb-nav">
+    <div class="ng-label">Tổng quan</div>
+    <a class="ni" href="#intro"><span class="ico">🏠</span>Bắt đầu &amp; Workflow</a>
+
+    <div class="ng-label" style="margin-top:.5rem">Kari Inspector</div>
+    <a class="ni" href="#ki01"><span class="ico">⚙️</span>KI01 · Cấu hình</a>
+    <a class="ni sub" href="#ki01-app">Tạo ứng dụng</a>
+    <a class="ni sub" href="#ki01-bitbucket">Kết nối Bitbucket</a>
+    <a class="ni sub" href="#ki01-env">Biến môi trường</a>
+    <a class="ni sub" href="#ki01-execution">Tạo Execution</a>
+    <a class="ni sub" href="#ki01-clone">Clone &amp; Implement</a>
+    <a class="ni sub" href="#ki01-run">Thực thi test<span class="nb">MỚI</span></a>
+
+    <div class="ng-label" style="margin-top:.5rem">Playwright trong Cursor</div>
+    <a class="ni" href="#pw01"><span class="ico">🔧</span>PW01 · Cài đặt</a>
+    <a class="ni sub" href="#pw01-install">Cài Node.js &amp; Cursor</a>
+    <a class="ni sub" href="#pw01-env">Cấu hình .env</a>
+    <a class="ni sub" href="#pw01-run">Chạy test</a>
+
+    <a class="ni" href="#pw02"><span class="ico">🤖</span>PW02 · Sửa test (AI)</a>
+    <a class="ni sub" href="#pw02-prompt">Prompt mẫu</a>
+
+    <a class="ni" href="#pw03"><span class="ico">▶️</span>PW03 · Record test</a>
+    <a class="ni sub" href="#pw03-codegen">Codegen</a>
+    <a class="ni sub" href="#pw03-format">AI format</a>
+
+    <a class="ni" href="#pw04"><span class="ico">🔍</span>PW04 · Debug UI</a>
+    <a class="ni sub" href="#pw04-debug">Quy trình debug</a>
+
+    <a class="ni" href="#pw05"><span class="ico">🎯</span>PW05 · Locator</a>
+    <a class="ni sub" href="#pw05-pyramid">Kim tự tháp</a>
+    <a class="ni sub" href="#pw05-user">Locator người dùng</a>
+    <a class="ni sub" href="#pw05-tech">CSS &amp; XPath</a>
+    <a class="ni sub" href="#pw05-filter">Chaining &amp; Filter</a>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main id="main">
+
+<!-- INTRO -->
+<section class="sec" id="intro">
+  <div class="hero">
+    <div style="position:relative;z-index:1">
+      <div class="hero-tag">🎭 Playwright · Kari Inspector · Phiên bản 1.2</div>
+      <h1>Playwright<br><em style="font-style:italic;font-weight:400;font-size:.75em;opacity:.85">Test Guide từ A–Z</em></h1>
+      <p>Hướng dẫn đầy đủ từ cấu hình Kari Inspector, cài đặt môi trường, sửa test bằng AI, đến chiến lược chọn Locator — dành cho người <strong style="color:#fff">không cần biết code</strong>.</p>
+      <div class="hero-stats">
+        <div class="hstat"><span class="n">6</span><span class="l">Phần hướng dẫn</span></div>
+        <div class="hstat"><span class="n">A–Z</span><span class="l">Config → Implement → Run</span></div>
+        <div class="hstat"><span class="n">0</span><span class="l">Kinh nghiệm lập trình</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cgrid">
+    <div class="icard">
+      <div class="ci">⚙️</div>
+      <h3>KI01 · Kari Inspector</h3>
+      <p>Đăng ký ứng dụng, kết nối Bitbucket, tạo Execution và gen code automation từ testcase manual.</p>
+    </div>
+    <div class="icard mint">
+      <div class="ci">🔧</div>
+      <h3>PW01 · Cài đặt môi trường</h3>
+      <p>Cài Node.js, Cursor IDE, chạy npm install và cấu hình file .env để chạy test trên máy.</p>
+    </div>
+    <div class="icard gold">
+      <div class="ci">🤖</div>
+      <h3>PW02 · Sửa test bằng AI</h3>
+      <p>Dùng Cursor AI để phát hiện và sửa các test bị lỗi — không cần biết code, chỉ cần mô tả lỗi.</p>
+    </div>
+    <div class="icard navy">
+      <div class="ci">▶️</div>
+      <h3>PW03 · Record test mới</h3>
+      <p>Ghi lại thao tác trên browser bằng Codegen, dùng AI format thành test chuẩn project.</p>
+    </div>
+    <div class="icard indigo">
+      <div class="ci">🔍</div>
+      <h3>PW04 · Debug UI Mode</h3>
+      <p>Xem lại từng bước test như video, xác định bước lỗi qua action log và snapshot browser.</p>
+    </div>
+    <div class="icard mint">
+      <div class="ci">🎯</div>
+      <h3>PW05 · Locator Strategy</h3>
+      <p>Kim tự tháp 9 cấp ưu tiên — từ getByRole đến XPath — để implement testcase bền vững.</p>
+    </div>
+  </div>
+
+  <!-- WORKFLOW DIAGRAM -->
+  <h2 style="margin-top:1rem">🗺️ Sơ đồ Workflow tổng quan</h2>
+  <p>Toàn bộ quy trình từ cấu hình đến regression test — mỗi ô tương ứng một phần trong tài liệu.</p>
+  <div class="diag" style="padding:1.5rem 1rem">
+    <svg viewBox="0 0 780 420" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:780px;display:block;margin:auto">
+      <defs>
+        <marker id="wfar" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#e85d26"/></marker>
+        <marker id="wfar2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#0ea87a"/></marker>
+      </defs>
+      <!-- KARI INSPECTOR GROUP -->
+      <rect x="10" y="10" width="370" height="400" rx="14" fill="#f0eee8" stroke="#ded8cc" stroke-width="1.5"/>
+      <text x="195" y="38" text-anchor="middle" font-family="Nunito,sans-serif" font-size="12" font-weight="800" fill="#1a2847" letter-spacing=".08em">KARI INSPECTOR</text>
+      <!-- Step 1 -->
+      <rect x="35" y="55" width="320" height="44" rx="10" fill="#1a2847"/>
+      <text x="195" y="75" text-anchor="middle" font-family="Nunito,sans-serif" font-size="12" font-weight="700" fill="#fff">⚙️ KI01 · Cấu hình ứng dụng</text>
+      <text x="195" y="91" text-anchor="middle" font-family="Nunito,sans-serif" font-size="9.5" fill="rgba(255,255,255,.55)">Tạo app → Bitbucket → Biến môi trường</text>
+      <!-- Arrow -->
+      <line x1="195" y1="99" x2="195" y2="118" stroke="#e85d26" stroke-width="2" marker-end="url(#wfar)"/>
+      <!-- Step 2 -->
+      <rect x="35" y="120" width="320" height="44" rx="10" fill="#1a2847"/>
+      <text x="195" y="140" text-anchor="middle" font-family="Nunito,sans-serif" font-size="12" font-weight="700" fill="#fff">📝 KI01 · Tạo Execution</text>
+      <text x="195" y="156" text-anchor="middle" font-family="Nunito,sans-serif" font-size="9.5" fill="rgba(255,255,255,.55)">Chọn phạm vi → Gen code tự động → Push Bitbucket</text>
+      <!-- Arrow -->
+      <line x1="195" y1="164" x2="195" y2="183" stroke="#e85d26" stroke-width="2" marker-end="url(#wfar)"/>
+      <!-- Step 3 -->
+      <rect x="35" y="185" width="320" height="44" rx="10" fill="#253561"/>
+      <text x="195" y="205" text-anchor="middle" font-family="Nunito,sans-serif" font-size="12" font-weight="700" fill="#fff">💻 KI01 · Clone &amp; Implement</text>
+      <text x="195" y="221" text-anchor="middle" font-family="Nunito,sans-serif" font-size="9.5" fill="rgba(255,255,255,.55)">git clone → npm install → .env → viết code test</text>
+      <!-- Arrow down to PW block -->
+      <line x1="195" y1="229" x2="195" y2="252" stroke="#e85d26" stroke-width="2" marker-end="url(#wfar)"/>
+      <!-- PW group inside Kari box (local work) -->
+      <rect x="35" y="254" width="320" height="85" rx="10" fill="rgba(232,93,38,.08)" stroke="rgba(232,93,38,.25)" stroke-width="1.5"/>
+      <text x="195" y="274" text-anchor="middle" font-family="Nunito,sans-serif" font-size="10" font-weight="800" fill="#e85d26" letter-spacing=".06em">PLAYWRIGHT TRONG CURSOR (LOCAL)</text>
+      <text x="55" y="296" font-family="Nunito,sans-serif" font-size="10" fill="#374455">🔧 PW01 Cài đặt</text>
+      <text x="185" y="296" font-family="Nunito,sans-serif" font-size="10" fill="#374455">🤖 PW02 Sửa (AI)</text>
+      <text x="295" y="296" font-family="Nunito,sans-serif" font-size="10" fill="#374455">▶️ PW03 Record</text>
+      <text x="55" y="318" font-family="Nunito,sans-serif" font-size="10" fill="#374455">🔍 PW04 Debug UI</text>
+      <text x="185" y="318" font-family="Nunito,sans-serif" font-size="10" fill="#374455">🎯 PW05 Locator</text>
+      <text x="295" y="318" font-family="Nunito,sans-serif" font-size="10" font-weight="700" fill="#0ea87a">✅ All Pass</text>
+      <!-- Arrow to merge -->
+      <line x1="195" y1="339" x2="195" y2="362" stroke="#0ea87a" stroke-width="2" marker-end="url(#wfar2)"/>
+      <!-- Step Final -->
+      <rect x="35" y="364" width="320" height="36" rx="10" fill="#0ea87a"/>
+      <text x="195" y="387" text-anchor="middle" font-family="Nunito,sans-serif" font-size="12" font-weight="700" fill="#fff">🔀 Merge vào main → Git Push</text>
+
+      <!-- RIGHT SIDE: Run test on Kari -->
+      <rect x="410" y="10" width="360" height="400" rx="14" fill="#f0eee8" stroke="#ded8cc" stroke-width="1.5"/>
+      <text x="590" y="38" text-anchor="middle" font-family="Nunito,sans-serif" font-size="12" font-weight="800" fill="#1a2847" letter-spacing=".08em">THỰC THI &amp; REGRESSION</text>
+      <!-- Arrow from merge to Run -->
+      <path d="M355 382 Q385 382 398 300" stroke="#0ea87a" stroke-width="2" fill="none" stroke-dasharray="5,3"/>
+      <line x1="398" y1="300" x2="432" y2="140" stroke="#0ea87a" stroke-width="2" marker-end="url(#wfar2)" stroke-dasharray="5,3"/>
+      <!-- Run testcase -->
+      <rect x="435" y="55" width="310" height="56" rx="10" fill="#1a2847"/>
+      <text x="590" y="77" text-anchor="middle" font-family="Nunito,sans-serif" font-size="12" font-weight="700" fill="#fff">🚀 KI01 · Thực thi test trên Kari</text>
+      <text x="590" y="93" text-anchor="middle" font-family="Nunito,sans-serif" font-size="9.5" fill="rgba(255,255,255,.55)">Chọn Execution → Run Testcase → Kết quả tự động</text>
+      <text x="590" y="103" text-anchor="middle" font-family="Nunito,sans-serif" font-size="8" font-weight="700" fill="#ff9060">MỚI</text>
+      <!-- Arrow -->
+      <line x1="590" y1="111" x2="590" y2="133" stroke="#e85d26" stroke-width="2" marker-end="url(#wfar)"/>
+      <!-- Result -->
+      <rect x="435" y="135" width="310" height="44" rx="10" fill="#0ea87a"/>
+      <text x="590" y="155" text-anchor="middle" font-family="Nunito,sans-serif" font-size="12" font-weight="700" fill="#fff">📊 Báo cáo Pass / Fail</text>
+      <text x="590" y="171" text-anchor="middle" font-family="Nunito,sans-serif" font-size="9.5" fill="rgba(255,255,255,.75)">Kết quả regression test tự động</text>
+      <!-- When to use -->
+      <rect x="435" y="200" width="310" height="130" rx="10" fill="#fff" stroke="#ded8cc" stroke-width="1"/>
+      <text x="590" y="222" text-anchor="middle" font-family="Nunito,sans-serif" font-size="11" font-weight="700" fill="#1a2847">📅 Khi nào chạy Regression?</text>
+      <text x="450" y="245" font-family="Nunito,sans-serif" font-size="10" fill="#374455">• Sau mỗi sprint / release</text>
+      <text x="450" y="265" font-family="Nunito,sans-serif" font-size="10" fill="#374455">• Trước khi deploy staging / production</text>
+      <text x="450" y="285" font-family="Nunito,sans-serif" font-size="10" fill="#374455">• Khi merge code lớn vào main</text>
+      <text x="450" y="305" font-family="Nunito,sans-serif" font-size="10" fill="#374455">• Theo lịch định kỳ (hàng tuần / ngày)</text>
+      <!-- Loop arrow -->
+      <rect x="435" y="350" width="310" height="50" rx="10" fill="rgba(232,93,38,.08)" stroke="rgba(232,93,38,.25)" stroke-width="1.5"/>
+      <text x="590" y="372" text-anchor="middle" font-family="Nunito,sans-serif" font-size="10" font-weight="700" fill="#e85d26">🔄 Lặp lại khi có thay đổi code</text>
+      <text x="590" y="390" text-anchor="middle" font-family="Nunito,sans-serif" font-size="9" fill="#5a6a7e">Fix lỗi → Merge → Run Testcase → Xem kết quả</text>
+    </svg>
+  </div>
+
+  <div class="callout info"><div class="callout-ico">🧭</div><div class="callout-b"><strong>Đọc tài liệu theo thứ tự</strong><p><strong>Lần đầu:</strong> Đọc từ KI01 → PW01 → PW02 → … theo thứ tự. <strong>Khi gặp lỗi:</strong> Vào thẳng PW02 (sửa AI) hoặc PW04 (debug UI). <strong>Regression:</strong> Quay lại KI01 mục Thực thi test.</p></div></div>
+</section>
+
+<!-- ============ KI01 ============ -->
+<section class="sec" id="ki01">
+  <div class="stag">Phần 1 — Kari Inspector</div>
+  <h2>⚙️ Cấu hình ứng dụng trên Kari Inspector</h2>
+  <p>Hướng dẫn toàn bộ quy trình từ đăng ký ứng dụng, kết nối Bitbucket, cấu hình biến môi trường, tạo Execution để gen code automation, đến clone code về local và implement.</p>
+
+  <h3 style="margin-top:1.5rem">Điều kiện tiên quyết</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Yêu cầu</th><th>Chi tiết</th></tr></thead>
+      <tbody>
+        <tr><td>Tài khoản Kari Inspector</td><td>Đã được cấp quyền truy cập vào tổ chức</td></tr>
+        <tr><td>Repository Bitbucket</td><td>Repo chứa project automation test đã được tạo sẵn</td></tr>
+        <tr><td>Personal Access Token (PAT)</td><td>Token có quyền <strong>Repository Write</strong> — tạo tại <code>bitbucket.kaopiz.com → Access Tokens</code></td></tr>
+        <tr><td>API Key AI (nếu cần)</td><td>Được cung cấp bởi team, dùng cho Stagehand</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout danger"><div class="callout-ico">🔐</div><div class="callout-b"><strong>Bảo mật thông tin</strong><p>Không chia sẻ Personal Access Token hay API Key với người khác. Không commit các thông tin này lên repository.</p></div></div>
+
+  <div class="divider"></div>
+
+  <!-- Truy cap settings -->
+  <h3 id="ki01-app" style="scroll-margin-top:2rem">1.1 Truy cập trang Cài đặt &amp; Tạo ứng dụng</h3>
+  <div class="steps">
+    <div class="step">
+      <div class="sn">1</div>
+      <div class="sc">
+        <strong>Truy cập trang Cài đặt</strong>
+        <p>Mở trình duyệt và truy cập địa chỉ sau, đăng nhập nếu được yêu cầu:</p>
+        <div class="term"><div class="th"><div class="tdots"><span></span><span></span><span></span></div><div class="ttitle">Trình duyệt</div></div>
+        <div class="tb"><span class="hi">https://inspector-kari.kaopiz.com/settings</span></div></div>
+        <figure class="img-demo"><img src="images/ki01-step1-settings.png" alt="Màn hình Cài đặt Kari Inspector"><figcaption>📸 Màn hình Cài đặt — khu vực Quản lý ứng dụng và Bộ quy tắc Gen Testcase</figcaption></figure>
+      </div>
+    </div>
+    <div class="step">
+      <div class="sn">2</div>
+      <div class="sc">
+        <strong>Nhấn nút "+ Tạo ứng dụng mới"</strong>
+        <p>Trong khu vực <strong>Quản lý ứng dụng</strong>, nhấn nút <strong>+ Tạo ứng dụng mới</strong> ở góc trên bên phải.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="sn">3</div>
+      <div class="sc">
+        <strong>Điền thông tin ứng dụng</strong>
+        <p>Dialog <strong>Tạo ứng dụng mới</strong> xuất hiện. Điền các thông tin sau:</p>
+        <figure class="img-demo"><img src="images/ki01-step2-create-app-dialog.png" alt="Dialog Tạo ứng dụng mới"><figcaption>📸 Dialog Tạo ứng dụng mới — điền tên và chọn loại ứng dụng</figcaption></figure>
+        <div class="tbl-wrap" style="margin-top:.75rem">
+          <table>
+            <thead><tr><th>Trường</th><th>Cách điền</th><th>Ví dụ</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Tên ứng dụng</strong></td><td>Nhập tên mô tả ứng dụng cần test</td><td><code>GIFT-Contract</code>, <code>NORAN-App User</code></td></tr>
+              <tr><td><strong>Loại ứng dụng</strong></td><td>Chọn loại phù hợp</td><td>Web / Mobile / Desktop</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="sn">4</div>
+      <div class="sc">
+        <strong>Nhấn "+ Tạo ứng dụng" để hoàn tất</strong>
+        <p>Ứng dụng mới xuất hiện trong danh sách với trạng thái <em>"Chưa kết nối Bitbucket"</em>.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Ket noi Bitbucket -->
+  <h3 id="ki01-bitbucket" style="scroll-margin-top:2rem">1.2 Kết nối Bitbucket</h3>
+  <div class="steps">
+    <div class="step">
+      <div class="sn">1</div>
+      <div class="sc">
+        <strong>Mở trang chi tiết ứng dụng</strong>
+        <p>Trong danh sách ứng dụng, click vào tên ứng dụng vừa tạo. Nhấn nút <strong>Xác thực</strong> tại mục Kết nối Bitbucket.</p>
+        <figure class="img-demo"><img src="images/ki01-step3-app-detail.png" alt="Trang chi tiết ứng dụng"><figcaption>📸 Trang chi tiết — nhấn nút Xác thực để mở dialog kết nối Bitbucket</figcaption></figure>
+      </div>
+    </div>
+    <div class="step">
+      <div class="sn">2</div>
+      <div class="sc">
+        <strong>Điền thông tin kết nối</strong>
+        <p>Dialog <strong>Kết nối Bitbucket</strong> xuất hiện. Điền đầy đủ hai trường:</p>
+        <figure class="img-demo"><img src="images/ki01-step4-bitbucket-dialog.png" alt="Dialog Kết nối Bitbucket"><figcaption>📸 Dialog Kết nối Bitbucket — điền Repository và Personal Access Token</figcaption></figure>
+        <div class="tbl-wrap" style="margin-top:.75rem">
+          <table>
+            <thead><tr><th>Trường</th><th>Cách điền</th><th>Ví dụ</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Repository</strong></td><td>Định dạng <code>PROJECT/repo-slug</code> hoặc URL đầy đủ</td><td><code>KAO/my-app</code></td></tr>
+              <tr><td><strong>Personal Access Token</strong></td><td>Dán PAT đã tạo trên <code>bitbucket.kaopiz.com</code></td><td><code>ATBBxxxxxxxx</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="sn">3</div>
+      <div class="sc">
+        <strong>Nhấn "Kiểm tra &amp; Lưu"</strong>
+        <p>✅ Thành công → trạng thái chuyển sang <em>"Bitbucket đã kết nối"</em> — màu xanh lá.<br>❌ Thất bại → kiểm tra lại URL repo và PAT, đảm bảo Token chưa hết hạn.</p>
+      </div>
+    </div>
+  </div>
+  <div class="callout warn"><div class="callout-ico">⚠️</div><div class="callout-b"><strong>Yêu cầu về quyền Token</strong><p>PAT phải có quyền <strong>Repository Write</strong> để Runner có thể push branch lên repo. Tạo tại <code>bitbucket.kaopiz.com → Access Tokens</code>.</p></div></div>
+
+  <div class="divider"></div>
+
+  <!-- Bien moi truong -->
+  <h3 id="ki01-env" style="scroll-margin-top:2rem">1.3 Cấu hình Biến môi trường</h3>
+  <div class="steps">
+    <div class="step">
+      <div class="sn">1</div>
+      <div class="sc">
+        <strong>Mở màn hình Cài đặt automation test</strong>
+        <p>Trong trang chi tiết ứng dụng, nhấn nút <strong>Cài đặt automation test</strong>.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="sn">2</div>
+      <div class="sc">
+        <strong>Điền giá trị cho từng biến</strong>
+        <figure class="img-demo"><img src="images/ki01-step5-env-vars.png" alt="Màn hình biến môi trường"><figcaption>📸 Màn hình Biến môi trường (Key - Value) — điền đầy đủ các biến cần thiết</figcaption></figure>
+        <div class="tbl-wrap" style="margin-top:.75rem">
+          <table>
+            <thead><tr><th>Khóa (Key)</th><th>Ý nghĩa</th><th>Ví dụ giá trị</th></tr></thead>
+            <tbody>
+              <tr><td><code>STAGEHAND_ENV</code></td><td>Môi trường chạy Stagehand</td><td><code>LOCAL</code></td></tr>
+              <tr><td><code>STAGEHAND_MODEL_NAME</code></td><td>Tên model AI</td><td><code>anthropic/claude-3-5-sonnet</code></td></tr>
+              <tr><td><code>STAGEHAND_MODEL_API_KEY</code></td><td>API key của model AI</td><td><code>sk-ant-...</code> (do team cung cấp)</td></tr>
+              <tr><td><code>STAGEHAND_MODEL_BASE_URL</code></td><td>Base URL của provider API</td><td><code>https://openrouter.ai/api/v1</code></td></tr>
+              <tr><td><code>BASE_URL</code></td><td>URL ứng dụng cần test (E2E)</td><td><code>https://app.example.com</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="sn">3</div>
+      <div class="sc">
+        <strong>Nhấn Lưu</strong>
+        <p>Nhấn <strong>Lưu</strong> sau khi điền đầy đủ. API Key sẽ hiển thị dạng ẩn (chấm tròn) sau khi lưu — đây là bình thường.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:1.5rem">Xác nhận cấu hình hoàn tất</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Hạng mục</th><th>Trạng thái mong đợi</th></tr></thead>
+      <tbody>
+        <tr><td>Kết nối Bitbucket</td><td>✅ Bitbucket đã kết nối (màu xanh lá)</td></tr>
+        <tr><td>Branch mặc định</td><td>Hiển thị tên branch (mặc định: <code>main</code>)</td></tr>
+        <tr><td>Môi trường test</td><td>Đã chọn ít nhất một trình duyệt (Chrome / Firefox / Safari / Edge)</td></tr>
+        <tr><td>Biến môi trường</td><td><code>BASE_URL</code> và <code>STAGEHAND_MODEL_API_KEY</code> đã có giá trị</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Tao Execution -->
+  <h3 id="ki01-execution" style="scroll-margin-top:2rem">1.4 Tạo Execution trong Thực thi IT</h3>
+  <p>Sau khi testcase manual đã được gen trên Kari Inspector, thực hiện các bước sau để kích hoạt sinh code automation.</p>
+  <div class="steps">
+    <div class="step">
+      <div class="sn">1</div>
+      <div class="sc">
+        <strong>Truy cập tab Thực thi IT</strong>
+        <p>Trên thanh menu trái, click vào <strong>Thực thi IT</strong>. Màn hình hiển thị lịch sử các lần chạy và thống kê tổng quan.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="sn">2</div>
+      <div class="sc">
+        <strong>Nhấn nút "+ Thêm"</strong>
+        <figure class="img-demo"><img src="images/ki01-step6-add-execution.png" alt="Dialog Thêm Execution"><figcaption>📸 Dialog Thêm Execution — đặt tên và chọn phạm vi testcase sẽ được gen code</figcaption></figure>
+      </div>
+    </div>
+    <div class="step">
+      <div class="sn">3</div>
+      <div class="sc">
+        <strong>Điền thông tin Execution</strong>
+        <div class="tbl-wrap" style="margin-top:.5rem">
+          <table>
+            <thead><tr><th>Trường</th><th>Cách điền</th><th>Ví dụ</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Tên execution</strong></td><td>Đặt tên mô tả đợt chạy</td><td><code>Manual Test — Sprint 13</code></td></tr>
+              <tr><td><strong>Phạm vi</strong></td><td>Chọn phạm vi testcase sẽ gen code</td><td>Tất cả / Theo App / Theo chức năng</td></tr>
+              <tr><td><strong>Chọn chức năng</strong></td><td>Hiện khi chọn <em>Theo chức năng</em></td><td><code>Order list</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="sn">4</div>
+      <div class="sc">
+        <strong>Nhấn "+ Tạo execution"</strong>
+        <p>Hệ thống tự động sinh code và push lên Bitbucket — không cần thao tác thêm.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout info"><div class="callout-ico">💡</div><div class="callout-b"><strong>Gợi ý chọn phạm vi</strong><p><strong>Tất cả</strong> — gen toàn bộ project. <strong>Theo App</strong> — gen cho một ứng dụng cụ thể. <strong>Theo chức năng</strong> — chỉ gen module được chọn, phù hợp khi test từng sprint.</p></div></div>
+
+  <h3 style="margin-top:1.5rem">Quy trình Kari Inspector gen code tự động</h3>
+  <div class="flow-box">
+    <div class="flow-step"><div class="flow-node">1. Execution được tạo</div><div class="flow-arr">→</div><div class="flow-node">2. Đọc testcase manual</div><div class="flow-arr">→</div><div class="flow-node">3. Sinh base code .spec.ts</div></div>
+    <div class="flow-step"><div class="flow-node">4. Push lên Bitbucket (branch đã chỉ định)</div><div class="flow-arr">→</div><div class="flow-node ok">5. Tester nhận thông báo ✅</div></div>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Thành phần được gen</th><th>Mô tả</th></tr></thead>
+      <tbody>
+        <tr><td>File <code>.spec.ts</code></td><td>Cấu trúc test case, tên test, bước thực hiện</td></tr>
+        <tr><td>File Page Object (nếu có)</td><td>Mô tả các màn hình liên quan</td></tr>
+        <tr><td>File data <code>.json</code></td><td>Dữ liệu đầu vào cho test</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Clone va implement -->
+  <h3 id="ki01-clone" style="scroll-margin-top:2rem">1.5 Clone code về local và Implement</h3>
+  <div class="steps">
+    <div class="step">
+      <div class="sn">1</div>
+      <div class="sc">
+        <strong>Clone repository</strong>
+        <div class="term"><div class="th"><div class="tdots"><span></span><span></span><span></span></div><div class="ttitle">Terminal</div><button class="cbtn" onclick="copyCode(this)">Sao chép</button></div>
+        <div class="tb"><span class="cmd">git clone https://bitbucket.kaopiz.com/scm/PROJECT/repo-slug.git</span></div></div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="sn">2</div>
+      <div class="sc">
+        <strong>Mở project trong Cursor IDE</strong>
+        <p>Chọn <strong>File → Open Folder…</strong> → chọn thư mục vừa clone về → nhấn <strong>Open</strong>.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="sn">3</div>
+      <div class="sc">
+        <strong>Cài dependencies</strong>
+        <div class="term"><div class="th"><div class="tdots"><span></span><span></span><span></span></div><div class="ttitle">Terminal tích hợp (Ctrl+`)</div><button class="cbtn" onclick="copyCode(this)">Sao chép</button></div>
+        <div class="tb"><span class="cmd">npm install</span></div></div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="sn">4</div>
+      <div class="sc">
+        <strong>Tạo và điền file .env</strong>
+        <p>Copy <code>.env.example</code> → đổi tên thành <code>.env</code> → điền đầy đủ các biến môi trường (xem mục 1.3 và PW01 bên dưới).</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="sn">5</div>
+      <div class="sc">
+        <strong>Implement testcase</strong>
+        <p>Mở các file <code>.spec.ts</code> đã được gen, điền nội dung automation theo testcase đã chỉ định.</p>
+        <div class="callout tip" style="margin-top:.5rem"><div class="callout-ico">💡</div><div class="callout-b"><strong>Dùng AI để hỗ trợ</strong><p>Dùng Cursor AI để viết locator và logic automation. Tham khảo <strong>PW02</strong> (sửa test) và <strong>PW05</strong> (chọn locator) trong tài liệu này.</p></div></div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="sn">6</div>
+      <div class="sc">
+        <strong>Chạy test để kiểm tra</strong>
+        <div class="term"><div class="th"><div class="tdots"><span></span><span></span><span></span></div><div class="ttitle">Terminal</div><button class="cbtn" onclick="copyCode(this)">Sao chép</button></div>
+        <div class="tb"><span class="cmd">npm test</span>
+<span class="cmt"># Hoặc chạy riêng một nhóm chức năng:</span>
+<span class="cmd">npx playwright test tests/{tên-chức-năng}/</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Thuc thi test -->
+  <h3 id="ki01-run" style="scroll-margin-top:2rem">1.6 Thực thi test tự động trên Kari Inspector</h3>
+  <p>Sau khi đã <strong>verify toàn bộ test case trên local thành công</strong> và script đã được <strong>merge vào branch main</strong>, thực hiện các bước sau để chạy regression test trực tiếp trên Kari Inspector.</p>
+
+  <h3 style="font-size:1rem;margin-top:1rem">Điều kiện trước khi thực thi</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Điều kiện</th><th>Mô tả</th></tr></thead>
+      <tbody>
+        <tr><td>Code đã implement đầy đủ</td><td>Tất cả test case trong Execution đã được viết code và chạy pass trên local</td></tr>
+        <tr><td>Script đã merge vào <code>main</code></td><td>Pull Request đã được review và merge — không còn ở nhánh feature</td></tr>
+        <tr><td>Kari Inspector đã kết nối Bitbucket</td><td>Cấu hình ở mục 1.2 đã hoàn tất, trạng thái <em>"Bitbucket đã kết nối"</em></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout warn"><div class="callout-ico">⚠️</div><div class="callout-b"><strong>Tại sao phải merge vào main trước?</strong><p>Kari Inspector pull code từ branch đã cấu hình (mặc định là <code>main</code>) để chạy test — script còn trên nhánh feature sẽ không được nhận diện.</p></div></div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="sn">1</div>
+      <div class="sc">
+        <strong>Truy cập Thực thi IT và chọn Execution</strong>
+        <p>Trên thanh menu trái của Kari Inspector, click vào <strong>Thực thi IT</strong>. Trong danh sách, click vào <strong>tên Execution đã tạo trước đó</strong> (ví dụ: <code>Manual Test — Sprint 13</code>).</p>
+        <p style="font-size:.85rem">Màn hình mở ra hiển thị <strong>danh sách các test case automation</strong> sẽ được thực thi.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="sn">2</div>
+      <div class="sc">
+        <strong>Nhấn nút Run Testcase</strong>
+        <p>Click nút <strong>Run Testcase</strong> (hoặc <strong>Chạy automation cho app này</strong>) để bắt đầu chạy toàn bộ test case trong Execution.</p>
+        <figure class="img-demo"><img src="images/ki01-step7-run-testcase.png" alt="Màn hình Thực thi IT — Danh sách testcase và nút Run Testcase"><figcaption>📸 Màn hình Thực thi IT — danh sách testcase auto và nút Run Testcase</figcaption></figure>
+      </div>
+    </div>
+    <div class="step">
+      <div class="sn">3</div>
+      <div class="sc">
+        <strong>Hệ thống tự động thực thi</strong>
+        <p>Sau khi nhấn Run, hệ thống tự động:</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="flow-box">
+    <div class="flow-step"><div class="flow-node">1. Pull code mới nhất từ Bitbucket</div><div class="flow-arr">→</div><div class="flow-node">2. Chạy toàn bộ test case</div></div>
+    <div class="flow-step"><div class="flow-node">3. Ghi nhận Pass / Fail từng test</div><div class="flow-arr">→</div><div class="flow-node ok">4. Hiển thị báo cáo tổng hợp ✅</div></div>
+  </div>
+
+  <h3 style="font-size:1rem;margin-top:1.5rem">Khi nào nên dùng tính năng Thực thi test?</h3>
+  <div class="callout tip"><div class="callout-ico">🎯</div><div class="callout-b"><strong>Mục đích: Test Regression định kỳ</strong><p>Tính năng này đảm bảo <strong>logic cũ của hệ thống không bị ảnh hưởng</strong> trong quá trình phát triển tính năng mới.</p></div></div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Tình huống</th><th>Mô tả</th></tr></thead>
+      <tbody>
+        <tr><td>Sau mỗi sprint / release</td><td>Chạy toàn bộ regression để xác nhận không có regression bug</td></tr>
+        <tr><td>Trước khi deploy staging / production</td><td>Kiểm tra lần cuối trước khi phát hành</td></tr>
+        <tr><td>Khi team dev merge code lớn vào main</td><td>Phát hiện sớm các thay đổi vô tình làm gãy chức năng cũ</td></tr>
+        <tr><td>Theo lịch định kỳ (hàng tuần / hàng ngày)</td><td>Monitoring liên tục chất lượng hệ thống</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout info"><div class="callout-ico">💡</div><div class="callout-b"><strong>Phân biệt: Tạo Execution vs Thực thi test</strong><p><strong>Tạo Execution</strong> (mục 1.4) thực hiện <strong>một lần</strong> để gen code từ testcase manual. <strong>Thực thi test</strong> (mục này) là việc <strong>chạy lại nhiều lần</strong> trên code đã hoàn thiện để regression test.</p></div></div>
+
+  <div class="divider"></div>
+
+  <div class="acc">
+    <div class="acc-h" onclick="toggleAcc(this)"><span>🔧 Xử lý sự cố thường gặp</span><span class="acc-ico">▼</span></div>
+    <div class="acc-b">
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Triệu chứng</th><th>Nguyên nhân</th><th>Cách xử lý</th></tr></thead>
+          <tbody>
+            <tr><td>"Kiểm tra &amp; Lưu" báo lỗi</td><td>URL repo sai hoặc PAT không hợp lệ</td><td>Kiểm tra định dạng <code>PROJECT/repo-slug</code>; tạo lại PAT mới</td></tr>
+            <tr><td>Trạng thái vẫn "Chưa kết nối"</td><td>Token thiếu quyền</td><td>Tạo Token mới với quyền <strong>Repository Write</strong></td></tr>
+            <tr><td>Execution tạo xong nhưng không thấy code</td><td>Gen code lỗi hoặc PAT hết hạn</td><td>Kiểm tra lại kết nối Bitbucket; xem log trong Thực thi IT</td></tr>
+            <tr><td><code>npm install</code> báo lỗi sau khi clone</td><td>Node.js chưa cài hoặc quá cũ</td><td>Cài lại Node.js bản LTS từ <a href="https://nodejs.org" target="_blank">nodejs.org</a></td></tr>
+            <tr><td>Run Testcase nhưng test fail hàng loạt</td><td>Code chưa được merge vào branch <code>main</code></td><td>Merge PR rồi thử lại</td></tr>
+            <tr><td>Run Testcase báo lỗi kết nối</td><td>Kari Inspector mất kết nối Bitbucket</td><td>Vào Cài đặt → Xác thực lại Bitbucket (mục 1.2)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PW01 ============ -->
+<section class="sec" id="pw01">
+  <div class="stag">Phần 2 — Môi trường local</div>
+  <h2>🔧 Hướng dẫn cài đặt &amp; thiết lập môi trường</h2>
+  <p>Thực hiện một lần duy nhất. Sau khi xong, bạn đã sẵn sàng chạy và implement test trên máy.</p>
+
+  <h3 id="pw01-install" style="margin-top:1.5rem;scroll-margin-top:2rem">2.1 Phần mềm cần cài</h3>
+  <h3 style="font-size:1rem;margin-top:1rem">Node.js (bắt buộc)</h3>
+  <p>Node.js là nền tảng để chạy các lệnh test. Bộ cài đã bao gồm sẵn <strong>npm</strong> — không cần cài thêm gì.</p>
+  <div class="steps">
+    <div class="step">
+      <div class="sn">1</div>
+      <div class="sc"><strong>Tải Node.js</strong><p>Truy cập <a href="https://nodejs.org" target="_blank">nodejs.org</a> → tải bản <strong>LTS</strong> (nút màu xanh bên trái).</p></div>
+    </div>
+    <div class="step">
+      <div class="sn">2</div>
+      <div class="sc"><strong>Cài đặt</strong><p>Mở file vừa tải → bấm <strong>Next → Next → Install → Finish</strong>.</p></div>
+    </div>
+    <div class="step">
+      <div class="sn">3</div>
+      <div class="sc">
+        <strong>Kiểm tra thành công</strong>
+        <div class="term"><div class="th"><div class="tdots"><span></span><span></span><span></span></div><div class="ttitle">Terminal / Command Prompt</div><button class="cbtn" onclick="copyCode(this)">Sao chép</button></div>
+        <div class="tb"><span class="cmd">node --version</span>
+<span class="ok">v22.0.0  ✓ Cài đặt thành công</span>
+<span class="cmd">npm --version</span>
+<span class="ok">10.0.0   ✓ npm đã sẵn sàng</span></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="callout info"><div class="callout-ico">🍎</div><div class="callout-b"><strong>macOS</strong><p>Nếu hệ thống hỏi xin quyền, nhấn "Allow" hoặc nhập mật khẩu máy.</p></div></div>
+
+  <h3 style="font-size:1rem;margin-top:1.5rem">Cursor IDE (để dùng AI sửa test)</h3>
+  <div class="steps">
+    <div class="step"><div class="sn">1</div><div class="sc"><strong>Tải Cursor</strong><p>Truy cập <a href="https://www.cursor.com" target="_blank">cursor.com</a> → tải bản phù hợp (macOS / Windows).</p></div></div>
+    <div class="step"><div class="sn">2</div><div class="sc"><strong>Cài và đăng nhập</strong><p>Cài đặt như phần mềm thông thường, đăng nhập bằng tài khoản Google hoặc GitHub.</p></div></div>
+  </div>
+
+  <h3 style="margin-top:1.75rem">2.2 Mở project và cài thư viện</h3>
+  <div class="steps">
+    <div class="step">
+      <div class="sn">1</div>
+      <div class="sc"><strong>Mở thư mục project trong Cursor</strong><p>Chọn <strong>File → Open Folder…</strong> (<kbd style="background:var(--cream-d);padding:2px 7px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.8rem">Ctrl+K Ctrl+O</kbd> Windows, <kbd style="background:var(--cream-d);padding:2px 7px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.8rem">Cmd+K Cmd+O</kbd> macOS) → chọn thư mục project → nhấn <strong>Open</strong>.</p></div>
+    </div>
+    <div class="step">
+      <div class="sn">2</div>
+      <div class="sc">
+        <strong>Cài dependencies</strong>
+        <p>Mở Terminal tích hợp (<kbd style="background:var(--cream-d);padding:2px 7px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.8rem">Ctrl+`</kbd>), chạy:</p>
+        <div class="term"><div class="th"><div class="tdots"><span></span><span></span><span></span></div><div class="ttitle">Terminal tích hợp Cursor</div><button class="cbtn" onclick="copyCode(this)">Sao chép</button></div>
+        <div class="tb"><span class="cmd">npm install</span>
+<span class="out">added 350 packages in 45s  <span class="ok">✓ Hoàn tất</span></span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <h3 id="pw01-env" style="scroll-margin-top:2rem">2.3 Cấu hình file .env</h3>
+  <p>File <code>.env</code> chứa thông tin cấu hình riêng: URL ứng dụng, API key AI, v.v.</p>
+  <div class="steps">
+    <div class="step"><div class="sn">1</div><div class="sc"><strong>Tạo file .env</strong><p>Trong Cursor, tìm file <code>.env.example</code> → click chuột phải → <strong>Copy</strong> → <strong>Paste</strong> vào cùng thư mục → đổi tên thành <code>.env</code>.</p></div></div>
+    <div class="step">
+      <div class="sn">2</div>
+      <div class="sc">
+        <strong>Điền thông tin vào .env</strong>
+        <div class="tbl-wrap" style="margin-top:.5rem">
+          <table>
+            <thead><tr><th>Biến</th><th>Ý nghĩa</th><th>Ví dụ</th></tr></thead>
+            <tbody>
+              <tr><td><code>BASE_URL</code></td><td>URL ứng dụng cần test</td><td><code>https://practice.automationtesting.in</code></td></tr>
+              <tr><td><code>STAGEHAND_ENV</code></td><td>Môi trường chạy browser</td><td>Giữ nguyên <code>LOCAL</code></td></tr>
+              <tr><td><code>STAGEHAND_MODEL_NAME</code></td><td>Tên model AI</td><td><code>openai/gpt-4o-mini</code></td></tr>
+              <tr><td><code>STAGEHAND_MODEL_API_KEY</code></td><td>API key AI</td><td><code>sk-...</code> (do team cung cấp)</td></tr>
+              <tr><td><code>STAGEHAND_MODEL_BASE_URL</code></td><td>URL endpoint model AI</td><td><code>https://openrouter.ai/api/v1</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="term"><div class="th"><div class="tdots"><span></span><span></span><span></span></div><div class="ttitle">.env</div></div>
+        <div class="tb"><span class="hi">BASE_URL</span>=https://practice.automationtesting.in
+<span class="hi">STAGEHAND_ENV</span>=LOCAL
+<span class="hi">STAGEHAND_MODEL_NAME</span>=openai/gpt-4o-mini
+<span class="hi">STAGEHAND_MODEL_API_KEY</span>=sk-or-v1-xxxxxxxxxx
+<span class="hi">STAGEHAND_MODEL_BASE_URL</span>=https://openrouter.ai/api/v1</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="callout danger"><div class="callout-ico">🔐</div><div class="callout-b"><strong>Bảo mật</strong><p>Không chia sẻ API key với người khác. Không commit file <code>.env</code> lên git.</p></div></div>
+
+  <div class="divider"></div>
+
+  <h3 id="pw01-run" style="scroll-margin-top:2rem">2.4 Chạy test lần đầu</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Mục đích</th><th>Lệnh</th></tr></thead>
+      <tbody>
+        <tr><td>Chạy toàn bộ test</td><td><code>npm test</code></td></tr>
+        <tr><td>Chạy một nhóm cụ thể</td><td><code>npx playwright test tests/xác_thực_và_tài_khoản/</code></td></tr>
+        <tr><td>Xem báo cáo HTML</td><td><code>npx playwright show-report</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout tip"><div class="callout-ico">📊</div><div class="callout-b"><strong>Đọc báo cáo kết quả</strong><p>✅ <strong>passed</strong> — test chạy thành công &nbsp;·&nbsp; ❌ <strong>failed</strong> — test bị lỗi (cần sửa) &nbsp;·&nbsp; ⏭ <strong>skipped</strong> — test chưa có implementation.</p></div></div>
+
+  <div class="acc">
+    <div class="acc-h" onclick="toggleAcc(this)"><span>🔧 Xử lý sự cố thường gặp</span><span class="acc-ico">▼</span></div>
+    <div class="acc-b">
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Triệu chứng</th><th>Nguyên nhân</th><th>Cách xử lý</th></tr></thead>
+          <tbody>
+            <tr><td><code>npm: command not found</code></td><td>Node.js chưa cài hoặc chưa nhận diện</td><td>Cài lại Node.js; khởi động lại máy</td></tr>
+            <tr><td><code>Error: BASE_URL is not set</code></td><td>Chưa tạo hoặc chưa điền file .env</td><td>Kiểm tra lại Mục 2.3</td></tr>
+            <tr><td><code>Executable doesn't exist</code></td><td>Playwright chưa tải browser</td><td>Chạy <code>npx playwright install</code></td></tr>
+            <tr><td>Test hiện <code>failed</code> ngay sau khi cài</td><td>Test gen có thể chưa đúng với UI</td><td>Xem PW02 để sửa bằng AI</td></tr>
+            <tr><td><code>EACCES: permission denied</code> (macOS)</td><td>Thiếu quyền thư mục npm</td><td><code>sudo chown -R $(whoami) ~/.npm</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PW02 ============ -->
+<section class="sec" id="pw02">
+  <div class="stag">Phần 3</div>
+  <h2>🤖 Dùng Cursor AI để sửa test sai / bị lỗi</h2>
+  <p>Hướng dẫn cách dùng Cursor AI để phát hiện và sửa các test bị lỗi — chỉ cần mô tả vấn đề bằng tiếng Việt, AI sẽ gợi ý và thực hiện sửa code.</p>
+
+  <h3 style="margin-top:1.5rem">Khi nào cần sửa test?</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Thông báo lỗi</th><th>Ý nghĩa</th></tr></thead>
+      <tbody>
+        <tr><td><code>Locator not found</code></td><td>Selector không đúng với giao diện thực tế</td></tr>
+        <tr><td><code>Timeout exceeded</code></td><td>Trang load chậm hoặc click/fill sai element</td></tr>
+        <tr><td><code>Expected ... to be visible</code></td><td>Assertion kiểm tra sai text/element</td></tr>
+        <tr><td><code>Navigation failed</code></td><td>URL trong test không đúng</td></tr>
+        <tr><td><code>test.skip(...)</code></td><td>Test chưa có code thực hiện — chỉ có comment</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout info"><div class="callout-ico">💡</div><div class="callout-b"><strong>Lưu ý</strong><p>Test sinh tự động thường đúng về <strong>nghiệp vụ</strong> (mô tả Steps, Expected Result) nhưng có thể sai ở phần code tương tác với UI thực tế.</p></div></div>
+
+  <h3 style="margin-top:1.5rem">Cấu trúc một test case</h3>
+  <div class="term"><div class="th"><div class="tdots"><span></span><span></span><span></span></div><div class="ttitle">TypeScript — .spec.ts</div></div>
+  <div class="tb"><span class="ts">test</span>(<span class="hi">'DEMO_01_054: Đăng nhập - Thành công với thông tin hợp lệ'</span>, async ({ page }) => {
+  <span class="cmt">// **Preconditions:** Tài khoản đã tồn tại. Ở trang My Account.</span>
+  <span class="cmt">// **Steps:**</span>
+  <span class="cmt">// 1. Nhập username hợp lệ vào trường Username</span>
+  <span class="cmt">// 2. Nhập password hợp lệ vào trường Password</span>
+  <span class="cmt">// 3. Nhấn nút Login</span>
+  <span class="cmt">// **Expected Result:** Đăng nhập thành công, chuyển hướng đến Dashboard.</span>
+  <span class="cmd">await</span> page.goto(<span class="hi">'https://practice.automationtesting.in/my-account/'</span>);
+  <span class="cmd">await</span> page.locator(<span class="hi">'#username'</span>).fill(<span class="hi">'user@example.com'</span>);
+  <span class="cmd">await</span> page.locator(<span class="hi">'#password'</span>).fill(<span class="hi">'password123'</span>);
+  <span class="cmd">await</span> page.getByRole(<span class="hi">'button'</span>, { name: <span class="hi">'Login'</span> }).click();
+  <span class="cmd">await</span> expect(page.getByRole(<span class="hi">'link'</span>, { name: <span class="hi">'Logout'</span> })).toBeVisible();
+});</div></div>
+
+  <div class="divider"></div>
+
+  <h3>Quy trình sửa test — 6 bước</h3>
+  <div class="steps">
+    <div class="step"><div class="sn">1</div><div class="sc"><strong>Xác định test lỗi</strong><p>Chạy <code>npm test</code> → xem báo cáo <code>npx playwright show-report</code> → ghi chú tên test bị failed.</p></div></div>
+    <div class="step"><div class="sn">2</div><div class="sc"><strong>Mở AI Chat</strong><p>Nhấn <kbd style="background:var(--cream-d);padding:2px 7px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.8rem">Ctrl+L</kbd> (Windows) hoặc <kbd style="background:var(--cream-d);padding:2px 7px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.8rem">Cmd+L</kbd> (macOS).</p></div></div>
+    <div class="step"><div class="sn">3</div><div class="sc"><strong>Thêm context file test</strong><p>Gõ <code>@</code> rồi gõ tên file (ví dụ <code>@xác_thực_và_tài_khoản.spec.ts</code>) → chọn từ dropdown.</p></div></div>
+    <div class="step"><div class="sn">4</div><div class="sc"><strong>Mô tả lỗi cho AI</strong><p>Dùng prompt mẫu phía dưới theo loại lỗi đang gặp.</p></div></div>
+    <div class="step"><div class="sn">5</div><div class="sc"><strong>Áp dụng gợi ý</strong><p>Đọc lướt code AI đề xuất → nhấn <strong>Apply</strong>.</p></div></div>
+    <div class="step">
+      <div class="sn">6</div>
+      <div class="sc">
+        <strong>Chạy lại để kiểm tra</strong>
+        <div class="term"><div class="th"><div class="tdots"><span></span><span></span><span></span></div><div class="ttitle">Terminal</div><button class="cbtn" onclick="copyCode(this)">Sao chép</button></div>
+        <div class="tb"><span class="cmd">npx playwright test tests/xác_thực_và_tài_khoản/ --headed</span></div></div>
+        <p style="font-size:.85rem;margin-top:.5rem">✅ <strong>passed</strong> → Thành công! &nbsp; ❌ <strong>failed</strong> → Quay lại Bước 4 với lỗi mới.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <h3 id="pw02-prompt" style="scroll-margin-top:2rem">Prompt mẫu theo từng loại lỗi</h3>
+
+  <h3 style="font-size:1rem;margin-top:1rem">Lỗi Locator not found / Timeout</h3>
+  <div class="prompt-box">
+    <div class="prompt-label">💬 Prompt mẫu — copy &amp; paste vào Cursor AI</div>
+    <div class="prompt-text">Test DEMO_01_054 bị lỗi "locator not found" khi chạy trên trang
+https://practice.automationtesting.in/my-account/
+
+Thông báo lỗi:
+[Paste thông báo lỗi từ báo cáo vào đây]
+
+Hãy kiểm tra và sửa lại selector/locator cho đúng với giao diện thực tế.
+Giữ nguyên logic test và comment mô tả các bước.</div>
+  </div>
+
+  <h3 style="font-size:1rem;margin-top:1rem">Lỗi Assertion sai (Expected to be visible)</h3>
+  <div class="prompt-box">
+    <div class="prompt-label">💬 Prompt mẫu</div>
+    <div class="prompt-text">Test DEMO_01_054 bị lỗi ở phần kiểm tra kết quả (assertion).
+Thông báo lỗi: [Paste lỗi vào đây]
+
+Trang sau khi đăng nhập hiển thị text "Hello [tên user]" thay vì "Dashboard".
+Hãy sửa lại assertion cho khớp với text thực tế hiển thị trên trang.</div>
+  </div>
+
+  <h3 style="font-size:1rem;margin-top:1rem">Test đang là test.skip — chưa có implementation</h3>
+  <div class="prompt-box">
+    <div class="prompt-label">💬 Prompt mẫu</div>
+    <div class="prompt-text">Test DEMO_01_055 hiện đang bị skip (test.skip), chưa có code thực hiện.
+Dựa vào comment mô tả các Steps và Expected Result trong test,
+hãy viết code Playwright để thực hiện các bước đó.
+
+Trang đang test: https://practice.automationtesting.in/my-account/</div>
+  </div>
+
+  <div class="callout tip" style="margin-top:1.5rem"><div class="callout-ico">📸</div><div class="callout-b"><strong>Nâng cao — Đính kèm screenshot lỗi</strong><p>Playwright tự chụp screenshot khi test fail. Tìm file <code>.png</code> trong thư mục <code>test-results/</code> → kéo thả vào cửa sổ chat → gõ thêm: <em>"Đây là screenshot khi test bị lỗi. Hãy phân tích giao diện và sửa lại selector."</em></p></div></div>
+
+  <h3 style="margin-top:1.5rem">Quy tắc khi sửa test</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>✅ Nên làm</th><th>❌ Không nên làm</th></tr></thead>
+      <tbody>
+        <tr><td>Giữ nguyên tên test và mã ID (<code>DEMO_01_054</code>)</td><td>Đổi tên test hoặc ID</td></tr>
+        <tr><td>Giữ nguyên comment Steps và Expected Result</td><td>Xóa comment — đây là tài liệu nghiệp vụ</td></tr>
+        <tr><td>Chạy lại test sau mỗi lần sửa để xác nhận</td><td>Sửa nhiều test cùng lúc chưa kiểm tra</td></tr>
+        <tr><td>Paste đầy đủ thông báo lỗi vào prompt</td><td>Mô tả mơ hồ "test bị lỗi"</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============ PW03 ============ -->
+<section class="sec" id="pw03">
+  <div class="stag">Phần 4</div>
+  <h2>▶️ Record test mới bằng Playwright Codegen + AI format</h2>
+  <p>Ghi lại thao tác trực tiếp trên trình duyệt, sau đó dùng Cursor AI để chuyển đổi thành test case theo đúng chuẩn project.</p>
+
+  <h3 style="margin-top:1.25rem">Khi nào cần record test mới?</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Tình huống</th><th>Cách xử lý</th></tr></thead>
+      <tbody>
+        <tr><td>Có tính năng mới chưa có test case nào</td><td><span class="tag b">Record test mới</span></td></tr>
+        <tr><td>Test case đã có nhưng code lỗi nặng, khó sửa</td><td><span class="tag m">Có thể record lại để thay thế</span></td></tr>
+        <tr><td>Muốn thêm kịch bản ngoài những gì AI đã sinh</td><td><span class="tag b">Record test mới</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="divider"></div>
+
+  <h3 id="pw03-codegen" style="scroll-margin-top:2rem">4.1 Chạy Playwright Codegen</h3>
+  <div class="steps">
+    <div class="step"><div class="sn">1</div><div class="sc"><strong>Chuẩn bị thông tin test case</strong><p>Xác định rõ: tên chức năng, URL bắt đầu, các bước cần thực hiện, kết quả mong đợi.</p></div></div>
+    <div class="step">
+      <div class="sn">2</div>
+      <div class="sc">
+        <strong>Chạy Codegen (mở Terminal, gõ lệnh)</strong>
+        <div class="term"><div class="th"><div class="tdots"><span></span><span></span><span></span></div><div class="ttitle">Terminal tích hợp Cursor</div><button class="cbtn" onclick="copyCode(this)">Sao chép</button></div>
+        <div class="tb"><span class="cmt"># Thay URL_CAN_TEST bằng địa chỉ trang cần test</span>
+<span class="cmd">npx playwright codegen https://practice.automationtesting.in/shop/</span></div></div>
+        <p style="font-size:.85rem;margin-top:.5rem">Sau khi chạy lệnh, 2 cửa sổ mở ra: <strong>trình duyệt</strong> để thao tác + <strong>Playwright Inspector</strong> để xem code được ghi lại.</p>
+      </div>
+    </div>
+    <div class="step"><div class="sn">3</div><div class="sc"><strong>Thao tác trên trình duyệt</strong><p>Thực hiện đúng các bước của test case (click, nhập liệu…). Mỗi thao tác sẽ tự thêm một dòng code vào Inspector.</p>
+      <div class="callout warn" style="margin-top:.5rem"><div class="callout-ico">⚠️</div><div class="callout-b"><strong>Thao tác chậm và có chủ đích</strong><p>Tránh click linh tinh ngoài kịch bản — sẽ sinh code thừa, phải nhờ AI dọn sau.</p></div></div>
+    </div></div>
+    <div class="step">
+      <div class="sn">4</div>
+      <div class="sc">
+        <strong>Copy code từ Playwright Inspector</strong>
+        <p>Nhấn <strong>Copy</strong> trong cửa sổ Inspector → Tạo file mới trong Cursor (<kbd style="background:var(--cream-d);padding:2px 7px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.8rem">Ctrl+N</kbd>) → Paste → Lưu tên <code>recorded-test.ts</code>.</p>
+        <div class="term"><div class="th"><div class="tdots"><span></span><span></span><span></span></div><div class="ttitle">recorded-test.ts — ví dụ code bản thô</div></div>
+        <div class="tb"><span class="ts">test</span>(<span class="hi">'test'</span>, async ({ page }) => {
+  <span class="cmd">await</span> page.goto(<span class="hi">'https://practice.automationtesting.in/shop/'</span>);
+  <span class="cmd">await</span> page.getByRole(<span class="hi">'link'</span>, { name: <span class="hi">'Selenium Ruby'</span> }).click();
+  <span class="cmd">await</span> page.getByRole(<span class="hi">'button'</span>, { name: <span class="hi">'Add to basket'</span> }).click();
+  <span class="cmd">await</span> page.getByRole(<span class="hi">'link'</span>, { name: <span class="hi">'View Basket'</span> }).click();
+  <span class="cmd">await</span> expect(page.getByRole(<span class="hi">'cell'</span>, { name: <span class="hi">'Selenium Ruby'</span> })).toBeVisible();
+});</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <h3 id="pw03-format" style="scroll-margin-top:2rem">4.2 Dùng AI format thành test chuẩn</h3>
+  <div class="steps">
+    <div class="step"><div class="sn">1</div><div class="sc"><strong>Mở AI Chat</strong> (<kbd style="background:var(--cream-d);padding:2px 7px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.8rem">Ctrl+L</kbd> / <kbd style="background:var(--cream-d);padding:2px 7px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.8rem">Cmd+L</kbd>)</div></div>
+    <div class="step"><div class="sn">2</div><div class="sc"><strong>Thêm context</strong><p>Gõ <code>@recorded-test.ts</code> và <code>@tên-file-test-mẫu.spec.ts</code> để AI hiểu format cần theo.</p></div></div>
+    <div class="step"><div class="sn">3</div><div class="sc"><strong>Gửi prompt mẫu</strong><p>Dùng prompt bên dưới, điền thông tin test case của bạn.</p></div></div>
+    <div class="step"><div class="sn">4</div><div class="sc"><strong>Đọc lại và Apply</strong><p>Đọc code AI đề xuất → nhấn <strong>Apply</strong> → chạy kiểm tra: <code>npx playwright test tests/[tên-feature]/ --headed</code></p></div></div>
+  </div>
+
+  <div class="prompt-box">
+    <div class="prompt-label">💬 Prompt mẫu — điền thông tin rồi gửi cho AI</div>
+    <div class="prompt-text">Tôi vừa record một test mới bằng Playwright Codegen và cần bạn giúp format lại.
+
+File code đã record: @recorded-test.ts
+File test mẫu để tham khảo format: @xác_thực_và_tài_khoản.spec.ts
+
+Thông tin test case mới:
+- Mã test case: [DEMO_02_001]
+- Tên chức năng: [ví dụ: Giỏ hàng - Thêm sản phẩm thành công]
+- Priority: [high / medium / low]
+- Preconditions: [Điều kiện trước khi test]
+- Steps:
+  1. [Bước 1]
+  2. [Bước 2]
+  3. [Bước 3]
+- Expected Result: [Kết quả mong đợi]
+
+Hãy:
+1. Format lại code theo đúng format của file test mẫu
+2. Thêm comment Priority, Preconditions, Steps, Expected Result
+3. Đặt tên test theo format: 'MÃ_TEST: Mô tả ngắn'
+4. Thêm vào file .spec.ts hiện có (nếu cùng feature)</div>
+  </div>
+
+  <div class="acc">
+    <div class="acc-h" onclick="toggleAcc(this)"><span>🔧 Xử lý sự cố khi record</span><span class="acc-ico">▼</span></div>
+    <div class="acc-b">
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Triệu chứng</th><th>Cách xử lý</th></tr></thead>
+          <tbody>
+            <tr><td><code>npx playwright codegen</code> không mở browser</td><td>Chạy <code>npx playwright install chromium</code> trước</td></tr>
+            <tr><td>Code record quá dài, nhiều bước thừa</td><td>Yêu cầu AI loại bỏ các bước không cần thiết khi format</td></tr>
+            <tr><td>Test chạy được khi record nhưng fail sau format</td><td>Xem PW02 để debug selector</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PW04 ============ -->
+<section class="sec" id="pw04">
+  <div class="stag">Phần 5</div>
+  <h2>🔍 Debug test bằng Playwright UI Mode</h2>
+  <p>Playwright UI Mode cho phép <strong>xem lại từng bước test như một video</strong> — không cần đọc code, xác định bước lỗi dễ dàng qua snapshot và action log.</p>
+
+  <div class="cgrid">
+    <div class="icard"><div class="ci">🖼️</div><h3>Snapshot trình duyệt</h3><p>Ảnh chụp màn hình tại từng bước — click, fill, navigate.</p></div>
+    <div class="icard gold"><div class="ci">📋</div><h3>Action log</h3><p>Chi tiết từng hành động: selector đã dùng, giá trị đã nhập, thời gian.</p></div>
+    <div class="icard mint"><div class="ci">🌐</div><h3>Network log</h3><p>Các request HTTP được gửi trong quá trình test.</p></div>
+    <div class="icard navy"><div class="ci">🖥️</div><h3>Console log</h3><p>Thông báo lỗi JavaScript từ trình duyệt.</p></div>
+  </div>
+
+  <h3 style="margin-top:1rem">Mở Playwright UI Mode</h3>
+  <div class="term"><div class="th"><div class="tdots"><span></span><span></span><span></span></div><div class="ttitle">Terminal tích hợp Cursor</div><button class="cbtn" onclick="copyCode(this)">Sao chép</button></div>
+  <div class="tb"><span class="cmd">npx playwright test --ui</span></div></div>
+  <div class="callout info"><div class="callout-ico">ℹ️</div><div class="callout-b"><strong>Terminal sẽ bị "giữ" trong khi UI Mode đang mở</strong><p>Đây là bình thường — không cần làm gì thêm trên Terminal. Sau vài giây, cửa sổ ứng dụng Playwright UI Mode sẽ mở ra.</p></div></div>
+
+  <div class="term" style="margin-top:1rem"><div class="th"><div class="tdots"><span></span><span></span><span></span></div><div class="ttitle">Giao diện Playwright UI Mode</div></div>
+  <div class="tb"><span class="out">┌──────────────────────┬────────────────────────────────────────────┐</span>
+<span class="out">│  [▶ Run all] [Filter]│         SNAPSHOT TRÌNH DUYỆT              │</span>
+<span class="out">├──────────────────────┤    (ảnh chụp tại bước đang chọn)          │</span>
+<span class="out">│  📁 xác_thực...      ├────────────────────────────────────────────┤</span>
+<span class="ok">│    ✅ DEMO_01_054    │  ACTIONS (các bước đã thực hiện)           │</span>
+<span class="warn">│    ❌ DEMO_01_055    │  ▶ page.goto(...)               0ms        │</span>
+<span class="out">│    ⏭ DEMO_01_056    │  ▶ locator.fill(username)      120ms       │</span>
+<span class="out">│                      │  ▶ locator.fill(password)       85ms       │</span>
+<span class="out">│  📁 giỏ_hàng...      </span><span class="warn">│  ❌ expect.toBeVisible(...)    FAILED     │</span>
+<span class="ok">│    ✅ DEMO_02_001    ├────────────────────────────────────────────┤</span>
+<span class="out">│                      │  [Actions] [Network] [Console] [Source]    │</span>
+<span class="out">└──────────────────────┴────────────────────────────────────────────┘</span></div></div>
+
+  <div class="divider"></div>
+
+  <h3 id="pw04-debug" style="scroll-margin-top:2rem">Quy trình debug test lỗi — 5 bước</h3>
+  <div class="steps">
+    <div class="step"><div class="sn">1</div><div class="sc"><strong>Tìm test lỗi</strong><p>Trong danh sách bên trái, tìm test ❌ màu đỏ (failed). Click vào để chọn.</p></div></div>
+    <div class="step"><div class="sn">2</div><div class="sc"><strong>Chạy lại test đó</strong><p>Nhấn nút <strong>▶ Run</strong> bên cạnh tên test. Quan sát snapshot bên phải trong thời gian thực.</p></div></div>
+    <div class="step"><div class="sn">3</div><div class="sc"><strong>Xem từng bước trong Actions</strong><p>Click vào từng dòng action để xem snapshot tương ứng. Dòng ❌ đỏ = bước bị lỗi.</p></div></div>
+    <div class="step">
+      <div class="sn">4</div>
+      <div class="sc">
+        <strong>Đọc và ghi lại thông báo lỗi</strong>
+        <div class="term" style="margin-top:.5rem"><div class="th"><div class="tdots"><span></span><span></span><span></span></div><div class="ttitle">Ví dụ thông báo lỗi</div></div>
+        <div class="tb"><span class="warn">Error: Locator not found</span>
+<span class="out">  selector: getByRole('button', { name: 'Login' })</span>
+<span class="out">  timeout: 60000ms exceeded</span></div></div>
+        <p style="font-size:.85rem;margin-top:.5rem">Ghi lại thông báo này → dùng khi nhờ AI sửa (xem PW02).</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="sn">5</div>
+      <div class="sc">
+        <strong>Kiểm tra thêm nếu cần</strong>
+        <div class="tbl-wrap" style="margin-top:.5rem">
+          <table>
+            <thead><tr><th>Tab</th><th>Khi nào xem</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Network</strong></td><td>Nghi ngờ điều hướng sai trang hoặc API lỗi</td></tr>
+              <tr><td><strong>Console</strong></td><td>Trang có lỗi JavaScript ảnh hưởng đến test</td></tr>
+              <tr><td><strong>Source</strong></td><td>Xem đúng dòng code đang thực thi và dòng bị lỗi</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:1.5rem">Tính năng hữu ích</h3>
+  <div class="cgrid">
+    <div class="card" style="padding:1.2rem"><strong style="color:var(--navy)">👁 Watch Mode</strong><p style="font-size:.85rem;margin-top:.4rem">Nhấn biểu tượng 👁 Watch ở góc trên. Khi AI sửa code và lưu file, Playwright <strong>tự chạy lại</strong> — không cần gõ lệnh thủ công.</p></div>
+    <div class="card" style="padding:1.2rem"><strong style="color:var(--navy)">🔍 Lọc test nhanh</strong><p style="font-size:.85rem;margin-top:.4rem">Gõ <code>DEMO_01</code> để lọc nhóm test, hoặc gõ từ khóa tên chức năng trong ô tìm kiếm phía trên.</p></div>
+  </div>
+
+  <h3 style="margin-top:1rem">So sánh các cách chạy test</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Cách chạy</th><th>Lệnh</th><th>Khi nào dùng</th></tr></thead>
+      <tbody>
+        <tr><td>Chạy nhanh toàn bộ</td><td><code>npm test</code></td><td>Kiểm tra nhanh tất cả, xem tổng kết</td></tr>
+        <tr><td>Chạy có hiển thị browser</td><td><code>npx playwright test --headed</code></td><td>Quan sát test làm gì trong thời gian thực</td></tr>
+        <tr><td><strong>UI Mode (debug)</strong></td><td><code>npx playwright test --ui</code></td><td><strong>Debug lỗi, xem chi tiết từng bước</strong></td></tr>
+        <tr><td>Chạy 1 nhóm cụ thể</td><td><code>npx playwright test tests/tên-feature/</code></td><td>Kiểm tra nhanh 1 nhóm chức năng</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="margin-top:1.5rem">Quy trình đề xuất khi có test lỗi</h3>
+  <div class="flow-box">
+    <div class="flow-step"><div class="flow-node">1. npx playwright test --ui</div><div class="flow-arr">→</div><div class="flow-node">2. Tìm test ❌ đỏ</div><div class="flow-arr">→</div><div class="flow-node">3. Chạy lại, xem snapshot</div></div>
+    <div class="flow-step"><div class="flow-node">4. Xác định action ❌ → đọc lỗi</div><div class="flow-arr">→</div><div class="flow-node">5. Mở Cursor AI → nhờ AI sửa (PW02)</div></div>
+    <div class="flow-step"><div class="flow-node">6. Lưu file → Watch Mode tự chạy lại</div><div class="flow-arr">→</div><div class="flow-node ok">7. Kiểm tra đã ✅ pass chưa</div></div>
+  </div>
+
+  <div class="acc">
+    <div class="acc-h" onclick="toggleAcc(this)"><span>🔧 Xử lý sự cố UI Mode</span><span class="acc-ico">▼</span></div>
+    <div class="acc-b">
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Triệu chứng</th><th>Cách xử lý</th></tr></thead>
+          <tbody>
+            <tr><td>Cửa sổ UI Mode không mở</td><td>Kiểm tra đã chạy <code>npm install</code> chưa; thử lại lệnh</td></tr>
+            <tr><td>UI Mode mở nhưng không có test nào</td><td>Kiểm tra đang đứng đúng thư mục project trong Terminal</td></tr>
+            <tr><td>Snapshot không hiển thị (màn hình trắng)</td><td>Click lại vào action trong danh sách để reload</td></tr>
+            <tr><td>UI Mode bị treo khi chạy test</td><td>Nhấn <strong>Stop</strong> (ô vuông) → chạy lại; kiểm tra file <code>.env</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PW05 ============ -->
+<section class="sec" id="pw05">
+  <div class="stag">Phần 6</div>
+  <h2>🎯 Chiến lược xác định Locator trong Playwright</h2>
+  <p>Locator là bộ chỉ dẫn để Playwright <strong>tìm và tương tác</strong> với một phần tử trên trang web. Chọn locator đúng là cốt lõi để test không bị gãy khi giao diện thay đổi.</p>
+
+  <div class="diag" style="text-align:center;padding:1.25rem">
+    <p style="font-size:1rem;margin-bottom:.25rem;color:var(--navy)"><strong>Công thức vàng của mọi bước test tự động</strong></p>
+    <div style="display:flex;align-items:center;justify-content:center;gap:1.5rem;flex-wrap:wrap;margin-top:.75rem">
+      <div style="background:var(--navy);color:#fff;padding:10px 24px;border-radius:10px;font-family:'JetBrains Mono',monospace;font-size:.9rem;font-weight:600">TÌM KIẾM (Find)</div>
+      <div style="font-size:1.5rem;color:var(--coral)">+</div>
+      <div style="background:var(--mint);color:#fff;padding:10px 24px;border-radius:10px;font-family:'JetBrains Mono',monospace;font-size:.9rem;font-weight:600">HÀNH ĐỘNG (Act)</div>
+      <div style="font-size:1.5rem;color:var(--coral)">=</div>
+      <div style="background:var(--coral);color:#fff;padding:10px 24px;border-radius:10px;font-family:'JetBrains Mono',monospace;font-size:.9rem;font-weight:600">MỌI BƯỚC TEST</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <h3 id="pw05-pyramid" style="scroll-margin-top:2rem">6.1 Kim tự tháp ưu tiên Locator (9 cấp)</h3>
+  <p>Chọn locator từ <strong>trên xuống dưới</strong>. Chỉ xuống cấp khi cấp trên không áp dụng được.</p>
+  <div class="pyramid">
+<span class="py1">① getByRole()        ← Ưu tiên cao nhất — Tiêu chuẩn vàng</span>
+<span class="py1">② getByLabel()       ← Dành cho phần tử form</span>
+<span class="py2">③ getByPlaceholder() ← Khi không có label</span>
+<span class="py2">④ getByText()        ← Theo văn bản hiển thị</span>
+<span class="py2">⑤ getByAltText()    ← Tìm hình ảnh</span>
+<span class="py2">⑥ getByTitle()      ← Tìm qua tooltip</span>
+<span class="py3">⑦ getByTestId()     ← Cần dev bổ sung data-testid</span>
+<span class="py3">⑧ CSS Selector      ← Phương án dự phòng</span>
+<span class="py4">⑨ XPath             ← Phương án cuối cùng</span>
+  </div>
+
+  <div class="divider"></div>
+
+  <h3 id="pw05-user" style="scroll-margin-top:2rem">6.2 Nhóm 1 — Locator hướng tới người dùng</h3>
+
+  <h3 style="font-size:1rem;margin-top:1rem">① getByRole() — Tiêu chuẩn vàng</h3>
+  <p>Tìm phần tử theo <strong>vai trò ngữ nghĩa</strong> — giống cách người dùng và trình đọc màn hình nhận diện. Bền vững nhất, không phụ thuộc class/id.</p>
+  <div class="term"><div class="th"><div class="tdots"><span></span><span></span><span></span></div><div class="ttitle">TypeScript</div></div>
+  <div class="tb"><span class="cmd">page</span>.getByRole(<span class="hi">'button'</span>, { name: <span class="hi">'Đăng nhập'</span> })
+<span class="cmd">page</span>.getByRole(<span class="hi">'textbox'</span>, { name: <span class="hi">'Email'</span> })
+<span class="cmd">page</span>.getByRole(<span class="hi">'heading'</span>, { level: 1 })
+<span class="cmd">page</span>.getByRole(<span class="hi">'link'</span>, { name: <span class="hi">'Xem sản phẩm'</span> })
+<span class="cmd">page</span>.getByRole(<span class="hi">'checkbox'</span>)
+<span class="cmd">page</span>.getByRole(<span class="hi">'combobox'</span>)  <span class="cmt">// select dropdown</span></div></div>
+
+  <div class="acc">
+    <div class="acc-h" onclick="toggleAcc(this)"><span>📋 Bảng tra cứu vai trò phổ biến</span><span class="acc-ico">▼</span></div>
+    <div class="acc-b">
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Thẻ HTML</th><th>Vai trò (Role)</th></tr></thead>
+          <tbody>
+            <tr><td><code>&lt;button&gt;</code>, <code>&lt;input type="submit"&gt;</code></td><td><code>button</code></td></tr>
+            <tr><td><code>&lt;a href="..."&gt;</code></td><td><code>link</code></td></tr>
+            <tr><td><code>&lt;input type="text"&gt;</code>, <code>&lt;textarea&gt;</code></td><td><code>textbox</code></td></tr>
+            <tr><td><code>&lt;input type="checkbox"&gt;</code></td><td><code>checkbox</code></td></tr>
+            <tr><td><code>&lt;input type="radio"&gt;</code></td><td><code>radio</code></td></tr>
+            <tr><td><code>&lt;select&gt;</code></td><td><code>combobox</code></td></tr>
+            <tr><td><code>&lt;h1&gt;</code> – <code>&lt;h6&gt;</code></td><td><code>heading</code></td></tr>
+            <tr><td><code>&lt;nav&gt;</code></td><td><code>navigation</code></td></tr>
+            <tr><td><code>&lt;img alt="..."&gt;</code></td><td><code>img</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="font-size:1rem;margin-top:1.25rem">② getByLabel() — Dành cho phần tử form</h3>
+  <div class="term"><div class="th"><div class="tdots"><span></span><span></span><span></span></div><div class="ttitle">TypeScript</div></div>
+  <div class="tb"><span class="cmd">await</span> page.getByLabel(<span class="hi">'Địa chỉ email:'</span>).fill(<span class="hi">'test@example.com'</span>);
+<span class="cmd">await</span> page.getByLabel(<span class="hi">'Mật khẩu'</span>).fill(<span class="hi">'123456'</span>);</div></div>
+
+  <h3 style="font-size:1rem;margin-top:1.25rem">③ getByPlaceholder() &nbsp;|&nbsp; ④ getByText() &nbsp;|&nbsp; ⑤ getByAltText()</h3>
+  <div class="term"><div class="th"><div class="tdots"><span></span><span></span><span></span></div><div class="ttitle">TypeScript</div></div>
+  <div class="tb"><span class="cmt">// ③ getByPlaceholder — khi không có label</span>
+<span class="cmd">await</span> page.getByPlaceholder(<span class="hi">'Tìm kiếm sản phẩm...'</span>).fill(<span class="hi">'iPhone 15'</span>);
+
+<span class="cmt">// ④ getByText — kiểm tra thông báo, nhãn tĩnh</span>
+<span class="cmd">await</span> expect(page.getByText(<span class="hi">'Tên đăng nhập hoặc mật khẩu không đúng.'</span>)).toBeVisible();
+
+<span class="cmt">// ⑤ getByAltText — tìm hình ảnh</span>
+<span class="cmd">await</span> expect(page.getByAltText(<span class="hi">'Logo cửa hàng'</span>)).toBeVisible();</div></div>
+  <div class="callout warn"><div class="callout-ico">⚠️</div><div class="callout-b"><strong>getByText() dễ bị lỗi khi nội dung thay đổi</strong><p>Dùng <code>{ exact: true }</code> để tăng độ chính xác. Tránh dùng cho các đoạn text dài hoặc có thể bị dịch sang ngôn ngữ khác.</p></div></div>
+
+  <div class="divider"></div>
+
+  <h3 id="pw05-tech" style="scroll-margin-top:2rem">6.3 Nhóm 2 — Locator kỹ thuật (Phương án dự phòng)</h3>
+
+  <h3 style="font-size:1rem;margin-top:1rem">⑧ CSS Selector</h3>
+  <div class="term"><div class="th"><div class="tdots"><span></span><span></span><span></span></div><div class="ttitle">TypeScript — CSS Selector</div></div>
+  <div class="tb"><span class="cmd">page</span>.locator(<span class="hi">'#login-button'</span>)                         <span class="cmt">// Theo ID — bền vững nhất</span>
+<span class="cmd">page</span>.locator(<span class="hi">'.error-message'</span>)                       <span class="cmt">// Theo class</span>
+<span class="cmd">page</span>.locator(<span class="hi">"input[name='email']"</span>)                 <span class="cmt">// Theo thuộc tính</span>
+<span class="cmd">page</span>.locator(<span class="hi">"button.btn-primary[type='submit']"</span>)   <span class="cmt">// Kết hợp</span>
+<span class="cmd">page</span>.locator(<span class="hi">"[id^='user-']"</span>)                         <span class="cmt">// ID bắt đầu bằng 'user-'</span>
+<span class="cmd">page</span>.locator(<span class="hi">"[id*='-profile-']"</span>)                     <span class="cmt">// ID chứa '-profile-'</span></div></div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Quy tắc viết CSS bền vững</th><th>Ví dụ</th></tr></thead>
+      <tbody>
+        <tr><td>✅ Ưu tiên ID và <code>data-testid</code></td><td><code>#user-btn</code>, <code>[data-testid="save-btn"]</code></td></tr>
+        <tr><td>❌ Tránh selector dài nhiều cấp</td><td><code>div &gt; div &gt; section &gt; button</code></td></tr>
+        <tr><td>✅ Dùng "mỏ neo" (anchor)</td><td><code>[data-username='bob'] button.delete-btn</code></td></tr>
+        <tr><td>❌ Tránh class tự động sinh</td><td><code>.button-a1B2c_root</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="font-size:1rem;margin-top:1.25rem">⑨ XPath — Vũ khí cuối cùng</h3>
+  <p>XPath có thể di chuyển <strong>lên (cha), xuống (con), và ngang (anh em)</strong> trong cây DOM — điều CSS không làm được. Chỉ dùng khi tất cả cách khác đã thất bại.</p>
+  <div class="term"><div class="th"><div class="tdots"><span></span><span></span><span></span></div><div class="ttitle">TypeScript — XPath</div></div>
+  <div class="tb"><span class="cmd">page</span>.locator(<span class="hi">"//button[text()='Đăng nhập']"</span>)
+<span class="cmd">page</span>.locator(<span class="hi">"//div[contains(@class, 'error-message')]"</span>)
+<span class="cmd">page</span>.locator(<span class="hi">"//label[text()='Email']/following-sibling::input"</span>)
+<span class="cmd">page</span>.locator(<span class="hi">"//span[text()='Alice']/parent::div"</span>)</div></div>
+
+  <div class="acc">
+    <div class="acc-h" onclick="toggleAcc(this)"><span>📋 Bảng tra cứu trục XPath</span><span class="acc-ico">▼</span></div>
+    <div class="acc-b">
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Trục XPath</th><th>Ý nghĩa</th><th>Ví dụ</th></tr></thead>
+          <tbody>
+            <tr><td><code>parent::</code> hoặc <code>..</code></td><td>Lên phần tử cha</td><td><code>//span[text()='Alice']/parent::div</code></td></tr>
+            <tr><td><code>following-sibling::</code></td><td>Anh em đứng sau</td><td><code>//label[text()='Email']/following-sibling::input</code></td></tr>
+            <tr><td><code>preceding-sibling::</code></td><td>Anh em đứng trước</td><td><code>//label[text()='Điều khoản']/preceding-sibling::input</code></td></tr>
+            <tr><td><code>ancestor::</code></td><td>Tổ tiên bất kỳ cấp</td><td><code>//button[text()='Gửi']/ancestor::form</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="callout danger"><div class="callout-ico">🚨</div><div class="callout-b"><strong>KHÔNG dùng Absolute XPath</strong><p><code>/html/body/div[1]/div[2]/button[3]</code> — chỉ cần dev thêm một thẻ div, toàn bộ đường dẫn sẽ sai.</p></div></div>
+
+  <div class="divider"></div>
+
+  <h3 id="pw05-filter" style="scroll-margin-top:2rem">6.4 Nối chuỗi (Chaining) &amp; Lọc (.filter())</h3>
+
+  <h3 style="font-size:1rem;margin-top:1rem">Chaining — Nối chuỗi locator</h3>
+  <div class="term"><div class="th"><div class="tdots"><span></span><span></span><span></span></div><div class="ttitle">TypeScript</div></div>
+  <div class="tb"><span class="cmt">// ❌ Một chuỗi dài — khó đọc</span>
+<span class="cmd">page</span>.locator(<span class="hi">"div[data-username='bob'] button.delete-btn"</span>);
+
+<span class="cmt">// ✅ Nối chuỗi — dễ hiểu và tái sử dụng</span>
+<span class="ts">const</span> bobRow = <span class="cmd">page</span>.locator(<span class="hi">"div[data-username='bob']"</span>);
+<span class="ts">const</span> deleteBtn = bobRow.getByRole(<span class="hi">'button'</span>, { name: <span class="hi">'Xóa'</span> });
+<span class="cmd">await</span> deleteBtn.click();
+<span class="cmt">// Tái sử dụng bobRow</span>
+<span class="ts">const</span> bobName = bobRow.locator(<span class="hi">'span'</span>);</div></div>
+
+  <h3 style="font-size:1rem;margin-top:1.25rem">.filter() — Lọc trong danh sách</h3>
+  <div class="term"><div class="th"><div class="tdots"><span></span><span></span><span></span></div><div class="ttitle">TypeScript</div></div>
+  <div class="tb"><span class="cmt">// Bước 1: Chọn toàn bộ nhóm</span>
+<span class="ts">const</span> listItems = <span class="cmd">page</span>.getByRole(<span class="hi">'listitem'</span>);
+<span class="cmt">// Bước 2: Lọc ra mục chứa text 'Bob'</span>
+<span class="ts">const</span> bobItem = listItems.filter({ hasText: <span class="hi">'Bob'</span> });
+<span class="cmt">// Bước 3: Tương tác với phần tử bên trong</span>
+<span class="cmd">await</span> bobItem.getByRole(<span class="hi">'button'</span>, { name: <span class="hi">'Chỉnh sửa'</span> }).click();</div></div>
+
+  <div class="divider"></div>
+
+  <h3>6.5 Sơ đồ ra quyết định chọn Locator</h3>
+  <div class="flow-box">
+    <div class="flow-step"><div class="flow-node">① Thử getByRole()</div><div class="flow-arr">→ Hoạt động?</div><div class="flow-node ok">Dừng, dùng ngay ✅</div></div>
+    <div class="flow-step"><div class="flow-node">② Là phần tử form?</div><div class="flow-arr">→ Có label?</div><div class="flow-node">getByLabel()</div><div class="flow-arr">·</div><div class="flow-node">Không? → getByPlaceholder()</div></div>
+    <div class="flow-step"><div class="flow-node">③ Có văn bản duy nhất?</div><div class="flow-arr">→</div><div class="flow-node ok">getByText() ✅</div></div>
+    <div class="flow-step"><div class="flow-node">④ Là hình ảnh / có tooltip?</div><div class="flow-arr">→</div><div class="flow-node ok">getByAltText() / getByTitle() ✅</div></div>
+    <div class="flow-step"><div class="flow-node warn">⑤ CSS Selector (ID → data-testid → attr → class)</div></div>
+    <div class="flow-step"><div class="flow-node warn">⑥ XPath (khi cần đi ngược hoặc ngang trong DOM)</div></div>
+  </div>
+
+  <h3 style="margin-top:1.5rem">So sánh nhanh các loại Locator</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Locator</th><th>Độ bền vững</th><th>Độ dễ đọc</th><th>Khi nào dùng</th></tr></thead>
+      <tbody>
+        <tr><td><code>getByRole()</code></td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td><td>Luôn thử trước tiên</td></tr>
+        <tr><td><code>getByLabel()</code></td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td><td>Form input có label</td></tr>
+        <tr><td><code>getByPlaceholder()</code></td><td>⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td><td>Input không có label</td></tr>
+        <tr><td><code>getByText()</code></td><td>⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td><td>Thông báo, nhãn tĩnh</td></tr>
+        <tr><td>CSS Selector</td><td>⭐⭐</td><td>⭐⭐⭐</td><td>Trang không có ngữ nghĩa, legacy code</td></tr>
+        <tr><td>XPath</td><td>⭐</td><td>⭐⭐</td><td>DOM phức tạp, cần đi ngược/ngang cây</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="acc">
+    <div class="acc-h" onclick="toggleAcc(this)"><span>🔧 Xử lý sự cố thường gặp</span><span class="acc-ico">▼</span></div>
+    <div class="acc-b">
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Triệu chứng</th><th>Cách xử lý</th></tr></thead>
+          <tbody>
+            <tr><td><code>getByRole('button')</code> tìm thấy nhiều nút</td><td>Thêm <code>{ name: '...' }</code> để lọc theo tên hiển thị</td></tr>
+            <tr><td>Locator tìm được nhưng test vẫn lỗi</td><td>Kiểm tra phần tử bị ẩn, disabled, hoặc chưa load xong</td></tr>
+            <tr><td>CSS Selector bị gãy sau khi dev deploy</td><td>Đang dùng class tự động sinh — đổi sang <code>data-testid</code> hoặc ID</td></tr>
+            <tr><td>XPath lỗi khi layout thay đổi</td><td>Đang dùng Absolute XPath — chuyển sang XPath tương đối (<code>//</code>)</td></tr>
+            <tr><td>Không tìm được phần tử nào</td><td>Mở DevTools → tab <strong>Accessibility</strong> → kiểm tra đúng role và tên</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:3rem"></div>
+</section>
+
+</main>
+
+<script>
+// Copy button
+function copyCode(btn) {
+  const tb = btn.closest('.term').querySelector('.tb');
+  const text = [...tb.childNodes]
+    .filter(n => n.nodeType === 3 || (n.nodeType === 1 && !n.classList.contains('cmt')))
+    .map(n => n.textContent.trim())
+    .filter(t => t)
+    .join('\n');
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '✓ Đã sao chép';
+    btn.classList.add('done');
+    setTimeout(() => { btn.textContent = 'Sao chép'; btn.classList.remove('done'); }, 2000);
+  });
+}
+
+// Accordion
+function toggleAcc(header) {
+  header.closest('.acc').classList.toggle('open');
+}
+
+// Progress bar
+window.addEventListener('scroll', () => {
+  const doc = document.documentElement;
+  const pct = (doc.scrollTop / (doc.scrollHeight - doc.clientHeight)) * 100;
+  document.getElementById('pbar').style.width = pct + '%';
+});
+
+// Active nav tracking
+const sections = document.querySelectorAll('.sec, [id]');
+const navItems = document.querySelectorAll('.ni');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const id = e.target.id;
+      navItems.forEach(ni => {
+        ni.classList.toggle('active', ni.getAttribute('href') === '#' + id);
+      });
+    }
+  });
+}, { rootMargin: '-15% 0px -75% 0px' });
+
+document.querySelectorAll('[id]').forEach(s => { if (s.id) observer.observe(s); });
+
+// Scroll reveal
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); });
+}, { threshold: 0.06 });
+
+document.querySelectorAll('.icard, .card, .callout, .flow-box, .diag, .tbl-wrap, .prompt-box, .pyramid').forEach(el => {
+  el.classList.add('reveal');
+  revealObserver.observe(el);
+});
+
+// Close mobile menu on nav click
+document.querySelectorAll('.ni').forEach(ni => {
+  ni.addEventListener('click', () => document.getElementById('sb').classList.remove('open'));
+});
+</script>
+</body>
+</html>

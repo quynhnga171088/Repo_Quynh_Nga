@@ -1,0 +1,48 @@
+{
+  "Kinh nghiệm phỏng vấn ứng viên (Comtor, BrSE JP)": {
+    "subdirs": [],
+    "files": 3
+  },
+  "Kinh nghiệm PM": {
+    "subdirs": [],
+    "files": 15
+  },
+  "Kinh nghiệm test": {
+    "subdirs": [],
+    "files": 2
+  },
+  "Kinh nghiệm đào tạo": {
+    "subdirs": [
+      "Đào tạo BrSE noncode",
+      "Đào tạo IT Comtor"
+    ],
+    "files": 12
+  },
+  "Kỹ năng": {
+    "subdirs": [],
+    "files": 5
+  },
+  "Trợ lý dự án BrSE": {
+    "subdirs": [
+      "Project 1-BrSE Foundation",
+      "Xây dựng Website LMS"
+    ],
+    "files": 92
+  },
+  "Udemy": {
+    "subdirs": [
+      "15-8-2025-Ứng dụng AI trong xử lý nhanh tài liệu dịch",
+      "Udemy - 4-30 - IT Comtor Lý thuyết Nghề",
+      "Udemy - 7-31 - Kỹ thuật và thưc hành dịch cho IT Comtor, BrSE",
+      "Udemy - 8-29 Kỹ thuật viết mail",
+      "Udemy - N1 Course"
+    ],
+    "files": 109
+  },
+  "Đào tạo IT Comtor": {
+    "subdirs": [
+      "Tài liệu"
+    ],
+    "files": 16
+  }
+}

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bold — Design Preview</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+* { font-family: 'Plus Jakarta Sans', sans-serif; }
+:root {
+  --primary: #6D28D9;
+  --surface: #F5F3FF;
+  --accent: #F59E0B;
+  --border: #E5E7EB;
+  --text: #111827;
+  --muted: #6B7280;
+  --sidebar: #1E1B4B;
+}
+</style>
+</head>
+<body style="background:#F9FAFB;color:var(--text)" class="flex h-screen overflow-hidden">
+
+<aside style="width:232px;background:var(--sidebar);display:flex;flex-direction:column;flex-shrink:0">
+  <div style="padding:22px 24px;border-bottom:1px solid rgba(255,255,255,.08)">
+    <div style="font-size:15px;font-weight:800;color:#fff;letter-spacing:-.02em">Acme Inc.</div>
+    <div style="font-size:11px;color:rgba(255,255,255,.4);margin-top:2px;font-weight:500">Product Suite</div>
+  </div>
+  <nav style="padding:10px 12px;flex:1">
+    <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,.3);letter-spacing:.1em;padding:12px 8px 6px;text-transform:uppercase">Menu</div>
+    <a href="#" style="display:flex;align-items:center;gap:10px;padding:9px 12px;font-size:13px;font-weight:700;color:#fff;background:var(--primary);border-radius:8px;margin-bottom:2px;text-decoration:none">Dashboard</a>
+    <a href="#" style="display:flex;align-items:center;gap:10px;padding:9px 12px;font-size:13px;font-weight:500;color:rgba(255,255,255,.5);border-radius:8px;margin-bottom:2px;text-decoration:none">Projects</a>
+    <a href="#" style="display:flex;align-items:center;gap:10px;padding:9px 12px;font-size:13px;font-weight:500;color:rgba(255,255,255,.5);border-radius:8px;margin-bottom:2px;text-decoration:none">Tasks</a>
+    <a href="#" style="display:flex;align-items:center;gap:10px;padding:9px 12px;font-size:13px;font-weight:500;color:rgba(255,255,255,.5);border-radius:8px;margin-bottom:2px;text-decoration:none">Team</a>
+    <a href="#" style="display:flex;align-items:center;gap:10px;padding:9px 12px;font-size:13px;font-weight:500;color:rgba(255,255,255,.5);border-radius:8px;text-decoration:none">Reports</a>
+  </nav>
+  <div style="padding:12px;border-top:1px solid rgba(255,255,255,.08)">
+    <div style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;background:rgba(255,255,255,.06)">
+      <div style="width:30px;height:30px;border-radius:8px;background:var(--primary);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center">H</div>
+      <div><div style="font-size:13px;font-weight:600;color:#fff">HaiND</div><div style="font-size:11px;color:rgba(255,255,255,.4)">Admin</div></div>
+    </div>
+  </div>
+</aside>
+
+<div style="flex:1;display:flex;flex-direction:column;overflow:hidden">
+  <header style="height:56px;border-bottom:1px solid var(--border);padding:0 32px;display:flex;align-items:center;justify-content:space-between;background:#fff;flex-shrink:0">
+    <div style="font-size:15px;font-weight:800;letter-spacing:-.02em">Dashboard</div>
+    <div style="display:flex;gap:8px">
+      <button style="font-size:12px;font-weight:600;padding:7px 16px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--muted);cursor:pointer">Export</button>
+      <button style="font-size:12px;font-weight:700;padding:7px 16px;background:var(--primary);color:#fff;border-radius:8px;border:none;cursor:pointer;box-shadow:0 4px 12px rgba(109,40,217,.3)">New Project</button>
+    </div>
+  </header>
+  <main style="flex:1;overflow:auto;padding:28px 32px;background:#F9FAFB">
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px">
+      <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px">
+        <div style="font-size:11px;font-weight:600;color:var(--muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em">Projects</div>
+        <div style="font-size:32px;font-weight:800;letter-spacing:-.03em;line-height:1">24</div>
+        <div style="font-size:12px;color:#16A34A;margin-top:8px;font-weight:600">↑ 4 this month</div>
+      </div>
+      <div style="background:var(--primary);border-radius:12px;padding:20px">
+        <div style="font-size:11px;font-weight:600;color:rgba(255,255,255,.6);margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em">Active Tasks</div>
+        <div style="font-size:32px;font-weight:800;color:#fff;letter-spacing:-.03em;line-height:1">142</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.6);margin-top:8px;font-weight:500">across 8 projects</div>
+      </div>
+      <div style="background:var(--accent);border-radius:12px;padding:20px">
+        <div style="font-size:11px;font-weight:600;color:rgba(30,27,75,.5);margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em">Team</div>
+        <div style="font-size:32px;font-weight:800;color:var(--sidebar);letter-spacing:-.03em;line-height:1">18</div>
+        <div style="font-size:12px;color:rgba(30,27,75,.5);margin-top:8px;font-weight:500">3 pending invite</div>
+      </div>
+      <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px">
+        <div style="font-size:11px;font-weight:600;color:var(--muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em">Completion</div>
+        <div style="font-size:32px;font-weight:800;letter-spacing:-.03em;line-height:1">87%</div>
+        <div style="font-size:12px;color:#16A34A;margin-top:8px;font-weight:600">↑ 12% improvement</div>
+      </div>
+    </div>
+    <div style="background:#fff;border:1px solid var(--border);border-radius:12px;margin-bottom:20px;overflow:hidden">
+      <div style="padding:16px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:14px;font-weight:700">Recent Projects</span>
+        <a href="#" style="font-size:12px;font-weight:600;color:var(--primary);text-decoration:none">View all →</a>
+      </div>
+      <table style="width:100%;border-collapse:collapse;font-size:13px">
+        <thead><tr style="background:#FAFAFA;border-bottom:1px solid var(--border)">
+          <th style="text-align:left;padding:10px 24px;font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.07em;text-transform:uppercase">Project</th>
+          <th style="text-align:left;padding:10px 24px;font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.07em;text-transform:uppercase">Status</th>
+          <th style="text-align:left;padding:10px 24px;font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.07em;text-transform:uppercase">Progress</th>
+          <th style="text-align:left;padding:10px 24px;font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.07em;text-transform:uppercase">Due</th>
+        </tr></thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--border)">
+            <td style="padding:14px 24px;font-weight:600">E-commerce Redesign</td>
+            <td style="padding:14px 24px"><span style="font-size:11px;font-weight:700;background:#EDE9FE;color:var(--primary);padding:3px 10px;border-radius:20px">Active</span></td>
+            <td style="padding:14px 24px"><div style="width:100px;height:6px;background:var(--surface);border-radius:3px;overflow:hidden"><div style="width:75%;height:100%;background:var(--primary);border-radius:3px"></div></div></td>
+            <td style="padding:14px 24px;font-size:12px;color:var(--muted);font-weight:500">Jun 15</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border)">
+            <td style="padding:14px 24px;font-weight:600">Mobile App v2</td>
+            <td style="padding:14px 24px"><span style="font-size:11px;font-weight:700;background:#FEF9C3;color:#A16207;padding:3px 10px;border-radius:20px">In Review</span></td>
+            <td style="padding:14px 24px"><div style="width:100px;height:6px;background:var(--surface);border-radius:3px;overflow:hidden"><div style="width:50%;height:100%;background:var(--accent);border-radius:3px"></div></div></td>
+            <td style="padding:14px 24px;font-size:12px;color:var(--muted);font-weight:500">Jul 1</td>
+          </tr>
+          <tr>
+            <td style="padding:14px 24px;font-weight:600">API Integration</td>
+            <td style="padding:14px 24px"><span style="font-size:11px;font-weight:600;background:#F3F4F6;color:var(--muted);padding:3px 10px;border-radius:20px">Draft</span></td>
+            <td style="padding:14px 24px"><div style="width:100px;height:6px;background:var(--surface);border-radius:3px;overflow:hidden"><div style="width:20%;height:100%;background:#D1D5DB;border-radius:3px"></div></div></td>
+            <td style="padding:14px 24px;font-size:12px;color:var(--muted);font-weight:500">Aug 20</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px">
+        <div style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.07em;text-transform:uppercase;margin-bottom:14px">Buttons</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          <button style="font-size:12px;font-weight:700;padding:8px 18px;background:var(--primary);color:#fff;border:none;border-radius:8px;cursor:pointer;box-shadow:0 4px 12px rgba(109,40,217,.25)">Primary</button>
+          <button style="font-size:12px;font-weight:700;padding:8px 18px;background:var(--surface);color:var(--primary);border:none;border-radius:8px;cursor:pointer">Secondary</button>
+          <button style="font-size:12px;font-weight:600;padding:8px 18px;background:#fff;color:var(--muted);border:1px solid var(--border);border-radius:8px;cursor:pointer">Ghost</button>
+          <button style="font-size:12px;font-weight:700;padding:8px 18px;background:#FEF2F2;color:#DC2626;border:none;border-radius:8px;cursor:pointer">Danger</button>
+        </div>
+      </div>
+      <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px">
+        <div style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.07em;text-transform:uppercase;margin-bottom:14px">Input</div>
+        <label style="display:block;font-size:12px;font-weight:600;margin-bottom:6px">Project name</label>
+        <input type="text" placeholder="Enter project name…" style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:9px 14px;font-size:13px;outline:none;font-family:inherit;box-sizing:border-box">
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

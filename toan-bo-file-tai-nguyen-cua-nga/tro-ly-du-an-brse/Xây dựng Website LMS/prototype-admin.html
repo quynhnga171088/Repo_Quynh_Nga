@@ -1,0 +1,1514 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduPro — Admin/Teacher LMS</title>
+  <style>
+    :root {
+      --blue: #0056D2; --blue-dk: #003DA6; --blue-lt: #E8F0FE;
+      --red: #DC2626;  --red-lt: #FEE2E2;
+      --green: #16A34A; --green-lt: #DCFCE7;
+      --amber: #D97706; --amber-lt: #FEF3C7;
+      --purple: #7C3AED; --purple-lt: #EDE9FE;
+      --text: #111827; --muted: #6B7280;
+      --bg: #F1F5F9; --card: #FFFFFF;
+      --border: #E5E7EB;
+      --sidebar-bg: #0F172A; --sidebar-txt: rgba(255,255,255,.72);
+      --sidebar-act: #0056D2; --sidebar-hover: rgba(255,255,255,.07);
+      --r: 8px; --rl: 12px;
+      --sh: 0 1px 3px rgba(0,0,0,.07), 0 4px 12px rgba(0,0,0,.04);
+      --sh-md: 0 4px 20px rgba(0,0,0,.1);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; }
+
+    /* ── SCREEN MANAGER ── */
+    .screen { display: none; }
+    .screen.on { display: block; }
+    #s-login.on { display: flex; }
+
+    /* ── ADMIN SHELL ── */
+    .shell { display: grid; grid-template-columns: 240px 1fr; grid-template-rows: 56px 1fr; min-height: 100vh; }
+    .sidebar { grid-row: 1 / 3; background: var(--sidebar-bg); color: #fff; display: flex; flex-direction: column; overflow-y: auto; }
+    .topbar { background: var(--card); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 28px; gap: 16px; box-shadow: 0 1px 4px rgba(0,0,0,.06); }
+    .content { padding: 28px; overflow-y: auto; }
+
+    /* ── SIDEBAR ── */
+    .sb-logo { padding: 18px 20px 14px; font-size: 20px; font-weight: 900; color: #fff; border-bottom: 1px solid rgba(255,255,255,.08); flex-shrink: 0; }
+    .sb-logo b { color: var(--red); }
+    .sb-logo small { display: block; font-size: 11px; font-weight: 400; opacity: .5; margin-top: 2px; letter-spacing: .5px; text-transform: uppercase; }
+    .sb-section { padding: 16px 12px 6px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,.3); }
+    .sb-link { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: var(--r); margin: 1px 8px; color: var(--sidebar-txt); cursor: pointer; font-size: 13.5px; font-weight: 500; transition: .15s; text-decoration: none; }
+    .sb-link:hover { background: var(--sidebar-hover); color: #fff; }
+    .sb-link.act { background: var(--sidebar-act); color: #fff; font-weight: 700; }
+    .sb-link .ico { font-size: 16px; width: 20px; text-align: center; flex-shrink: 0; }
+    .sb-badge { margin-left: auto; background: var(--red); color: #fff; font-size: 10px; font-weight: 800; padding: 1px 7px; border-radius: 50px; }
+    .sb-divider { height: 1px; background: rgba(255,255,255,.08); margin: 10px 14px; }
+    .sb-user { padding: 14px 16px; border-top: 1px solid rgba(255,255,255,.08); margin-top: auto; display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .sb-avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--blue); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 13px; flex-shrink: 0; }
+    .sb-uname { font-size: 13px; font-weight: 700; color: #fff; }
+    .sb-urole { font-size: 11px; color: rgba(255,255,255,.45); }
+
+    /* ── TOPBAR ── */
+    .tb-title { font-size: 17px; font-weight: 800; }
+    .tb-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+    .tb-notif { width: 36px; height: 36px; border-radius: var(--r); border: 1.5px solid var(--border); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 17px; position: relative; }
+    .notif-dot { position: absolute; top: 6px; right: 6px; width: 8px; height: 8px; background: var(--red); border-radius: 50%; border: 1.5px solid #fff; }
+    .tb-role { font-size: 12px; padding: 4px 10px; border-radius: 50px; font-weight: 700; }
+
+    /* ── BUTTONS ── */
+    .btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 18px; border-radius: var(--r); font-size: 13.5px; font-weight: 600; cursor: pointer; border: none; transition: .15s; font-family: inherit; }
+    .btn-blue { background: var(--blue); color: #fff; }
+    .btn-blue:hover { background: var(--blue-dk); }
+    .btn-red { background: var(--red); color: #fff; }
+    .btn-red:hover { background: #b91c1c; }
+    .btn-green { background: var(--green); color: #fff; }
+    .btn-green:hover { background: #15803d; }
+    .btn-out { background: transparent; color: var(--blue); border: 1.5px solid var(--blue); }
+    .btn-out:hover { background: var(--blue-lt); }
+    .btn-ghost { background: transparent; color: var(--muted); border: 1.5px solid var(--border); }
+    .btn-ghost:hover { border-color: var(--blue); color: var(--blue); }
+    .btn-danger { background: transparent; color: var(--red); border: 1.5px solid var(--red); }
+    .btn-danger:hover { background: var(--red-lt); }
+    .btn-sm { padding: 5px 12px; font-size: 12.5px; }
+    .btn-lg { padding: 12px 28px; font-size: 15px; border-radius: 10px; }
+
+    /* ── CARDS ── */
+    .card { background: var(--card); border-radius: var(--rl); border: 1px solid var(--border); box-shadow: var(--sh); }
+    .card-pad { padding: 24px; }
+    .card-header { padding: 18px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .card-title { font-size: 15px; font-weight: 800; }
+    .card-body { padding: 24px; }
+
+    /* ── STAT CARDS ── */
+    .stat-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 18px; margin-bottom: 28px; }
+    .stat-card { background: var(--card); border-radius: var(--rl); padding: 22px; border: 1px solid var(--border); box-shadow: var(--sh); display: flex; align-items: flex-start; gap: 16px; }
+    .stat-icon { width: 46px; height: 46px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+    .stat-n { font-size: 28px; font-weight: 900; line-height: 1.1; }
+    .stat-l { font-size: 13px; color: var(--muted); margin-top: 2px; }
+    .stat-trend { font-size: 12px; margin-top: 6px; font-weight: 600; }
+    .trend-up { color: var(--green); } .trend-dn { color: var(--red); }
+
+    /* ── BADGE ── */
+    .badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 50px; font-size: 11.5px; font-weight: 700; }
+    .badge-green { background: var(--green-lt); color: var(--green); }
+    .badge-amber { background: var(--amber-lt); color: var(--amber); }
+    .badge-red { background: var(--red-lt); color: var(--red); }
+    .badge-blue { background: var(--blue-lt); color: var(--blue); }
+    .badge-purple { background: var(--purple-lt); color: var(--purple); }
+    .badge-gray { background: #F3F4F6; color: var(--muted); }
+
+    /* ── TABLE ── */
+    .tbl-wrap { border: 1px solid var(--border); border-radius: var(--rl); overflow: hidden; background: var(--card); box-shadow: var(--sh); }
+    table { width: 100%; border-collapse: collapse; }
+    th { background: var(--bg); text-align: left; padding: 12px 16px; font-size: 12px; font-weight: 700; color: var(--muted); border-bottom: 1px solid var(--border); text-transform: uppercase; letter-spacing: .5px; }
+    td { padding: 14px 16px; font-size: 13.5px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #FAFBFC; }
+    .td-actions { display: flex; gap: 6px; }
+
+    /* ── FORM ── */
+    .fg { margin-bottom: 20px; }
+    .fl { display: block; font-size: 13px; font-weight: 700; margin-bottom: 7px; }
+    .fi { width: 100%; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: var(--r); font-size: 13.5px; outline: none; transition: .15s; font-family: inherit; background: var(--card); }
+    .fi:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(0,86,210,.1); }
+    .fi:disabled { background: var(--bg); color: var(--muted); cursor: not-allowed; }
+    .fi::placeholder { color: #9CA3AF; }
+    textarea.fi { resize: vertical; min-height: 100px; }
+    select.fi { cursor: pointer; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+    .req { color: var(--red); }
+    .hint { font-size: 12px; color: var(--muted); margin-top: 5px; }
+
+    /* ── FILTERS ── */
+    .toolbar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 20px; }
+    .fb { padding: 7px 16px; border-radius: 50px; border: 1.5px solid var(--border); background: var(--card); font-size: 13px; font-weight: 500; cursor: pointer; transition: .15s; color: var(--text); }
+    .fb:hover, .fb.act { border-color: var(--blue); background: var(--blue-lt); color: var(--blue); }
+    .sw { position: relative; }
+    .sw input { width: 100%; padding: 8px 14px 8px 36px; border: 1.5px solid var(--border); border-radius: 50px; font-size: 13px; outline: none; background: var(--card); }
+    .sw input:focus { border-color: var(--blue); }
+    .sw-ico { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); }
+
+    /* ── PROGRESS ── */
+    .prog { height: 7px; background: var(--border); border-radius: 4px; overflow: hidden; }
+    .prog-f { height: 100%; background: var(--blue); border-radius: 4px; }
+    .prog-f.done { background: var(--green); }
+
+    /* ── DIVIDER ── */
+    .divider { height: 1px; background: var(--border); margin: 20px 0; }
+
+    /* ── TABS ── */
+    .tabs { display: flex; gap: 0; border-bottom: 2px solid var(--border); margin-bottom: 24px; }
+    .tab { padding: 10px 20px; font-size: 13.5px; font-weight: 600; cursor: pointer; color: var(--muted); border-bottom: 2px solid transparent; margin-bottom: -2px; transition: .15s; }
+    .tab:hover { color: var(--blue); }
+    .tab.act { color: var(--blue); border-bottom-color: var(--blue); }
+
+    /* ── UPLOAD ZONE ── */
+    .upload-zone { border: 2px dashed var(--border); border-radius: var(--rl); padding: 32px; text-align: center; cursor: pointer; transition: .2s; background: var(--bg); }
+    .upload-zone:hover { border-color: var(--blue); background: var(--blue-lt); }
+    .uz-ico { font-size: 40px; margin-bottom: 10px; }
+    .uz-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .uz-sub { font-size: 12px; color: var(--muted); }
+
+    /* ── ALERTS ── */
+    .alert { padding: 13px 16px; border-radius: var(--r); font-size: 13.5px; margin-bottom: 18px; display: flex; gap: 10px; align-items: flex-start; }
+    .alert-blue { background: var(--blue-lt); color: #1e40af; border: 1px solid #93c5fd; }
+    .alert-amber { background: var(--amber-lt); color: #92400e; border: 1px solid #fcd34d; }
+    .alert-green { background: var(--green-lt); color: #14532d; border: 1px solid #86efac; }
+    .alert-red { background: var(--red-lt); color: #7f1d1d; border: 1px solid #fca5a5; }
+
+    /* ── CHART PLACEHOLDER ── */
+    .chart-ph { background: var(--bg); border-radius: var(--r); height: 200px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; color: var(--muted); font-size: 13px; border: 1px solid var(--border); }
+    .chart-bars { display: flex; align-items: flex-end; gap: 8px; height: 100px; }
+    .bar { border-radius: 4px 4px 0 0; min-width: 28px; transition: .3s; }
+
+    /* ── CURRICULUM ── */
+    .lesson-row { display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: var(--card); border: 1px solid var(--border); border-radius: var(--r); margin-bottom: 8px; cursor: grab; transition: box-shadow .15s; }
+    .lesson-row:hover { box-shadow: var(--sh-md); }
+    .drag-handle { color: var(--muted); font-size: 16px; cursor: grab; flex-shrink: 0; }
+    .lesson-num { width: 28px; height: 28px; border-radius: 50%; background: var(--blue-lt); color: var(--blue); font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .lesson-info { flex: 1; }
+    .lesson-title-text { font-weight: 700; font-size: 14px; }
+    .lesson-meta-text { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .add-lesson-btn { border: 2px dashed var(--border); border-radius: var(--r); padding: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; color: var(--muted); font-size: 13.5px; font-weight: 600; transition: .2s; }
+    .add-lesson-btn:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-lt); }
+
+    /* ── TOGGLE ── */
+    .toggle-wrap { display: flex; align-items: center; gap: 12px; }
+    .toggle { width: 44px; height: 24px; border-radius: 12px; background: var(--border); cursor: pointer; position: relative; transition: .2s; flex-shrink: 0; }
+    .toggle.on { background: var(--blue); }
+    .toggle::after { content: ''; width: 18px; height: 18px; background: #fff; border-radius: 50%; position: absolute; top: 3px; left: 3px; transition: .2s; box-shadow: 0 1px 4px rgba(0,0,0,.2); }
+    .toggle.on::after { left: 23px; }
+
+    /* ── PAGE HEADER ── */
+    .pg-hd { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 24px; }
+    .pg-title { font-size: 22px; font-weight: 900; }
+    .pg-sub { font-size: 13px; color: var(--muted); margin-top: 3px; }
+    .pg-actions { display: flex; gap: 10px; align-items: center; }
+
+    /* ── MISC ── */
+    .mt8 { margin-top: 8px; } .mt16 { margin-top: 16px; } .mt24 { margin-top: 24px; } .mb16 { margin-bottom: 16px; } .mb24 { margin-bottom: 24px; }
+    .flex { display: flex; align-items: center; } .gap8 { gap: 8px; } .gap16 { gap: 16px; }
+    .text-muted { color: var(--muted); } .fw8 { font-weight: 800; }
+    .course-thumb-mini { width: 40px; height: 32px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+    .empty-state { text-align: center; padding: 60px 20px; color: var(--muted); }
+    .empty-state .es-icon { font-size: 56px; margin-bottom: 16px; }
+    .empty-state h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; color: var(--text); }
+    .tooltip { position: relative; }
+    .tooltip:hover::after { content: attr(data-tip); position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: #111827; color: #fff; font-size: 11px; padding: 5px 10px; border-radius: 6px; white-space: nowrap; }
+    .avatar-sm { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 12px; flex-shrink: 0; }
+    .two-panel { display: grid; grid-template-columns: 1fr 320px; gap: 24px; }
+    .config-row { display: flex; align-items: center; justify-content: space-between; padding: 18px 0; border-bottom: 1px solid var(--border); }
+    .config-row:last-child { border-bottom: none; }
+
+    /* ── TOAST ── */
+    .toast { position: fixed; bottom: 26px; right: 26px; background: #111827; color: #fff; padding: 13px 20px; border-radius: 10px; font-size: 13.5px; box-shadow: 0 8px 40px rgba(0,0,0,.25); z-index: 9999; display: none; align-items: center; gap: 10px; max-width: 340px; }
+    .toast.on { display: flex; animation: up .3s ease; }
+    @keyframes up { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ── LOGIN PAGE ── */
+    .login-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #0056D2 0%, #003DA6 50%, #0F172A 100%); }
+    .login-card { background: #fff; border-radius: 16px; padding: 44px; width: 100%; max-width: 420px; box-shadow: 0 20px 60px rgba(0,0,0,.25); }
+    .login-logo { text-align: center; font-size: 26px; font-weight: 900; color: var(--blue); margin-bottom: 4px; }
+    .login-logo b { color: var(--red); }
+    .login-badge { display: flex; justify-content: center; margin-bottom: 24px; }
+
+    /* ── MODAL ── */
+    .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 8000; display: none; align-items: center; justify-content: center; padding: 20px; }
+    .modal-bg.on { display: flex; }
+    .modal { background: #fff; border-radius: var(--rl); width: 100%; max-width: 520px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,.3); }
+    .modal-hdr { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .modal-title { font-size: 16px; font-weight: 800; }
+    .modal-close { cursor: pointer; font-size: 20px; color: var(--muted); }
+    .modal-body { padding: 24px; }
+    .modal-foot { padding: 16px 24px; border-top: 1px solid var(--border); display: flex; gap: 10px; justify-content: flex-end; }
+
+    @media(max-width:1024px) {
+      .shell { grid-template-columns: 200px 1fr; }
+      .stat-grid { grid-template-columns: repeat(2,1fr); }
+      .form-row, .form-row-3 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     LOGIN PAGE
+══════════════════════════════════════ -->
+<div class="screen on" id="s-login">
+  <div class="login-page">
+    <div class="login-card">
+      <div class="login-logo">Edu<b>Pro</b></div>
+      <p style="text-align:center;font-size:13px;color:var(--muted);margin-bottom:6px;">Hệ thống quản trị LMS</p>
+      <div class="login-badge">
+        <span class="badge badge-blue">Admin / Teacher Portal</span>
+      </div>
+      <div class="fg"><label class="fl">Email</label><input type="email" class="fi" value="admin@edupro.vn"></div>
+      <div class="fg"><label class="fl">Mật khẩu</label><input type="password" class="fi" value="••••••••"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;">
+        <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;"><input type="checkbox" checked> Ghi nhớ</label>
+        <a style="font-size:13px;color:var(--blue);cursor:pointer">Quên mật khẩu?</a>
+      </div>
+      <button class="btn btn-blue btn-lg" style="width:100%;justify-content:center;" onclick="doLogin('admin')">🔐 Đăng nhập</button>
+      <p style="text-align:center;font-size:12px;color:var(--muted);margin-top:20px;">Liên hệ admin nếu cần hỗ trợ đăng nhập</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     ADMIN SHELL (all admin screens share this)
+══════════════════════════════════════ -->
+<div class="screen" id="s-shell">
+<div class="shell">
+
+  <!-- ─── SIDEBAR ─── -->
+  <aside class="sidebar">
+    <div class="sb-logo">Edu<b>Pro</b><small id="sb-role-lbl">Admin Portal</small></div>
+
+    <div class="sb-section">Tổng quan</div>
+    <a class="sb-link act" id="sb-dashboard" onclick="nav('dashboard','sb-dashboard')"><span class="ico">📊</span> Dashboard</a>
+
+    <div class="sb-section">Nội dung</div>
+    <a class="sb-link" id="sb-courses" onclick="nav('courses','sb-courses')"><span class="ico">📚</span> Khóa học</a>
+    <a class="sb-link" id="sb-curriculum" onclick="nav('curriculum','sb-curriculum')"><span class="ico">📋</span> Nội dung bài học</a>
+
+    <div class="sb-section">Quản lý</div>
+    <a class="sb-link" id="sb-enrollments" onclick="nav('enrollments','sb-enrollments')">
+      <span class="ico">🎓</span> Duyệt đăng ký
+      <span class="sb-badge" id="pending-badge">5</span>
+    </a>
+    <a class="sb-link" id="sb-users" onclick="nav('users','sb-users')"><span class="ico">👥</span> Quản lý user</a>
+
+    <div class="sb-section">Phân tích</div>
+    <a class="sb-link" id="sb-reports" onclick="nav('reports','sb-reports')"><span class="ico">📈</span> Báo cáo & Thống kê</a>
+    <a class="sb-link" id="sb-report-detail" onclick="nav('report-detail','sb-report-detail')" style="padding-left:40px;font-size:13px;opacity:.8;"><span class="ico">📉</span> Chi tiết khóa học</a>
+
+    <div class="sb-divider"></div>
+    <a class="sb-link" id="sb-settings" onclick="nav('settings','sb-settings')"><span class="ico">⚙️</span> Cấu hình hệ thống</a>
+    <a class="sb-link" onclick="doLogout()"><span class="ico">🚪</span> Đăng xuất</a>
+
+    <div class="sb-user">
+      <div class="sb-avatar">A</div>
+      <div>
+        <div class="sb-uname" id="sb-uname">Admin User</div>
+        <div class="sb-urole" id="sb-urole">ADMIN</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ─── TOPBAR ─── -->
+  <header class="topbar">
+    <span class="tb-title" id="tb-title">Dashboard</span>
+    <div class="tb-right">
+      <div class="tb-notif" onclick="toast('🔔 Bạn có 5 yêu cầu đăng ký chờ duyệt!')">
+        🔔<span class="notif-dot"></span>
+      </div>
+      <span class="tb-role badge" id="tb-role-badge" style="background:var(--blue-lt);color:var(--blue);">ADMIN</span>
+      <div class="sb-avatar" style="cursor:pointer;" onclick="nav('settings','sb-settings')">A</div>
+    </div>
+  </header>
+
+  <!-- ─── CONTENT AREA ─── -->
+  <main class="content">
+
+    <!-- ╔══════════════════════════════╗
+         ║  A-02  DASHBOARD             ║
+         ╚══════════════════════════════╝ -->
+    <div id="p-dashboard">
+      <div class="pg-hd">
+        <div><div class="pg-title">Xin chào, Admin! 👋</div><div class="pg-sub">Hôm nay là Chủ nhật, 13/04/2026</div></div>
+        <div class="pg-actions">
+          <button class="btn btn-blue" onclick="nav('course-new','sb-courses')">+ Tạo khóa học mới</button>
+        </div>
+      </div>
+
+      <!-- Stat cards -->
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-icon" style="background:#EFF6FF;">📚</div>
+          <div>
+            <div class="stat-n">12</div>
+            <div class="stat-l">Khóa học đã xuất bản</div>
+            <div class="stat-trend trend-up">▲ 2 khóa tháng này</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:var(--green-lt);">🎓</div>
+          <div>
+            <div class="stat-n" style="color:var(--green);">1,240</div>
+            <div class="stat-l">Tổng học viên</div>
+            <div class="stat-trend trend-up">▲ 85 học viên mới</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:var(--amber-lt);">⏳</div>
+          <div>
+            <div class="stat-n" style="color:var(--amber);">5</div>
+            <div class="stat-l">Yêu cầu chờ duyệt</div>
+            <div class="stat-trend" style="color:var(--amber);">Cần xử lý sớm</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:var(--purple-lt);">💰</div>
+          <div>
+            <div class="stat-n" style="color:var(--purple);">42M</div>
+            <div class="stat-l">Doanh thu tháng này</div>
+            <div class="stat-trend trend-up">▲ 18% so với tháng trước</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chart + Recent enrollments -->
+      <div style="display:grid;grid-template-columns:1fr 380px;gap:20px;margin-bottom:20px;">
+        <div class="card">
+          <div class="card-header"><span class="card-title">📊 Đăng ký mới theo tháng</span><select class="fi" style="width:auto;padding:5px 10px;font-size:12px;">><option>2026</option><option>2025</option></select></div>
+          <div class="card-body">
+            <div class="chart-ph">
+              <div class="chart-bars">
+                <div class="bar" style="height:40%;background:var(--blue-lt);width:32px;"></div>
+                <div class="bar" style="height:55%;background:var(--blue-lt);width:32px;"></div>
+                <div class="bar" style="height:70%;background:var(--blue-lt);width:32px;"></div>
+                <div class="bar" style="height:48%;background:var(--blue-lt);width:32px;"></div>
+                <div class="bar" style="height:85%;background:var(--blue);width:32px;"></div>
+                <div class="bar" style="height:60%;background:var(--blue-lt);width:32px;"></div>
+                <div class="bar" style="height:90%;background:var(--blue);width:32px;"></div>
+                <div class="bar" style="height:100%;background:var(--blue);width:32px;"></div>
+              </div>
+              <div style="display:flex;gap:12px;font-size:11px;color:var(--muted);">
+                <span>T1</span><span>T2</span><span>T3</span><span>T4</span><span>T5</span><span>T6</span><span>T7</span><span>T8</span>
+              </div>
+              <span style="font-size:12px;">Biểu đồ đăng ký mới 8 tháng gần nhất</span>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">⏳ Chờ duyệt gần đây</span><button class="btn btn-out btn-sm" onclick="nav('enrollments','sb-enrollments')">Xem tất cả</button></div>
+          <div class="card-body" style="padding:0;">
+            <div style="display:flex;flex-direction:column;">
+              <div style="display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid var(--border);" onclick="nav('enrollments','sb-enrollments')">
+                <div class="avatar-sm" style="background:var(--blue-lt);color:var(--blue);">N</div>
+                <div style="flex:1;"><div style="font-weight:700;font-size:13px;">Nguyễn Văn A</div><div style="font-size:12px;color:var(--muted);">Python cơ bản · 500.000đ</div></div>
+                <span class="badge badge-amber">⏳</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid var(--border);">
+                <div class="avatar-sm" style="background:var(--green-lt);color:var(--green);">T</div>
+                <div style="flex:1;"><div style="font-weight:700;font-size:13px;">Trần Thị B</div><div style="font-size:12px;color:var(--muted);">UI/UX Figma · 600.000đ</div></div>
+                <span class="badge badge-amber">⏳</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid var(--border);">
+                <div class="avatar-sm" style="background:var(--purple-lt);color:var(--purple);">L</div>
+                <div style="flex:1;"><div style="font-weight:700;font-size:13px;">Lê Văn C</div><div style="font-size:12px;color:var(--muted);">Spring Boot · 800.000đ</div></div>
+                <span class="badge badge-amber">⏳</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid var(--border);">
+                <div class="avatar-sm" style="background:var(--amber-lt);color:var(--amber);">P</div>
+                <div style="flex:1;"><div style="font-weight:700;font-size:13px;">Phạm Thị D</div><div style="font-size:12px;color:var(--muted);">Machine Learning · 1.200.000đ</div></div>
+                <span class="badge badge-amber">⏳</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;padding:13px 16px;">
+                <div class="avatar-sm" style="background:var(--red-lt);color:var(--red);">H</div>
+                <div style="flex:1;"><div style="font-weight:700;font-size:13px;">Hoàng Văn E</div><div style="font-size:12px;color:var(--muted);">Digital Marketing · 650.000đ</div></div>
+                <span class="badge badge-amber">⏳</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top courses -->
+      <div class="card">
+        <div class="card-header"><span class="card-title">🏆 Top khóa học theo học viên</span><button class="btn btn-ghost btn-sm" onclick="nav('reports','sb-reports')">Xem báo cáo</button></div>
+        <div class="card-body" style="padding:0;">
+          <table>
+            <thead><tr><th>#</th><th>Khóa học</th><th>Giáo viên</th><th>Học viên</th><th>Hoàn thành TB</th><th>Trạng thái</th></tr></thead>
+            <tbody>
+              <tr onclick="nav('report-detail','sb-report-detail')" style="cursor:pointer;">
+                <td style="font-weight:800;color:var(--amber);">🥇</td>
+                <td><div style="display:flex;align-items:center;gap:10px;"><div class="course-thumb-mini" style="background:linear-gradient(135deg,#667eea,#764ba2);">🐍</div><div><div style="font-weight:700;">Python cơ bản</div><div style="font-size:12px;color:var(--muted);">12 bài · 6h30p</div></div></div></td>
+                <td>Trần Văn Hùng</td>
+                <td><strong>320</strong></td>
+                <td><div style="display:flex;align-items:center;gap:8px;"><div class="prog" style="width:80px;"><div class="prog-f" style="width:72%"></div></div><span style="font-size:12px;">72%</span></div></td>
+                <td><span class="badge badge-green">✅ Published</span></td>
+              </tr>
+              <tr>
+                <td style="font-weight:800;color:var(--muted);">🥈</td>
+                <td><div style="display:flex;align-items:center;gap:10px;"><div class="course-thumb-mini" style="background:linear-gradient(135deg,#a18cd1,#fbc2eb);">🤖</div><div><div style="font-weight:700;">Machine Learning</div><div style="font-size:12px;color:var(--muted);">25 bài · 15h</div></div></div></td>
+                <td>Trần Thị Bích</td>
+                <td><strong>285</strong></td>
+                <td><div style="display:flex;align-items:center;gap:8px;"><div class="prog" style="width:80px;"><div class="prog-f" style="width:65%"></div></div><span style="font-size:12px;">65%</span></div></td>
+                <td><span class="badge badge-green">✅ Published</span></td>
+              </tr>
+              <tr>
+                <td style="font-weight:800;color:var(--muted);">🥉</td>
+                <td><div style="display:flex;align-items:center;gap:10px;"><div class="course-thumb-mini" style="background:linear-gradient(135deg,#4facfe,#00f2fe);">🎨</div><div><div style="font-weight:700;">UI/UX Figma</div><div style="font-size:12px;color:var(--muted);">15 bài · 9h</div></div></div></td>
+                <td>Lê Minh Tuấn</td>
+                <td><strong>210</strong></td>
+                <td><div style="display:flex;align-items:center;gap:8px;"><div class="prog" style="width:80px;"><div class="prog-f" style="width:80%"></div></div><span style="font-size:12px;">80%</span></div></td>
+                <td><span class="badge badge-green">✅ Published</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div><!-- /p-dashboard -->
+
+    <!-- ╔══════════════════════════════╗
+         ║  A-03  COURSE LIST           ║
+         ╚══════════════════════════════╝ -->
+    <div id="p-courses" style="display:none;">
+      <div class="pg-hd">
+        <div><div class="pg-title">Quản lý Khóa học</div><div class="pg-sub">12 khóa học · 8 đã xuất bản</div></div>
+        <div class="pg-actions">
+          <button class="btn btn-blue" onclick="nav('course-new','sb-courses')">+ Tạo khóa học</button>
+        </div>
+      </div>
+      <div class="toolbar">
+        <div class="sw" style="max-width:280px;flex:1;"><span class="sw-ico">🔍</span><input type="text" placeholder="Tìm khóa học..."></div>
+        <button class="fb act" onclick="setF(this)">Tất cả (12)</button>
+        <button class="fb" onclick="setF(this)">✅ Published (8)</button>
+        <button class="fb" onclick="setF(this)">📝 Draft (3)</button>
+        <button class="fb" onclick="setF(this)">📦 Archived (1)</button>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Khóa học</th><th>Giáo viên</th><th>Học viên</th><th>Doanh thu</th><th>Hoàn thành TB</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><div style="display:flex;align-items:center;gap:10px;"><div class="course-thumb-mini" style="background:linear-gradient(135deg,#667eea,#764ba2);">🐍</div><div><div style="font-weight:700;">Lập trình Python cơ bản</div><div style="font-size:12px;color:var(--muted);">12 bài · 500.000đ</div></div></div></td>
+              <td>Trần Văn Hùng</td>
+              <td><strong>320</strong></td>
+              <td style="font-weight:800;color:var(--green);">160M</td>
+              <td><div style="display:flex;align-items:center;gap:8px;"><div class="prog" style="width:70px;"><div class="prog-f" style="width:72%"></div></div><span>72%</span></div></td>
+              <td><span class="badge badge-green">✅ Published</span></td>
+              <td><div class="td-actions"><button class="btn btn-out btn-sm" onclick="nav('curriculum','sb-curriculum')">📋 Nội dung</button><button class="btn btn-ghost btn-sm" onclick="nav('course-edit','sb-courses')">✏️</button><button class="btn btn-danger btn-sm">🗑️</button></div></td>
+            </tr>
+            <tr>
+              <td><div style="display:flex;align-items:center;gap:10px;"><div class="course-thumb-mini" style="background:linear-gradient(135deg,#a18cd1,#fbc2eb);">🤖</div><div><div style="font-weight:700;">Machine Learning với Python</div><div style="font-size:12px;color:var(--muted);">25 bài · 1.200.000đ</div></div></div></td>
+              <td>Trần Thị Bích</td>
+              <td><strong>285</strong></td>
+              <td style="font-weight:800;color:var(--green);">342M</td>
+              <td><div style="display:flex;align-items:center;gap:8px;"><div class="prog" style="width:70px;"><div class="prog-f" style="width:65%"></div></div><span>65%</span></div></td>
+              <td><span class="badge badge-green">✅ Published</span></td>
+              <td><div class="td-actions"><button class="btn btn-out btn-sm" onclick="nav('curriculum','sb-curriculum')">📋</button><button class="btn btn-ghost btn-sm" onclick="nav('course-edit','sb-courses')">✏️</button><button class="btn btn-danger btn-sm">🗑️</button></div></td>
+            </tr>
+            <tr>
+              <td><div style="display:flex;align-items:center;gap:10px;"><div class="course-thumb-mini" style="background:linear-gradient(135deg,#4facfe,#00f2fe);">🎨</div><div><div style="font-weight:700;">UI/UX Design với Figma</div><div style="font-size:12px;color:var(--muted);">15 bài · 600.000đ</div></div></div></td>
+              <td>Lê Minh Tuấn</td>
+              <td><strong>210</strong></td>
+              <td style="font-weight:800;color:var(--green);">126M</td>
+              <td><div style="display:flex;align-items:center;gap:8px;"><div class="prog" style="width:70px;"><div class="prog-f" style="width:80%"></div></div><span>80%</span></div></td>
+              <td><span class="badge badge-green">✅ Published</span></td>
+              <td><div class="td-actions"><button class="btn btn-out btn-sm" onclick="nav('curriculum','sb-curriculum')">📋</button><button class="btn btn-ghost btn-sm" onclick="nav('course-edit','sb-courses')">✏️</button><button class="btn btn-danger btn-sm">🗑️</button></div></td>
+            </tr>
+            <tr>
+              <td><div style="display:flex;align-items:center;gap:10px;"><div class="course-thumb-mini" style="background:linear-gradient(135deg,#f093fb,#f5576c);">📊</div><div><div style="font-weight:700;">Excel & Power BI</div><div style="font-size:12px;color:var(--muted);">18 bài · 700.000đ · <em style="color:var(--muted)">Draft</em></div></div></div></td>
+              <td>Nguyễn Thị Lan</td>
+              <td><strong>0</strong></td>
+              <td style="color:var(--muted);">—</td>
+              <td><span style="font-size:12px;color:var(--muted);">—</span></td>
+              <td><span class="badge badge-amber">📝 Draft</span></td>
+              <td><div class="td-actions"><button class="btn btn-out btn-sm" onclick="nav('curriculum','sb-curriculum')">📋</button><button class="btn btn-ghost btn-sm" onclick="nav('course-edit','sb-courses')">✏️</button><button class="btn btn-blue btn-sm" onclick="toast('✅ Đã xuất bản khóa học!')">🚀 Publish</button></div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div><!-- /p-courses -->
+
+    <!-- ╔══════════════════════════════╗
+         ║  A-04  CREATE COURSE         ║
+         ╚══════════════════════════════╝ -->
+    <div id="p-course-new" style="display:none;">
+      <div class="pg-hd">
+        <div><div class="pg-title">Tạo khóa học mới</div><div class="pg-sub">Điền đầy đủ thông tin, sau đó thêm bài học</div></div>
+        <div class="pg-actions">
+          <button class="btn btn-ghost" onclick="nav('courses','sb-courses')">Hủy</button>
+          <button class="btn btn-amber" style="background:var(--amber);color:#fff;" onclick="toast('💾 Đã lưu nháp!')">💾 Lưu nháp</button>
+          <button class="btn btn-blue" onclick="saveCourse()">✅ Lưu & Tiếp theo</button>
+        </div>
+      </div>
+      <div class="two-panel">
+        <div>
+          <div class="card card-pad mb24">
+            <div class="card-title mb16">📝 Thông tin cơ bản</div>
+            <div class="fg"><label class="fl">Tiêu đề khóa học <span class="req">*</span></label><input type="text" class="fi" placeholder="VD: Lập trình Python từ cơ bản đến nâng cao"></div>
+            <div class="fg"><label class="fl">Slug (URL) <span class="req">*</span></label><input type="text" class="fi" placeholder="lap-trinh-python-co-ban"><p class="hint">URL: edupro.vn/courses/<strong>lap-trinh-python-co-ban</strong></p></div>
+            <div class="fg"><label class="fl">Mô tả ngắn <span class="req">*</span></label><input type="text" class="fi" placeholder="Hiển thị trên card khóa học (tối đa 150 ký tự)"></div>
+            <div class="fg"><label class="fl">Mô tả chi tiết <span class="req">*</span></label><textarea class="fi" rows="5" placeholder="Nội dung chi tiết, bạn sẽ học được gì, yêu cầu..."></textarea></div>
+            <div class="form-row">
+              <div class="fg"><label class="fl">Giá (VND) <span class="req">*</span></label><input type="number" class="fi" placeholder="500000"><p class="hint">Nhập 0 nếu miễn phí</p></div>
+              <div class="fg"><label class="fl">Danh mục</label>
+                <select class="fi"><option>-- Chọn danh mục --</option><option>Lập trình</option><option>Data & AI</option><option>Thiết kế</option><option>Kinh doanh</option><option>Ngoại ngữ</option></select>
+              </div>
+            </div>
+            <div class="fg" id="teacher-field">
+              <label class="fl">Giáo viên phụ trách <span class="req">*</span></label>
+              <select class="fi"><option>-- Chọn giáo viên --</option><option>Trần Văn Hùng</option><option>Nguyễn Thị Lan</option><option>Lê Minh Tuấn</option><option>Phạm Quang Đức</option></select>
+            </div>
+          </div>
+          <div class="card card-pad">
+            <div class="card-title mb16">🎯 Mục tiêu học tập</div>
+            <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Thêm ít nhất 4 điều học viên sẽ học được</p>
+            <div id="outcomes">
+              <div style="display:flex;gap:8px;margin-bottom:10px;"><input type="text" class="fi" placeholder="VD: Hiểu cú pháp Python cơ bản"><button class="btn btn-danger btn-sm">✕</button></div>
+              <div style="display:flex;gap:8px;margin-bottom:10px;"><input type="text" class="fi" placeholder="VD: Lập trình hướng đối tượng"><button class="btn btn-danger btn-sm">✕</button></div>
+            </div>
+            <button class="btn btn-ghost btn-sm" onclick="toast('✚ Thêm mục tiêu mới')">+ Thêm mục tiêu</button>
+          </div>
+        </div>
+        <!-- Right panel -->
+        <div>
+          <div class="card card-pad mb16">
+            <div class="card-title mb16">🖼️ Thumbnail khóa học</div>
+            <div class="upload-zone mb16" onclick="toast('📂 Chọn ảnh thumbnail...')">
+              <div class="uz-ico">🖼️</div>
+              <div class="uz-title">Upload ảnh bìa</div>
+              <div class="uz-sub">JPG, PNG · 1280×720px · Tối đa 5MB</div>
+            </div>
+            <div style="background:linear-gradient(135deg,#667eea,#764ba2);border-radius:var(--r);height:140px;display:flex;align-items:center;justify-content:center;font-size:56px;color:#fff;margin-bottom:8px;">🐍</div>
+            <p class="hint" style="text-align:center;">Preview thumbnail</p>
+          </div>
+          <div class="card card-pad mb16">
+            <div class="card-title mb16">⚙️ Thiết lập</div>
+            <div class="fg"><label class="fl">Trạng thái</label>
+              <select class="fi"><option>📝 Draft (chưa công khai)</option><option>✅ Published (công khai)</option></select>
+            </div>
+            <div class="config-row" style="padding:12px 0;">
+              <div><div style="font-weight:600;font-size:13px;">Truy cập trọn đời</div><div style="font-size:12px;color:var(--muted);">Học viên xem không giới hạn thời gian</div></div>
+              <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+            </div>
+          </div>
+          <div class="card card-pad">
+            <div class="card-title mb8">💡 Hướng dẫn</div>
+            <div class="alert alert-blue mt8" style="font-size:12px;">Sau khi tạo khóa, bạn sẽ được chuyển sang màn hình <strong>Thêm bài học</strong> để upload nội dung.</div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /p-course-new -->
+
+    <!-- ╔══════════════════════════════╗
+         ║  A-05  EDIT COURSE           ║
+         ╚══════════════════════════════╝ -->
+    <div id="p-course-edit" style="display:none;">
+      <div class="pg-hd">
+        <div><div class="pg-title">Chỉnh sửa: Python cơ bản</div><div class="pg-sub">Cập nhật thông tin khóa học</div></div>
+        <div class="pg-actions">
+          <button class="btn btn-ghost" onclick="nav('courses','sb-courses')">← Quay lại</button>
+          <button class="btn btn-danger" onclick="toast('🗑️ Xác nhận xóa khóa học?')">Xóa khóa</button>
+          <button class="btn btn-blue" onclick="toast('✅ Đã lưu thay đổi!')">💾 Lưu thay đổi</button>
+        </div>
+      </div>
+      <div class="tabs">
+        <div class="tab act" onclick="setTab(this,'tab-info')">📝 Thông tin chung</div>
+        <div class="tab" onclick="setTab(this,'tab-seo')">🔍 SEO & Meta</div>
+        <div class="tab" onclick="setTab(this,'tab-settings')">⚙️ Thiết lập</div>
+      </div>
+      <div id="tab-info">
+        <div class="two-panel">
+          <div>
+            <div class="card card-pad mb16">
+              <div class="fg"><label class="fl">Tiêu đề</label><input type="text" class="fi" value="Lập trình Python cơ bản đến nâng cao"></div>
+              <div class="fg"><label class="fl">Slug</label><input type="text" class="fi" value="lap-trinh-python-co-ban"></div>
+              <div class="fg"><label class="fl">Mô tả ngắn</label><input type="text" class="fi" value="Khóa học Python dành cho người mới bắt đầu"></div>
+              <div class="fg"><label class="fl">Mô tả chi tiết</label><textarea class="fi" rows="6">Nắm vững Python từ cú pháp cơ bản, lập trình hướng đối tượng, xử lý dữ liệu với Pandas đến các dự án automation thực tế.</textarea></div>
+              <div class="form-row">
+                <div class="fg"><label class="fl">Giá (VND)</label><input type="number" class="fi" value="500000"></div>
+                <div class="fg"><label class="fl">Danh mục</label><select class="fi"><option>Lập trình</option><option>Data & AI</option></select></div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="card card-pad mb16">
+              <div class="card-title mb16">Thumbnail hiện tại</div>
+              <div style="background:linear-gradient(135deg,#667eea,#764ba2);border-radius:var(--r);height:140px;display:flex;align-items:center;justify-content:center;font-size:56px;margin-bottom:12px;">🐍</div>
+              <button class="btn btn-ghost btn-sm" style="width:100%;justify-content:center;" onclick="toast('📂 Chọn ảnh mới...')">🔄 Thay đổi ảnh</button>
+            </div>
+            <div class="card card-pad">
+              <div class="fg"><label class="fl">Trạng thái</label><select class="fi"><option>✅ Published</option><option>📝 Draft</option><option>📦 Archived</option></select></div>
+              <div style="display:flex;gap:8px;padding:10px;background:var(--green-lt);border-radius:var(--r);font-size:12px;color:var(--green);">✅ 320 học viên đã đăng ký khóa này</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="tab-seo" style="display:none;">
+        <div class="card card-pad"><div class="fg"><label class="fl">Meta title</label><input class="fi" value="Lập trình Python cơ bản | EduPro"></div><div class="fg"><label class="fl">Meta description</label><textarea class="fi" rows="3">Khóa học Python toàn diện...</textarea></div></div>
+      </div>
+      <div id="tab-settings" style="display:none;">
+        <div class="card card-pad"><div class="config-row"><div><div style="font-weight:600;">Truy cập trọn đời</div><div style="font-size:12px;color:var(--muted);">Học viên không bị giới hạn thời gian truy cập</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div><div class="config-row"><div><div style="font-weight:600;">Cho phép xem trước bài đầu</div><div style="font-size:12px;color:var(--muted);">Khách chưa đăng ký có thể xem bài 1</div></div><div class="toggle" onclick="this.classList.toggle('on')"></div></div></div>
+      </div>
+    </div><!-- /p-course-edit -->
+
+    <!-- ╔══════════════════════════════╗
+         ║  A-06  CURRICULUM            ║
+         ╚══════════════════════════════╝ -->
+    <div id="p-curriculum" style="display:none;">
+      <div class="pg-hd">
+        <div><div class="pg-title">Nội dung bài học</div><div class="pg-sub">Python cơ bản · 12 bài · 6h30p</div></div>
+        <div class="pg-actions">
+          <button class="btn btn-ghost" onclick="nav('courses','sb-courses')">← Danh sách khóa</button>
+          <button class="btn btn-out" onclick="nav('course-edit','sb-courses')">⚙️ Thông tin khóa</button>
+          <button class="btn btn-blue" onclick="nav('lesson-new','sb-curriculum')">+ Thêm bài học</button>
+        </div>
+      </div>
+      <div class="two-panel">
+        <div>
+          <div class="card card-pad mb16">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+              <div class="card-title">📋 Danh sách bài học</div>
+              <span style="font-size:12px;color:var(--muted);">Kéo thả để sắp xếp lại</span>
+            </div>
+            <!-- Lessons -->
+            <div class="lesson-row">
+              <span class="drag-handle">⠿</span>
+              <div class="lesson-num">1</div>
+              <div class="lesson-info"><div class="lesson-title-text">Giới thiệu Python & cài đặt môi trường</div><div class="lesson-meta-text">🎥 Video · Upload · 12:30</div></div>
+              <span class="badge badge-green">✅</span>
+              <div class="td-actions"><button class="btn btn-ghost btn-sm" onclick="nav('lesson-edit','sb-curriculum')">✏️</button><button class="btn btn-danger btn-sm">🗑️</button></div>
+            </div>
+            <div class="lesson-row">
+              <span class="drag-handle">⠿</span>
+              <div class="lesson-num">2</div>
+              <div class="lesson-info"><div class="lesson-title-text">Biến, kiểu dữ liệu và toán tử</div><div class="lesson-meta-text">🎥 Video · Upload · 18:45</div></div>
+              <span class="badge badge-green">✅</span>
+              <div class="td-actions"><button class="btn btn-ghost btn-sm" onclick="nav('lesson-edit','sb-curriculum')">✏️</button><button class="btn btn-danger btn-sm">🗑️</button></div>
+            </div>
+            <div class="lesson-row">
+              <span class="drag-handle">⠿</span>
+              <div class="lesson-num">3</div>
+              <div class="lesson-info"><div class="lesson-title-text">Tài liệu — Python Cheatsheet</div><div class="lesson-meta-text">📄 Tài liệu · 1 file đính kèm</div></div>
+              <span class="badge badge-green">✅</span>
+              <div class="td-actions"><button class="btn btn-ghost btn-sm" onclick="nav('lesson-edit','sb-curriculum')">✏️</button><button class="btn btn-danger btn-sm">🗑️</button></div>
+            </div>
+            <div class="lesson-row">
+              <span class="drag-handle">⠿</span>
+              <div class="lesson-num">4</div>
+              <div class="lesson-info"><div class="lesson-title-text">Điều kiện & vòng lặp</div><div class="lesson-meta-text">🎥 Video · YouTube · 25:00</div></div>
+              <span class="badge badge-green">✅</span>
+              <div class="td-actions"><button class="btn btn-ghost btn-sm" onclick="nav('lesson-edit','sb-curriculum')">✏️</button><button class="btn btn-danger btn-sm">🗑️</button></div>
+            </div>
+            <div class="lesson-row">
+              <span class="drag-handle">⠿</span>
+              <div class="lesson-num">5</div>
+              <div class="lesson-info"><div class="lesson-title-text">Function và module trong Python</div><div class="lesson-meta-text">🎥 Video · Upload · 22:15 · 2 tài liệu</div></div>
+              <span class="badge badge-green">✅</span>
+              <div class="td-actions"><button class="btn btn-ghost btn-sm" onclick="nav('lesson-edit','sb-curriculum')">✏️</button><button class="btn btn-danger btn-sm">🗑️</button></div>
+            </div>
+            <div class="lesson-row" style="opacity:.6;">
+              <span class="drag-handle">⠿</span>
+              <div class="lesson-num" style="background:var(--amber-lt);color:var(--amber);">6</div>
+              <div class="lesson-info"><div class="lesson-title-text">OOP — Lập trình hướng đối tượng</div><div class="lesson-meta-text">🎥 Video · Draft · chưa upload</div></div>
+              <span class="badge badge-amber">📝 Draft</span>
+              <div class="td-actions"><button class="btn btn-out btn-sm" onclick="nav('lesson-edit','sb-curriculum')">Upload video</button><button class="btn btn-danger btn-sm">🗑️</button></div>
+            </div>
+            <div class="add-lesson-btn mt8" onclick="nav('lesson-new','sb-curriculum')">
+              <span>+</span> Thêm bài học mới
+            </div>
+          </div>
+        </div>
+        <!-- Stats panel -->
+        <div>
+          <div class="card card-pad mb16">
+            <div class="card-title mb16">📊 Tổng quan khóa</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+              <div style="background:var(--bg);border-radius:var(--r);padding:14px;text-align:center;"><div style="font-size:24px;font-weight:900;color:var(--blue);">12</div><div style="font-size:12px;color:var(--muted);">Bài học</div></div>
+              <div style="background:var(--bg);border-radius:var(--r);padding:14px;text-align:center;"><div style="font-size:24px;font-weight:900;color:var(--green);">9</div><div style="font-size:12px;color:var(--muted);">Đã Published</div></div>
+              <div style="background:var(--bg);border-radius:var(--r);padding:14px;text-align:center;"><div style="font-size:24px;font-weight:900;color:var(--purple);">6h30p</div><div style="font-size:12px;color:var(--muted);">Tổng thời lượng</div></div>
+              <div style="background:var(--bg);border-radius:var(--r);padding:14px;text-align:center;"><div style="font-size:24px;font-weight:900;color:var(--amber);">5</div><div style="font-size:12px;color:var(--muted);">Tài liệu</div></div>
+            </div>
+          </div>
+          <div class="card card-pad mb16">
+            <div class="card-title mb12">🎬 Loại bài học</div>
+            <div style="display:flex;flex-direction:column;gap:8px;font-size:13px;">
+              <div style="display:flex;justify-content:space-between;"><span>🎥 Video (upload)</span><span class="badge badge-blue">7</span></div>
+              <div style="display:flex;justify-content:space-between;"><span>🔗 Video (link)</span><span class="badge badge-purple">2</span></div>
+              <div style="display:flex;justify-content:space-between;"><span>📄 Tài liệu / Text</span><span class="badge badge-green">3</span></div>
+            </div>
+          </div>
+          <div class="alert alert-blue" style="font-size:12px;">💡 Kéo thả các bài học để sắp xếp lại thứ tự. Thứ tự sẽ được lưu tự động.</div>
+        </div>
+      </div>
+    </div><!-- /p-curriculum -->
+
+    <!-- ╔══════════════════════════════╗
+         ║  A-07  CREATE LESSON         ║
+         ╚══════════════════════════════╝ -->
+    <div id="p-lesson-new" style="display:none;">
+      <div class="pg-hd">
+        <div><div class="pg-title">Thêm bài học mới</div><div class="pg-sub">Python cơ bản · Bài thứ 7</div></div>
+        <div class="pg-actions">
+          <button class="btn btn-ghost" onclick="nav('curriculum','sb-curriculum')">← Quay lại</button>
+          <button class="btn btn-blue" onclick="saveLesson()">💾 Lưu bài học</button>
+        </div>
+      </div>
+
+      <!-- Type selector -->
+      <div class="card card-pad mb16">
+        <div class="card-title mb16">📌 Chọn loại bài học</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+          <div id="type-video" onclick="selectType('video')" style="border:2px solid var(--blue);border-radius:var(--r);padding:18px;cursor:pointer;background:var(--blue-lt);text-align:center;">
+            <div style="font-size:32px;margin-bottom:8px;">🎥</div>
+            <div style="font-weight:800;color:var(--blue);">Video</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:4px;">Upload file hoặc nhúng link</div>
+          </div>
+          <div id="type-text" onclick="selectType('text')" style="border:2px solid var(--border);border-radius:var(--r);padding:18px;cursor:pointer;text-align:center;">
+            <div style="font-size:32px;margin-bottom:8px;">📄</div>
+            <div style="font-weight:800;">Tài liệu / Text</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:4px;">Văn bản, hình ảnh, file đính kèm</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="two-panel">
+        <div>
+          <div class="card card-pad mb16">
+            <div class="fg"><label class="fl">Tiêu đề bài học <span class="req">*</span></label><input type="text" class="fi" placeholder="VD: OOP — Lập trình hướng đối tượng"></div>
+            <div class="fg"><label class="fl">Mô tả ngắn</label><input type="text" class="fi" placeholder="Học viên sẽ học được gì trong bài này"></div>
+
+            <!-- VIDEO SECTION -->
+            <div id="video-section">
+              <div class="fg"><label class="fl">Nguồn video</label>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
+                  <div id="src-upload" onclick="selectSrc('upload')" style="border:2px solid var(--blue);border-radius:var(--r);padding:12px;cursor:pointer;background:var(--blue-lt);text-align:center;font-size:13px;font-weight:700;color:var(--blue);">📤 Upload file</div>
+                  <div id="src-link" onclick="selectSrc('link')" style="border:2px solid var(--border);border-radius:var(--r);padding:12px;cursor:pointer;text-align:center;font-size:13px;font-weight:600;color:var(--muted);">🔗 Dán link</div>
+                </div>
+              </div>
+              <div id="upload-area">
+                <div class="upload-zone" onclick="toast('📂 Chọn file video...')">
+                  <div class="uz-ico">🎬</div>
+                  <div class="uz-title">Kéo thả hoặc bấm để chọn video</div>
+                  <div class="uz-sub">MP4, MOV, WEBM · Tối đa 2GB</div>
+                </div>
+              </div>
+              <div id="link-area" style="display:none;">
+                <div class="fg"><label class="fl">URL video</label><input type="url" class="fi" placeholder="https://www.youtube.com/watch?v=..."><p class="hint">Hỗ trợ: YouTube, Vimeo, Google Drive</p></div>
+                <div style="background:var(--bg);border-radius:var(--r);padding:14px;border:1px solid var(--border);">
+                  <div style="font-size:12px;font-weight:700;margin-bottom:8px;color:var(--muted);">Preview (sau khi nhập URL)</div>
+                  <div style="background:#000;border-radius:var(--r);height:120px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.4);font-size:13px;">🎥 Video preview sẽ hiển thị ở đây</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- TEXT SECTION -->
+            <div id="text-section" style="display:none;">
+              <div class="fg"><label class="fl">Nội dung bài học <span class="req">*</span></label>
+                <div style="border:1.5px solid var(--border);border-radius:var(--r);overflow:hidden;">
+                  <div style="background:var(--bg);padding:8px 12px;border-bottom:1px solid var(--border);display:flex;gap:8px;font-size:13px;">
+                    <button class="btn btn-ghost btn-sm">B</button><button class="btn btn-ghost btn-sm"><i>I</i></button><button class="btn btn-ghost btn-sm">H1</button><button class="btn btn-ghost btn-sm">H2</button><button class="btn btn-ghost btn-sm">≡</button><button class="btn btn-ghost btn-sm">🔗</button><button class="btn btn-ghost btn-sm">🖼️</button>
+                  </div>
+                  <textarea class="fi" rows="10" style="border:none;border-radius:0;" placeholder="Nhập nội dung bài học... Hỗ trợ Markdown / Rich text"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Attachments -->
+          <div class="card card-pad">
+            <div class="card-title mb12">📎 Tài liệu đính kèm</div>
+            <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Upload file Word, Excel, PPT, PDF học viên có thể xem online</p>
+            <div class="upload-zone mb16" onclick="toast('📂 Chọn file tài liệu...')">
+              <div class="uz-ico">📁</div>
+              <div class="uz-title">Kéo thả hoặc bấm để chọn tài liệu</div>
+              <div class="uz-sub">PDF, DOCX, XLSX, PPTX · Tối đa 50MB mỗi file</div>
+            </div>
+            <!-- Uploaded file example -->
+            <div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r);">
+              <span style="font-size:24px;">📄</span>
+              <div style="flex:1;"><div style="font-weight:700;font-size:13px;">Python-OOP-Cheatsheet.pdf</div><div style="font-size:12px;color:var(--muted);">PDF · 1.4 MB · ✅ Đã upload</div></div>
+              <button class="btn btn-danger btn-sm">🗑️</button>
+            </div>
+          </div>
+        </div>
+        <!-- Right -->
+        <div>
+          <div class="card card-pad mb16">
+            <div class="card-title mb16">⚙️ Thiết lập bài học</div>
+            <div class="fg"><label class="fl">Thứ tự</label><input type="number" class="fi" value="7"></div>
+            <div class="fg"><label class="fl">Trạng thái</label><select class="fi"><option>✅ Published</option><option>📝 Draft</option></select></div>
+            <div class="config-row" style="padding:12px 0;">
+              <div><div style="font-weight:600;font-size:13px;">Cho xem trước miễn phí</div><div style="font-size:12px;color:var(--muted);">Khách chưa mua vẫn xem được</div></div>
+              <div class="toggle" onclick="this.classList.toggle('on')"></div>
+            </div>
+          </div>
+          <div class="alert alert-amber" style="font-size:12px;">⚠️ Sau khi lưu, học viên đã enroll sẽ thấy bài học này ngay.</div>
+        </div>
+      </div>
+    </div><!-- /p-lesson-new -->
+
+    <!-- ╔══════════════════════════════╗
+         ║  A-08  EDIT LESSON (reuse)   ║
+         ╚══════════════════════════════╝ -->
+    <div id="p-lesson-edit" style="display:none;">
+      <div class="pg-hd">
+        <div><div class="pg-title">Chỉnh sửa bài học</div><div class="pg-sub">Function và module trong Python · Bài 5</div></div>
+        <div class="pg-actions">
+          <button class="btn btn-ghost" onclick="nav('curriculum','sb-curriculum')">← Quay lại</button>
+          <button class="btn btn-danger" onclick="toast('🗑️ Xác nhận xóa bài học?')">Xóa bài</button>
+          <button class="btn btn-blue" onclick="toast('✅ Đã lưu bài học!')">💾 Lưu thay đổi</button>
+        </div>
+      </div>
+      <div class="two-panel">
+        <div>
+          <div class="card card-pad mb16">
+            <div class="fg"><label class="fl">Tiêu đề</label><input type="text" class="fi" value="Function và module trong Python"></div>
+            <div class="fg"><label class="fl">Mô tả</label><input type="text" class="fi" value="Học cách định nghĩa và sử dụng function, import module"></div>
+            <div class="fg"><label class="fl">Loại bài học</label>
+              <select class="fi"><option>🎥 Video</option><option>📄 Text / Tài liệu</option></select>
+            </div>
+            <div class="fg"><label class="fl">Nguồn video</label>
+              <select class="fi" style="margin-bottom:10px;"><option>📤 File upload</option><option>🔗 YouTube</option><option>🔗 Vimeo</option><option>🔗 Google Drive</option></select>
+            </div>
+            <div style="background:var(--bg);border-radius:var(--r);padding:14px;border:1px solid var(--border);">
+              <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+                <span style="font-size:20px;">🎬</span>
+                <div><div style="font-weight:700;font-size:13px;">python-function-module.mp4</div><div style="font-size:12px;color:var(--muted);">MP4 · 245 MB · 22:15 · ✅ Đã upload</div></div>
+              </div>
+              <button class="btn btn-ghost btn-sm" onclick="toast('📂 Chọn video mới...')">🔄 Thay video khác</button>
+            </div>
+          </div>
+          <div class="card card-pad">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;"><div class="card-title">📎 Tài liệu đính kèm (2)</div><button class="btn btn-out btn-sm" onclick="toast('📂 Upload thêm tài liệu...')">+ Thêm file</button></div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div style="display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r);"><span style="font-size:20px;">📄</span><div style="flex:1;"><div style="font-weight:700;font-size:13px;">Functions-Cheatsheet.pdf</div><div style="font-size:12px;color:var(--muted);">PDF · 1.2 MB</div></div><button class="btn btn-danger btn-sm">🗑️</button></div>
+              <div style="display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r);"><span style="font-size:20px;">📊</span><div style="flex:1;"><div style="font-weight:700;font-size:13px;">Bai-tap-function.xlsx</div><div style="font-size:12px;color:var(--muted);">Excel · 450 KB</div></div><button class="btn btn-danger btn-sm">🗑️</button></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="card card-pad mb16">
+            <div class="card-title mb16">⚙️ Thiết lập</div>
+            <div class="fg"><label class="fl">Thứ tự</label><input type="number" class="fi" value="5"></div>
+            <div class="fg"><label class="fl">Trạng thái</label><select class="fi"><option>✅ Published</option><option>📝 Draft</option></select></div>
+          </div>
+          <div class="card card-pad">
+            <div class="card-title mb12">📊 Số liệu bài học</div>
+            <div style="font-size:13px;display:flex;flex-direction:column;gap:8px;color:var(--muted);">
+              <div class="flex gap8">👁️ <span><strong>285</strong> lượt xem</span></div>
+              <div class="flex gap8">✅ <span><strong>220</strong> đã hoàn thành</span></div>
+              <div class="flex gap8">📊 <span>Tỷ lệ: <strong style="color:var(--green);">77%</strong></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /p-lesson-edit -->
+
+    <!-- ╔══════════════════════════════╗
+         ║  A-09  ENROLLMENTS           ║
+         ╚══════════════════════════════╝ -->
+    <div id="p-enrollments" style="display:none;">
+      <div class="pg-hd">
+        <div><div class="pg-title">Duyệt đăng ký</div><div class="pg-sub">5 yêu cầu đang chờ · 242 đã xử lý</div></div>
+        <div class="pg-actions">
+          <button class="btn btn-green" onclick="toast('✅ Đã duyệt tất cả yêu cầu PENDING!')">✅ Duyệt tất cả pending</button>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px;">
+        <div class="card" style="padding:18px;display:flex;align-items:center;gap:14px;border-left:4px solid var(--amber);">
+          <div style="font-size:32px;">⏳</div><div><div style="font-size:24px;font-weight:900;color:var(--amber);">5</div><div style="font-size:12px;color:var(--muted);">Chờ duyệt</div></div>
+        </div>
+        <div class="card" style="padding:18px;display:flex;align-items:center;gap:14px;border-left:4px solid var(--green);">
+          <div style="font-size:32px;">✅</div><div><div style="font-size:24px;font-weight:900;color:var(--green);">237</div><div style="font-size:12px;color:var(--muted);">Đã duyệt</div></div>
+        </div>
+        <div class="card" style="padding:18px;display:flex;align-items:center;gap:14px;border-left:4px solid var(--red);">
+          <div style="font-size:32px;">❌</div><div><div style="font-size:24px;font-weight:900;color:var(--red);">5</div><div style="font-size:12px;color:var(--muted);">Đã từ chối</div></div>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <div class="sw" style="max-width:280px;flex:1;"><span class="sw-ico">🔍</span><input type="text" placeholder="Tìm học viên, khóa học..."></div>
+        <button class="fb act" onclick="setF(this)">Tất cả</button>
+        <button class="fb" onclick="setF(this)">⏳ Chờ duyệt (5)</button>
+        <button class="fb" onclick="setF(this)">✅ Đã duyệt</button>
+        <button class="fb" onclick="setF(this)">❌ Từ chối</button>
+        <select class="fi" style="width:auto;padding:7px 14px;font-size:13px;"><option>Tất cả khóa học</option><option>Python cơ bản</option><option>UI/UX Figma</option></select>
+      </div>
+
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Học viên</th><th>Khóa học</th><th>Ngày đăng ký</th><th>Số tiền</th><th>Biên lai</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>
+          <tbody>
+            <tr style="background:#FFFBEB;">
+              <td><div style="display:flex;align-items:center;gap:10px;"><div class="avatar-sm" style="background:var(--blue-lt);color:var(--blue);">N</div><div><div style="font-weight:700;">Nguyễn Văn A</div><div style="font-size:12px;color:var(--muted);">hv001@gmail.com</div></div></div></td>
+              <td><div style="font-weight:600;">Python cơ bản</div><div style="font-size:12px;color:var(--muted);">500.000đ</div></td>
+              <td style="color:var(--muted);">10/04/2026 09:15</td>
+              <td style="font-weight:800;color:var(--red);">500.000đ</td>
+              <td><button class="btn btn-out btn-sm" onclick="openModal()">🖼️ Xem biên lai</button></td>
+              <td><span class="badge badge-amber">⏳ Chờ duyệt</span></td>
+              <td>
+                <div class="td-actions">
+                  <button class="btn btn-green btn-sm" onclick="toast('✅ Đã duyệt — Nguyễn Văn A · Python!')">✅ Duyệt</button>
+                  <button class="btn btn-danger btn-sm" onclick="toast('❌ Đã từ chối — nhập lý do')">❌ Từ chối</button>
+                </div>
+              </td>
+            </tr>
+            <tr style="background:#FFFBEB;">
+              <td><div style="display:flex;align-items:center;gap:10px;"><div class="avatar-sm" style="background:var(--green-lt);color:var(--green);">T</div><div><div style="font-weight:700;">Trần Thị B</div><div style="font-size:12px;color:var(--muted);">ttb@gmail.com</div></div></div></td>
+              <td><div style="font-weight:600;">UI/UX Figma</div><div style="font-size:12px;color:var(--muted);">600.000đ</div></td>
+              <td style="color:var(--muted);">10/04/2026 10:30</td>
+              <td style="font-weight:800;color:var(--red);">600.000đ</td>
+              <td><span style="font-size:12px;color:var(--muted);">— Chưa upload</span></td>
+              <td><span class="badge badge-amber">⏳ Chờ duyệt</span></td>
+              <td><div class="td-actions"><button class="btn btn-green btn-sm" onclick="toast('✅ Đã duyệt!')">✅ Duyệt</button><button class="btn btn-danger btn-sm" onclick="toast('❌ Từ chối!')">❌ Từ chối</button></div></td>
+            </tr>
+            <tr>
+              <td><div style="display:flex;align-items:center;gap:10px;"><div class="avatar-sm" style="background:var(--purple-lt);color:var(--purple);">L</div><div><div style="font-weight:700;">Lê Văn C</div><div style="font-size:12px;color:var(--muted);">lvc@gmail.com</div></div></div></td>
+              <td><div style="font-weight:600;">Spring Boot</div><div style="font-size:12px;color:var(--muted);">800.000đ</div></td>
+              <td style="color:var(--muted);">01/03/2026</td>
+              <td style="font-weight:800;color:var(--red);">800.000đ</td>
+              <td><span style="font-size:12px;color:var(--green);">✅ Đã upload</span></td>
+              <td><span class="badge badge-green">✅ Đã duyệt</span></td>
+              <td><div style="font-size:12px;color:var(--muted);">Duyệt bởi Admin · 01/03</div></td>
+            </tr>
+            <tr>
+              <td><div style="display:flex;align-items:center;gap:10px;"><div class="avatar-sm" style="background:var(--red-lt);color:var(--red);">P</div><div><div style="font-weight:700;">Phạm Thị D</div><div style="font-size:12px;color:var(--muted);">ptd@gmail.com</div></div></div></td>
+              <td><div style="font-weight:600;">Machine Learning</div><div style="font-size:12px;color:var(--muted);">1.200.000đ</div></td>
+              <td style="color:var(--muted);">05/01/2026</td>
+              <td style="font-weight:800;color:var(--red);">1.200.000đ</td>
+              <td><span style="font-size:12px;color:var(--muted);">— Chưa upload</span></td>
+              <td><span class="badge badge-red">❌ Từ chối</span></td>
+              <td><div style="font-size:12px;color:var(--muted);">Không tìm thấy GD</div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div><!-- /p-enrollments -->
+
+    <!-- ╔══════════════════════════════╗
+         ║  A-10  USER MANAGEMENT       ║
+         ╚══════════════════════════════╝ -->
+    <div id="p-users" style="display:none;">
+      <div class="pg-hd">
+        <div><div class="pg-title">Quản lý User</div><div class="pg-sub">1,248 tài khoản · 15 giáo viên · 4 admin</div></div>
+        <div class="pg-actions">
+          <button class="btn btn-blue" onclick="nav('user-new','sb-users')">+ Tạo tài khoản</button>
+        </div>
+      </div>
+      <div class="toolbar">
+        <div class="sw" style="max-width:280px;flex:1;"><span class="sw-ico">🔍</span><input type="text" placeholder="Tìm tên, email..."></div>
+        <button class="fb act" onclick="setF(this)">Tất cả</button>
+        <button class="fb" onclick="setF(this)">🎓 Student</button>
+        <button class="fb" onclick="setF(this)">👨‍🏫 Teacher</button>
+        <button class="fb" onclick="setF(this)">🛡️ Admin</button>
+        <button class="fb" onclick="setF(this)">🚫 Bị khóa</button>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Người dùng</th><th>Role</th><th>Trạng thái</th><th>Khóa đã đăng ký</th><th>Ngày tham gia</th><th>Thao tác</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><div style="display:flex;align-items:center;gap:10px;"><div class="avatar-sm" style="background:#EFF6FF;color:var(--blue);">A</div><div><div style="font-weight:700;">Admin User</div><div style="font-size:12px;color:var(--muted);">admin@edupro.vn</div></div></div></td>
+              <td><span class="badge badge-purple">🛡️ ADMIN</span></td>
+              <td><span class="badge badge-green">● Active</span></td>
+              <td>—</td>
+              <td style="color:var(--muted);">01/01/2026</td>
+              <td><div class="td-actions"><button class="btn btn-ghost btn-sm" onclick="nav('user-edit','sb-users')">✏️ Sửa</button></div></td>
+            </tr>
+            <tr>
+              <td><div style="display:flex;align-items:center;gap:10px;"><div class="avatar-sm" style="background:var(--green-lt);color:var(--green);">T</div><div><div style="font-weight:700;">Trần Văn Hùng</div><div style="font-size:12px;color:var(--muted);">tvh@edupro.vn</div></div></div></td>
+              <td><span class="badge badge-blue">👨‍🏫 TEACHER</span></td>
+              <td><span class="badge badge-green">● Active</span></td>
+              <td>—</td>
+              <td style="color:var(--muted);">15/01/2026</td>
+              <td><div class="td-actions"><button class="btn btn-ghost btn-sm" onclick="nav('user-edit','sb-users')">✏️</button><button class="btn btn-danger btn-sm" onclick="toast('🚫 Đã khóa tài khoản!')">🚫</button></div></td>
+            </tr>
+            <tr>
+              <td><div style="display:flex;align-items:center;gap:10px;"><div class="avatar-sm" style="background:var(--blue-lt);color:var(--blue);">N</div><div><div style="font-weight:700;">Nguyễn Văn A</div><div style="font-size:12px;color:var(--muted);">nva@gmail.com</div></div></div></td>
+              <td><span class="badge badge-gray">🎓 STUDENT</span></td>
+              <td><span class="badge badge-green">● Active</span></td>
+              <td><strong>3</strong> khóa</td>
+              <td style="color:var(--muted);">01/02/2026</td>
+              <td><div class="td-actions"><button class="btn btn-ghost btn-sm" onclick="nav('user-edit','sb-users')">✏️</button><button class="btn btn-danger btn-sm" onclick="toast('🚫 Khóa tài khoản!')">🚫</button></div></td>
+            </tr>
+            <tr>
+              <td><div style="display:flex;align-items:center;gap:10px;"><div class="avatar-sm" style="background:#F3F4F6;color:var(--muted);">X</div><div><div style="font-weight:700;color:var(--muted);">Hoàng Văn X</div><div style="font-size:12px;color:var(--muted);">hvx@gmail.com</div></div></div></td>
+              <td><span class="badge badge-gray">🎓 STUDENT</span></td>
+              <td><span class="badge badge-red">🚫 Blocked</span></td>
+              <td><strong>1</strong> khóa</td>
+              <td style="color:var(--muted);">10/03/2026</td>
+              <td><div class="td-actions"><button class="btn btn-green btn-sm" onclick="toast('✅ Đã mở khóa tài khoản!')">🔓 Mở khóa</button></div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div><!-- /p-users -->
+
+    <!-- ╔══════════════════════════════╗
+         ║  A-11  CREATE/EDIT USER      ║
+         ╚══════════════════════════════╝ -->
+    <div id="p-user-new" style="display:none;">
+      <div class="pg-hd">
+        <div><div class="pg-title">Tạo tài khoản mới</div><div class="pg-sub">Admin tạo tài khoản Teacher hoặc Admin</div></div>
+        <div class="pg-actions">
+          <button class="btn btn-ghost" onclick="nav('users','sb-users')">← Quay lại</button>
+          <button class="btn btn-blue" onclick="toast('✅ Đã tạo tài khoản thành công!')">✅ Tạo tài khoản</button>
+        </div>
+      </div>
+      <div style="max-width:600px;">
+        <div class="card card-pad">
+          <div class="fg"><label class="fl">Họ và tên <span class="req">*</span></label><input type="text" class="fi" placeholder="Nhập họ và tên đầy đủ"></div>
+          <div class="fg"><label class="fl">Email <span class="req">*</span></label><input type="email" class="fi" placeholder="teacher@edupro.vn"></div>
+          <div class="fg"><label class="fl">Số điện thoại</label><input type="tel" class="fi" placeholder="0901 234 567"></div>
+          <div class="form-row">
+            <div class="fg"><label class="fl">Mật khẩu <span class="req">*</span></label><input type="password" class="fi" placeholder="Tối thiểu 8 ký tự"></div>
+            <div class="fg"><label class="fl">Xác nhận mật khẩu</label><input type="password" class="fi" placeholder="Nhập lại mật khẩu"></div>
+          </div>
+          <div class="fg"><label class="fl">Phân quyền <span class="req">*</span></label>
+            <select class="fi">
+              <option>🎓 STUDENT — Học viên</option>
+              <option selected>👨‍🏫 TEACHER — Giáo viên</option>
+              <option>🛡️ ADMIN — Quản trị viên</option>
+            </select>
+          </div>
+          <div class="alert alert-amber" style="font-size:12px;">⚠️ Tài khoản Teacher có thể tạo và quản lý khóa học của mình. Admin có toàn quyền hệ thống.</div>
+          <div class="config-row" style="padding:12px 0;">
+            <div><div style="font-weight:600;font-size:13px;">Gửi email chào mừng</div><div style="font-size:12px;color:var(--muted);">Gửi mật khẩu tạm thời qua email</div></div>
+            <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Edit user (reuse) -->
+    <div id="p-user-edit" style="display:none;">
+      <div class="pg-hd">
+        <div><div class="pg-title">Chỉnh sửa tài khoản</div><div class="pg-sub">Trần Văn Hùng · TEACHER</div></div>
+        <div class="pg-actions">
+          <button class="btn btn-ghost" onclick="nav('users','sb-users')">← Quay lại</button>
+          <button class="btn btn-danger" onclick="toast('🚫 Đã khóa tài khoản!')">🚫 Khóa TK</button>
+          <button class="btn btn-blue" onclick="toast('✅ Đã lưu thay đổi!')">💾 Lưu</button>
+        </div>
+      </div>
+      <div class="two-panel">
+        <div class="card card-pad">
+          <div class="fg"><label class="fl">Họ và tên</label><input type="text" class="fi" value="Trần Văn Hùng"></div>
+          <div class="fg"><label class="fl">Email</label><input type="email" class="fi" value="tvh@edupro.vn" disabled></div>
+          <div class="fg"><label class="fl">Số điện thoại</label><input type="tel" class="fi" value="0912 345 678"></div>
+          <div class="fg"><label class="fl">Phân quyền</label><select class="fi"><option>🎓 STUDENT</option><option selected>👨‍🏫 TEACHER</option><option>🛡️ ADMIN</option></select></div>
+          <div class="fg"><label class="fl">Trạng thái</label><select class="fi"><option>● Active</option><option>🚫 Blocked</option></select></div>
+          <div class="divider"></div>
+          <div class="fg"><label class="fl">Đặt lại mật khẩu mới</label><input type="password" class="fi" placeholder="Để trống nếu không đổi"></div>
+        </div>
+        <div>
+          <div class="card card-pad mb16">
+            <div class="card-title mb12">📊 Thống kê</div>
+            <div style="display:flex;flex-direction:column;gap:10px;font-size:13px;color:var(--muted);">
+              <div class="flex gap8">📚 <span><strong>3</strong> khóa học đang dạy</span></div>
+              <div class="flex gap8">🎓 <span><strong>620</strong> học viên tổng cộng</span></div>
+              <div class="flex gap8">⭐ <span>Rating trung bình: <strong style="color:var(--amber);">4.8</strong></span></div>
+              <div class="flex gap8">🗓️ <span>Tham gia: <strong>15/01/2026</strong></span></div>
+            </div>
+          </div>
+          <div class="card card-pad">
+            <div class="card-title mb12">📚 Khóa học phụ trách</div>
+            <div style="font-size:13px;display:flex;flex-direction:column;gap:8px;">
+              <div class="flex gap8"><div class="course-thumb-mini" style="background:linear-gradient(135deg,#667eea,#764ba2);">🐍</div>Python cơ bản · <strong>320 HV</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /user-edit -->
+
+    <!-- ╔══════════════════════════════╗
+         ║  A-12  REPORTS OVERVIEW      ║
+         ╚══════════════════════════════╝ -->
+    <div id="p-reports" style="display:none;">
+      <div class="pg-hd">
+        <div><div class="pg-title">Báo cáo & Thống kê</div><div class="pg-sub">Tổng quan hệ thống · Cập nhật: 13/04/2026</div></div>
+        <div class="pg-actions">
+          <select class="fi" style="width:auto;padding:8px 14px;font-size:13px;"><option>Tháng này</option><option>Tháng trước</option><option>Quý này</option><option>Cả năm 2026</option></select>
+          <button class="btn btn-ghost">📥 Xuất báo cáo</button>
+        </div>
+      </div>
+
+      <!-- KPIs -->
+      <div class="stat-grid mb24">
+        <div class="stat-card"><div class="stat-icon" style="background:var(--purple-lt);">💰</div><div><div class="stat-n" style="color:var(--purple);">42M</div><div class="stat-l">Doanh thu tháng 4</div><div class="stat-trend trend-up">▲ 18% so tháng 3</div></div></div>
+        <div class="stat-card"><div class="stat-icon" style="background:var(--green-lt);">✅</div><div><div class="stat-n" style="color:var(--green);">85</div><div class="stat-l">Enrollment mới tháng 4</div><div class="stat-trend trend-up">▲ 12 so tháng 3</div></div></div>
+        <div class="stat-card"><div class="stat-icon" style="background:var(--blue-lt);">📈</div><div><div class="stat-n" style="color:var(--blue);">68%</div><div class="stat-l">Tỷ lệ hoàn thành TB</div><div class="stat-trend trend-up">▲ 3% so tháng 3</div></div></div>
+        <div class="stat-card"><div class="stat-icon" style="background:var(--amber-lt);">⏱️</div><div><div class="stat-n" style="color:var(--amber);">4.2h</div><div class="stat-l">Giờ học TB/học viên</div><div class="stat-trend trend-up">▲ 0.5h so tháng 3</div></div></div>
+      </div>
+
+      <!-- Charts -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;">
+        <div class="card">
+          <div class="card-header"><span class="card-title">💰 Doanh thu 6 tháng</span></div>
+          <div class="card-body">
+            <div class="chart-ph">
+              <div class="chart-bars">
+                <div class="bar" style="height:50%;background:var(--purple-lt);width:36px;"></div>
+                <div class="bar" style="height:70%;background:var(--purple-lt);width:36px;"></div>
+                <div class="bar" style="height:60%;background:var(--purple-lt);width:36px;"></div>
+                <div class="bar" style="height:85%;background:var(--purple-lt);width:36px;"></div>
+                <div class="bar" style="height:75%;background:var(--purple);width:36px;"></div>
+                <div class="bar" style="height:100%;background:var(--purple);width:36px;"></div>
+              </div>
+              <div style="display:flex;gap:16px;font-size:11px;color:var(--muted);">T11·25<span>T12·25</span><span>T1·26</span><span>T2·26</span><span>T3·26</span><span>T4·26</span></div>
+              <span style="font-size:12px;">Đơn vị: triệu VNĐ</span>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">🎓 Học viên mới theo tháng</span></div>
+          <div class="card-body">
+            <div class="chart-ph">
+              <div class="chart-bars">
+                <div class="bar" style="height:40%;background:var(--green-lt);width:36px;"></div>
+                <div class="bar" style="height:55%;background:var(--green-lt);width:36px;"></div>
+                <div class="bar" style="height:80%;background:var(--green-lt);width:36px;"></div>
+                <div class="bar" style="height:65%;background:var(--green-lt);width:36px;"></div>
+                <div class="bar" style="height:90%;background:var(--green);width:36px;"></div>
+                <div class="bar" style="height:100%;background:var(--green);width:36px;"></div>
+              </div>
+              <div style="display:flex;gap:16px;font-size:11px;color:var(--muted);">T11·25<span>T12·25</span><span>T1·26</span><span>T2·26</span><span>T3·26</span><span>T4·26</span></div>
+              <span style="font-size:12px;">Số học viên đăng ký mới</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Course performance table -->
+      <div class="card">
+        <div class="card-header"><span class="card-title">📊 Hiệu suất theo khóa học</span></div>
+        <table>
+          <thead><tr><th>Khóa học</th><th>Giáo viên</th><th>Học viên</th><th>Enrollment tháng này</th><th>Hoàn thành TB</th><th>Doanh thu</th><th></th></tr></thead>
+          <tbody>
+            <tr><td><div style="font-weight:700;">Python cơ bản</div></td><td>Trần Văn Hùng</td><td>320</td><td><span class="badge badge-green">+28</span></td><td><div style="display:flex;align-items:center;gap:8px;"><div class="prog" style="width:80px;"><div class="prog-f" style="width:72%"></div></div>72%</div></td><td style="font-weight:800;color:var(--purple);">14M</td><td><button class="btn btn-out btn-sm" onclick="nav('report-detail','sb-report-detail')">Chi tiết</button></td></tr>
+            <tr><td><div style="font-weight:700;">Machine Learning</div></td><td>Trần Thị Bích</td><td>285</td><td><span class="badge badge-green">+22</span></td><td><div style="display:flex;align-items:center;gap:8px;"><div class="prog" style="width:80px;"><div class="prog-f" style="width:65%"></div></div>65%</div></td><td style="font-weight:800;color:var(--purple);">26.4M</td><td><button class="btn btn-out btn-sm" onclick="nav('report-detail','sb-report-detail')">Chi tiết</button></td></tr>
+            <tr><td><div style="font-weight:700;">UI/UX Figma</div></td><td>Lê Minh Tuấn</td><td>210</td><td><span class="badge badge-green">+18</span></td><td><div style="display:flex;align-items:center;gap:8px;"><div class="prog" style="width:80px;"><div class="prog-f" style="width:80%"></div></div>80%</div></td><td style="font-weight:800;color:var(--purple);">12.6M</td><td><button class="btn btn-out btn-sm" onclick="nav('report-detail','sb-report-detail')">Chi tiết</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div><!-- /p-reports -->
+
+    <!-- ╔══════════════════════════════╗
+         ║  A-13  REPORT DETAIL         ║
+         ╚══════════════════════════════╝ -->
+    <div id="p-report-detail" style="display:none;">
+      <div class="pg-hd">
+        <div><div class="pg-title">Chi tiết: Python cơ bản</div><div class="pg-sub">Báo cáo hiệu suất khóa học</div></div>
+        <div class="pg-actions"><button class="btn btn-ghost" onclick="nav('reports','sb-reports')">← Báo cáo tổng</button><button class="btn btn-ghost">📥 Export CSV</button></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px;">
+        <div class="card" style="padding:18px;"><div style="font-size:24px;font-weight:900;color:var(--blue);">320</div><div style="font-size:12px;color:var(--muted);">Tổng học viên</div></div>
+        <div class="card" style="padding:18px;"><div style="font-size:24px;font-weight:900;color:var(--green);">230</div><div style="font-size:12px;color:var(--muted);">Đang học tích cực</div></div>
+        <div class="card" style="padding:18px;"><div style="font-size:24px;font-weight:900;color:var(--amber);">72%</div><div style="font-size:12px;color:var(--muted);">Hoàn thành TB</div></div>
+        <div class="card" style="padding:18px;"><div style="font-size:24px;font-weight:900;color:var(--purple);">160M</div><div style="font-size:12px;color:var(--muted);">Doanh thu</div></div>
+      </div>
+      <div class="card mb24">
+        <div class="card-header"><span class="card-title">📈 Tỷ lệ hoàn thành từng bài học</span></div>
+        <div class="card-body" style="padding:0;">
+          <table>
+            <thead><tr><th>#</th><th>Tên bài</th><th>Loại</th><th>Lượt xem</th><th>Hoàn thành</th><th>Tỷ lệ</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>Giới thiệu Python</td><td><span class="badge badge-blue">VIDEO</span></td><td>318</td><td>318</td><td><div style="display:flex;align-items:center;gap:8px;"><div class="prog" style="width:100px;"><div class="prog-f done" style="width:99%"></div></div><span style="font-weight:700;color:var(--green);">99%</span></div></td></tr>
+              <tr><td>2</td><td>Biến và kiểu dữ liệu</td><td><span class="badge badge-blue">VIDEO</span></td><td>315</td><td>310</td><td><div style="display:flex;align-items:center;gap:8px;"><div class="prog" style="width:100px;"><div class="prog-f" style="width:98%"></div></div><span>98%</span></div></td></tr>
+              <tr><td>3</td><td>Python Cheatsheet</td><td><span class="badge badge-green">TEXT</span></td><td>290</td><td>285</td><td><div style="display:flex;align-items:center;gap:8px;"><div class="prog" style="width:100px;"><div class="prog-f" style="width:90%"></div></div><span>90%</span></div></td></tr>
+              <tr><td>4</td><td>Điều kiện & vòng lặp</td><td><span class="badge badge-blue">VIDEO</span></td><td>280</td><td>265</td><td><div style="display:flex;align-items:center;gap:8px;"><div class="prog" style="width:100px;"><div class="prog-f" style="width:83%"></div></div><span>83%</span></div></td></tr>
+              <tr><td>5</td><td>Function và module</td><td><span class="badge badge-blue">VIDEO</span></td><td>255</td><td>230</td><td><div style="display:flex;align-items:center;gap:8px;"><div class="prog" style="width:100px;"><div class="prog-f" style="width:72%"></div></div><span>72%</span></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">👥 Top học viên tích cực</span></div>
+        <table>
+          <thead><tr><th>Học viên</th><th>Tiến độ</th><th>Bài hoàn thành</th><th>Giờ học</th><th>Lần học cuối</th></tr></thead>
+          <tbody>
+            <tr><td><div style="display:flex;align-items:center;gap:8px;"><div class="avatar-sm" style="background:var(--blue-lt);color:var(--blue);">N</div>Nguyễn Văn A</div></td><td><div style="display:flex;align-items:center;gap:8px;"><div class="prog" style="width:80px;"><div class="prog-f done" style="width:100%"></div></div><span style="color:var(--green);font-weight:700;">100%</span></div></td><td>12/12</td><td>6h45p</td><td>Hôm nay</td></tr>
+            <tr><td><div style="display:flex;align-items:center;gap:8px;"><div class="avatar-sm" style="background:var(--green-lt);color:var(--green);">T</div>Trần Thị B</div></td><td><div style="display:flex;align-items:center;gap:8px;"><div class="prog" style="width:80px;"><div class="prog-f" style="width:92%"></div></div><span>92%</span></div></td><td>11/12</td><td>6h10p</td><td>Hôm qua</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div><!-- /p-report-detail -->
+
+    <!-- ╔══════════════════════════════╗
+         ║  A-14  SYSTEM SETTINGS       ║
+         ╚══════════════════════════════╝ -->
+    <div id="p-settings" style="display:none;">
+      <div class="pg-hd">
+        <div><div class="pg-title">Cấu hình hệ thống</div><div class="pg-sub">Thiết lập vận hành LMS</div></div>
+        <div class="pg-actions"><button class="btn btn-blue" onclick="toast('✅ Đã lưu cấu hình!')">💾 Lưu tất cả</button></div>
+      </div>
+      <div class="tabs">
+        <div class="tab act" onclick="setCfgTab(this,'cfg-general')">⚙️ Chung</div>
+        <div class="tab" onclick="setCfgTab(this,'cfg-bank')">🏦 Ngân hàng</div>
+        <div class="tab" onclick="setCfgTab(this,'cfg-upload')">📁 Upload & Lưu trữ</div>
+        <div class="tab" onclick="setCfgTab(this,'cfg-email')">📧 Email</div>
+      </div>
+
+      <!-- GENERAL CONFIG -->
+      <div id="cfg-general">
+        <div class="card card-pad mb16">
+          <div class="card-title mb20">🎯 Thiết lập học tập</div>
+          <div class="config-row">
+            <div>
+              <div style="font-weight:700;">Chế độ tính "Hoàn thành bài"</div>
+              <div style="font-size:12px;color:var(--muted);">Áp dụng cho toàn hệ thống</div>
+            </div>
+            <div style="display:flex;gap:10px;">
+              <div id="mode-open" onclick="selectMode('open')" style="border:2px solid var(--blue);border-radius:var(--r);padding:10px 16px;cursor:pointer;background:var(--blue-lt);font-size:13px;font-weight:700;color:var(--blue);text-align:center;">
+                👁️ OPEN<div style="font-size:11px;font-weight:400;opacity:.8;">Click mở bài = hoàn thành</div>
+              </div>
+              <div id="mode-video50" onclick="selectMode('video50')" style="border:2px solid var(--border);border-radius:var(--r);padding:10px 16px;cursor:pointer;font-size:13px;font-weight:600;color:var(--muted);text-align:center;">
+                🎥 VIDEO 50%<div style="font-size:11px;font-weight:400;">Xem ≥50% video = hoàn thành</div>
+              </div>
+            </div>
+          </div>
+          <div class="config-row">
+            <div><div style="font-weight:700;">Tên thương hiệu</div><div style="font-size:12px;color:var(--muted);">Hiển thị trên tất cả trang</div></div>
+            <input type="text" class="fi" style="width:220px;" value="EduPro">
+          </div>
+          <div class="config-row">
+            <div><div style="font-weight:700;">Email hỗ trợ</div><div style="font-size:12px;color:var(--muted);">Hiển thị cho học viên liên hệ</div></div>
+            <input type="email" class="fi" style="width:220px;" value="support@edupro.vn">
+          </div>
+          <div class="config-row">
+            <div><div style="font-weight:700;">Cho phép học viên tự đăng ký</div><div style="font-size:12px;color:var(--muted);">Tắt nếu muốn Admin tạo tài khoản thủ công</div></div>
+            <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BANK CONFIG -->
+      <div id="cfg-bank" style="display:none;">
+        <div class="card card-pad">
+          <div class="card-title mb20">🏦 Thông tin tài khoản nhận chuyển khoản</div>
+          <div class="form-row">
+            <div class="fg"><label class="fl">Tên ngân hàng <span class="req">*</span></label><input type="text" class="fi" value="Vietcombank"></div>
+            <div class="fg"><label class="fl">Chi nhánh</label><input type="text" class="fi" value="Chi nhánh HCM"></div>
+          </div>
+          <div class="form-row">
+            <div class="fg"><label class="fl">Số tài khoản <span class="req">*</span></label><input type="text" class="fi" value="1234567890"></div>
+            <div class="fg"><label class="fl">Tên chủ tài khoản <span class="req">*</span></label><input type="text" class="fi" value="NGUYEN VAN A"></div>
+          </div>
+          <div class="fg"><label class="fl">Mẫu nội dung chuyển khoản</label><input type="text" class="fi" value="LMS [MaHV] [TenKhoa]"><p class="hint">Biến: [MaHV] = mã học viên, [TenKhoa] = tên khóa học, [Email] = email học viên</p></div>
+          <div class="fg"><label class="fl">Ảnh QR Code (tùy chọn)</label>
+            <div class="upload-zone" onclick="toast('📂 Upload QR code...')">
+              <div class="uz-ico">📱</div>
+              <div class="uz-title">Upload ảnh QR chuyển khoản</div>
+              <div class="uz-sub">JPG, PNG · Tối đa 2MB</div>
+            </div>
+          </div>
+          <div style="background:linear-gradient(135deg,#0056D2,#1A1A6E);border-radius:12px;padding:22px;color:#fff;margin-top:16px;">
+            <div style="font-size:11px;opacity:.6;margin-bottom:16px;">PREVIEW — Hiển thị cho học viên khi đăng ký</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+              <div><div style="font-size:11px;opacity:.6;">Ngân hàng</div><div style="font-weight:800;">Vietcombank</div></div>
+              <div><div style="font-size:11px;opacity:.6;">Số TK</div><div style="font-weight:800;font-size:20px;letter-spacing:2px;">1234 5678 90</div></div>
+              <div><div style="font-size:11px;opacity:.6;">Chủ TK</div><div style="font-weight:800;">NGUYEN VAN A</div></div>
+              <div><div style="font-size:11px;opacity:.6;">Chi nhánh</div><div style="font-weight:800;">Chi nhánh HCM</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- UPLOAD CONFIG -->
+      <div id="cfg-upload" style="display:none;">
+        <div class="card card-pad">
+          <div class="card-title mb20">📁 Giới hạn Upload</div>
+          <div class="config-row">
+            <div><div style="font-weight:700;">Kích thước tối đa — Video</div><div style="font-size:12px;color:var(--muted);">Mặc định: 2048 MB (2 GB)</div></div>
+            <div style="display:flex;align-items:center;gap:8px;"><input type="number" class="fi" style="width:100px;" value="2048"> <span style="color:var(--muted);">MB</span></div>
+          </div>
+          <div class="config-row">
+            <div><div style="font-weight:700;">Kích thước tối đa — Tài liệu</div><div style="font-size:12px;color:var(--muted);">Áp dụng cho PDF, DOCX, XLSX...</div></div>
+            <div style="display:flex;align-items:center;gap:8px;"><input type="number" class="fi" style="width:100px;" value="50"> <span style="color:var(--muted);">MB</span></div>
+          </div>
+          <div class="config-row">
+            <div><div style="font-weight:700;">Định dạng video cho phép</div></div>
+            <input type="text" class="fi" style="width:280px;" value="mp4, mov, webm, avi">
+          </div>
+          <div class="config-row">
+            <div><div style="font-weight:700;">Định dạng tài liệu cho phép</div></div>
+            <input type="text" class="fi" style="width:280px;" value="pdf, docx, xlsx, pptx, txt">
+          </div>
+        </div>
+      </div>
+
+      <!-- EMAIL CONFIG -->
+      <div id="cfg-email" style="display:none;">
+        <div class="card card-pad">
+          <div class="card-title mb20">📧 Thiết lập Email thông báo</div>
+          <div class="config-row"><div><div style="font-weight:700;">Email khi đăng ký mới (Pending)</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+          <div class="config-row"><div><div style="font-weight:700;">Email khi được duyệt (Approved)</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+          <div class="config-row"><div><div style="font-weight:700;">Email khi bị từ chối (Rejected)</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+          <div class="config-row"><div><div style="font-weight:700;">Email chào mừng khi tạo tài khoản</div></div><div class="toggle" onclick="this.classList.toggle('on')"></div></div>
+          <div class="divider"></div>
+          <div class="fg"><label class="fl">SMTP Host</label><input class="fi" value="smtp.gmail.com"></div>
+          <div class="form-row">
+            <div class="fg"><label class="fl">SMTP Port</label><input class="fi" value="587"></div>
+            <div class="fg"><label class="fl">From Email</label><input class="fi" value="no-reply@edupro.vn"></div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /p-settings -->
+
+  </main><!-- /content -->
+</div><!-- /shell -->
+</div><!-- /s-shell -->
+
+<!-- ══════ MODAL: Receipt Viewer ══════ -->
+<div class="modal-bg" id="modal-receipt">
+  <div class="modal">
+    <div class="modal-hdr">
+      <span class="modal-title">🖼️ Biên lai chuyển khoản</span>
+      <span class="modal-close" onclick="closeModal()">✕</span>
+    </div>
+    <div class="modal-body">
+      <div style="background:var(--bg);border-radius:var(--r);height:260px;display:flex;align-items:center;justify-content:center;font-size:64px;margin-bottom:16px;border:1px solid var(--border);">📸</div>
+      <div style="font-size:13px;display:flex;flex-direction:column;gap:8px;color:var(--muted);">
+        <div class="flex gap8">👤 <span>Học viên: <strong style="color:var(--text);">Nguyễn Văn A</strong></span></div>
+        <div class="flex gap8">📚 <span>Khóa: <strong style="color:var(--text);">Python cơ bản — 500.000đ</strong></span></div>
+        <div class="flex gap8">📅 <span>Ngày upload: <strong style="color:var(--text);">10/04/2026 09:15</strong></span></div>
+        <div class="flex gap8">💬 <span>Ghi chú: <em>"Em đã CK lúc 9h sáng"</em></span></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal()">Đóng</button>
+      <button class="btn btn-danger btn-sm" onclick="closeModal();toast('❌ Đã từ chối!')">❌ Từ chối</button>
+      <button class="btn btn-green" onclick="closeModal();toast('✅ Đã duyệt — Nguyễn Văn A!')">✅ Duyệt ngay</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"><span id="tmsg"></span></div>
+
+<script>
+  let curRole = 'admin';
+  let curPage = 'dashboard';
+
+  /* ─── LOGIN ─── */
+  function doLogin(role) {
+    curRole = role;
+    document.getElementById('s-login').classList.remove('on');
+    document.getElementById('s-shell').classList.add('on');
+    if (role === 'teacher') {
+      document.getElementById('sb-role-lbl').textContent = 'Teacher Portal';
+      document.getElementById('sb-uname').textContent = 'Trần Văn Hùng';
+      document.getElementById('sb-urole').textContent = 'TEACHER';
+      document.getElementById('sb-avatar') && (document.getElementById('sb-avatar').textContent = 'T');
+      document.getElementById('tb-role-badge').textContent = 'TEACHER';
+      document.getElementById('tb-role-badge').style.cssText = 'background:var(--blue-lt);color:var(--blue);';
+      document.getElementById('sb-users').style.display = 'none';
+      document.getElementById('sb-enrollments').style.display = 'none';
+    }
+    toast('👋 Đăng nhập thành công!');
+    nav('dashboard', 'sb-dashboard');
+  }
+
+  function doLogout() {
+    document.getElementById('s-shell').classList.remove('on');
+    document.getElementById('s-login').classList.add('on');
+    toast('👋 Đã đăng xuất!');
+  }
+
+  /* ─── NAVIGATION ─── */
+  const PAGE_TITLES = {
+    'dashboard': 'Dashboard',
+    'courses': 'Quản lý Khóa học',
+    'course-new': 'Tạo khóa học mới',
+    'course-edit': 'Chỉnh sửa khóa học',
+    'curriculum': 'Nội dung bài học',
+    'lesson-new': 'Thêm bài học',
+    'lesson-edit': 'Chỉnh sửa bài học',
+    'enrollments': 'Duyệt đăng ký',
+    'users': 'Quản lý User',
+    'user-new': 'Tạo tài khoản',
+    'user-edit': 'Chỉnh sửa tài khoản',
+    'reports': 'Báo cáo & Thống kê',
+    'report-detail': 'Chi tiết báo cáo',
+    'settings': 'Cấu hình hệ thống',
+  };
+
+  function nav(page, sbId) {
+    /* hide all pages */
+    document.querySelectorAll('[id^="p-"]').forEach(el => el.style.display = 'none');
+    /* show target page */
+    const el = document.getElementById('p-' + page);
+    if (el) el.style.display = 'block';
+    /* update sidebar */
+    document.querySelectorAll('.sb-link').forEach(l => l.classList.remove('act'));
+    if (sbId) { const sb = document.getElementById(sbId); if (sb) sb.classList.add('act'); }
+    /* update topbar */
+    document.getElementById('tb-title').textContent = PAGE_TITLES[page] || page;
+    curPage = page;
+    window.scrollTo(0, 0);
+  }
+
+  /* ─── FILTER BUTTONS ─── */
+  function setF(btn) {
+    btn.closest('.toolbar').querySelectorAll('.fb').forEach(b => b.classList.remove('act'));
+    btn.classList.add('act');
+  }
+
+  /* ─── TABS ─── */
+  function setTab(tab, contentId) {
+    tab.parentElement.querySelectorAll('.tab').forEach(t => t.classList.remove('act'));
+    tab.classList.add('act');
+    ['tab-info','tab-seo','tab-settings'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = id === contentId ? 'block' : 'none';
+    });
+  }
+  function setCfgTab(tab, contentId) {
+    tab.parentElement.querySelectorAll('.tab').forEach(t => t.classList.remove('act'));
+    tab.classList.add('act');
+    ['cfg-general','cfg-bank','cfg-upload','cfg-email'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = id === contentId ? 'block' : 'none';
+    });
+  }
+
+  /* ─── LESSON TYPE SELECTOR ─── */
+  function selectType(type) {
+    const blueStyle = 'border:2px solid var(--blue);border-radius:var(--r);padding:18px;cursor:pointer;background:var(--blue-lt);text-align:center;';
+    const normStyle = 'border:2px solid var(--border);border-radius:var(--r);padding:18px;cursor:pointer;text-align:center;';
+    document.getElementById('type-video').style.cssText = type==='video' ? blueStyle : normStyle;
+    document.getElementById('type-text').style.cssText  = type==='text'  ? blueStyle : normStyle;
+    document.getElementById('video-section').style.display = type==='video' ? 'block' : 'none';
+    document.getElementById('text-section').style.display  = type==='text'  ? 'block' : 'none';
+    if (type==='video') { document.getElementById('type-video').innerHTML='<div style="font-size:32px;margin-bottom:8px;">🎥</div><div style="font-weight:800;color:var(--blue);">Video</div><div style="font-size:12px;color:var(--muted);margin-top:4px;">Upload file hoặc nhúng link</div>'; }
+    if (type==='text')  { document.getElementById('type-text').innerHTML='<div style="font-size:32px;margin-bottom:8px;">📄</div><div style="font-weight:800;color:var(--blue);">Tài liệu / Text</div><div style="font-size:12px;color:var(--muted);margin-top:4px;">Văn bản, hình ảnh, file đính kèm</div>'; }
+  }
+
+  function selectSrc(src) {
+    const act = 'border:2px solid var(--blue);border-radius:var(--r);padding:12px;cursor:pointer;background:var(--blue-lt);text-align:center;font-size:13px;font-weight:700;color:var(--blue);';
+    const norm = 'border:2px solid var(--border);border-radius:var(--r);padding:12px;cursor:pointer;text-align:center;font-size:13px;font-weight:600;color:var(--muted);';
+    document.getElementById('src-upload').style.cssText = src==='upload' ? act : norm;
+    document.getElementById('src-link').style.cssText   = src==='link'   ? act : norm;
+    document.getElementById('upload-area').style.display = src==='upload' ? 'block' : 'none';
+    document.getElementById('link-area').style.display   = src==='link'   ? 'block' : 'none';
+  }
+
+  function selectMode(mode) {
+    const act = 'border:2px solid var(--blue);border-radius:var(--r);padding:10px 16px;cursor:pointer;background:var(--blue-lt);font-size:13px;font-weight:700;color:var(--blue);text-align:center;';
+    const norm = 'border:2px solid var(--border);border-radius:var(--r);padding:10px 16px;cursor:pointer;font-size:13px;font-weight:600;color:var(--muted);text-align:center;';
+    document.getElementById('mode-open').style.cssText    = mode==='open'    ? act : norm;
+    document.getElementById('mode-video50').style.cssText = mode==='video50' ? act : norm;
+    if (mode==='open')    document.getElementById('mode-open').innerHTML    = '👁️ OPEN<div style="font-size:11px;font-weight:700;">Click mở bài = hoàn thành</div>';
+    if (mode==='video50') document.getElementById('mode-video50').innerHTML = '🎥 VIDEO 50%<div style="font-size:11px;font-weight:700;">Xem ≥50% video = hoàn thành</div>';
+  }
+
+  /* ─── ACTIONS ─── */
+  function saveCourse() { toast('✅ Đã tạo khóa! Chuyển sang thêm bài học...'); setTimeout(()=>nav('curriculum','sb-curriculum'), 900); }
+  function saveLesson() { toast('✅ Đã lưu bài học!'); setTimeout(()=>nav('curriculum','sb-curriculum'), 700); }
+
+  /* ─── MODAL ─── */
+  function openModal() { document.getElementById('modal-receipt').classList.add('on'); }
+  function closeModal() { document.getElementById('modal-receipt').classList.remove('on'); }
+
+  /* ─── TOAST ─── */
+  function toast(msg) {
+    const t = document.getElementById('toast');
+    document.getElementById('tmsg').textContent = msg;
+    t.classList.add('on');
+    clearTimeout(t._t);
+    t._t = setTimeout(() => t.classList.remove('on'), 3200);
+  }
+
+  /* ─── INIT ─── */
+  document.querySelectorAll('[id^="p-"]').forEach(el => el.style.display = 'none');
+</script>
+</body>
+</html>

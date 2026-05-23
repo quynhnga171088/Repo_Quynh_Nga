@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hiểu hệ thống từ góc nhìn User | Bài học</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #F8F7F3;
+      --bg-card: #FFFFFF;
+      --bg-step: #FAFAF7;
+      --text-primary: #1C1C1C;
+      --text-secondary: #404040;
+      --text-muted: #767676;
+      --accent-blue: #1D4ED8;
+      --accent-blue-light: #DBEAFE;
+      --border-light: #E5E3DC;
+      --shadow-sm: 0 1px 4px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+      --radius-xl: 20px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Lexend', sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.8;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page-wrapper {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 40px 24px 100px;
+    }
+
+    /* ===== Coverpage (HEADER) ===== */
+    .header {
+      text-align: center;
+      background: linear-gradient(135deg, #FFFFFF 0%, #F0EDE6 50%, #E8F4EC 100%);
+      border-radius: var(--radius-xl);
+      padding: 60px 48px;
+      margin-bottom: 36px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-md);
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(22,101,52,0.07) 0%, transparent 70%);
+    }
+
+    .header::after {
+      content: '';
+      position: absolute;
+      bottom: -40px; left: -40px;
+      width: 150px; height: 150px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(29,78,216,0.06) 0%, transparent 70%);
+    }
+
+    .header-badge {
+      display: inline-block;
+      background: #2D8B5E;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 6px 18px;
+      border-radius: 20px;
+      margin-bottom: 24px;
+    }
+
+    .header h1 {
+      font-family: 'Source Serif 4', serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.3;
+      margin-bottom: 14px;
+    }
+
+    .header-sub {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+      line-height: 1.7;
+    }
+
+    .header-trainer {
+      font-size: 0.95rem;
+      color: #2D8B5E;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .header-meta {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-weight: 300;
+    }
+
+    /* ===== Section wrappers ===== */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-sm);
+      padding: 32px 36px;
+      margin-bottom: 24px;
+    }
+
+    .section-label {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent-blue);
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 14px;
+      line-height: 1.35;
+    }
+
+    .section-desc {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.85;
+    }
+
+    /* ===== Theory blocks ===== */
+    .lesson-block {
+      border-top: 1px solid #F0EEE8;
+      padding-top: 22px;
+      margin-top: 22px;
+    }
+
+    .lesson-block:first-child {
+      border-top: none;
+      padding-top: 0;
+      margin-top: 0;
+    }
+
+    .block-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .bullets {
+      margin-top: 10px;
+      padding-left: 18px;
+      color: var(--text-secondary);
+      font-size: 14.5px;
+      line-height: 1.85;
+    }
+
+    .callout {
+      margin-top: 14px;
+      border-radius: 12px;
+      padding: 12px 14px;
+      background: #EFF6FF;
+      border: 1px solid #BFDBFE;
+      color: #1E40AF;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .callout-green {
+      background: #F0FDF4;
+      border: 1px solid #BBF7D0;
+      color: #166534;
+    }
+
+    .callout-amber {
+      background: #FFFBEB;
+      border: 1px solid #FDE68A;
+      color: #92400E;
+    }
+
+    /* ===== Phương pháp badge ===== */
+    .phase-badge {
+      display: inline-block;
+      background: var(--accent-blue);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    /* ===== Mapping table ===== */
+    .mapping-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      font-size: 14px;
+    }
+
+    .mapping-table th {
+      background: #F8F7F3;
+      font-weight: 700;
+      text-align: left;
+      padding: 10px 14px;
+      border-bottom: 2px solid var(--border-light);
+      color: var(--text-primary);
+    }
+
+    .mapping-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid #F0EEE8;
+      color: var(--text-secondary);
+    }
+
+    /* ===== System tree ===== */
+    .system-tree {
+      font-family: 'Lexend', monospace;
+      font-size: 14px;
+      background: #F8F7F3;
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-top: 12px;
+      line-height: 2;
+      color: var(--text-secondary);
+      border: 1px solid #F0EEE8;
+    }
+
+    .system-tree strong {
+      color: var(--text-primary);
+    }
+
+    /* ===== Flow visual ===== */
+    .flow-visual {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+      margin-top: 14px;
+    }
+
+    .flow-step {
+      background: var(--accent-blue-light);
+      color: var(--accent-blue);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 10px;
+    }
+
+    .flow-arrow {
+      color: var(--text-muted);
+      font-size: 16px;
+    }
+
+    /* ===== Quiz block ===== */
+    .quiz-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-xl);
+      padding: 24px 28px;
+      box-shadow: var(--shadow-sm);
+      margin: 24px 0 36px;
+    }
+
+    .quiz-link-left { display: flex; gap: 14px; align-items: flex-start; }
+
+    .quiz-link-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #1D4ED8, #7C3AED);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .quiz-link-title {
+      font-size: 16px;
+      font-weight: 900;
+      margin-bottom: 4px;
+      color: var(--text-primary);
+    }
+
+    .quiz-link-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .quiz-link a {
+      text-decoration: none;
+      background: var(--accent-blue);
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .quiz-link a:hover { background: #1E40AF; }
+
+    /* ===== Last page ===== */
+    .closing {
+      background: linear-gradient(135deg, #FFFFFF 0%, #F0EDE6 50%, #E8F4EC 100%);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-md);
+      padding: 40px 44px;
+      margin-top: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .closing::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 180px; height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(29,78,216,0.06) 0%, transparent 70%);
+    }
+
+    .closing-title {
+      font-family: 'Source Serif 4', serif;
+      font-size: 1.7rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text-primary);
+      line-height: 1.3;
+    }
+
+    .closing-text {
+      color: var(--text-secondary);
+      font-size: 15px;
+      line-height: 1.85;
+      margin-bottom: 14px;
+    }
+
+    .closing-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 14px;
+      border: 1px solid var(--border-light);
+      background: #fff;
+      color: var(--text-primary);
+    }
+
+    .btn-primary {
+      background: var(--accent-blue);
+      color: #fff;
+      border-color: #1D4ED8;
+    }
+
+    .btn-primary:hover { background: #1E40AF; }
+
+    .footer {
+      text-align: center;
+      padding: 32px;
+      color: var(--text-muted);
+      font-size: 13px;
+      margin-top: 24px;
+    }
+
+    .footer strong { color: var(--text-secondary); }
+
+    @media (max-width: 680px) {
+      .header { padding: 36px 28px; }
+      .header h1 { font-size: 24px; }
+      .card { padding: 24px 22px; }
+      .quiz-link { padding: 20px 18px; flex-direction: column; align-items: flex-start; }
+      .closing { padding: 28px 24px; }
+      .flow-visual { gap: 4px; }
+      .flow-step { font-size: 12px; padding: 5px 10px; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      .header, .card, .closing { box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrapper">
+
+    <!-- =========== COVERPAGE =========== -->
+    <div class="header" id="cover">
+      <div class="header-badge">Tài liệu đào tạo · IT cho người mới</div>
+      <h1>Hiểu hệ thống từ góc nhìn User</h1>
+      <p class="header-sub">Không cần biết code — chỉ cần biết đặt câu hỏi đúng, bạn sẽ hiểu được hệ thống.</p>
+      <p class="header-trainer">Quỳnh Nga BrSE Japan — Đồng Hành Cùng Bạn</p>
+      <p class="header-meta">Dành cho người mới · ~20 phút · 5 Phương pháp · Thực hành ngay</p>
+    </div>
+
+    <!-- =========== MỤC TIÊU =========== -->
+    <section id="theory">
+      <div class="card">
+        <div class="section-label">Mục tiêu</div>
+        <div class="section-title">Sau bài này, bạn sẽ làm được gì?</div>
+        <p class="section-desc">Bài học này không đi theo hướng kỹ thuật. Thay vào đó, mình bắt đầu từ <strong>góc nhìn người dùng</strong> — cách tiếp cận dễ hiểu nhất cho người mới.</p>
+
+        <div class="lesson-block">
+          <div class="block-title">Bạn sẽ đạt được</div>
+          <ul class="bullets">
+            <li>Nhìn 1 website → hiểu nó dùng để làm gì</li>
+            <li>Tự xác định: User Type, Function List, Screen List</li>
+            <li>Hiểu được sự khác nhau giữa Site User và Site Admin</li>
+            <li>Có thể tự phân tích 1 hệ thống mới trong 1–2 ngày</li>
+          </ul>
+        </div>
+
+        <div class="lesson-block">
+          <div class="block-title">Cấu trúc bài học: 4 Phương pháp và Cấu trúc cơ bản</div>
+          <ul class="bullets">
+            <li><strong>Phương pháp 1</strong> — Hiểu bằng trải nghiệm (User Thinking)</li>
+            <li><strong>Phương pháp 2</strong> — Hiểu bằng hành động (Function Thinking)</li>
+            <li><strong>Phương pháp 3</strong> — Hiểu bằng màn hình (Screen Thinking)</li>
+            <li><strong>Phương pháp 4</strong> — User Flow (Kết nối tất cả)</li>
+            <li><strong>Cấu trúc cơ bản</strong> — Hiểu về Site và Platform</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- =========== PHƯƠNG PHÁP 1 =========== -->
+      <div class="card">
+        <div class="phase-badge">Phương pháp 1</div>
+        <div class="section-title">Hiểu bằng trải nghiệm (User Thinking)</div>
+        <p class="section-desc">Đặt câu hỏi: "Website này để làm gì?"</p>
+
+        <div class="lesson-block">
+          <div class="block-title">1. Câu hỏi vàng (Golden Question)</div>
+          <p class="section-desc">Mỗi khi nhìn vào 1 website hay 1 hệ thống, hãy luôn bắt đầu bằng câu hỏi:</p>
+          <div class="callout"><strong>"User vào đây để làm gì?"</strong></div>
+        </div>
+
+        <div class="lesson-block">
+          <div class="block-title">2. Xác định User Type</div>
+          <p class="section-desc">Một hệ thống thường có nhiều loại người dùng khác nhau. Bạn cần xác định: ai đang dùng hệ thống này, họ dùng với mục đích gì?</p>
+          <ul class="bullets">
+            <li><strong>User</strong> — người dùng thường</li>
+            <li><strong>Admin</strong> — người quản trị hệ thống</li>
+          </ul>
+        </div>
+
+        <div class="lesson-block">
+          <div class="block-title">Ví dụ thực tế: Hệ thống Shopee</div>
+          <p class="section-desc">Shopee là một trang thương mại điện tử (EC site). Hãy thử phân tích:</p>
+          <ul class="bullets">
+            <li><strong>Loại hệ thống:</strong> EC site (trang thương mại điện tử)</li>
+            <li><strong>User là Customer</strong> → vào để mua hàng, tìm kiếm sản phẩm, đặt đơn</li>
+            <li><strong>Admin</strong> → vào để quản lý sản phẩm, xử lý đơn hàng, xem báo cáo</li>
+          </ul>
+          <div class="callout callout-green"><strong></strong> Bạn không cần hiểu code hay kỹ thuật — chỉ cần mở website, dùng thử và nghĩ xem "Mình có thể làm gì trên này?"</div>
+        </div>
+      </div>
+
+      <!-- =========== PHƯƠNG PHÁP 2 =========== -->
+      <div class="card">
+        <div class="phase-badge">Phương pháp 2</div>
+        <div class="section-title">Hiểu bằng hành động (Function Thinking)</div>
+        <p class="section-desc">Bước tiếp theo: liệt kê tất cả những gì user <strong>có thể làm</strong> trên hệ thống.</p>
+
+        <div class="lesson-block">
+          <div class="block-title">1. Function là gì?</div>
+          <div class="callout"><strong>Function = 1 hành động mà user có thể làm trên hệ thống</strong></div>
+          <p class="section-desc" style="margin-top: 12px;">Ví dụ các hành động: Đăng ký, Đăng nhập, Tìm kiếm, Mua hàng, Thanh toán...</p>
+        </div>
+
+        <div class="lesson-block">
+          <div class="block-title">2. Từ User Type → Viết Function List</div>
+          <p class="section-desc">Dựa trên kết quả Phương pháp 1, hãy liệt kê function cho từng loại user.</p>
+          <div class="callout callout-green">
+            <strong>Output mẫu — Function list (Customer):</strong><br>
+            • Register (Đăng ký)<br>
+            • Login (Đăng nhập)<br>
+            • Search product (Tìm kiếm sản phẩm)<br>
+            • Add to cart (Thêm vào giỏ hàng)<br>
+            • Checkout (Thanh toán)
+          </div>
+        </div>
+
+        <div class="lesson-block">
+          <div class="block-title">Bài tập Phương pháp 2</div>
+          <p class="section-desc">Chọn 1 website bất kỳ (Tiki, Lazada, YouTube...) → Liệt kê function list cho user.</p>
+          <div class="callout callout-amber"><strong>Lưu ý:</strong> Viết theo từng loại user — đừng trộn lẫn function của User và Admin vào chung.</div>
+        </div>
+      </div>
+
+      <!-- =========== PHƯƠNG PHÁP 3 =========== -->
+      <div class="card">
+        <div class="phase-badge">Phương pháp 3</div>
+        <div class="section-title">Hiểu bằng màn hình (Screen Thinking)</div>
+        <p class="section-desc">Mỗi function thường đi kèm với 1 màn hình. Bước này giúp bạn "nhìn thấy" hệ thống.</p>
+
+        <div class="lesson-block">
+          <div class="block-title">1. Quy tắc đơn giản</div>
+          <div class="callout"><strong>1 Function → thường đi kèm với 1 Screen (màn hình)</strong></div>
+        </div>
+
+        <div class="lesson-block">
+          <div class="block-title">2. Mapping: Function → Screen</div>
+          <table class="mapping-table">
+            <thead>
+              <tr><th>Function</th><th>Screen</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Login</td><td>Login screen</td></tr>
+              <tr><td>Search</td><td>Search screen</td></tr>
+              <tr><td>Add to cart</td><td>Cart screen</td></tr>
+              <tr><td>Checkout</td><td>Payment screen</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="lesson-block">
+          <div class="block-title">Bài tập Phương pháp 3</div>
+          <p class="section-desc">Convert function list ở Phương pháp 2 → screen list.</p>
+          <div class="callout callout-green">
+            <strong>Output mẫu — Screen list:</strong><br>
+            • Login screen<br>
+            • Home screen<br>
+            • Product list screen<br>
+            • Cart screen<br>
+            • Payment screen
+          </div>
+        </div>
+      </div>
+
+      <!-- =========== PHƯƠNG PHÁP 4 =========== -->
+      <div class="card">
+        <div class="phase-badge">Phương pháp 4</div>
+        <div class="section-title">User Flow — Kết nối tất cả</div>
+        <p class="section-desc">User flow là chuỗi các bước mà user thực hiện để hoàn thành 1 mục tiêu. Đây là <strong>xương sống</strong> của hệ thống.</p>
+
+        <div class="lesson-block">
+          <div class="block-title">Ví dụ: Flow mua hàng</div>
+          <div class="flow-visual">
+            <span class="flow-step">Register</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step">Login</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step">Search</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step">Add to cart</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step">Checkout</span>
+          </div>
+        </div>
+
+        <div class="lesson-block">
+          <div class="block-title">Bài tập Phương pháp 4</div>
+          <p class="section-desc">Vẽ 1 user flow hoàn chỉnh cho hệ thống bạn đã phân tích từ Phương pháp 1 đến Phương pháp 3.</p>
+          <div class="callout"><strong></strong> Hãy nghĩ theo hành trình thực tế: Nếu bạn là user, bạn sẽ làm gì đầu tiên? Rồi tiếp theo là gì? Cứ liệt kê theo thứ tự.</div>
+        </div>
+      </div>
+
+      <!-- =========== Site và Platform =========== -->
+      <div class="card">
+        <div class="phase-badge">Site và Platform</div>
+        <div class="section-title">Hiểu về Site và Platform</div>
+        <p class="section-desc">Ở phần này, mình muốn bạn nhìn “cấu trúc hệ thống” phân theo <strong>2 góc độ</strong> khác nhau. Khi bạn ghép 2 góc độ này lại, bạn sẽ “ngộ ra” cách hệ thống được tổ chức.</p>
+
+        <div class="lesson-block">
+          <div class="block-title">🧩 01-Phân theo đối tượng sử dụng (User Type)</div>
+          <p class="section-desc">Hệ thống thường có ít nhất 2 nhóm người dùng, và mỗi nhóm có một “site” riêng.</p>
+          <ul class="bullets">
+            <li><strong>Site User (User Site)</strong> — dành cho người dùng cuối (customer)</li>
+            <li><strong>Site Admin (Admin Site)</strong> — dành cho người vận hành hệ thống</li>
+          </ul>
+          <div class="callout callout-green">
+            <strong>User Site</strong> thường có các hành động như: đăng ký/đăng nhập, sử dụng dịch vụ, xem/nhập dữ liệu.<br>
+            <strong>Admin Site</strong> thường có: quản lý user, quản lý dữ liệu, cấu hình hệ thống.
+          </div>
+          <div class="callout">
+            <strong>Sơ đồ (theo User Type):</strong><br><br>
+            <span style="font-family:'Lexend', monospace;">
+              System<br>
+              ├── User Site (Customer)<br>
+              └── Admin Site (Admin)
+            </span>
+          </div>
+        </div>
+
+        <div class="lesson-block">
+          <div class="block-title">🧩 02-Phân theo nền tảng (Platform)</div>
+          <p class="section-desc">Cùng một hệ thống, nhưng có thể được triển khai trên nhiều nền tảng khác nhau.</p>
+          <ul class="bullets">
+            <li><strong>Web System (Web App)</strong> — chạy trên trình duyệt (Chrome, Safari…). Không cần cài đặt, truy cập bằng URL.</li>
+            <li><strong>Mobile App</strong> — chạy trên điện thoại (iOS/Android). Cần cài đặt, UI tối ưu cho mobile.</li>
+          </ul>
+          <div class="callout">
+            <strong>Sơ đồ (theo Platform):</strong><br><br>
+            <span style="font-family:'Lexend', monospace;">
+              System<br>
+              ├── Web (Browser)<br>
+              └── Mobile App (iOS / Android)
+            </span>
+          </div>
+          <div class="callout callout-green">
+            <strong>Giải thích nhanh:</strong><br>
+            ✔ <strong>User Site</strong> có thể có <strong>Web</strong> và/hoặc <strong>Mobile App</strong> (vì user cuối có thể dùng PC hoặc điện thoại).<br>
+            ✔ <strong>Admin Site</strong> có App không? Có thể có, nhưng đa số là chỉ có <strong>Web</strong> (vì admin cần màn hình lớn, nhiều dữ liệu, nhiều thao tác phức tạp -> làm việc trên web PC tiện hơn).
+          </div>
+        </div>
+
+        <div class="lesson-block">
+          <div class="block-title">Bài tập</div>
+          <p class="section-desc">Chọn 1 hệ thống bạn quen thuộc, rồi trả lời 4 câu hỏi sau (đúng/sai cũng được, quan trọng là bạn biết cách nghĩ):</p>
+          <ul class="bullets">
+            <li>Hệ thống có <strong>User Site</strong> không? (Có) Nếu có: user vào để làm gì?</li>
+            <li>Hệ thống có <strong>Admin Site</strong> không? (Có) Nếu có: admin quản lý gì?</li>
+            <li>User Site đang chạy trên <strong>Web</strong> ? Có <strong>Mobile App</strong> không?</li>
+            <li>Admin Site có app không? Nếu không, lý do là gì?</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- =========== TEMPLATE =========== -->
+      <div class="card">
+        <div class="section-label">Áp dụng thực tế</div>
+        <div class="section-title">Template phân tích hệ thống</div>
+        <p class="section-desc">Dùng template dưới đây để phân tích bất kỳ hệ thống nào. Đây là kết quả tổng hợp của 5 Phương pháp bạn vừa học.</p>
+
+        <div class="lesson-block">
+          <div class="block-title">6 bước phân tích</div>
+          <ul class="bullets">
+            <li><strong>1. Overview</strong> — Hệ thống dùng để làm gì?</li>
+            <li><strong>2. User Types</strong> — Ai sử dụng? (Customer, Admin...)</li>
+            <li><strong>3. Function List</strong> — Mỗi loại user làm được gì?</li>
+            <li><strong>4. Screen List</strong> — Gồm những màn hình nào?</li>
+            <li><strong>5. User Flow</strong> — Luồng thao tác chính</li>
+            <li><strong>6. Site Structure</strong> — User Site, Admin Site, App</li>
+          </ul>
+          <div class="callout callout-green"><strong>Thực hành:</strong> Chọn 1 website yêu thích → dùng template này để phân tích hoàn chỉnh. Khi làm xong, bạn đã có bản phân tích hệ thống đầu tiên của mình!</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========== QUIZ LINK =========== -->
+    <section id="quiz">
+      <div class="quiz-link">
+        <div class="quiz-link-left">
+          <div class="quiz-link-icon">📝</div>
+          <div>
+            <div class="quiz-link-title">Kiểm tra kiến thức</div>
+            <div class="quiz-link-desc">Kiểm tra xem bạn đã hiểu bài chưa — 10 câu hỏi nhanh</div>
+          </div>
+        </div>
+        <a href="hieu-he-thong-tu-goc-nhin-user-quiz.html">Làm bài ngay</a>
+      </div>
+    </section>
+
+    <!-- =========== CLOSING =========== -->
+    <section id="closing">
+      <div class="closing">
+        <div class="section-label">Kết bài</div>
+        <div class="closing-title">Bạn đã có "đôi mắt" để nhìn hệ thống</div>
+        <p class="closing-text">Chỉ với 5 bước đơn giản, bạn đã biết cách phân tích bất kỳ hệ thống nào — không cần biết code, không cần background kỹ thuật. Hãy luyện tập thường xuyên với các website xung quanh bạn.</p>
+
+        <div class="lesson-block">
+          <div class="block-title">5 ý chính cần nhớ</div>
+          <ul class="bullets">
+            <li>Luôn bắt đầu bằng câu hỏi: <strong>"User vào đây để làm gì?"</strong></li>
+            <li>Phân tích theo 4 Phương pháp: User Type → Function → Screen → Flow</li>
+            <li>Site User dành cho khách hàng, Site Admin dành cho người vận hành</li>
+            <li>1 Function thường đi kèm 1 Screen</li>
+            <li>User Flow = xương sống — kết nối tất cả lại với nhau</li>
+          </ul>
+        </div>
+
+        <div class="closing-actions">
+          <a class="btn btn-primary" href="hieu-he-thong-tu-goc-nhin-user-quiz.html">📝 Làm bài kiểm tra</a>
+          <a class="btn" href="#cover">↑ Về đầu trang</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      <p><strong>Quỳnh Nga BrSE Japan — Đồng Hành Cùng Bạn</strong></p>
+      <p style="margin-top:6px;">Training IT cho người mới · Thực tế · Dễ hiểu · Có chiều sâu</p>
+    </div>
+  </div>
+</body>
+</html>

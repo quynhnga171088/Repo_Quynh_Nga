@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{LESSON_TITLE}} | Template bài học</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* THEME — dựa trên file “Kiểm tra kiến thức - Quy trình xây dựng một website.html” */
+      --bg-primary: #F8F7F3;
+      --bg-card: #FFFFFF;
+      --bg-step: #FAFAF7;
+      --text-primary: #1C1C1C;
+      --text-secondary: #404040;
+      --text-muted: #767676;
+      --accent-blue: #1D4ED8;
+      --accent-blue-light: #DBEAFE;
+      --border-light: #E5E3DC;
+      --shadow-sm: 0 1px 4px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+      --radius-xl: 20px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Lexend', sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.8;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page-wrapper {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 40px 24px 100px;
+    }
+
+    /* ===== Coverpage (HEADER) ===== */
+    .header {
+      text-align: center;
+      background: linear-gradient(135deg, #FFFFFF 0%, #F0EDE6 50%, #E8F4EC 100%);
+      border-radius: var(--radius-xl);
+      padding: 60px 48px;
+      margin-bottom: 36px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-md);
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(22,101,52,0.07) 0%, transparent 70%);
+    }
+
+    .header::after {
+      content: '';
+      position: absolute;
+      bottom: -40px; left: -40px;
+      width: 150px; height: 150px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(29,78,216,0.06) 0%, transparent 70%);
+    }
+
+    .header-badge {
+      display: inline-block;
+      background: #2D8B5E;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 6px 18px;
+      border-radius: 20px;
+      margin-bottom: 24px;
+    }
+
+    .header h1 {
+      font-family: 'Source Serif 4', serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.3;
+      margin-bottom: 14px;
+    }
+
+    .header-sub {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+      line-height: 1.7;
+    }
+
+    .header-trainer {
+      font-size: 0.95rem;
+      color: #2D8B5E;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .header-meta {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-weight: 300;
+    }
+
+    /* ===== Section wrappers ===== */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-sm);
+      padding: 32px 36px;
+      margin-bottom: 24px;
+    }
+
+    .section-label {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent-blue);
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 14px;
+      line-height: 1.35;
+    }
+
+    .section-desc {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.85;
+    }
+
+    /* ===== Theory blocks ===== */
+    .lesson-block {
+      border-top: 1px solid #F0EEE8;
+      padding-top: 22px;
+      margin-top: 22px;
+    }
+
+    .lesson-block:first-child {
+      border-top: none;
+      padding-top: 0;
+      margin-top: 0;
+    }
+
+    .block-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .bullets {
+      margin-top: 10px;
+      padding-left: 18px;
+      color: var(--text-secondary);
+      font-size: 14.5px;
+      line-height: 1.85;
+    }
+
+    .callout {
+      margin-top: 14px;
+      border-radius: 12px;
+      padding: 12px 14px;
+      background: #EFF6FF;
+      border: 1px solid #BFDBFE;
+      color: #1E40AF;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    /* ===== Quiz block (placeholder) ===== */
+    .quiz-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-xl);
+      padding: 24px 28px;
+      box-shadow: var(--shadow-sm);
+      margin: 24px 0 36px;
+    }
+
+    .quiz-link-left { display: flex; gap: 14px; align-items: flex-start; }
+
+    .quiz-link-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #1D4ED8, #7C3AED);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .quiz-link-title {
+      font-size: 16px;
+      font-weight: 900;
+      margin-bottom: 4px;
+      color: var(--text-primary);
+    }
+
+    .quiz-link-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .quiz-link a {
+      text-decoration: none;
+      background: var(--accent-blue);
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .quiz-link a:hover { background: #1E40AF; }
+
+    /* ===== Last page ===== */
+    .closing {
+      background: linear-gradient(135deg, #FFFFFF 0%, #F0EDE6 50%, #E8F4EC 100%);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-md);
+      padding: 40px 44px;
+      margin-top: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .closing::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 180px; height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(29,78,216,0.06) 0%, transparent 70%);
+    }
+
+    .closing-title {
+      font-family: 'Source Serif 4', serif;
+      font-size: 1.7rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text-primary);
+      line-height: 1.3;
+    }
+
+    .closing-text {
+      color: var(--text-secondary);
+      font-size: 15px;
+      line-height: 1.85;
+      margin-bottom: 14px;
+    }
+
+    .closing-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 14px;
+      border: 1px solid var(--border-light);
+      background: #fff;
+      color: var(--text-primary);
+    }
+
+    .btn-primary {
+      background: var(--accent-blue);
+      color: #fff;
+      border-color: #1D4ED8;
+    }
+
+    .btn-primary:hover { background: #1E40AF; }
+
+    .footer {
+      text-align: center;
+      padding: 32px;
+      color: var(--text-muted);
+      font-size: 13px;
+      margin-top: 24px;
+    }
+
+    .footer strong { color: var(--text-secondary); }
+
+    @media (max-width: 680px) {
+      .header { padding: 36px 28px; }
+      .header h1 { font-size: 24px; }
+      .card { padding: 24px 22px; }
+      .quiz-link { padding: 20px 18px; flex-direction: column; align-items: flex-start; }
+      .closing { padding: 28px 24px; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      .header, .card, .closing { box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrapper">
+
+    <!-- ===========================================================
+      COVERPAGE (TRANG ĐẦU)
+
+      Các placeholder bạn thay:
+      - {{COVER_BADGE}}: ví dụ “Tài liệu đào tạo · IT cơ bản”
+      - {{LESSON_TITLE}}: tiêu đề bài học
+      - {{COVER_SUBTITLE}}: mô tả 1-2 câu
+      - {{TRAINER_NAME}}: ví dụ “Quỳnh Nga BrSE Japan — Đồng Hành Cùng Bạn”
+      - {{META_LINE}}: ví dụ “Dành cho người mới · ~15 phút · Dễ hiểu · Thực tế”
+    ============================================================ -->
+    <div class="header" id="cover">
+      <div class="header-badge">{{COVER_BADGE}}</div>
+      <h1>{{LESSON_TITLE}}</h1>
+      <p class="header-sub">{{COVER_SUBTITLE}}</p>
+      <p class="header-trainer">{{TRAINER_NAME}}</p>
+      <p class="header-meta">{{META_LINE}}</p>
+    </div>
+
+    <!-- ===========================================================
+      PHẦN LÝ THUYẾT (TRANG NỘI DUNG)
+
+      Gợi ý cấu trúc:
+      - 1 card “Mục tiêu bài học”
+      - N card “Nội dung chính” (mỗi card gồm nhiều lesson-block)
+    ============================================================ -->
+
+    <section id="theory">
+      <div class="card">
+        <div class="section-label">Mục tiêu</div>
+        <div class="section-title">{{LEARNING_GOALS_TITLE}}</div>
+        <p class="section-desc">{{LEARNING_GOALS_DESC}}</p>
+
+        <div class="lesson-block">
+          <div class="block-title">Bạn sẽ hiểu được</div>
+          <ul class="bullets">
+            <li>{{GOAL_1}}</li>
+            <li>{{GOAL_2}}</li>
+            <li>{{GOAL_3}}</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-label">Nội dung chính</div>
+        <div class="section-title">{{THEORY_SECTION_TITLE}}</div>
+        <p class="section-desc">{{THEORY_SECTION_DESC}}</p>
+
+        <div class="lesson-block">
+          <div class="block-title">{{BLOCK_1_TITLE}}</div>
+          <p class="section-desc">{{BLOCK_1_TEXT}}</p>
+          <ul class="bullets">
+            <li>{{BLOCK_1_BULLET_1}}</li>
+            <li>{{BLOCK_1_BULLET_2}}</li>
+          </ul>
+          <div class="callout"><strong>Ví dụ:</strong> {{BLOCK_1_EXAMPLE}}</div>
+        </div>
+
+        <div class="lesson-block">
+          <div class="block-title">{{BLOCK_2_TITLE}}</div>
+          <p class="section-desc">{{BLOCK_2_TEXT}}</p>
+          <ul class="bullets">
+            <li>{{BLOCK_2_BULLET_1}}</li>
+            <li>{{BLOCK_2_BULLET_2}}</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===========================================================
+      PHẦN KIỂM TRA KIẾN THỨC (TÁCH RIÊNG)
+
+      Mặc định template này chỉ đặt “link box”.
+      Khi bạn muốn tách quiz ra file riêng (giống lần trước):
+      - Tạo file quiz riêng, copy style + quiz section từ template quiz chuẩn
+      - Link từ bài học → file quiz
+    ============================================================ -->
+    <section id="quiz">
+      <div class="quiz-link">
+        <div class="quiz-link-left">
+          <div class="quiz-link-icon">📝</div>
+          <div>
+            <div class="quiz-link-title">{{QUIZ_TITLE}}</div>
+            <div class="quiz-link-desc">{{QUIZ_DESC}}</div>
+          </div>
+        </div>
+        <a href="{{QUIZ_FILE_HREF}}">{{QUIZ_BUTTON_TEXT}}</a>
+      </div>
+    </section>
+
+    <!-- ===========================================================
+      TRANG CUỐI (KẾT BÀI)
+
+      Dùng để:
+      - nhắc lại 3-5 ý chính
+      - hướng dẫn bước tiếp theo (làm quiz, làm bài tập, đọc bài tiếp)
+    ============================================================ -->
+    <section id="closing">
+      <div class="closing">
+        <div class="section-label">Kết bài</div>
+        <div class="closing-title">{{CLOSING_TITLE}}</div>
+        <p class="closing-text">{{CLOSING_TEXT}}</p>
+
+        <div class="lesson-block">
+          <div class="block-title">3 ý bạn cần nhớ</div>
+          <ul class="bullets">
+            <li>{{TAKEAWAY_1}}</li>
+            <li>{{TAKEAWAY_2}}</li>
+            <li>{{TAKEAWAY_3}}</li>
+          </ul>
+        </div>
+
+        <div class="closing-actions">
+          <a class="btn btn-primary" href="{{QUIZ_FILE_HREF}}">📝 Làm bài kiểm tra</a>
+          <a class="btn" href="{{NEXT_LESSON_HREF}}">➡️ Bài tiếp theo</a>
+          <a class="btn" href="#cover">↑ Về đầu trang</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      <p><strong>{{TRAINER_NAME}}</strong></p>
+      <p style="margin-top:6px;">{{FOOTER_LINE}}</p>
+    </div>
+  </div>
+
+  <!--
+    GỢI Ý QUY ƯỚC DỰ ÁN (để bạn dùng cho các lần sau):
+
+    1) File bài học (lý thuyết):
+       - output/{{LESSON_SLUG}}.html
+
+    2) File kiểm tra kiến thức (quiz):
+       - output/{{LESSON_SLUG}}-quiz.html
+
+    3) Quy tắc:
+       - Lý thuyết và quiz tách file riêng (đúng như bạn yêu cầu)
+       - Coverpage và trang cuối dùng chung theme này
+  -->
+</body>
+</html>

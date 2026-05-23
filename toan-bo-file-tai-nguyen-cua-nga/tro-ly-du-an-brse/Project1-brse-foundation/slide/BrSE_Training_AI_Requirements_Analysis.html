@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BrSE Training – Phân tích yêu cầu với AI (Cursor)</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Sora:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #0b0f1a;
+    --surface:   #111827;
+    --card:      #161d2e;
+    --border:    #1e2d47;
+    --accent1:   #3b82f6;
+    --accent2:   #06b6d4;
+    --accent3:   #8b5cf6;
+    --gold:      #f59e0b;
+    --green:     #10b981;
+    --text:      #e2e8f0;
+    --muted:     #64748b;
+    --highlight: rgba(59,130,246,0.12);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Sora', 'Noto Sans JP', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.75;
+    font-size: 15px;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    padding: 80px 40px 60px;
+    text-align: center;
+    overflow: hidden;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(59,130,246,0.18) 0%, transparent 70%);
+    border-bottom: 1px solid var(--border);
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(59,130,246,0.04) 40px),
+      repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(59,130,246,0.04) 40px);
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-block;
+    padding: 4px 16px;
+    border: 1px solid var(--accent1);
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    color: var(--accent2);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-size: clamp(28px, 5vw, 52px);
+    font-weight: 800;
+    line-height: 1.15;
+    background: linear-gradient(135deg, #fff 30%, var(--accent2) 70%, var(--accent1) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 14px;
+  }
+  .hero-sub {
+    color: var(--muted);
+    font-size: 15px;
+    max-width: 600px;
+    margin: 0 auto 32px;
+  }
+  .hero-tags {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .tag {
+    padding: 5px 14px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 12px;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ── NAV SIDEBAR ── */
+  .layout {
+    display: flex;
+    gap: 0;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0;
+  }
+  .sidebar {
+    width: 240px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 24px;
+    align-self: flex-start;
+    padding: 32px 0 32px 28px;
+  }
+  .sidebar-title {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+  .sidebar nav a {
+    display: block;
+    padding: 7px 12px;
+    border-left: 2px solid transparent;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 13px;
+    transition: all .2s;
+    border-radius: 0 6px 6px 0;
+  }
+  .sidebar nav a:hover, .sidebar nav a.active {
+    color: var(--accent2);
+    border-left-color: var(--accent2);
+    background: rgba(6,182,212,0.06);
+  }
+
+  /* ── MAIN CONTENT ── */
+  .main {
+    flex: 1;
+    padding: 40px 40px 80px 40px;
+    min-width: 0;
+  }
+
+  /* ── SECTION ── */
+  section {
+    margin-bottom: 60px;
+    animation: fadeUp .5s ease both;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-num {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--accent1), var(--accent3));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  .section-header h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    transition: border-color .2s;
+  }
+  .card:hover { border-color: var(--accent1); }
+  .card h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card p, .card li { color: #94a3b8; font-size: 14px; }
+  .card ul { padding-left: 18px; }
+  .card li { margin-bottom: 6px; }
+
+  /* ── GRID ── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  @media (max-width: 768px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+
+  /* ── KEY CONCEPT ── */
+  .concept-box {
+    background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(139,92,246,0.08));
+    border: 1px solid rgba(59,130,246,0.3);
+    border-radius: 12px;
+    padding: 24px 28px;
+    margin-bottom: 20px;
+  }
+  .concept-box p { font-size: 15px; color: var(--text); line-height: 1.8; }
+  .concept-box strong { color: var(--accent2); }
+
+  /* ── STEPS ── */
+  .steps { display: flex; flex-direction: column; gap: 0; }
+  .step {
+    display: flex;
+    gap: 20px;
+    position: relative;
+    padding-bottom: 28px;
+  }
+  .step:last-child { padding-bottom: 0; }
+  .step-line {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .step-dot {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--accent1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 13px;
+    flex-shrink: 0;
+    color: #fff;
+  }
+  .step-connector {
+    width: 2px;
+    flex: 1;
+    background: var(--border);
+    margin-top: 6px;
+  }
+  .step:last-child .step-connector { display: none; }
+  .step-content {
+    padding-top: 4px;
+    flex: 1;
+  }
+  .step-content h4 { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+  .step-content p { font-size: 13px; color: #94a3b8; }
+
+  /* ── CODE BLOCK ── */
+  .prompt-block {
+    background: #0d1117;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 16px 0;
+  }
+  .prompt-header {
+    background: #161b22;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+  }
+  .prompt-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent2);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+  }
+  .dots { display: flex; gap: 6px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot.r { background: #ff5f57; }
+  .dot.y { background: #febc2e; }
+  .dot.g { background: #28c840; }
+  .prompt-body {
+    padding: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: #c9d1d9;
+    white-space: pre-wrap;
+    line-height: 1.8;
+  }
+  .prompt-body .bold { color: #79c0ff; font-weight: 600; }
+  .prompt-body .item { color: #a5d6ff; }
+  .prompt-body .comment { color: #8b949e; font-style: italic; }
+  .prompt-body .jp { color: #d2a8ff; }
+
+  /* ── HIGHLIGHT BOX ── */
+  .tip-box {
+    display: flex;
+    gap: 14px;
+    background: rgba(16,185,129,0.08);
+    border: 1px solid rgba(16,185,129,0.25);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 16px 0;
+  }
+  .tip-icon { font-size: 20px; flex-shrink: 0; }
+  .tip-box p { font-size: 13px; color: #6ee7b7; }
+
+  .warn-box {
+    display: flex;
+    gap: 14px;
+    background: rgba(245,158,11,0.08);
+    border: 1px solid rgba(245,158,11,0.25);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 16px 0;
+  }
+  .warn-box p { font-size: 13px; color: #fcd34d; }
+
+  /* ── TABLE ── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 13px;
+  }
+  thead { background: rgba(59,130,246,0.12); }
+  th { padding: 12px 16px; text-align: left; font-weight: 600; color: var(--accent2); border-bottom: 1px solid var(--border); }
+  td { padding: 11px 16px; border-bottom: 1px solid rgba(30,45,71,0.6); color: #94a3b8; }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .badge.green { background: rgba(16,185,129,0.15); color: #34d399; }
+  .badge.blue  { background: rgba(59,130,246,0.15); color: #93c5fd; }
+  .badge.gold  { background: rgba(245,158,11,0.15); color: #fcd34d; }
+
+  /* ── FLOW DIAGRAM ── */
+  .flow {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0;
+    margin: 20px 0;
+  }
+  .flow-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 18px;
+    text-align: center;
+    flex: 1;
+    min-width: 120px;
+  }
+  .flow-item .fi-icon { font-size: 22px; margin-bottom: 6px; }
+  .flow-item .fi-label { font-size: 12px; font-weight: 600; color: #fff; }
+  .flow-item .fi-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .flow-arrow {
+    color: var(--accent1);
+    font-size: 22px;
+    padding: 0 6px;
+    flex-shrink: 0;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 32px;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 12px;
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-badge">BrSE Training Document</div>
+  <h1>Phân tích yêu cầu<br>với AI (Cursor)</h1>
+  <p class="hero-sub">Hướng dẫn thực hành dùng AI để phân tích, làm rõ yêu cầu từ khách hàng trong dự án phát triển phần mềm IT</p>
+  <div class="hero-tags">
+    <span class="tag">BrSE</span>
+    <span class="tag">Cursor AI</span>
+    <span class="tag">Requirements Analysis</span>
+    <span class="tag">Prompt Engineering</span>
+    <span class="tag">IT Project</span>
+  </div>
+</header>
+
+<div class="layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-title">Nội dung</div>
+    <nav>
+      <a href="#overview">① Tổng quan</a>
+      <a href="#principles">② Nguyên tắc phân tích</a>
+      <a href="#workflow">③ Quy trình thực hiện</a>
+      <a href="#prompt1">④ Prompt 1 – Ticket</a>
+      <a href="#prompt2">⑤ Prompt 2 – Yêu cầu thô</a>
+      <a href="#guidelines">⑥ Hướng dẫn quan trọng</a>
+      <a href="#output-format">⑦ Cấu trúc output</a>
+      <a href="#checklist">⑧ Checklist</a>
+    </nav>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- 1. OVERVIEW -->
+    <section id="overview">
+      <div class="section-header">
+        <div class="section-num">1</div>
+        <h2>Tổng quan – Tại sao cần kỹ năng này?</h2>
+      </div>
+
+      <div class="concept-box">
+        <p>
+          <strong>Kỹ năng phân tích yêu cầu</strong> là khả năng làm rõ một vấn đề còn mơ hồ, giúp dev phát triển được <strong>mà không cần Q&A quá nhiều lần với khách hàng</strong>. Mục tiêu là đưa yêu cầu về mức chi tiết đủ để dev có thể code ngay.
+        </p>
+      </div>
+
+      <div class="grid-3">
+        <div class="card">
+          <h3>🎯 Mục tiêu</h3>
+          <p>Giảm thiểu số lần Q&A với khách, tăng tốc độ phát triển, đảm bảo đội dev hiểu đúng yêu cầu từ đầu.</p>
+        </div>
+        <div class="card">
+          <h3>⚙️ Công cụ</h3>
+          <p>Sử dụng <strong>Cursor AI</strong> với bộ prompt được thiết kế sẵn, áp dụng lặp lại cho mọi loại task hàng ngày.</p>
+        </div>
+        <div class="card">
+          <h3>📈 Lợi ích</h3>
+          <p>Xây dựng quy trình chuẩn hóa, áp dụng cho khối lượng công việc lớn mà không cần mò mẫm thủ công.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. PRINCIPLES -->
+    <section id="principles">
+      <div class="section-header">
+        <div class="section-num">2</div>
+        <h2>Nguyên tắc phân tích yêu cầu</h2>
+      </div>
+
+      <p style="color:#94a3b8; margin-bottom:20px; font-size:14px;">Dev và Tester cần biết đủ 4 thông tin cốt lõi sau để xử lý task:</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Thông tin</th>
+            <th>Ý nghĩa</th>
+            <th>Mức độ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td><strong style="color:#fff">Tên màn hình</strong></td>
+            <td>Xác định phạm vi UI liên quan</td>
+            <td><span class="badge green">Bắt buộc</span></td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td><strong style="color:#fff">Đối tượng / Role</strong></td>
+            <td>Ai thực hiện / bị ảnh hưởng bởi thay đổi</td>
+            <td><span class="badge green">Bắt buộc</span></td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td><strong style="color:#fff">Vấn đề hiện tại</strong></td>
+            <td>Bug, hành vi sai, yêu cầu mới là gì</td>
+            <td><span class="badge green">Bắt buộc</span></td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td><strong style="color:#fff">Solution / Cách sửa</strong></td>
+            <td>Kết quả mong muốn, hành vi sau khi sửa</td>
+            <td><span class="badge green">Bắt buộc</span></td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td><strong style="color:#fff">Phạm vi ảnh hưởng</strong></td>
+            <td>Màn hình / chức năng / item bị tác động</td>
+            <td><span class="badge gold">Nên có</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="tip-box">
+        <div class="tip-icon">💡</div>
+        <p>Phần phạm vi ảnh hưởng dev điều tra sẽ dễ hơn, BrSE không cần nắm được hết — nhưng nếu có thể xác định sơ bộ thì rất có giá trị.</p>
+      </div>
+    </section>
+
+    <!-- 3. WORKFLOW -->
+    <section id="workflow">
+      <div class="section-header">
+        <div class="section-num">3</div>
+        <h2>Quy trình làm việc với Cursor AI</h2>
+      </div>
+
+      <div class="flow">
+        <div class="flow-item">
+          <div class="fi-icon">📨</div>
+          <div class="fi-label">Nhận yêu cầu</div>
+          <div class="fi-sub">từ khách hàng</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-item">
+          <div class="fi-icon">🤖</div>
+          <div class="fi-label">Cursor AI</div>
+          <div class="fi-sub">chạy prompt</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-item">
+          <div class="fi-icon">🔍</div>
+          <div class="fi-label">Review output</div>
+          <div class="fi-sub">kiểm tra kết quả</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-item">
+          <div class="fi-icon">✅</div>
+          <div class="fi-label">Chuyển dev</div>
+          <div class="fi-sub">task đã làm rõ</div>
+        </div>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-line">
+            <div class="step-dot">1</div>
+            <div class="step-connector"></div>
+          </div>
+          <div class="step-content">
+            <h4>Xây dựng bộ prompt cá nhân</h4>
+            <p>Tạo bộ prompt phù hợp với loại task bạn thường xử lý. Prompt phải có cấu trúc rõ ràng, tái sử dụng được cho nhiều task khác nhau.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-line">
+            <div class="step-dot">2</div>
+            <div class="step-connector"></div>
+          </div>
+          <div class="step-content">
+            <h4>Mở Cursor, paste prompt + yêu cầu</h4>
+            <p>Với ticket: chỉ cần điền ticket ID. Với yêu cầu thô: paste nội dung yêu cầu của khách vào vị trí quy định trong prompt.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-line">
+            <div class="step-dot">3</div>
+            <div class="step-connector"></div>
+          </div>
+          <div class="step-content">
+            <h4>AI phân tích theo cấu trúc</h4>
+            <p>Cursor AI đọc source code hiện tại trong project, đối chiếu với yêu cầu, và sinh ra bản phân tích theo đúng template.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-line">
+            <div class="step-dot">4</div>
+            <div class="step-connector"></div>
+          </div>
+          <div class="step-content">
+            <h4>Review và bổ sung</h4>
+            <p>Kiểm tra output, bổ sung ngữ cảnh nếu cần, đặc biệt xem phần Q&A — các điểm chưa rõ cần confirm với khách trước khi giao dev.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-line">
+            <div class="step-dot">5</div>
+            <div class="step-connector"></div>
+          </div>
+          <div class="step-content">
+            <h4>Giao task cho dev / tester</h4>
+            <p>Chuyển bản phân tích đã hoàn chỉnh. Dev có thể code được ngay mà không cần hỏi lại BrSE quá nhiều.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. PROMPT 1 -->
+    <section id="prompt1">
+      <div class="section-header">
+        <div class="section-num">4</div>
+        <h2>Prompt 1 – Phân tích từ Ticket (Jira/Redmine)</h2>
+      </div>
+
+      <p style="color:#94a3b8; margin-bottom:16px; font-size:14px;">Dùng khi bạn có ticket trên hệ thống quản lý dự án. Cursor sẽ đọc ticket và kiểm tra source code để sinh ra bản phân tích đầy đủ.</p>
+
+      <div class="prompt-block">
+        <div class="prompt-header">
+          <div class="dots">
+            <div class="dot r"></div>
+            <div class="dot y"></div>
+            <div class="dot g"></div>
+          </div>
+          <span class="prompt-label">PROMPT 1 – TICKET ANALYSIS</span>
+        </div>
+        <div class="prompt-body"><span class="bold">Đọc ticket PROJ-123</span>, kiểm tra source code hiện tại trong project,
+sau đó phân tích task theo các mục sau:
+
+<span class="item">- Tên màn hình:</span>
+
+<span class="item">- Role liên quan:</span>
+
+<span class="item">- Trước khi thay đổi:</span>
+
+<span class="item">- Vấn đề / khó khăn:</span>
+
+<span class="item">- Yêu cầu thay đổi:</span>
+
+<span class="item">- Phạm vi ảnh hưởng:</span>
+  <span class="comment">→ Lập bảng phân tích ảnh hưởng (Impact Analysis) chi tiết</span>
+
+<span class="item">- Cách thực hiện:</span>
+  <span class="comment">→ Trình bày các bước thực hiện cụ thể (step-by-step)</span>
+
+<span class="item">- Q&amp;A:</span>
+  <span class="comment">→ Tổng hợp các câu hỏi cần làm rõ, các điểm chưa rõ ràng (nếu có)</span></div>
+      </div>
+
+      <div class="tip-box">
+        <div class="tip-icon">✅</div>
+        <p>Thay <strong>PROJ-123</strong> bằng ticket ID thực tế. Cursor sẽ tự đọc nội dung ticket và kết hợp với source code để phân tích.</p>
+      </div>
+    </section>
+
+    <!-- 5. PROMPT 2 -->
+    <section id="prompt2">
+      <div class="section-header">
+        <div class="section-num">5</div>
+        <h2>Prompt 2 – Phân tích yêu cầu thô từ khách</h2>
+      </div>
+
+      <p style="color:#94a3b8; margin-bottom:16px; font-size:14px;">Dùng khi khách gửi yêu cầu trực tiếp qua email, chat, hay tài liệu — chưa có ticket. Paste nội dung thô vào prompt, AI sẽ dịch và phân tích.</p>
+
+      <div class="prompt-block">
+        <div class="prompt-header">
+          <div class="dots">
+            <div class="dot r"></div>
+            <div class="dot y"></div>
+            <div class="dot g"></div>
+          </div>
+          <span class="prompt-label">PROMPT 2 – RAW REQUIREMENT ANALYSIS</span>
+        </div>
+        <div class="prompt-body">Dưới đây là yêu cầu của khách hàng:
+
+<span class="comment">──────────────────────────────────</span>
+[Paste yêu cầu vào đây]
+<span class="comment">──────────────────────────────────</span>
+
+<span class="bold">NỘI DUNG YÊU CẦU:</span>
+Dịch tuyệt đối chính xác yêu cầu trên sang tiếng Việt.
+
+<span class="bold">PHÂN TÍCH YÊU CẦU:</span> Phân tích yêu cầu theo cấu trúc sau:
+
+<span class="item">- Tên màn hình liên quan:</span>
+<span class="item">- Role liên quan:</span>
+<span class="item">- Bối cảnh / Hiện trạng:</span>
+<span class="item">- Nội dung cần xử lý:</span>
+
+  <span class="item">+ Điều tra:</span>
+    <span class="comment">→ Nếu có nội dung cần điều tra, xác nhận thì nêu ra</span>
+
+  <span class="item">+ Chỉnh sửa:</span>
+    <span class="comment">→ Khách yêu cầu chỉnh sửa gì thì nêu ra</span>
+
+  <span class="item">+ Câu hỏi của khách hàng:</span>
+    <span class="comment">→ Liệt kê các câu hỏi mà khách đang hỏi, nếu có</span>
+
+<span class="item">- Nội dung cần Q&amp;A phản biện:</span>
+  <span class="comment">→ Nếu có chỗ nào chưa rõ ràng, cần xác nhận lại thì nêu ra</span></div>
+      </div>
+    </section>
+
+    <!-- 6. GUIDELINES -->
+    <section id="guidelines">
+      <div class="section-header">
+        <div class="section-num">6</div>
+        <h2>Hướng dẫn quan trọng khi dùng AI</h2>
+      </div>
+
+      <p style="color:#94a3b8; margin-bottom:20px; font-size:14px;">Các quy tắc này phải được đưa vào prompt để đảm bảo AI trả về output chính xác, đặc biệt với dự án Nhật Bản:</p>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3>🚫 Không bịa đặt</h3>
+          <p>AI không được tự nghĩ ra chức năng hoặc hành vi không có trong mã nguồn. Mọi thông tin phải dựa 100% trên source code thực tế.</p>
+        </div>
+        <div class="card">
+          <h3>🈶 Dùng tiếng Nhật giao diện</h3>
+          <p>Tất cả tên menu, tiêu đề, nút bấm, nhãn phải dùng đúng văn bản tiếng Nhật hiển thị trên giao diện của hệ thống.</p>
+        </div>
+        <div class="card">
+          <h3>「」 Dấu ngoặc Nhật</h3>
+          <p>Mọi tên menu, nút bấm, thông báo đều đặt trong dấu ngoặc kép tiếng Nhật <strong style="color:#d2a8ff">「」</strong></p>
+          <p style="margin-top:8px;">Ví dụ: <strong style="color:#d2a8ff">「新規追加」</strong>、<strong style="color:#d2a8ff">「変更」</strong>、<strong style="color:#d2a8ff">「削除」</strong></p>
+        </div>
+        <div class="card">
+          <h3>🔢 Hằng số & giá trị</h3>
+          <p>Trích dẫn hằng số theo format: <strong style="color:#79c0ff">TÊN_HẰNG (giá trị)</strong></p>
+          <p style="margin-top:8px;">Ví dụ: <strong style="color:#79c0ff">CUSTOMER_IE (3000)</strong></p>
+        </div>
+      </div>
+
+      <div class="warn-box">
+        <div class="tip-icon">⚠️</div>
+        <p>Luôn review kỹ output của AI trước khi chuyển cho dev. AI có thể bỏ sót ngữ cảnh nghiệp vụ mà BrSE cần bổ sung thủ công.</p>
+      </div>
+    </section>
+
+    <!-- 7. OUTPUT FORMAT -->
+    <section id="output-format">
+      <div class="section-header">
+        <div class="section-num">7</div>
+        <h2>Cấu trúc output chuẩn</h2>
+      </div>
+
+      <p style="color:#94a3b8; margin-bottom:20px; font-size:14px;">Bản phân tích hoàn chỉnh cần có đủ các mục sau theo thứ tự:</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Mục</th>
+            <th>Nội dung</th>
+            <th>Ghi chú</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="badge blue">Tên màn hình</span></td>
+            <td>Tên màn hình / page / component liên quan</td>
+            <td>Dùng tên tiếng Nhật trong UI</td>
+          </tr>
+          <tr>
+            <td><span class="badge blue">Role liên quan</span></td>
+            <td>Admin / User / Role cụ thể trong hệ thống</td>
+            <td>Kiểm tra trong source code</td>
+          </tr>
+          <tr>
+            <td><span class="badge blue">Bối cảnh / Hiện trạng</span></td>
+            <td>Hành vi hiện tại của hệ thống trước khi thay đổi</td>
+            <td>100% từ source code</td>
+          </tr>
+          <tr>
+            <td><span class="badge blue">Vấn đề / Yêu cầu</span></td>
+            <td>Mô tả rõ vấn đề xảy ra hoặc tính năng cần thêm</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><span class="badge blue">Phạm vi ảnh hưởng</span></td>
+            <td>Bảng Impact Analysis: màn hình / API / DB / chức năng bị ảnh hưởng</td>
+            <td>Nếu xác định được</td>
+          </tr>
+          <tr>
+            <td><span class="badge blue">Cách thực hiện</span></td>
+            <td>Step-by-step hướng dẫn triển khai cho dev</td>
+            <td>Cụ thể, actionable</td>
+          </tr>
+          <tr>
+            <td><span class="badge gold">Q&A</span></td>
+            <td>Danh sách câu hỏi cần xác nhận với khách trước khi dev bắt đầu</td>
+            <td>Giảm vòng lặp Q&A</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 8. CHECKLIST -->
+    <section id="checklist">
+      <div class="section-header">
+        <div class="section-num">8</div>
+        <h2>Checklist trước khi chuyển task cho dev</h2>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3>📋 Nội dung</h3>
+          <ul>
+            <li>Đã xác định rõ tên màn hình</li>
+            <li>Đã xác định role liên quan</li>
+            <li>Mô tả vấn đề rõ ràng, không mơ hồ</li>
+            <li>Solution / cách sửa đã được làm rõ</li>
+            <li>Phạm vi ảnh hưởng đã được đánh giá</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>🔍 Chất lượng</h3>
+          <ul>
+            <li>Không có thông tin do AI tự bịa</li>
+            <li>Tên UI dùng đúng tiếng Nhật với 「」</li>
+            <li>Hằng số được trích dẫn đúng format</li>
+            <li>Các điểm chưa rõ đã được đưa vào Q&A</li>
+            <li>Dev đọc xong có thể code ngay</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tip-box">
+        <div class="tip-icon">🚀</div>
+        <p><strong>Mục tiêu cuối cùng:</strong> Xây dựng bộ prompt cá nhân phù hợp với từng loại task thường gặp, biến quy trình phân tích thành thói quen hàng ngày — áp dụng được cho mọi ticket mà không cần mò mẫm từng lần.</p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer>
+  <p>BrSE Training – Phân tích yêu cầu với AI (Cursor) &nbsp;·&nbsp; Tài liệu nội bộ</p>
+</footer>
+
+<script>
+  // Highlight active sidebar link on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const links = document.querySelectorAll('.sidebar nav a');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const a = document.querySelector(`.sidebar nav a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { threshold: 0.4 });
+  sections.forEach(s => obs.observe(s));
+</script>
+</body>
+</html>
