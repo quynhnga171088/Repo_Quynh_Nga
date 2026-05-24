@@ -1,5 +1,3 @@
-# Content Rules
-
 # QUY TẮC VIẾT
 
 Đọc phần này trước khi viết cho tôi hoặc thay tôi.
@@ -54,7 +52,7 @@ Tránh tone "bán hàng"
 - Không dùng dấu gạch dài, thay vào đó hãy dùng dấu gạch ngang ngắn - 
 • KHÔNG dùng các cụm: "đăng ký ngay", "cơ hội cuối cùng", "chỉ còn X suất", "khóa học hot nhất"
 • KHÔNG dùng câu mệnh lệnh kiểu "Đừng bỏ lỡ!", "Click ngay!"
-• Thay vào đó: "bạn nào quan tâm cứ ghé m2mba.com nhé", "cần hỏi gì cứ inbox mình"
+• Thay vào đó: "bạn nào quan tâm cứ ghé nhé", "cần hỏi gì cứ inbox mình"
 
 Tránh tone "chuyên gia khoe thành tích"
 • KHÔNG bắt đầu bài bằng các con số hoành tráng theo kiểu khoe
