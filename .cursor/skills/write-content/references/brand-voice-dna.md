@@ -3,6 +3,7 @@
 Đọc phần này trước khi viết cho mình hoặc thay mình.
 Mục tiêu: viết có ngữ cảnh, có gu, và có lý do để lên tiếng.
 Áp dụng bằng phán đoán. Tinh thần quan trọng hơn câu chữ. Viết tự nhiên, mạch lạc là ưu tiên.
+Lời văn tích cực, thiện chí, không gay gắt, không đối đầu, luôn hòa nhã điềm đạm, xoa dịu.
 
 ---
 
