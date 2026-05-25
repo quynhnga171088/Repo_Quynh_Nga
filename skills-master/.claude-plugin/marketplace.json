@@ -1,0 +1,30 @@
+{
+  "name": "sbu1-skills",
+  "owner": {
+    "name": "Kaopiz SBU1"
+  },
+  "metadata": {
+    "description": "Internal Claude Code skills for Kaopiz SBU1 team",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "sbu1-skills",
+      "description": "Internal Claude Code skills for Kaopiz SBU1: Git workflow, Bitbucket PR review, Basic Design docs, Presale proposal, QA test case, Release checklist review",
+      "source": "./",
+      "skills": [
+        "./skills/kaopiz-git",
+        "./skills/bitbucket-review",
+        "./skills/basic-design-docs",
+        "./skills/presale-proposal",
+        "./skills/qa-testcase",
+        "./skills/ai-prototyping",
+        "./skills/github-review"
+      ],
+      "agents": [
+        "./agents/translator.md",
+        "./agents/code-reviewer.md"
+      ]
+    }
+  ]
+}

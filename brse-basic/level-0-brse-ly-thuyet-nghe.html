@@ -1,0 +1,1627 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Level 0 - Hiểu Ngành IT &amp; BrSE | BrSE Career Builder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Lexend:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-page: #f1f5f9;
+      --bg-sidebar: #f8fafc;
+      --bg-main: #ffffff;
+      --bg-card: #ffffff;
+      --bg-step: #f8fafc;
+      --bg-primary: #f1f5f9;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #64748b;
+      --accent-blue: #0ea5e9;
+      --accent-blue-dark: #0284c7;
+      --accent-blue-light: #e0f2fe;
+      --accent-green: #059669;
+      --accent-green-light: #d1fae5;
+      --accent-amber: #b45309;
+      --accent-amber-light: #fffbeb;
+      --accent-orange: #ea580c;
+      --accent-orange-light: #ffedd5;
+      --accent-red: #dc2626;
+      --accent-red-light: #fef2f2;
+      --accent-purple: #5b21b6;
+      --accent-purple-light: #ede9fe;
+      --border-light: #e2e8f0;
+      --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+      --shadow-md: 0 4px 14px rgba(15, 23, 42, 0.08);
+      --radius-xl: 12px;
+      --radius-card: 12px;
+      --sidebar-width: 272px;
+      --sidebar-collapsed: 52px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-page);
+      color: var(--text-primary);
+      line-height: 1.75;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .lesson-app { display: flex; align-items: stretch; min-height: 100vh; }
+
+    .lesson-sidebar {
+      flex: 0 0 var(--sidebar-width);
+      width: var(--sidebar-width);
+      background: var(--bg-sidebar);
+      border-right: 1px solid var(--border-light);
+      position: sticky;
+      top: 0;
+      align-self: flex-start;
+      height: 100vh;
+      overflow-y: auto;
+      overflow-x: hidden;
+      z-index: 30;
+      transition: flex-basis 0.22s ease, width 0.22s ease;
+    }
+
+    .lesson-app.sidebar-collapsed .lesson-sidebar {
+      flex-basis: var(--sidebar-collapsed);
+      width: var(--sidebar-collapsed);
+    }
+
+    .sidebar-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 16px 14px 12px;
+      border-bottom: 1px solid var(--border-light);
+      background: var(--bg-sidebar);
+      position: sticky;
+      top: 0;
+      z-index: 2;
+    }
+
+    .sidebar-title {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      transition: opacity 0.15s ease;
+    }
+
+    .lesson-app.sidebar-collapsed .sidebar-title { opacity: 0; width: 0; overflow: hidden; }
+
+    .sidebar-collapse-btn {
+      flex-shrink: 0;
+      width: 34px; height: 34px;
+      border-radius: 8px;
+      border: 1px solid var(--border-light);
+      background: #fff;
+      color: var(--accent-blue);
+      font-size: 18px; font-weight: 700; line-height: 1;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s ease, transform 0.2s ease;
+    }
+
+    .sidebar-collapse-btn:hover { background: var(--accent-blue-light); }
+    .lesson-app.sidebar-collapsed .sidebar-collapse-btn { transform: rotate(180deg); }
+
+    .sidebar-nav { padding: 12px 10px 24px; transition: opacity 0.15s ease; }
+
+    .lesson-app.sidebar-collapsed .sidebar-nav {
+      opacity: 0; pointer-events: none; visibility: hidden;
+      height: 0; padding: 0; overflow: hidden;
+    }
+
+    .lesson-app.sidebar-collapsed .sidebar-header {
+      flex-direction: column; justify-content: flex-start;
+      padding: 12px 8px; border-bottom: none;
+    }
+
+    .nav-group { margin-bottom: 18px; }
+
+    .nav-group-label {
+      font-size: 10px; font-weight: 800; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--text-muted);
+      padding: 6px 8px 8px;
+    }
+
+    .sidebar-nav a.nav-item {
+      display: block; font-size: 13px; font-weight: 500;
+      color: var(--text-secondary); text-decoration: none;
+      padding: 8px 10px; margin-bottom: 2px; border-radius: 8px;
+      line-height: 1.45; border: 1px solid transparent;
+      transition: background 0.12s ease, color 0.12s ease, border-color 0.12s ease;
+    }
+
+    .sidebar-nav a.nav-item:hover {
+      background: #fff; color: var(--accent-blue-dark); border-color: var(--border-light);
+    }
+
+    .sidebar-nav a.nav-item.is-active {
+      background: var(--accent-blue-light); color: var(--accent-blue-dark);
+      font-weight: 600; border-color: #7dd3fc;
+      box-shadow: inset 3px 0 0 0 var(--accent-blue);
+    }
+
+    .lesson-main { flex: 1; min-width: 0; background: var(--bg-main); }
+
+    .page-wrapper { max-width: 900px; margin: 0 auto; padding: 28px 24px 96px; }
+
+    .header {
+      text-align: center;
+      background: linear-gradient(165deg, #ffffff 0%, #f8fafc 45%, #e0f2fe 100%);
+      border-radius: var(--radius-xl);
+      padding: 56px 44px;
+      margin-bottom: 28px;
+      position: relative; overflow: hidden;
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-md);
+      border-top: 3px solid var(--accent-blue);
+    }
+
+    .header::before {
+      content: ''; position: absolute; top: -60px; right: -60px;
+      width: 200px; height: 200px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(14,165,233,0.12) 0%, transparent 70%);
+    }
+
+    .header::after {
+      content: ''; position: absolute; bottom: -40px; left: -40px;
+      width: 150px; height: 150px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(14,165,233,0.08) 0%, transparent 70%);
+    }
+
+    .header-badge {
+      display: inline-block; background: var(--accent-blue-dark); color: #fff;
+      font-size: 11px; font-weight: 600; letter-spacing: 1.5px;
+      text-transform: uppercase; padding: 6px 18px; border-radius: 20px; margin-bottom: 24px;
+    }
+
+    .header h1 {
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-size: 2.2rem; font-weight: 700; color: var(--text-primary);
+      line-height: 1.3; margin-bottom: 14px;
+    }
+
+    .header-sub { font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+    .header-trainer { font-size: 0.95rem; color: #991b1b; font-weight: 600; margin-bottom: 8px; }
+    .header-meta { font-size: 0.82rem; color: var(--text-muted); font-weight: 300; }
+
+    .card {
+      background: var(--bg-card); border: 1px solid var(--border-light);
+      border-radius: var(--radius-card); box-shadow: var(--shadow-sm);
+      padding: 28px 32px; margin-bottom: 20px;
+      border-top: 3px solid var(--accent-blue);
+    }
+
+    .card.card-accent-green { border-top-color: var(--accent-green); }
+    .card.card-accent-amber { border-top-color: #f59e0b; }
+    .card.card-accent-purple { border-top-color: #7c3aed; }
+    .card.card-accent-red { border-top-color: var(--accent-red); }
+
+    .section-label {
+      display: inline-block; font-size: 11px; font-weight: 800;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: var(--accent-blue); margin-bottom: 10px;
+    }
+
+    .card.card-accent-green .section-label { color: var(--accent-green); }
+    .card.card-accent-amber .section-label { color: #d97706; }
+    .card.card-accent-purple .section-label { color: #7c3aed; }
+
+    .section-title { font-size: 22px; font-weight: 800; color: var(--text-primary); margin-bottom: 14px; line-height: 1.35; }
+    .section-desc { font-size: 15px; color: var(--text-secondary); line-height: 1.85; }
+
+    .lesson-block { border-top: 1px solid var(--border-light); padding-top: 22px; margin-top: 22px; }
+    .lesson-block:first-child { border-top: none; padding-top: 0; margin-top: 0; }
+
+    .block-title { font-size: 16px; font-weight: 800; color: var(--text-primary); margin-bottom: 8px; }
+
+    .bullets {
+      margin-top: 10px; padding-left: 18px; color: var(--text-secondary);
+      font-size: 14.5px; line-height: 1.85;
+    }
+
+    .callout {
+      margin-top: 14px; border-radius: 10px; padding: 12px 14px;
+      background: #f0f9ff; border: 1px solid #bae6fd;
+      color: #0369a1; font-size: 14px; line-height: 1.7;
+    }
+
+    .callout-green { background: #F0FDF4; border: 1px solid #BBF7D0; color: #166534; }
+    .callout-amber { background: #FFFBEB; border: 1px solid #FDE68A; color: #92400E; }
+    .callout-purple { background: var(--accent-purple-light); border: 1px solid #C4B5FD; color: var(--accent-purple); }
+
+    .flow-visual { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 14px; }
+
+    .flow-step {
+      background: var(--accent-blue-light); color: var(--accent-blue);
+      font-size: 13px; font-weight: 600; padding: 6px 14px; border-radius: 10px;
+    }
+
+    .flow-arrow { color: var(--text-muted); font-size: 16px; }
+
+    .subsection-bar {
+      background: linear-gradient(135deg, var(--accent-blue-dark) 0%, #0369a1 100%);
+      color: #fff; font-size: 14px; font-weight: 600;
+      padding: 10px 16px; border-radius: 8px; margin-top: 20px; margin-bottom: 12px;
+    }
+
+    .card.card-accent-green .subsection-bar {
+      background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    }
+
+    .card.card-accent-amber .subsection-bar {
+      background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+    }
+
+    .card.card-accent-purple .subsection-bar {
+      background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+    }
+
+    .role-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-top: 14px; }
+
+    .role-card {
+      border-radius: var(--radius-card); padding: 14px 16px;
+      border: 1px solid var(--border-light); background: var(--bg-main);
+      border-top: 3px solid var(--accent-blue);
+    }
+
+    .role-card .role-icon { font-size: 28px; margin-bottom: 6px; }
+    .role-card .role-name { font-size: 14px; font-weight: 800; margin-bottom: 4px; }
+    .role-card .role-desc { font-size: 12.5px; color: var(--text-muted); line-height: 1.55; }
+
+    .mapping-table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 13.5px; }
+    .mapping-table th {
+      background: var(--bg-sidebar); font-weight: 700; text-align: left;
+      padding: 10px 14px; border-bottom: 2px solid var(--border-light); color: var(--text-primary);
+    }
+    .mapping-table td { padding: 10px 14px; border-bottom: 1px solid var(--border-light); color: var(--text-secondary); vertical-align: top; }
+    .mapping-table tr:last-child td { border-bottom: none; }
+    .mapping-table .role-cell { font-weight: 700; color: var(--text-primary); white-space: nowrap; }
+
+    .outcomes-hub { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 14px; }
+
+    .out-pill {
+      flex: 1 1 130px; max-width: 168px; min-width: 118px;
+      text-align: center; padding: 14px 10px 12px;
+      border-radius: var(--radius-card); border: 1px solid var(--border-light);
+      background: #fff; box-shadow: var(--shadow-sm); border-top: 3px solid var(--accent-blue);
+    }
+
+    .out-pill .out-emoji { font-size: 26px; line-height: 1; display: block; margin-bottom: 8px; }
+    .out-pill .out-name { font-size: 12px; font-weight: 800; color: var(--text-primary); line-height: 1.3; }
+    .out-pill .out-hint { font-size: 10.5px; color: var(--text-muted); margin-top: 6px; line-height: 1.4; }
+
+    .golden-question {
+      text-align: center; padding: 20px 24px;
+      background: linear-gradient(135deg, var(--accent-blue) 0%, #6366f1 100%);
+      border-radius: 16px; color: #fff; margin-top: 14px;
+    }
+
+    .golden-question p { font-size: 12px; opacity: 0.85; margin-bottom: 6px; letter-spacing: 1px; text-transform: uppercase; }
+    .golden-question strong { font-family: 'Source Serif 4', Georgia, serif; font-size: 1.35rem; font-weight: 600; line-height: 1.4; }
+
+    .diagram-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px; }
+    @media (max-width: 600px) { .diagram-grid { grid-template-columns: 1fr; } }
+
+    .diagram-card { border-radius: var(--radius-card); padding: 16px 18px; border: 1px solid var(--border-light); }
+    .diagram-card.admin { background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-color: #bae6fd; }
+    .diagram-card.user { background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border-color: #6ee7b7; }
+    .diagram-card h4 { font-size: 14px; font-weight: 800; margin-bottom: 8px; }
+    .diagram-card.admin h4 { color: var(--accent-blue-dark); }
+    .diagram-card.user h4 { color: var(--accent-green); }
+    .diagram-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.65; }
+
+    .closing {
+      background: linear-gradient(165deg, #ffffff 0%, #f8fafc 50%, #e0f2fe 100%);
+      border-radius: var(--radius-xl); border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-md); padding: 36px 40px; margin-top: 32px;
+      position: relative; overflow: hidden; border-top: 3px solid var(--accent-blue);
+    }
+
+    .closing::before {
+      content: ''; position: absolute; top: -60px; right: -60px;
+      width: 180px; height: 180px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(14,165,233,0.1) 0%, transparent 70%);
+    }
+
+    .closing-title {
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-size: 1.7rem; font-weight: 700; margin-bottom: 10px;
+      color: var(--text-primary); line-height: 1.3;
+    }
+
+    .closing-text { color: var(--text-secondary); font-size: 15px; line-height: 1.85; margin-bottom: 14px; }
+
+    .closing-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      text-decoration: none; padding: 10px 14px; border-radius: 12px;
+      font-weight: 800; font-size: 14px; border: 1px solid var(--border-light);
+      background: #fff; color: var(--text-primary);
+    }
+
+    .btn-primary { background: var(--accent-blue); color: #fff; border-color: var(--accent-blue-dark); }
+    .btn-primary:hover { background: var(--accent-blue-dark); }
+
+    .memory-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+
+    .memory-card {
+      border-radius: var(--radius-card); padding: 14px 12px;
+      text-align: center; border: 1px solid var(--border-light);
+      background: #fff; transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .memory-card-1 { border-top: 3px solid #f59e0b; }
+    .memory-card-2 { border-top: 3px solid var(--accent-blue); }
+    .memory-card-3 { border-top: 3px solid var(--accent-green); }
+    .memory-card-4 { border-top: 3px solid #6366f1; }
+
+    .memory-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+
+    .memory-card-icon {
+      width: 44px; height: 44px; margin: 0 auto 10px;
+      border-radius: 12px; display: flex; align-items: center;
+      justify-content: center; font-size: 22px;
+    }
+
+    .memory-card-num { font-size: 10px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
+    .memory-card-title { font-size: 13px; font-weight: 700; color: var(--text-primary); line-height: 1.35; margin-bottom: 4px; }
+    .memory-card-hint { font-size: 11px; color: var(--text-muted); line-height: 1.45; }
+
+    .memory-card-1 .memory-card-icon { background: #fef3c7; }
+    .memory-card-2 .memory-card-icon { background: #e0f2fe; }
+    .memory-card-3 .memory-card-icon { background: #d1fae5; }
+    .memory-card-4 .memory-card-icon { background: #e0e7ff; }
+
+    @media (max-width: 900px) { .memory-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .memory-grid { grid-template-columns: 1fr; } }
+
+    .footer { text-align: center; padding: 32px; color: var(--text-muted); font-size: 13px; margin-top: 24px; }
+    .footer strong { color: var(--text-secondary); }
+
+    /* Quiz shell */
+    .quiz-shell { display: none; position: fixed; inset: 0; z-index: 10000; flex-direction: column; background: var(--bg-primary); }
+    .quiz-shell.is-open { display: flex; }
+
+    .quiz-shell-top {
+      flex-shrink: 0; display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; flex-wrap: wrap; padding: 12px 20px;
+      background: #fff; border-bottom: 1px solid var(--border-light); box-shadow: var(--shadow-sm);
+    }
+
+    .quiz-shell-top span { font-size: 13px; color: var(--text-muted); font-weight: 500; }
+
+    .quiz-shell-scroll { flex: 1; width: 100%; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; background: var(--bg-primary); }
+
+    #quiz-inline { max-width: 900px; margin: 0 auto; padding: 16px 24px 48px; --accent-green: #059669; --accent-purple: #7c3aed; --accent-purple-light: #ede9fe; }
+
+    #quiz-inline .header { text-align: center; background: linear-gradient(165deg, #ffffff 0%, #f8fafc 45%, #e0f2fe 100%); border-radius: var(--radius-xl); padding: 56px 48px; margin-bottom: 28px; position: relative; overflow: hidden; border: 1px solid var(--border-light); box-shadow: var(--shadow-md); border-top: 3px solid var(--accent-blue); }
+    #quiz-inline .header-badge { display: inline-block; background: var(--accent-blue-dark); color: #fff; font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 6px 18px; border-radius: 20px; margin-bottom: 18px; }
+    #quiz-inline .header h1 { font-family: 'Source Serif 4', serif; font-size: 2rem; font-weight: 700; line-height: 1.3; margin-bottom: 12px; }
+    #quiz-inline .header-sub { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.7; }
+    #quiz-inline .header-trainer { font-size: 0.95rem; color: #991b1b; font-weight: 600; margin-top: 14px; }
+
+    #quiz-inline .quiz-section { background: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--radius-card); border-top: 3px solid var(--accent-blue); padding: 36px 40px; box-shadow: var(--shadow-sm); margin-bottom: 28px; }
+    #quiz-inline .quiz-header { display: flex; align-items: center; gap: 16px; margin-bottom: 28px; padding-bottom: 20px; border-bottom: 2px solid var(--border-light); }
+    #quiz-inline .quiz-icon { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; color: #fff; }
+    #quiz-inline .quiz-icon.basic { background: linear-gradient(135deg, #1D4ED8, #3B82F6); }
+    #quiz-inline .quiz-icon.advanced { background: linear-gradient(135deg, #7C3AED, #5B21B6); }
+    #quiz-inline .quiz-title { font-size: 22px; font-weight: 800; }
+    #quiz-inline .quiz-subtitle { font-size: 14px; color: var(--text-muted); margin-top: 4px; }
+    #quiz-inline .level-pill { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; padding: 4px 12px; border-radius: 20px; margin-bottom: 20px; }
+    #quiz-inline .level-pill.basic { background: var(--accent-blue-light); color: var(--accent-blue); }
+    #quiz-inline .level-pill.advanced { background: var(--accent-purple-light); color: var(--accent-purple); }
+
+    #quiz-inline .question-block { margin-bottom: 28px; padding-bottom: 28px; border-bottom: 1px solid #F0EEE8; }
+    #quiz-inline .question-block:last-of-type { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+    #quiz-inline .question-num { display: inline-block; font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 6px; margin-bottom: 10px; }
+    #quiz-inline .question-block[data-level="basic"] .question-num { background: var(--accent-blue-light); color: var(--accent-blue); }
+    #quiz-inline .question-block[data-level="advanced"] .question-num { background: var(--accent-purple-light); color: var(--accent-purple); }
+    #quiz-inline .question-block.question-unanswered { outline: 2px solid #DC2626; outline-offset: 4px; border-radius: 10px; background: #FEF2F2; }
+    #quiz-inline .question-block.question-unanswered .question-num::after { content: ' · Chưa trả lời'; color: #B91C1C; font-weight: 800; }
+    #quiz-inline .question-text { font-size: 15.5px; font-weight: 600; margin-bottom: 14px; line-height: 1.5; }
+    #quiz-inline .options { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    #quiz-inline .option { display: flex; align-items: center; gap: 12px; padding: 11px 16px; border: 1.5px solid var(--border-light); border-radius: 10px; cursor: pointer; transition: all 0.15s ease; background: var(--bg-step); font-size: 14.5px; color: var(--text-secondary); user-select: none; }
+    #quiz-inline .option:hover { border-color: #93C5FD; background: #EFF6FF; color: var(--accent-blue); }
+    #quiz-inline .option.selected { border-color: #93C5FD; background: #EFF6FF; color: var(--accent-blue); }
+    #quiz-inline .option.correct { border-color: #86EFAC; background: #F0FDF4; color: #166534; }
+    #quiz-inline .option.wrong { border-color: #FECACA; background: #FEF2F2; color: #991B1B; }
+    #quiz-inline .option-letter { width: 26px; height: 26px; border-radius: 6px; background: var(--border-light); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; color: var(--text-muted); }
+    #quiz-inline .option.correct .option-letter { background: #BBF7D0; color: #166534; }
+    #quiz-inline .option.wrong .option-letter { background: #FECACA; color: #991B1B; }
+    #quiz-inline .option.selected .option-letter { background: #BFDBFE; color: #1D4ED8; }
+    #quiz-inline .option.option-answer-key { border: 2px solid #15803D !important; background: linear-gradient(135deg, #DCFCE7 0%, #BBF7D0 100%) !important; box-shadow: 0 0 0 3px rgba(22,163,74,0.22), 0 6px 18px rgba(22,101,52,0.12); color: #14532d !important; font-weight: 700; }
+    #quiz-inline .option.option-answer-key .option-letter { background: #15803D !important; color: #fff !important; }
+    #quiz-inline .option.option-answer-key::after { content: 'Đáp án đúng'; margin-left: auto; padding-left: 10px; font-size: 11px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; color: #166534; flex-shrink: 0; }
+    #quiz-inline .answer-feedback { margin-top: 10px; padding: 10px 16px; border-radius: 8px; font-size: 13.5px; display: none; line-height: 1.65; }
+    #quiz-inline .answer-feedback.show { display: block; }
+    #quiz-inline .answer-feedback.correct { background: #F0FDF4; border: 1px solid #BBF7D0; color: #166534; }
+    #quiz-inline .answer-feedback.wrong { background: #FEF2F2; border: 1px solid #FECACA; color: #991B1B; }
+    #quiz-inline .check-btn { margin-top: 12px; padding: 9px 22px; background: var(--accent-blue); color: #fff; border: none; border-radius: 8px; font-family: inherit; font-size: 13.5px; font-weight: 600; cursor: pointer; }
+    #quiz-inline .check-btn:hover { background: var(--accent-blue-dark); }
+    #quiz-inline .quiz-result-box { margin-top: 28px; padding: 28px 32px; border-radius: 14px; text-align: center; color: #fff; display: none; }
+    #quiz-inline .quiz-result-box.show { display: block; }
+    #quiz-inline .quiz-result-box.basic { background: linear-gradient(135deg, #1D4ED8, #3B82F6); }
+    #quiz-inline .quiz-result-box.advanced { background: linear-gradient(135deg, #7C3AED, #5B21B6); }
+    #quiz-inline .quiz-result-box.total { background: linear-gradient(135deg, #065f46, #059669); }
+    #quiz-inline .result-score { font-size: 44px; font-weight: 800; margin-bottom: 8px; }
+    #quiz-inline .result-label { font-size: 16px; color: rgba(255,255,255,0.9); margin-bottom: 12px; }
+    #quiz-inline .result-comment { font-size: 14px; color: rgba(255,255,255,0.78); line-height: 1.65; }
+    #quiz-inline .retake-btn { margin-top: 18px; padding: 10px 28px; background: rgba(255,255,255,0.15); border: 1.5px solid rgba(255,255,255,0.35); border-radius: 8px; color: #fff; font-family: 'Lexend', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; }
+    #quiz-inline .retake-btn:hover { background: rgba(255,255,255,0.25); }
+    #quiz-inline .quiz-final-actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; align-items: center; margin-top: 4px; }
+    #quiz-inline .quiz-final-actions .check-btn { margin-top: 0; }
+    #quiz-incomplete-toast { display:none; position:fixed; bottom:28px; left:50%; transform:translateX(-50%); z-index:20000; background:#7f1d1d; color:#fff; padding:14px 22px; border-radius:12px; font-size:14px; font-weight:600; line-height:1.5; box-shadow:0 4px 20px rgba(0,0,0,0.3); text-align:center; max-width:420px; width:calc(100% - 40px); }
+    #quiz-incomplete-toast.show { display:block; animation: toastIn 0.25s ease; }
+    @keyframes toastIn { from { opacity:0; transform:translateX(-50%) translateY(12px); } to { opacity:1; transform:translateX(-50%) translateY(0); } }
+    #quiz-inline .footer { text-align: center; padding: 32px; color: var(--text-muted); font-size: 13px; }
+    #quiz-inline .footer .header-trainer { margin-top: 0; margin-bottom: 8px; color: #991b1b; }
+
+    .btn-quiz-open { background: var(--accent-blue-dark); color: #fff; border-color: #0369a1; cursor: pointer; font-family: inherit; }
+    .btn-quiz-open:hover { background: #0369a1; }
+
+    @media (max-width: 960px) {
+      .lesson-app { flex-direction: column; }
+      .lesson-sidebar { position: relative; height: auto; width: 100% !important; flex: 0 0 auto !important; border-right: none; border-bottom: 1px solid var(--border-light); }
+      .lesson-app.sidebar-collapsed .lesson-sidebar { width: 100% !important; }
+      .lesson-app.sidebar-collapsed .sidebar-nav { display: none; }
+      .lesson-app.sidebar-collapsed .sidebar-title { opacity: 1; width: auto; }
+      .sidebar-nav { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0 8px; padding-bottom: 16px; }
+      .nav-group { margin-bottom: 12px; }
+    }
+
+    @media (max-width: 680px) {
+      .header { padding: 36px 28px; }
+      .header h1 { font-size: 24px; }
+      .card { padding: 24px 22px; }
+      .closing { padding: 28px 24px; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      .lesson-sidebar { display: none !important; }
+      .lesson-main { width: 100% !important; }
+      .header, .card, .closing { box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+<div class="lesson-app" id="lesson-app">
+
+  <!-- SIDEBAR -->
+  <aside class="lesson-sidebar" id="lesson-sidebar" aria-label="Mục lục bài học">
+    <div class="sidebar-header">
+      <span class="sidebar-title">Mục lục</span>
+      <button type="button" class="sidebar-collapse-btn" id="btn-sidebar-collapse"
+        aria-expanded="true" aria-controls="lesson-sidebar-nav" title="Thu gọn / mở rộng">‹</button>
+    </div>
+    <nav class="sidebar-nav" id="lesson-sidebar-nav" aria-label="Điều hướng nội dung">
+      <div class="nav-group">
+        <div class="nav-group-label">Tổng quan</div>
+        <a class="nav-item" href="#cover">Bìa &amp; giới thiệu</a>
+        <a class="nav-item" href="#muc-tieu">Mục tiêu &amp; lộ trình</a>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-label">Nội dung</div>
+        <a class="nav-item" href="#module-1">1 - Nhận thức đúng trước khi bắt đầu</a>
+        <a class="nav-item" href="#lesson-1-1">1.1 - IT không phải chỉ là code</a>
+        <a class="nav-item" href="#lesson-1-2">1.2 - Các vai trò trong team IT</a>
+        <a class="nav-item" href="#module-2">2 - Phần mềm được tạo ra như thế nào?</a>
+        <a class="nav-item" href="#lesson-2-1">2.1 - Quy trình phát triển phần mềm</a>
+        <a class="nav-item" href="#lesson-2-2">2.2 - Waterfall và Agile</a>
+        <a class="nav-item" href="#lesson-2-3">2.3 - Labo và Project Base</a>
+        <a class="nav-item" href="#module-3">3 - Vai trò &amp; công việc của BrSE</a>
+        <a class="nav-item" href="#lesson-3-1">3.1 - BrSE là ai? Tech và Non-tech</a>
+        <a class="nav-item" href="#lesson-3-2">3.2 - Một ngày làm việc của BrSE</a>
+        <a class="nav-item" href="#lesson-3-3">3.3 - Nhu cầu thị trường</a>
+        <a class="nav-item" href="#module-4">4 - Lộ trình &amp; định hướng học</a>
+        <a class="nav-item" href="#lesson-4-1">4.1 - Từ đâu bước vào ngành IT?</a>
+        <a class="nav-item" href="#lesson-4-2">4.2 - Học gì? Học đến mức nào là đủ?</a>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-label">Kết bài</div>
+        <a class="nav-item" href="#closing">Tổng kết</a>
+        <a class="nav-item" href="#btn-quiz-open">Kiểm tra kiến thức</a>
+      </div>
+    </nav>
+  </aside>
+
+  <main class="lesson-main">
+    <div class="page-wrapper">
+
+      <!-- COVER -->
+      <div class="header" id="cover">
+        <div class="header-badge">BrSE Lý Thuyết Nghề · Level 0</div>
+        <h1>Hiểu Ngành IT &amp; BrSE<br>Từ Góc Nhìn Thực Tế</h1>
+        <p class="header-sub">Bài học nền tảng dành cho người chưa có kinh nghiệm IT"</p>
+        <p class="header-trainer">BrSE Career Builder - Đồng Hành Cùng Bạn</p>
+        <p class="header-meta">Người mới · Trái ngành · Muốn hiểu về nghề BrSE &nbsp;·&nbsp; ~60 phút &nbsp;·&nbsp; 4 module · 9 lesson · 1 quiz</p>
+      </div>
+
+      <!-- MỤC TIÊU -->
+      <div class="card" id="muc-tieu">
+        <div class="section-label">Mục tiêu</div>
+        <div class="section-title">Sau bài này, bạn sẽ làm được gì?</div>
+        <p class="section-desc">Level 0 xây dựng nền nhận thức đúng về ngành IT và nghề BrSE - không phải để học thuộc định nghĩa, mà để bạn có bức tranh tổng thể, hiểu mình đang ở đâu, và biết mình cần đi theo hướng nào.</p>
+
+        <div class="outcomes-hub">
+          <div class="out-pill">
+            <span class="out-emoji">🏗️</span>
+            <div class="out-name">Hiểu ngành IT</div>
+            <div class="out-hint">Không chỉ là code - có nhiều vai trò không cần lập trình</div>
+          </div>
+          <div class="out-pill">
+            <span class="out-emoji">⚙️</span>
+            <div class="out-name">Hiểu quy trình</div>
+            <div class="out-hint">Phần mềm được tạo ra qua những bước nào</div>
+          </div>
+          <div class="out-pill">
+            <span class="out-emoji">🌉</span>
+            <div class="out-name">Hiểu BrSE</div>
+            <div class="out-hint">BrSE làm gì hàng ngày, tech và non-tech khác nhau thế nào</div>
+          </div>
+          <div class="out-pill">
+            <span class="out-emoji">🗺️</span>
+            <div class="out-name">Có lộ trình</div>
+            <div class="out-hint">Biết nên học gì và bắt đầu từ đâu</div>
+          </div>
+        </div>
+
+        <div class="lesson-block">
+          <div class="block-title">Lộ trình bài học</div>
+          <div class="flow-visual">
+            <span class="flow-step">① Ngành IT &amp; Vai Trò</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step">② Quy Trình Phát Triển</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step">③ BrSE Thực Tế</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step">④ Con Đường Vào Nghề</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODULE 1 -->
+      <div class="card" id="module-1">
+        <div class="section-label">Module 1</div>
+        <div class="section-title">Ngành IT &amp; BrSE - Nhận Thức Đúng Trước Khi Bắt Đầu</div>
+        <p class="section-desc">Phần lớn người mới bước vào ngành IT đều mang theo một nỗi sợ không có tên: "IT phức tạp, phải biết code, mình không đủ năng lực." Module này giải quyết nhận thức đó trước khi học bất cứ điều gì khác.</p>
+
+        <!-- Lesson 1.1 -->
+        <div class="lesson-block" id="lesson-1-1">
+          <div class="subsection-bar">1.1 · IT Không Phải Chỉ Là Code</div>
+          <div class="block-title">Ngành IT rộng hơn bạn nghĩ rất nhiều</div>
+          <p class="section-desc">Khi nói đến IT, hầu hết mọi người hình dung ngay đến developer - người ngồi viết code. Đây là nhận thức phổ biến nhưng chưa đầy đủ. Trên thực tế, trong một dự án phần mềm điển hình, developer chỉ chiếm một phần nhân lực. Phần còn lại là các vai trò không cần code mà vẫn đóng vai trò quyết định đến chất lượng sản phẩm.</p>
+
+          <div style="margin-top:18px;">
+            <div class="block-title" style="margin-bottom:6px;">🇯🇵 Tiếng Nhật giỏi + giao tiếp tốt - bạn có thể làm gì trong ngành IT?</div>
+            <p class="section-desc" style="margin-bottom:14px;">Nhiều người học tiếng Nhật cho rằng con đường duy nhất trong ngành IT là làm phiên dịch (Comtor). Trên thực tế, tiếng Nhật tốt kết hợp với kỹ năng giao tiếp là lợi thế cạnh tranh mở ra nhiều vai trò khác nhau - từ phân tích nghiệp vụ, quản lý dự án, đến tư vấn kinh doanh. Đặc thù của thị trường outsource Nhật–Việt là nhân lực "vừa biết IT, vừa có tiếng Nhật" luôn khan hiếm và được trả công xứng đáng.</p>
+            <div class="role-cards">
+              <div class="role-card">
+                <div class="role-icon">🗣️</div>
+                <div class="role-name">Comtor</div>
+                <div class="role-desc">Phiên dịch trong meeting và tài liệu kỹ thuật. Điểm vào dễ nhất, không yêu cầu kiến thức IT sâu. Thường là bước đầu tiên để tiếp cận ngành.</div>
+              </div>
+              <div class="role-card">
+                <div class="role-icon">📋</div>
+                <div class="role-name">Business Analyst (BA)</div>
+                <div class="role-desc">Cần học nhiều. Làm việc trực tiếp với khách Nhật để phân tích và làm rõ yêu cầu. Tiếng Nhật tốt giúp khai thác đúng nhu cầu thực sự của khách.</div>
+              </div>
+              <div class="role-card">
+                <div class="role-icon">🔍</div>
+                <div class="role-name">Tester / QA</div>
+                <div class="role-desc">Kiểm thử phần mềm, đối chiếu kết quả với spec. Tiếng Nhật giúp đọc tài liệu gốc, trao đổi trực tiếp với khách khi phát hiện lỗi. Một lối dễ vào.</div>
+              </div>
+              <div class="role-card">
+                <div class="role-icon">📊</div>
+                <div class="role-name">Project Manager (PM)</div>
+                <div class="role-desc">Điều phối tiến độ, quản lý rủi ro và kỳ vọng khách hàng. PM biết tiếng Nhật có thể xử lý trực tiếp các tình huống nhạy cảm thay vì phụ thuộc vào phiên dịch hay BrSE.</div>
+              </div>
+              <div class="role-card">
+                <div class="role-icon">💼</div>
+                <div class="role-name">Sales / Pre-sales</div>
+                <div class="role-desc">Tư vấn và chào hàng dịch vụ phát triển phần mềm cho khách Nhật. Tiếng Nhật giỏi là yêu cầu bắt buộc - đây là vai trò ít cạnh tranh nhất vì ít người hội đủ cả hai kỹ năng. Tỉ lệ bỏ nghề cao vì không ra "số"</div>
+              </div>
+              <div class="role-card" style="border-top-color:#f59e0b;">
+                <div class="role-icon">🌉</div>
+                <div class="role-name">BrSE</div>
+                <div class="role-desc">Tổng hòa của tất cả các vai trò trên. Cầu nối kỹ thuật/nghiệp vụ và ngôn ngữ giữa khách Nhật và team offshore Việt. Hành trình thường bắt đầu từ một trong các vai trò trên rồi mở rộng dần.</div>
+              </div>
+            </div>
+            <div class="callout" style="margin-top:14px;">
+              <strong>Điểm mấu chốt:</strong> Không cần biết code mới vào được ngành IT. Điều thực sự khác biệt là "có kiến thức nền về phát triển phần mềm". Đó chính xác là những gì Level 0 này trang bị cho bạn.
+            </div>
+          </div>
+        </div>
+
+        <!-- Lesson 1.2 -->
+        <div class="lesson-block" id="lesson-1-2">
+          <div class="subsection-bar">1.2 · Các Vai Trò Trong Team Phát Triển Phần Mềm</div>
+          <div class="block-title">Bản đồ nhân lực của một dự án IT điển hình</div>
+          <p class="section-desc">Dưới đây là các vai trò thường gặp trong dự án phát triển phần mềm outsource Nhật–Việt. Tùy công ty và tùy dự án, sẽ có thêm các vai trò như PO, designer, v.v...Bạn không cần ghi nhớ hết ngay - mục tiêu là nắm được bức tranh tổng thể và định vị được vị trí của BrSE trong đó.</p>
+
+          <div style="text-align:center;margin:16px 0;">
+            <img src="Image/Project-roles.png" alt="Các vai trò trong team phát triển phần mềm" style="max-width:100%;border-radius:10px;box-shadow:0 2px 12px rgba(0,0,0,0.10);">
+          </div>
+
+          <div class="role-cards" style="margin-top:14px;">
+            <div class="role-card">
+              <div class="role-icon">👨‍💻</div>
+              <div class="role-name">Developer (Dev)</div>
+              <div class="role-desc">Viết code xây dựng phần mềm. Chia thành Front-end (giao diện), Back-end (xử lý logic), hoặc Full-stack (cả hai).</div>
+            </div>
+            <div class="role-card">
+              <div class="role-icon">🔍</div>
+              <div class="role-name">Tester / QA</div>
+              <div class="role-desc">Kiểm tra chất lượng phần mềm trước khi bàn giao. Phát hiện lỗi, đảm bảo sản phẩm chạy đúng yêu cầu.</div>
+            </div>
+            <div class="role-card">
+              <div class="role-icon">📋</div>
+              <div class="role-name">Business Analyst (BA)</div>
+              <div class="role-desc">Phân tích nghiệp vụ, thu thập và làm rõ yêu cầu từ khách hàng, tạo tài liệu đặc tả chức năng.</div>
+            </div>
+            <div class="role-card">
+              <div class="role-icon">📊</div>
+              <div class="role-name">Project Manager (PM)</div>
+              <div class="role-desc">Quản lý tiến độ, rủi ro, ngân sách, và điều phối toàn bộ team dự án.</div>
+            </div>
+            <div class="role-card" style="border-top-color:#f59e0b;">
+              <div class="role-icon">🌉</div>
+              <div class="role-name">BrSE</div>
+              <div class="role-desc">Cầu nối giữa khách hàng Nhật và team phát triển Việt. Kết hợp vai trò BA + Comtor + tester + PM tùy dự án.</div>
+            </div>
+            <div class="role-card">
+              <div class="role-icon">🗣️</div>
+              <div class="role-name">Comtor (có/không tùy dự án)</div>
+              <div class="role-desc">Biên phiên dịch trong các buổi meeting và tài liệu kỹ thuật. Cầu nối ngôn ngữ trực tiếp.</div>
+            </div>
+          </div>
+
+          <div class="callout" style="margin-top:14px;">
+            <strong>Lưu ý quan trọng:</strong> Trong thực tế, ranh giới giữa các vai trò không cố định. Tùy tính chất dự án, đôi khi một người có thể đảm nhiệm thêm một số phần việc nhỏ của vai trò khác. BrSE là vai trò thường "lai" nhiều nhất - vừa là cầu nối ngôn ngữ, vừa phân tích yêu cầu, vừa kiểm soát chất lượng, vừa quản lý dự án.
+          </div>
+        </div>
+      </div>
+
+      <!-- MODULE 2 -->
+      <div class="card card-accent-green" id="module-2">
+        <div class="section-label">Module 2</div>
+        <div class="section-title">Phần Mềm Được Tạo Ra Như Thế Nào?</div>
+        <p class="section-desc">Để làm tốt vai trò BrSE, bạn cần hiểu quy trình phát triển phần mềm không phải ở mức lý thuyết học thuật - mà ở mức đủ để biết mình đang ở giai đoạn nào, cần làm gì, và phối hợp với ai.</p>
+
+        <!-- Lesson 2.1 -->
+        <div class="lesson-block" id="lesson-2-1">
+          <div class="subsection-bar">2.1 · Quy Trình Phát Triển Phần Mềm</div>
+          <div class="block-title">Từ Sales đến Maintenance - hành trình đầy đủ của một dự án phần mềm</div>
+          <p class="section-desc" style="margin-bottom:20px;">Mỗi dự án phần mềm trải qua 4 giai đoạn lớn. <strong>Upstream</strong> (上流) = phân tích & thiết kế cơ bản. <strong>Downstream</strong> (下流) = thiết kế chi tiết trở đi đến release.</p>
+
+          <!-- PIPELINE DIAGRAM -->
+          <div style="overflow-x:auto;padding-bottom:4px;margin:0 -4px;">
+            <div style="min-width:980px;padding:0 4px;display:flex;gap:6px;align-items:stretch;">
+
+              <!-- PRE-PROJECT column -->
+              <div style="flex:0 0 162px;display:flex;flex-direction:column;">
+                <div style="background:#f1f5f9;border:1px solid #cbd5e1;border-bottom:none;border-radius:8px 8px 0 0;text-align:center;padding:7px 4px 6px;font-size:9.5px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#64748b;">Pre-Project</div>
+                <div style="flex:1;display:flex;background:#f8fafc;border:1px solid #cbd5e1;border-top:2px solid #94a3b8;border-radius:0 0 8px 0;overflow:hidden;">
+                  <div style="flex:1;padding:12px 6px 10px;text-align:center;border-right:1px dashed #e2e8f0;">
+                    <div style="font-size:22px;margin-bottom:5px;">🤝</div>
+                    <div style="font-size:10px;font-weight:800;color:#374151;line-height:1.3;margin-bottom:2px;">Sales</div>
+                    <div style="font-size:9px;color:#94a3b8;font-weight:500;margin-bottom:5px;">受注</div>
+                    <div style="font-size:9px;color:#64748b;line-height:1.4;">Chào hàng, đề xuất giải pháp</div>
+                  </div>
+                  <div style="flex:1;padding:12px 6px 10px;text-align:center;">
+                    <div style="font-size:22px;margin-bottom:5px;">🚀</div>
+                    <div style="font-size:10px;font-weight:800;color:#374151;line-height:1.3;margin-bottom:2px;">Kickoff</div>
+                    <div style="font-size:9px;color:#94a3b8;font-weight:500;margin-bottom:5px;">キックオフ</div>
+                    <div style="font-size:9px;color:#64748b;line-height:1.4;">Khởi động dự án, lên kế hoạch</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- arrow -->
+              <div style="display:flex;align-items:center;color:#94a3b8;font-size:18px;flex-shrink:0;padding-top:28px;">›</div>
+
+              <!-- UPSTREAM column -->
+              <div style="flex:0 0 162px;display:flex;flex-direction:column;">
+                <div style="background:#dcfce7;border:1px solid #86efac;border-bottom:none;border-radius:8px 8px 0 0;text-align:center;padding:7px 4px 6px;font-size:9.5px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#166534;">⬆ Upstream</div>
+                <div style="flex:1;display:flex;background:#f0fdf4;border:1px solid #86efac;border-top:2px solid #16a34a;border-radius:0 0 8px 0;overflow:hidden;">
+                  <div style="flex:1;padding:12px 5px 10px;text-align:center;border-right:1px dashed #bbf7d0;">
+                    <div style="font-size:22px;margin-bottom:5px;">📋</div>
+                    <div style="font-size:10px;font-weight:800;color:#166534;line-height:1.3;margin-bottom:2px;">Requirements</div>
+                    <div style="font-size:9px;color:#4ade80;font-weight:500;margin-bottom:5px;">要件定義</div>
+                    <div style="font-size:9px;color:#166534;line-height:1.4;">Thu thập & làm rõ yêu cầu</div>
+                  </div>
+                  <div style="flex:1;padding:12px 5px 10px;text-align:center;">
+                    <div style="font-size:22px;margin-bottom:5px;">📐</div>
+                    <div style="font-size:10px;font-weight:800;color:#166534;line-height:1.3;margin-bottom:2px;">Basic Design</div>
+                    <div style="font-size:9px;color:#4ade80;font-weight:500;margin-bottom:5px;">基本設計</div>
+                    <div style="font-size:9px;color:#166534;line-height:1.4;">Thiết kế màn hình, luồng xử lý</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- arrow -->
+              <div style="display:flex;align-items:center;color:#94a3b8;font-size:18px;flex-shrink:0;padding-top:28px;">›</div>
+
+              <!-- DOWNSTREAM column -->
+              <div style="flex:1;display:flex;flex-direction:column;">
+                <div style="background:#ede9fe;border:1px solid #c4b5fd;border-bottom:none;border-radius:8px 8px 0 0;text-align:center;padding:7px 4px 6px;font-size:9.5px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#5b21b6;">⬇ Downstream</div>
+                <div style="flex:1;display:flex;background:#faf5ff;border:1px solid #c4b5fd;border-top:2px solid #7c3aed;border-radius:0 0 8px 0;overflow:hidden;">
+                  <!-- Detail Design -->
+                  <div style="flex:1;padding:12px 6px 10px;text-align:center;border-right:1px dashed #c4b5fd;">
+                    <div style="font-size:22px;margin-bottom:5px;">📝</div>
+                    <div style="font-size:10px;font-weight:800;color:#5b21b6;line-height:1.3;margin-bottom:2px;">Detail Design</div>
+                    <div style="font-size:9px;color:#a78bfa;font-weight:500;margin-bottom:5px;">詳細設計</div>
+                    <div style="font-size:9px;color:#5b21b6;line-height:1.4;">Thiết kế chi tiết kỹ thuật</div>
+                  </div>
+                  <!-- Coding + Unit Test -->
+                  <div style="flex:1;padding:12px 6px 10px;text-align:center;border-right:1px dashed #c4b5fd;">
+                    <div style="font-size:22px;margin-bottom:5px;">💻</div>
+                    <div style="font-size:10px;font-weight:800;color:#5b21b6;line-height:1.3;margin-bottom:2px;">Coding</div>
+                    <div style="font-size:9px;color:#a78bfa;font-weight:500;margin-bottom:5px;">製造 / 単体テスト</div>
+                    <div style="font-size:9px;color:#5b21b6;line-height:1.4;">Dev viết code &amp; tự test</div>
+                  </div>
+                  <!-- Test (Integration + System + UAT) -->
+                  <div style="flex:1;padding:12px 6px 10px;text-align:center;">
+                    <div style="font-size:22px;margin-bottom:5px;">🔬</div>
+                    <div style="font-size:10px;font-weight:800;color:#5b21b6;line-height:1.3;margin-bottom:2px;">Test</div>
+                    <div style="font-size:9px;color:#a78bfa;font-weight:500;margin-bottom:5px;">結合 / システム / 受入</div>
+                    <div style="font-size:9px;color:#5b21b6;line-height:1.4;">Integration · System · UAT</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- arrow -->
+              <div style="display:flex;align-items:center;color:#94a3b8;font-size:18px;flex-shrink:0;padding-top:28px;">›</div>
+
+              <!-- POST-RELEASE column -->
+              <div style="flex:0 0 162px;display:flex;flex-direction:column;">
+                <div style="background:#fff7ed;border:1px solid #fdba74;border-bottom:none;border-radius:8px 8px 0 0;text-align:center;padding:7px 4px 6px;font-size:9.5px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#c2410c;">Release &amp; Maintain</div>
+                <div style="flex:1;display:flex;background:#fff7ed;border:1px solid #fdba74;border-top:2px solid #ea580c;border-radius:0 0 8px 8px;overflow:hidden;">
+                  <!-- Release -->
+                  <div style="flex:1;padding:12px 6px 10px;text-align:center;border-right:1px dashed #fdba74;">
+                    <div style="font-size:22px;margin-bottom:5px;">🚢</div>
+                    <div style="font-size:10px;font-weight:800;color:#c2410c;line-height:1.3;margin-bottom:2px;">Release</div>
+                    <div style="font-size:9px;color:#fb923c;font-weight:500;margin-bottom:5px;">リリース</div>
+                    <div style="font-size:9px;color:#c2410c;line-height:1.4;">Bàn giao sản phẩm</div>
+                  </div>
+                  <!-- Maintenance -->
+                  <div style="flex:1;padding:12px 6px 10px;text-align:center;">
+                    <div style="font-size:22px;margin-bottom:5px;">🛠️</div>
+                    <div style="font-size:10px;font-weight:800;color:#c2410c;line-height:1.3;margin-bottom:2px;">Maintenance</div>
+                    <div style="font-size:9px;color:#fb923c;font-weight:500;margin-bottom:5px;">保守・運用</div>
+                    <div style="font-size:9px;color:#c2410c;line-height:1.4;">Vận hành, fix bug, hỗ trợ</div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div><!-- end overflow wrapper -->
+
+          <!-- BrSE legend + upstream/downstream note -->
+          <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;">
+            <div style="flex:1;min-width:200px;display:flex;align-items:center;gap:12px;padding:8px 12px;background:#f8fafc;border-radius:8px;border:1px solid #e2e8f0;">
+              <span style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.5px;white-space:nowrap;">BrSE tham gia:</span>
+              <span style="font-size:10.5px;color:#374151;"><span style="font-weight:700;color:#15803d;">★★★</span> Chủ lực</span>
+              <span style="font-size:10.5px;color:#374151;"><span style="font-weight:700;color:#5b21b6;">★★</span> Hỗ trợ</span>
+              <span style="font-size:10.5px;color:#374151;"><span style="font-weight:700;color:#64748b;">★</span> Theo dõi</span>
+            </div>
+            <div style="flex:1;min-width:240px;padding:8px 12px;background:#fefce8;border-radius:8px;border:1px solid #fde047;font-size:10px;color:#713f12;line-height:1.5;">
+              <strong>Upstream (上流)</strong> = Requirements + Basic Design &nbsp;|&nbsp; <strong>Downstream (下流)</strong> = Detail Design → Coding → Test
+            </div>
+          </div>
+
+          <div class="callout callout-green" style="margin-top:14px;">
+            <strong>Điểm cốt lõi:</strong> Dù là BrSE tech hay non-tech, nhiệm vụ then chốt đều giống nhau - <strong>đảm bảo hiểu đúng yêu cầu của khách hàng trong suốt quá trình</strong>, và <strong>đảm bảo chất lượng sản phẩm khi bàn giao</strong>. Tất cả các hoạt động khác đều phục vụ mục tiêu này.
+          </div>
+        </div>
+
+        <!-- Lesson 2.2 -->
+        <div class="lesson-block" id="lesson-2-2">
+          <div class="subsection-bar">2.2 · Mô Hình Phát Triển: Waterfall và Agile</div>
+          <div class="block-title">Hai mô hình phát triển chính trong dự án outsource Nhật–Việt</div>
+
+          <div style="text-align:center;margin:16px 0;">
+            <img src="Image/waterfall-agile.png" alt="So sánh mô hình Waterfall và Agile" style="max-width:100%;border-radius:10px;box-shadow:0 2px 12px rgba(0,0,0,0.10);">
+          </div>
+
+          <div class="diagram-grid">
+            <div class="diagram-card admin">
+              <h4>📉 Waterfall</h4>
+              <p>Thực hiện tuần tự từng giai đoạn. Hoàn thành Upstream rồi mới sang Coding, xong Coding mới Test. Phổ biến trong dự án Nhật truyền thống. Ưu điểm: kế hoạch rõ ràng, tài liệu đầy đủ. Nhược điểm: khó thay đổi yêu cầu giữa chừng.</p>
+            </div>
+            <div class="diagram-card user">
+              <h4>🔄 Agile (Scrum)</h4>
+              <p>Phát triển theo vòng lặp ngắn gọi là Sprint (thường 1–2 tuần). Mỗi Sprint hoàn thành một nhóm chức năng nhỏ. Ưu điểm: linh hoạt, dễ thích nghi khi yêu cầu thay đổi. Nhược điểm: cần team mạnh và khách hàng chủ động.</p>
+            </div>
+          </div>
+
+          <div class="callout" style="margin-top:14px;">
+            <strong>Thực tế BrSE cần biết:</strong> Nhiều dự án outsource Nhật không áp dụng thuần Waterfall hay thuần Agile, mà kết hợp cả hai. Upstream theo kiểu Waterfall (tài liệu đầy đủ), nhưng phần coding và test có thể chạy theo Sprint ngắn. BrSE cần linh hoạt với cả hai phong cách.
+          </div>
+        </div>
+
+        <!-- Lesson 2.3 -->
+        <div class="lesson-block" id="lesson-2-3">
+          <div class="subsection-bar">2.3 · Hai Kiểu Dự Án: Labo và Project Base</div>
+          <div class="block-title">Công việc BrSE thay đổi tùy theo kiểu dự án</div>
+          <p class="section-desc">Trong thị trường outsource Nhật–Việt, hai kiểu dự án phổ biến nhất là Labo và Project Base. Hiểu sự khác nhau giữa hai kiểu này giúp bạn định hướng công việc và kỳ vọng đúng hơn.</p>
+
+          <table class="mapping-table" style="margin-top:14px;">
+            <thead>
+              <tr>
+                <th>Tiêu chí</th>
+                <th>Project Base</th>
+                <th>Labo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="role-cell">Thời gian</td>
+                <td>Có điểm đầu và điểm kết thúc rõ ràng</td>
+                <td>Khách hàng thuê effort cố định trong một khoảng thời gian dài</td>
+              </tr>
+              <tr>
+                <td class="role-cell">Nội dung</td>
+                <td>Xây dựng hệ thống mới từ đầu theo scope đã thỏa thuận</td>
+                <td>Maintain, phát triển thêm chức năng, fix bug, điều tra issue</td>
+              </tr>
+              <tr>
+                <td class="role-cell">Mô hình</td>
+                <td>Thường dùng Waterfall hoặc kết hợp</td>
+                <td>Thường dùng Agile/Scrum hoặc Kanban</td>
+              </tr>
+              <tr>
+                <td class="role-cell">BrSE làm gì</td>
+                <td>Tham gia từ đầu: phân tích yêu cầu, tạo tài liệu, theo dõi từng giai đoạn</td>
+                <td>Tiếp nhận task từ backlog (JIRA/Backlog), làm rõ yêu cầu từng task, đẩy về team dev, test và giao hàng liên tục</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="callout callout-amber" style="margin-top:14px;">
+            <strong>📋 Case study thực tế - Dự án Labo:</strong> Sáng thứ Hai, khách hàng Nhật tạo 5 task mới trên Backlog và assign cho BrSE. Mỗi task chỉ có mô tả ngắn. BrSE cần chat với khách để làm rõ từng task, sau đó viết mô tả chi tiết bằng tiếng Việt và giao cho dev. Cuối tuần, dev hoàn thành 3 task - BrSE test, xác nhận, rồi giao hàng cho khách. Vòng lặp này lặp lại mỗi tuần.
+          </div>
+        </div>
+      </div>
+
+      <!-- MODULE 3 -->
+      <div class="card card-accent-amber" id="module-3">
+        <div class="section-label">Module 3</div>
+        <div class="section-title">BrSE - Vai Trò &amp; Công Việc Thực Tế</div>
+        <p class="section-desc">Module này đi sâu vào bản chất công việc của BrSE - không phải định nghĩa học thuật, mà là những gì diễn ra thực tế trong một ngày làm việc, trong một dự án cụ thể, với team người thật.</p>
+
+        <!-- Lesson 3.1 -->
+        <div class="lesson-block" id="lesson-3-1">
+          <div class="subsection-bar">3.1 · BrSE Là Ai? Tech và Non-tech</div>
+          <div class="block-title">Hai con đường, một đích đến</div>
+          <p class="section-desc"><strong>BrSE</strong> - viết tắt của <em>Bridge System Engineer</em> - là người làm cầu nối giữa khách hàng Nhật Bản và team phát triển phần mềm tại Việt Nam. Vai trò này đòi hỏi tiếng Nhật giao tiếp tốt và hiểu biết về quy trình phát triển phần mềm.</p>
+
+          <div class="diagram-grid" style="margin-top:14px;">
+            <div class="diagram-card admin">
+              <h4>⚙️ BrSE Tech</h4>
+              <p>Xuất phát từ Developer hoặc có nền tảng kỹ thuật mạnh. Tham gia được cả Upstream lẫn Downstream. Có thể coding, review code, tạo tài liệu kỹ thuật (Basic Design, Detail Design, API Design, DB Design). Lợi thế: hiểu sâu kỹ thuật, làm việc độc lập cao.</p>
+            </div>
+            <div class="diagram-card user">
+              <h4>🔗 BrSE Non-tech</h4>
+              <p>Xuất phát từ Comtor, BA, Tester, hoặc trái ngành với tiếng Nhật tốt. Không code nhưng phải hiểu sâu về quy trình, phân tích nghiệp vụ, kiểm soát chất lượng. Dùng AI để tăng năng lực kỹ thuật. Lợi thế: giao tiếp tốt, nhạy bén với yêu cầu nghiệp vụ.</p>
+            </div>
+          </div>
+
+          <div class="golden-question" style="margin-top:16px;">
+            <p>Điểm đến của cả hai</p>
+            <strong>Đảm bảo hiểu đúng yêu cầu khách hàng trong suốt quá trình làm việc &amp; đảm bảo chất lượng sản phẩm khi bàn giao</strong>
+          </div>
+
+          <div class="callout" style="margin-top:14px;">
+            <strong>Hiểu đúng "Non-tech":</strong> Non-tech không có nghĩa là không biết gì về kỹ thuật. BrSE non-tech vẫn cần hiểu về phát triển phần mềm, phân tích yêu cầu, cơ chế kiểm thử, và cách vận hành hệ thống. Sự khác biệt là <em>không cần làm các task coding</em> - không phải là <em>không cần hiểu IT</em>.
+          </div>
+        </div>
+
+        <!-- Lesson 3.2 -->
+        <div class="lesson-block" id="lesson-3-2">
+          <div class="subsection-bar">3.2 · Một Ngày Làm Việc Của BrSE</div>
+          <div class="block-title">Các đầu việc thực tế trong ngày</div>
+          <p class="section-desc">BrSE không có một quy trình làm việc cố định theo từng giờ - công việc phụ thuộc vào giai đoạn dự án và tình huống phát sinh. Tuy nhiên, có những nhóm đầu việc xuất hiện thường xuyên trong gần như mọi dự án.</p>
+
+          <table class="mapping-table" style="margin-top:12px;">
+            <thead>
+              <tr>
+                <th>Nhóm công việc</th>
+                <th>Nội dung cụ thể</th>
+                <th>Tần suất</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="role-cell">Họp &amp; giao tiếp với khách Nhật</td>
+                <td>All meetings: Requirement meeting, confirm/Q&A meeting, weekly meeting, demo sản phẩm. Book meeting, chuẩn bị agenda, record, viết meeting note sau họp.</td>
+                <td>Hàng ngày / hàng tuần</td>
+              </tr>
+              <tr>
+                <td class="role-cell">Tiếp nhận &amp; làm rõ yêu cầu</td>
+                <td>Nhận task/yêu cầu từ khách, làm rõ các điểm mơ hồ, viết lại yêu cầu bằng tiếng Việt và transfer cho team dev.</td>
+                <td>Thường xuyên</td>
+              </tr>
+              <tr>
+                <td class="role-cell">Theo dõi tiến độ</td>
+                <td>Check tiến độ dev/tester hàng ngày, đảm bảo chạy theo plan. Daily report qua chat (Slack/Teams/Skype). Weekly report bằng file báo cáo.</td>
+                <td>Hàng ngày</td>
+              </tr>
+              <tr>
+                <td class="role-cell">Kiểm soát chất lượng</td>
+                <td>Test các case cơ bản (normal case) và một số abnormal case trước khi giao hàng. Đảm bảo sản phẩm chạy đúng yêu cầu.</td>
+                <td>Trước mỗi lần giao hàng</td>
+              </tr>
+              <tr>
+                <td class="role-cell">Tạo tài liệu</td>
+                <td>Specs,meeting minutes, weekly report, function list, screen list, basic design, QA document. Tài liệu phải logic, rõ ràng, có evidence.</td>
+                <td>Thường xuyên</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="callout callout-amber" style="margin-top:14px;">
+            <strong>📋 Case study thực tế - Xử lý một task trong dự án Labo:</strong> Khách Nhật tạo task: <em>"Sửa logic tính thuế cho màn hình invoice."</em> - mô tả chỉ có vậy. BrSE cần: (1) Xác nhận với dev để hiểu logic đang chạy; (2) Chat với khách để làm rõ: sửa theo quy định thuế mới nào? Áp dụng từ ngày nào? Ảnh hưởng màn hình nào khác không?; (3) Viết lại yêu cầu rõ ràng bằng tiếng Việt, giao cho dev; (4) Sau khi dev xong, test lại logic tính thuế theo các case đã xác nhận với khách; (5) Giao hàng và báo cáo cho khách. Toàn bộ quá trình này - từ câu hỏi mơ hồ đến sản phẩm bàn giao - chính là công việc hàng ngày của BrSE.
+          </div>
+        </div>
+
+        <!-- Lesson 3.3 -->
+        <div class="lesson-block" id="lesson-3-3">
+          <div class="subsection-bar">3.3 · Nhu Cầu Thị Trường &amp; Lợi Thế Của Người Tiếng Nhật</div>
+          <div class="block-title">Tại sao thị trường cần BrSE non-tech?</div>
+          <p class="section-desc">Nhu cầu gốc của thị trường là: <em>một người vừa giỏi kỹ thuật, vừa giao tiếp tiếng Nhật tốt</em>. Nhưng thực tế, nhân lực vừa code giỏi vừa tiếng Nhật tốt rất khan hiếm. Cung thấp hơn cầu đáng kể.</p>
+          <p class="section-desc" style="margin-top:10px;">Do đó, thị trường linh hoạt: với những dự án cần người hiểu nghiệp vụ khách hàng, đảm bảo giao tiếp và chất lượng - BrSE non-tech đáp ứng được hoàn toàn. Và thực tế có nhiều BrSE không xuất thân từ code nhưng được đánh giá rất cao nhờ tiếng Nhật tốt và năng lực phân tích nghiệp vụ.</p>
+
+          <div class="callout callout-green" style="margin-top:14px;">
+            <strong>Lợi thế thực sự của bạn:</strong> Nếu bạn giao tiếp tiếng Nhật tốt - đặc biệt ở mức N2 trở lên và có thể host meeting - bạn đã có phần khó nhất mà nhiều kỹ sư IT giỏi về kỹ thuật nhưng thiếu. Phần còn lại - hiểu quy trình, phân tích nghiệp vụ, kiểm soát chất lượng - có thể học được. Đó chính xác là những gì khóa học này xây dựng cho bạn từng bước.
+          </div>
+        </div>
+      </div>
+
+      <!-- MODULE 4 -->
+      <div class="card card-accent-purple" id="module-4">
+        <div class="section-label">Module 4</div>
+        <div class="section-title">Con Đường Vào Nghề &amp; Lộ Trình Học</div>
+        <p class="section-desc">Biết đích đến chưa đủ - bạn cần biết xuất phát từ đâu, đi theo con đường nào, và học gì để không bị "đi vòng" như nhiều người đã từng trải qua.</p>
+
+        <!-- Lesson 4.1 -->
+        <div class="lesson-block" id="lesson-4-1">
+          <div class="subsection-bar">4.1 · Từ Đâu Bước Vào Ngành IT?</div>
+          <div class="block-title">Ba con đường thực tế vào vị trí BrSE</div>
+          <p class="section-desc">Không có một con đường duy nhất để trở thành BrSE. Tùy xuất phát điểm, mỗi người có lộ trình khác nhau - nhưng đều có thể đến cùng một đích.</p>
+
+          <table class="mapping-table" style="margin-top:14px;">
+            <thead>
+              <tr>
+                <th>Xuất phát điểm</th>
+                <th>Lợi thế sẵn có</th>
+                <th>Cần bổ sung</th>
+                <th>Chiến lược</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="role-cell">Comtor IT</td>
+                <td>Tiếng Nhật tốt, đã quen môi trường dự án, hiểu văn hóa làm việc Nhật</td>
+                <td>Phân tích nghiệp vụ (BA), kiểm soát chất lượng cơ bản, kiến thức về quy trình phát triển</td>
+                <td>Tập trung học BA và QA. Xin chủ động tham gia vào các giai đoạn Upstream và test để tích lũy kinh nghiệm thực tế.</td>
+              </tr>
+              <tr>
+                <td class="role-cell">BA / Tester</td>
+                <td>Hiểu quy trình phát triển, có kỹ năng phân tích và kiểm thử</td>
+                <td>Tiếng Nhật giao tiếp, khả năng hosting meeting với khách Nhật</td>
+                <td>Đầu tư mạnh vào tiếng Nhật giao tiếp chuyên ngành. Tích cực tham gia meeting để tích lũy kinh nghiệm giao tiếp trực tiếp với khách.</td>
+              </tr>
+              <tr>
+                <td class="role-cell">Trái ngành / Fresher</td>
+                <td>Tiếng Nhật N2+ giao tiếp tốt (nếu có), không bị "lệch" kiến thức từ ngành cũ</td>
+                <td>Hiểu cơ bản về phát triển phần mềm, quy trình, vai trò, công cụ làm việc</td>
+                <td><strong>Vào công ty IT trước - vị trí nào cũng được.</strong> Tester, học việc, Comtor… Môi trường thực tế là nơi học nhanh nhất. Xây dựng nền tảng từ trong công việc thực.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="callout callout-purple" style="margin-top:14px;">
+            <strong>Nguyên tắc quan trọng nhất:</strong> Đừng chờ "đủ điều kiện" mới xin việc. Trong ngành IT outsource Nhật–Việt, môi trường làm việc thực tế dạy bạn nhanh hơn bất kỳ khóa học nào. Vào được trước - phát triển từ bên trong sau. Đây là con đường được chứng minh hiệu quả nhất cho người tiếng Nhật tốt muốn vào IT.
+          </div>
+        </div>
+
+        <!-- Lesson 4.2 -->
+        <div class="lesson-block" id="lesson-4-2">
+          <div class="subsection-bar" style="background:linear-gradient(135deg,#dc2626 0%,#b91c1c 100%);">4.2 · Học Gì? Học Đến Mức Nào Là Đủ?</div>
+          <div class="block-title">Bốn nhóm kỹ năng cốt lõi của BrSE non-tech</div>
+          <p class="section-desc">Một trong những vấn đề lớn nhất khi tự học là không biết dừng ở đâu - học quá sâu vào những thứ không cần thiết, hoặc bỏ qua những thứ quan trọng. Dưới đây là bản đồ kỹ năng thực tế, không phải lý thuyết sách vở.</p>
+
+          <div style="text-align:center;margin:16px 0;">
+            <img src="Image/skill-need.png" alt="Bốn nhóm kỹ năng cốt lõi của BrSE" style="max-width:100%;border-radius:10px;box-shadow:0 2px 12px rgba(0,0,0,0.10);">
+          </div>
+
+          <table class="mapping-table" style="margin-top:14px;">
+            <thead>
+              <tr>
+                <th>Nhóm kỹ năng</th>
+                <th>Cần học đến mức nào</th>
+                <th>Ưu tiên</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="role-cell">Tiếng Nhật giao tiếp IT</td>
+                <td>Giao tiếp meeting, hearing yêu cầu, giải thích vấn đề. Từ vựng chuyên ngành IT cơ bản. Đọc/viết email, báo cáo bằng tiếng Nhật.</td>
+                <td style="color:#991b1b;font-weight:700;">Cao </td>
+              </tr>
+              <tr>
+                <td class="role-cell">Phân tích nghiệp vụ (BA)</td>
+                <td>Đọc hiểu tài liệu đặc tả, viết function list, screen list, làm rõ yêu cầu. Không cần đến mức viết detail design kỹ thuật.</td>
+                <td style="color:#d97706;font-weight:700;">Cơ bản</td>
+              </tr>
+              <tr>
+                <td class="role-cell">Kiểm soát chất lượng (QA/Test)</td>
+                <td>Test case cơ bản (normal case, một số abnormal case). Không cần test chi tiết như tester chuyên nghiệp.</td>
+                <td style="color:#d97706;font-weight:700;">Cơ bản</td>
+              </tr>
+              <tr>
+                <td class="role-cell">Quản lý tiến độ</td>
+                <td>Sử dụng JIRA/Backlog, lập weekly report, follow tiến độ team. Không cần làm Master Schedule phức tạp nếu đã có PM riêng.</td>
+                <td style="color:#64748b;font-weight:700;">Cơ bản</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="lesson-block" style="margin-top:18px;">
+            <div class="block-title">Những thứ BrSE non-tech KHÔNG cần học sâu</div>
+            <ul class="bullets">
+              <li>Lập trình / viết code (trừ khi bạn muốn phát triển thành BrSE tech)</li>
+              <li>Kiến trúc hệ thống kỹ thuật chuyên sâu (microservices, cloud architecture…)</li>
+              <li>Detail Design ở mức kỹ thuật (API design, DB schema design chi tiết)</li>
+              <li>DevOps, CI/CD pipeline</li>
+            </ul>
+            <div class="callout callout-green" style="margin-top:12px;">
+              <strong>Nguyên tắc học:</strong> Hiểu đủ để đặt đúng câu hỏi, làm rõ đúng yêu cầu, và kiểm tra đúng chất lượng - đó là mức "đủ" của BrSE non-tech. Không cần hiểu để tự làm phần kỹ thuật.
+            </div>
+          </div>
+
+          <div class="lesson-block" style="margin-top:18px;">
+            <div class="block-title">Preview: Skill Tree BrSE Career Builder</div>
+            <p class="section-desc">Khóa học được thiết kế theo cấp độ tăng dần. Mỗi level xây dựng trên nền của level trước:</p>
+            <div class="flow-visual" style="margin-top:12px;">
+              <span class="flow-step" style="background:#fef3c7;color:#b45309;">★ Level 0<br><small>Nền tảng nhận thức</small></span>
+              <span class="flow-arrow">→</span>
+              <span class="flow-step" style="background:#dbeafe;color:#1d4ed8;">★★ Level 1<br><small>Kỹ năng thực chiến cơ bản</small></span>
+              <span class="flow-arrow">→</span>
+              <span class="flow-step" style="background:#dcfce7;color:#166534;">★★★ Level 2<br><small>Xử lý công việc độc lập</small></span>
+              <span class="flow-arrow">→</span>
+              <span class="flow-step" style="background:#ede9fe;color:#5b21b6;">★★★★ Level 3<br><small>Senior BrSE</small></span>
+            </div>
+            <div class="callout" style="margin-top:12px;">
+              <strong>Bạn vừa hoàn thành Level 0.</strong> Đây là nền móng - không thể bỏ qua. Từ Level 1 trở đi, bạn sẽ bắt đầu học cách xử lý từng đầu việc thực tế: tìm hiểu hệ thống khi vào dự án mới, hiểu về function list, screen detail, tạo tài liệu cơ bản, chuẩn hóa Q&A, chuẩn hóa kết quả điều tra, cách làm việc với khách hàng.
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- CLOSING -->
+      <section id="closing">
+        <div class="closing">
+          <div class="section-label">Kết bài · Level 0</div>
+          <div class="closing-title">Bạn đã có bản đồ. Bây giờ là lúc bắt đầu đi.</div>
+          <p class="closing-text">Level 0 không yêu cầu bạn ghi nhớ từng chi tiết kỹ thuật. Mục tiêu là bạn nhìn thấy được bức tranh tổng thể - ngành IT rộng hơn bạn nghĩ, BrSE là vai trò có thể tiếp cận được mà không cần biết code, và có một lộ trình rõ ràng để đi từ điểm bạn đang đứng đến nơi bạn muốn đến.</p>
+
+          <div class="lesson-block">
+            <div class="block-title">4 điểm cốt lõi cần nhớ từ Level 0</div>
+            <div class="memory-grid" style="margin-top:12px;">
+              <div class="memory-card memory-card-1">
+                <div class="memory-card-icon">🏗️</div>
+                <div class="memory-card-num">01</div>
+                <div class="memory-card-title">IT rộng hơn code</div>
+                <div class="memory-card-hint">Nhiều vai trò quan trọng không cần lập trình</div>
+              </div>
+              <div class="memory-card memory-card-2">
+                <div class="memory-card-icon">⚙️</div>
+                <div class="memory-card-num">02</div>
+                <div class="memory-card-title">Upstream → Downstream</div>
+                <div class="memory-card-hint">BrSE tham gia xuyên suốt, nặng nhất ở đầu và cuối</div>
+              </div>
+              <div class="memory-card memory-card-3">
+                <div class="memory-card-icon">🌉</div>
+                <div class="memory-card-num">03</div>
+                <div class="memory-card-title">Đích đến của BrSE</div>
+                <div class="memory-card-hint">Hiểu đúng yêu cầu + đảm bảo chất lượng đầu ra</div>
+              </div>
+              <div class="memory-card memory-card-4">
+                <div class="memory-card-icon">🗺️</div>
+                <div class="memory-card-num">04</div>
+                <div class="memory-card-title">Vào được - phát triển sau</div>
+                <div class="memory-card-hint">Tiếng Nhật tốt là đủ để bắt đầu. Học từ trong thực tế.</div>
+              </div>
+            </div>
+
+            <div class="callout callout-green" style="margin-top:16px;">
+              <strong>Bước tiếp theo:</strong> Chuyển sang <strong>Level 1 - Kỹ Năng Thực Chiến Cơ Bản</strong>. Bạn sẽ học cách tìm hiểu một hệ thống khi mới vào dự án, cách đặt câu hỏi đúng để chuyển từ yêu cầu ngắn gọn sang tài liệu chi tiết ngôn ngữ dev có thể hiểu, và cách sử dụng các template công việc thực tế lần đầu tiên. Mình sẽ chú trọng vào việc hướng dẫn các bạn sử dụng AI (cụ thể là Cursor IDE để phục vụ công việc của BrSE tốt nhất. Nếu bạn chưa hiểu cách sử dụng AI, cách tạo prompt hiệu quả, cách tạo skills theo đúng công việc của bản thân cần, thì hãy tìm hiểu dần nhé.)
+            </div>
+          </div>
+
+          <div class="closing-actions">
+            <a class="btn btn-primary" href="#cover">↑ Về đầu trang</a>
+            <button class="btn btn-quiz-open" id="btn-quiz-open" onclick="openQuiz()">
+              🧪 Kiểm tra kiến thức
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <div class="footer">
+        <p class="header-trainer">BrSE Career Builder - Đồng Hành Cùng Bạn</p>
+        <p style="margin-top:6px;">Training IT cho người mới · Thực tế · Dễ hiểu · Có chiều sâu</p>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+
+<!-- QUIZ SHELL -->
+<div class="quiz-shell" id="quiz-shell">
+  <div class="quiz-shell-top">
+    <button class="btn" onclick="closeQuiz()" style="font-size:13px;background:var(--accent-blue);color:#fff;border-color:var(--accent-blue-dark);">← Quay lại bài giảng</button>
+    <span>Level 0 - BrSE Lý Thuyết Nghề · Kiểm tra kiến thức</span>
+    <button class="btn" onclick="closeQuiz()" style="background:var(--accent-blue);color:#fff;border-color:var(--accent-blue-dark);">✕ Đóng</button>
+  </div>
+  <div id="quiz-incomplete-toast">⚠️ Bạn chưa trả lời hết tất cả câu hỏi.<br>Hãy hoàn thành các câu còn bỏ sót trước khi nộp bài.</div>
+  <div class="quiz-shell-scroll">
+    <div id="quiz-inline">
+      <div class="header">
+        <div class="header-badge">QUIZ · LEVEL 0</div>
+        <h1>Kiểm Tra Kiến Thức</h1>
+        <p class="header-sub">2 phần · Cơ bản &amp; Nâng cao · Tổng 10 câu</p>
+        <p class="header-trainer">BrSE Career Builder - Đồng Hành Cùng Bạn</p>
+      </div>
+
+      <!-- PHẦN 1: CƠ BẢN -->
+      <div class="quiz-section" id="quiz-basic">
+        <div class="quiz-header">
+          <div class="quiz-icon basic">📘</div>
+          <div>
+            <div class="quiz-title">Phần 1 - Cơ bản</div>
+            <div class="quiz-subtitle">5 câu · Kiến thức nền của Level 0</div>
+          </div>
+        </div>
+
+        <div class="question-block" data-level="basic" data-answer="A">
+          <span class="question-num">Câu 1</span>
+          <div class="question-text">BrSE (Bridge SE) đóng vai trò cầu nối giữa hai bên nào trong dự án outsource Nhật–Việt?</div>
+          <ul class="options">
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">A</span> Khách hàng Nhật Bản và team phát triển phần mềm tại Việt Nam</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">B</span> Developer và Tester trong cùng một team</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">C</span> Project Manager và Business Analyst</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">D</span> Phòng kinh doanh và phòng kỹ thuật của công ty Việt Nam</li>
+          </ul>
+          <div class="answer-feedback correct">✅ Đúng. BrSE = Bridge System Engineer - cầu nối ngôn ngữ và nghiệp vụ giữa khách hàng Nhật Bản và team offshore tại Việt Nam. Đây là định nghĩa cốt lõi của vai trò này.</div>
+          <div class="answer-feedback wrong">❌ Chưa đúng. BrSE là cầu nối giữa <strong>khách hàng Nhật Bản</strong> (onsite) và <strong>team phát triển tại Việt Nam</strong> (offshore). Đây là đặc thù của mô hình outsource Nhật–Việt.</div>
+        </div>
+
+        <div class="question-block" data-level="basic" data-answer="B">
+          <span class="question-num">Câu 2</span>
+          <div class="question-text">Theo bài học, giai đoạn Upstream (上流工程) bao gồm những bước nào?</div>
+          <ul class="options">
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">A</span> Detail Design, Coding, Unit Test</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">B</span> Requirements (要件定義) và Basic Design (基本設計)</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">C</span> Integration Test, System Test, UAT</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">D</span> Sales, Kickoff và Requirements</li>
+          </ul>
+          <div class="answer-feedback correct">✅ Đúng. Upstream (上流) = Requirements + Basic Design - đây là giai đoạn phân tích yêu cầu và thiết kế tổng thể, nơi BrSE làm việc trực tiếp và chủ lực cùng khách hàng Nhật (BrSE ★★★).</div>
+          <div class="answer-feedback wrong">❌ Chưa đúng. Upstream (上流工程) chỉ gồm <strong>Requirements và Basic Design</strong>. Từ Detail Design trở đi (bao gồm Coding và Test) thuộc về Downstream (下流工程).</div>
+        </div>
+
+        <div class="question-block" data-level="basic" data-answer="C">
+          <span class="question-num">Câu 3</span>
+          <div class="question-text">Nhìn vào sơ đồ quy trình phát triển phần mềm trong bài, BrSE tham gia ở mức độ CHỦ LỰC (★★★) tại những bước nào?</div>
+          <ul class="options">
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">A</span> Coding và Detail Design - vì đây là lúc sản phẩm được tạo ra</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">B</span> Chỉ ở Upstream - BrSE không tham gia vào Downstream</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">C</span> Requirements và Basic Design (Upstream), phân tích nghiệp vụ, làm rõ yêu cầu, đảm bảo chất lượng xuyên suốt</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">D</span> Tất cả các bước đều như nhau, BrSE tham gia đều đặn xuyên suốt</li>
+          </ul>
+          <div class="answer-feedback correct">✅ Đúng. BrSE trực tiếp làm việc với khách Nhật để thu thập yêu cầu-requirement, làm rõ thành tài liệu  <strong>và </strong> kiểm soát chất lượng trước khi bàn giao. Ở Coding và Detail Design, BrSE theo dõi hoặc hỗ trợ.</div>
+          <div class="answer-feedback wrong">❌ Chưa đúng. Theo sơ đồ pipeline trong bài, BrSE tham gia chủ lực (★★★) tại <strong>Requirements, Basic Design, Test và Release</strong>. Đây là những điểm BrSE làm việc trực tiếp với khách Nhật hoặc chịu trách nhiệm chất lượng đầu ra - không phải ở Coding hay Detail Design.</div>
+        </div>
+
+        <div class="question-block" data-level="basic" data-answer="D">
+          <span class="question-num">Câu 4</span>
+          <div class="question-text">Hiểu đúng về vai trò của BrSE non-tech</div>
+          <ul class="options">
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">A</span> Không cần biết bất cứ điều gì về IT và phần mềm</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">B</span> Chỉ làm phiên dịch, không làm bất kỳ công việc kỹ thuật nào</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">C</span> Không cần học về quy trình phát triển phần mềm</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">D</span> Không làm task coding kỹ thuật - nhưng cần hiểu sâu về quy trình, phân tích nghiệp vụ/domain, chuyển hóa yêu cầu thành tài liệu kỹ thuật, và kiểm soát chất lượng</li>
+          </ul>
+          <div class="answer-feedback correct">✅ Đúng. "Non-tech" không có nghĩa là không biết gì. BrSE non-tech cần hiểu quy trình phát triển phần mềm, phân tích nghiệp vụ, và cơ chế kiểm thử - chỉ là không làm task coding kỹ thuật như developer.</div>
+          <div class="answer-feedback wrong">❌ Chưa đúng. "Non-tech" không có nghĩa là không biết IT. BrSE non-tech vẫn cần hiểu quy trình phát triển phần mềm, phân tích nghiệp vụ, và kiểm soát chất lượng. Sự khác biệt duy nhất là <strong>không làm task coding</strong>.</div>
+        </div>
+
+        <div class="question-block" data-level="basic" data-answer="B">
+          <span class="question-num">Câu 5</span>
+          <div class="question-text">Lý do thị trường outsource Nhật–Việt có nhu cầu với BrSE non-tech là gì?</div>
+          <ul class="options">
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">A</span> BrSE non-tech có chi phí thấp hơn nên công ty tiết kiệm được ngân sách</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">B</span> Nhân lực vừa giỏi kỹ thuật vừa giao tiếp tiếng Nhật tốt rất khan hiếm, nên thị trường linh hoạt chấp nhận BrSE non-tech để đáp ứng nhu cầu thực tế</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">C</span> Khách hàng Nhật không cần kỹ thuật, chỉ cần giao tiếp</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">D</span> BrSE non-tech làm việc nhanh hơn BrSE tech trong mọi tình huống</li>
+          </ul>
+          <div class="answer-feedback correct">✅ Đúng. Nhu cầu gốc là "tech + tiếng Nhật" nhưng nguồn cung loại này rất ít. Để đáp ứng thực tế dự án, thị trường linh hoạt chấp nhận BrSE non-tech - người hiểu nghiệp vụ và giao tiếp tốt với khách Nhật.</div>
+          <div class="answer-feedback wrong">❌ Chưa đúng. Lý do cốt lõi là <strong>cung &lt; cầu</strong>: nhân lực giỏi kỹ thuật lẫn tiếng Nhật rất khan hiếm. Thị trường linh hoạt chấp nhận BrSE non-tech để bù đắp thiếu hụt đó - không phải vì lý do chi phí.</div>
+        </div>
+
+      </div>
+
+      <!-- PHẦN 2: NÂNG CAO -->
+      <div class="quiz-section" id="quiz-advanced" style="border-top-color:#7c3aed;">
+        <div class="quiz-header">
+          <div class="quiz-icon advanced">🧠</div>
+          <div>
+            <div class="quiz-title">Phần 2 - Nâng cao</div>
+            <div class="quiz-subtitle">5 câu · Tình huống thực tế &amp; phân tích</div>
+          </div>
+        </div>
+
+        <div class="question-block" data-level="advanced" data-answer="B">
+          <span class="question-num">Câu 1</span>
+          <div class="question-text">Một BrSE non-tech vừa nhận task mới từ khách hàng Nhật: "修正してください" (Hãy sửa lại). Không có thêm thông tin nào khác. Bước đầu tiên cần làm là gì?</div>
+          <ul class="options">
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">A</span> Ngay lập tức giao task cho developer và yêu cầu họ sửa</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">B</span> Chat hoặc book meeting với khách hàng để làm rõ: sửa cái gì, sửa như thế nào, theo yêu cầu mới nào</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">C</span> Tự phán đoán và viết spec rồi đưa cho developer</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">D</span> Báo cáo ngay cho PM rằng yêu cầu không rõ ràng và chờ PM xử lý</li>
+          </ul>
+          <div class="answer-feedback correct">✅ Đúng. Yêu cầu mơ hồ là tình huống BrSE gặp thường xuyên nhất. Việc cần làm là chủ động liên hệ khách hàng để làm rõ trước khi chuyển sang bất kỳ bước nào khác. Đây là một trong những kỹ năng quan trọng nhất của BrSE.</div>
+          <div class="answer-feedback wrong">❌ Chưa đúng. Giao task cho developer khi yêu cầu chưa rõ là rủi ro lớn - dev sẽ làm sai và mất thời gian sửa lại. Bước đầu tiên luôn là <strong>làm rõ yêu cầu với khách hàng</strong> trước khi chuyển xuống team.</div>
+        </div>
+
+        <div class="question-block" data-level="advanced" data-answer="C">
+          <span class="question-num">Câu 2</span>
+          <div class="question-text">Dự án Labo đang chạy. Khách hàng Nhật tạo 3 task mới trên Backlog vào sáng thứ Hai và assign cho bạn (BrSE). Task có mô tả ngắn nhưng chưa đủ thông tin để developer bắt tay làm. Thứ tự hành động đúng là gì?</div>
+          <ul class="options">
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">A</span> Assign ngay 3 task cho developer để họ tự làm rõ với khách</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">B</span> Chờ đến cuối tuần khi có weekly meeting mới hỏi khách hàng</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">C</span> Đọc tài liệu, chat làm rõ với khách hàng → viết mô tả chi tiết tiếng Việt → giao cho developer → follow tiến độ → test trước khi giao hàng</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">D</span> Yêu cầu khách hàng tự viết spec chi tiết trước rồi mới nhận task</li>
+          </ul>
+          <div class="answer-feedback correct">✅ Đúng. Đây chính là luồng công việc chuẩn trong dự án Labo: BrSE làm cầu nối từ đầu đến cuối - từ tiếp nhận, làm rõ, transfer, follow, test, đến giao hàng. Developer không nên làm việc trực tiếp với khách hàng Nhật.</div>
+          <div class="answer-feedback wrong">❌ Chưa đúng. Trong dự án Labo, BrSE chịu trách nhiệm toàn bộ luồng từ tiếp nhận đến giao hàng. Luồng đúng là: làm rõ với khách → viết spec tiếng Việt → giao developer → follow tiến độ → test → giao hàng.</div>
+        </div>
+
+        <div class="question-block" data-level="advanced" data-answer="C">
+          <span class="question-num">Câu 3</span>
+          <div class="question-text">Bạn có tiếng Nhật N2, đang làm Comtor và muốn phát triển thành BrSE non-tech. Theo nội dung Level 0, kỹ năng nào cần ưu tiên đầu tư nhất trong giai đoạn chuyển đổi?</div>
+          <ul class="options">
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">A</span> Học lập trình từ đầu để hiểu sâu kỹ thuật</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">B</span> Nâng chứng chỉ tiếng Nhật từ N2 lên N1 trước khi làm bất cứ điều gì khác</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">C</span> Phát triển kỹ năng phân tích nghiệp vụ và kiểm soát chất lượng, đồng thời xin tham gia vào các giai đoạn Upstream và test của dự án để tích lũy kinh nghiệm thực tế</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">D</span> Xin chuyển sang vị trí PM trước vì PM không cần kỹ thuật</li>
+          </ul>
+          <div class="answer-feedback correct">✅ Đúng. Comtor đã có lợi thế tiếng Nhật và quen môi trường dự án. Phần còn lại cần bổ sung là BA (phân tích nghiệp vụ) và QA cơ bản. Cách nhanh nhất là học kết hợp với thực hành ngay trong dự án hiện tại.</div>
+          <div class="answer-feedback wrong">❌ Chưa đúng. Comtor đã có tiếng Nhật tốt - đây là lợi thế lớn. Thứ cần ưu tiên bổ sung là <strong>phân tích nghiệp vụ và kiểm soát chất lượng</strong>, và học trực tiếp từ dự án thực tế - không phải học code hay nâng chứng chỉ tiếng Nhật.</div>
+        </div>
+
+        <div class="question-block" data-level="advanced" data-answer="A">
+          <span class="question-num">Câu 4</span>
+          <div class="question-text">Sau một buổi meeting với khách hàng Nhật, trong đó đã thống nhất một số thay đổi về yêu cầu chức năng, việc BrSE cần làm ngay sau meeting là gì?</div>
+          <ul class="options">
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">A</span> Viết meeting note/minutes tóm tắt nội dung đã trao đổi và chia sẻ cho PM và team liên quan</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">B</span> Gọi điện ngay cho developer để thông báo thay đổi bằng lời</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">C</span> Chờ khách hàng Nhật tự gửi tóm tắt meeting qua email</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">D</span> Cập nhật ngay lên JIRA và đóng tất cả task cũ liên quan</li>
+          </ul>
+          <div class="answer-feedback correct">✅ Đúng. Meeting note là tài liệu quan trọng để đảm bảo mọi người trong team nắm đúng nội dung đã thống nhất, tránh trường hợp "nghe nhầm, hiểu sai". Đây là thói quen chuyên nghiệp của BrSE.</div>
+          <div class="answer-feedback wrong">❌ Chưa đúng. Sau meeting, việc quan trọng nhất là <strong>viết meeting note</strong> tóm tắt nội dung đã trao đổi và chia sẻ cho team. Thông báo miệng dễ gây hiểu nhầm, và không có bằng chứng khi cần xác nhận lại sau này.</div>
+        </div>
+
+        <div class="question-block" data-level="advanced" data-answer="D">
+          <span class="question-num">Câu 5</span>
+          <div class="question-text">Bạn là fresher tiếng Nhật N2, chưa có kinh nghiệm IT. Theo định hướng trong Level 0, chiến lược nào phù hợp nhất để bắt đầu sự nghiệp BrSE?</div>
+          <ul class="options">
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">A</span> Học lập trình 2 năm cho thành thạo rồi mới xin việc vào công ty IT</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">B</span> Chỉ nộp hồ sơ vào vị trí BrSE chính thức ngay từ đầu, không làm vị trí khác</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">C</span> Chờ có đủ 3 năm kinh nghiệm mới bắt đầu tìm việc trong ngành IT</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">D</span> Xin vào công ty IT với bất kỳ vị trí phù hợp nào (Comtor, Tester, học việc...), học từ môi trường thực tế, rồi dần phát triển hướng đến BrSE</li>
+          </ul>
+          <div class="answer-feedback correct">✅ Đúng. "Vào được - phát triển sau" là nguyên tắc được khuyến nghị cho người mới tiếng Nhật tốt. Môi trường làm việc thực tế trong công ty IT dạy bạn nhanh hơn bất kỳ khóa học nào. Đừng chờ "đủ điều kiện" - bắt đầu từ những gì bạn có hôm nay.</div>
+          <div class="answer-feedback wrong">❌ Chưa đúng. Chiến lược tốt nhất cho fresher tiếng Nhật là <strong>vào công ty IT trước với bất kỳ vị trí nào phù hợp</strong>, sau đó phát triển từ bên trong. Chờ đợi hay học quá lâu trước khi vào nghề thường dẫn đến "đi vòng" không cần thiết.</div>
+        </div>
+
+        <div class="quiz-final-actions">
+          <button class="check-btn" onclick="submitAll()">Nộp bài</button>
+        </div>
+        <div class="quiz-result-box total" id="result-total">
+          <div class="result-score" id="score-total">0/10</div>
+          <div class="result-comment" id="comment-total"></div>
+          <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px;">
+            <button class="retake-btn" onclick="retakeAll()">Làm lại</button>
+            <button class="retake-btn" style="background:rgba(255,255,255,0.25);border-color:rgba(255,255,255,0.5);" onclick="showAnswers()">Xem đáp án</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <p class="header-trainer">BrSE Career Builder - Đồng Hành Cùng Bạn</p>
+        <p style="margin-top:6px;">Training IT cho người mới · Thực tế · Dễ hiểu · Có chiều sâu</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  (function () {
+    var app = document.getElementById('lesson-app');
+    var btn = document.getElementById('btn-sidebar-collapse');
+    if (app && btn) {
+      btn.addEventListener('click', function () {
+        var collapsed = app.classList.toggle('sidebar-collapsed');
+        btn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+      });
+    }
+
+    var nav = document.getElementById('lesson-sidebar-nav');
+    if (!nav) return;
+    var navLinks = nav.querySelectorAll('a.nav-item');
+
+    var sectionIds = [
+      'cover', 'muc-tieu',
+      'module-1', 'lesson-1-1', 'lesson-1-2',
+      'module-2', 'lesson-2-1', 'lesson-2-2', 'lesson-2-3',
+      'module-3', 'lesson-3-1', 'lesson-3-2', 'lesson-3-3',
+      'module-4', 'lesson-4-1', 'lesson-4-2',
+      'closing'
+    ];
+
+    function clearActive() {
+      navLinks.forEach(function (a) {
+        a.classList.remove('is-active');
+        a.removeAttribute('aria-current');
+      });
+    }
+
+    function setActiveById(id) {
+      clearActive();
+      var link = nav.querySelector('a.nav-item[href="#' + id + '"]');
+      if (link) {
+        link.classList.add('is-active');
+        link.setAttribute('aria-current', 'location');
+      }
+    }
+
+    function documentTop(el) {
+      return el.getBoundingClientRect().top + (window.scrollY || document.documentElement.scrollTop);
+    }
+
+    var lastActiveId = '';
+
+    navLinks.forEach(function (a) {
+      a.addEventListener('click', function () {
+        var href = a.getAttribute('href');
+        if (href && href.charAt(0) === '#') {
+          var targetId = href.slice(1);
+          lastActiveId = targetId;
+          setActiveById(lastActiveId);
+          if (targetId === 'btn-quiz-open') {
+            var quizBtn = document.getElementById('btn-quiz-open');
+            if (quizBtn) {
+              setTimeout(function () {
+                quizBtn.focus({ preventScroll: true });
+              }, 400);
+            }
+          }
+        }
+      });
+    });
+
+    function updateActiveFromScroll() {
+      var scrollY = window.scrollY || document.documentElement.scrollTop;
+      var vh = window.innerHeight || 0;
+      var docH = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
+      var activateLine = scrollY + Math.min(200, Math.max(96, vh * 0.28));
+      var current = sectionIds[0];
+      for (var i = 0; i < sectionIds.length; i++) {
+        var el = document.getElementById(sectionIds[i]);
+        if (!el) continue;
+        if (documentTop(el) <= activateLine) current = sectionIds[i];
+      }
+      if (docH > vh + 80 && scrollY + vh >= docH - 24) {
+        for (var j = sectionIds.length - 1; j >= 0; j--) {
+          if (document.getElementById(sectionIds[j])) { current = sectionIds[j]; break; }
+        }
+      }
+      if (current !== lastActiveId) {
+        lastActiveId = current;
+        setActiveById(current);
+      }
+    }
+
+    var ticking = false;
+    window.addEventListener('scroll', function () {
+      if (!ticking) {
+        requestAnimationFrame(function () { updateActiveFromScroll(); ticking = false; });
+        ticking = true;
+      }
+    }, { passive: true });
+
+    updateActiveFromScroll();
+  })();
+
+  function openQuiz() {
+    document.getElementById('quiz-shell').classList.add('is-open');
+    restoreQuizState();
+  }
+
+  function closeQuiz() {
+    saveQuizState();
+    document.getElementById('quiz-shell').classList.remove('is-open');
+  }
+
+  function saveQuizState() {
+    var state = {};
+    ['quiz-basic', 'quiz-advanced'].forEach(function (sectionId) {
+      var section = document.getElementById(sectionId);
+      if (!section) return;
+      var blocks = section.querySelectorAll('.question-block');
+      var selections = [];
+      blocks.forEach(function (block) {
+        var options = block.querySelectorAll('.option');
+        var idx = -1;
+        options.forEach(function (o, j) { if (o.classList.contains('selected')) idx = j; });
+        selections.push(idx);
+      });
+      state[sectionId] = selections;
+    });
+    sessionStorage.setItem('quizState_level0', JSON.stringify(state));
+  }
+
+  function restoreQuizState() {
+    var saved = sessionStorage.getItem('quizState_level0');
+    if (!saved) return;
+    var state;
+    try { state = JSON.parse(saved); } catch (e) { return; }
+    ['quiz-basic', 'quiz-advanced'].forEach(function (sectionId) {
+      if (!state[sectionId]) return;
+      var section = document.getElementById(sectionId);
+      if (!section) return;
+      var blocks = section.querySelectorAll('.question-block');
+      blocks.forEach(function (block, i) {
+        var idx = state[sectionId][i];
+        if (idx < 0) return;
+        var options = block.querySelectorAll('.option');
+        if (options[idx]) {
+          options.forEach(function (o) { o.classList.remove('selected'); });
+          options[idx].classList.add('selected');
+        }
+      });
+    });
+  }
+
+  function selectOption(el) {
+    var block = el.closest('.question-block');
+    block.querySelectorAll('.option').forEach(function (o) { o.classList.remove('selected'); });
+    el.classList.add('selected');
+    block.classList.remove('question-unanswered');
+  }
+
+  function gradeSection(sectionId) {
+    var section = document.getElementById(sectionId);
+    var blocks = section.querySelectorAll('.question-block');
+    var correct = 0;
+    blocks.forEach(function (block) {
+      var answer = block.getAttribute('data-answer');
+      var selected = block.querySelector('.option.selected');
+      block.querySelectorAll('.answer-feedback').forEach(function (f) { f.classList.remove('show'); });
+      if (!selected) { block.classList.add('question-unanswered'); return; }
+      block.classList.remove('question-unanswered');
+      var letter = selected.querySelector('.option-letter').textContent.trim();
+      block.querySelectorAll('.option').forEach(function (o) {
+        if (o.querySelector('.option-letter').textContent.trim() === answer) {
+          o.classList.add('option-answer-key');
+        }
+      });
+      if (letter === answer) {
+        selected.classList.add('correct');
+        correct++;
+        block.querySelectorAll('.answer-feedback')[0].classList.add('show');
+      } else {
+        selected.classList.add('wrong');
+        block.querySelectorAll('.answer-feedback')[1].classList.add('show');
+      }
+    });
+    return { correct: correct, total: blocks.length };
+  }
+
+  function submitAll() {
+    var allBlocks = document.querySelectorAll('#quiz-basic .question-block, #quiz-advanced .question-block');
+    var unanswered = [];
+    allBlocks.forEach(function (block) {
+      if (!block.querySelector('.option.selected')) {
+        block.classList.add('question-unanswered');
+        unanswered.push(block);
+      }
+    });
+    if (unanswered.length > 0) {
+      var toast = document.getElementById('quiz-incomplete-toast');
+      toast.classList.add('show');
+      clearTimeout(toast._timer);
+      toast._timer = setTimeout(function () { toast.classList.remove('show'); }, 4000);
+      var scrollEl = document.querySelector('.quiz-shell-scroll');
+      if (scrollEl) {
+        var firstRect = unanswered[0];
+        scrollEl.scrollTo({ top: firstRect.offsetTop - 80, behavior: 'smooth' });
+      }
+      return;
+    }
+    var r1 = gradeSection('quiz-basic');
+    var r2 = gradeSection('quiz-advanced');
+    var totalCorrect = r1.correct + r2.correct;
+    var totalQ = r1.total + r2.total;
+    document.getElementById('score-total').textContent = totalCorrect + '/' + totalQ;
+    var pct = totalCorrect / totalQ;
+    document.getElementById('comment-total').textContent =
+      pct === 1  ? 'Xuất sắc! Bạn nắm vững toàn bộ kiến thức Level 0.' :
+      pct >= 0.8 ? 'Rất tốt! Bạn đã hiểu phần lớn nội dung. Xem lại các câu sai để hoàn thiện.' :
+      pct >= 0.6 ? 'Tốt! Xem lại các câu sai và ôn thêm phần còn yếu nhé.' :
+                   'Hãy xem lại nội dung bài học và thử lại nhé.';
+    document.getElementById('result-total').classList.add('show');
+    var scrollEl = document.querySelector('.quiz-shell-scroll');
+    if (scrollEl) {
+      var target = document.getElementById('result-total');
+      if (target) scrollEl.scrollTo({ top: target.offsetTop - 20, behavior: 'smooth' });
+    }
+  }
+
+  function showAnswers() {
+    ['quiz-basic', 'quiz-advanced'].forEach(function (sectionId) {
+      var section = document.getElementById(sectionId);
+      if (!section) return;
+      section.querySelectorAll('.question-block').forEach(function (block) {
+        var answer = block.getAttribute('data-answer');
+        block.querySelectorAll('.option').forEach(function (o) {
+          if (o.querySelector('.option-letter').textContent.trim() === answer) {
+            o.classList.add('option-answer-key');
+          }
+        });
+        var feedbacks = block.querySelectorAll('.answer-feedback');
+        feedbacks.forEach(function (f) { f.classList.remove('show'); });
+        feedbacks[0].classList.add('show');
+      });
+    });
+    var scrollEl = document.querySelector('.quiz-shell-scroll');
+    if (scrollEl) setTimeout(function () { scrollEl.scrollTo({ top: 0, behavior: 'smooth' }); }, 50);
+  }
+
+  function retakeAll() {
+    ['quiz-basic', 'quiz-advanced'].forEach(function (sectionId) {
+      var section = document.getElementById(sectionId);
+      section.querySelectorAll('.option').forEach(function (o) {
+        o.className = 'option';
+        o.onclick = function () { selectOption(this); };
+      });
+      section.querySelectorAll('.question-block').forEach(function (b) {
+        b.classList.remove('question-unanswered');
+      });
+      section.querySelectorAll('.answer-feedback').forEach(function (f) { f.classList.remove('show'); });
+    });
+    document.getElementById('result-total').classList.remove('show');
+    var scrollEl = document.querySelector('.quiz-shell-scroll');
+    if (scrollEl) scrollEl.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+
+</body>
+</html>

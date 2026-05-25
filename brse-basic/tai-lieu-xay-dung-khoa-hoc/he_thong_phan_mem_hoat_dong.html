@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cách Hệ Thống Phần Mềm Hoạt Động - Khóa Đào Tạo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background: #0a1628;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 60px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255,255,255,0.05);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #0d2137 0%, #1a3a5c 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 3px solid #1e90ff;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 50px;
+            padding-bottom: 30px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        h2 {
+            color: #1565c0;
+            font-size: 2em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-icon {
+            font-size: 2em;
+        }
+
+        h3 {
+            color: #1e90ff;
+            font-size: 1.5em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            font-size: 1.05em;
+            line-height: 1.8;
+        }
+
+        .example-box {
+            background: #f0f6ff;
+            border-left: 5px solid #1565c0;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 8px;
+        }
+
+        .example-title {
+            font-weight: bold;
+            color: #1565c0;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .flow-diagram {
+            background: #ffffff;
+            border: 2px solid #e0e0e0;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .flow-step {
+            display: inline-block;
+            background: linear-gradient(135deg, #0d2137 0%, #1565c0 100%);
+            color: white;
+            padding: 20px 30px;
+            margin: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+            min-width: 150px;
+        }
+
+        .flow-arrow {
+            display: inline-block;
+            margin: 0 10px;
+            font-size: 1.5em;
+            color: #1565c0;
+        }
+
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: #856404;
+        }
+
+        .important {
+            background: #f8d7da;
+            border-left: 5px solid #dc3545;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 8px;
+        }
+
+        .important-title {
+            color: #dc3545;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .diagram-container {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f5f5f5;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .component-box {
+            display: inline-block;
+            background: white;
+            border: 2px solid #1565c0;
+            padding: 20px;
+            margin: 10px;
+            border-radius: 8px;
+            min-width: 120px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .quiz-section {
+            background: #e3f2fd;
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 40px;
+        }
+
+        .quiz-section h2 {
+            color: #1565c0;
+        }
+
+        .question {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border-left: 5px solid #1565c0;
+        }
+
+        .question p {
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .options {
+            margin-left: 20px;
+        }
+
+        .option {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f5f5f5;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option:hover {
+            background: #ddd;
+            transform: translateX(5px);
+        }
+
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .answer {
+            margin-top: 15px;
+            padding: 15px;
+            background: #c8e6c9;
+            border-radius: 5px;
+            display: none;
+            border-left: 5px solid #4caf50;
+        }
+
+        .answer.show {
+            display: block;
+        }
+
+        .answer-title {
+            color: #2e7d32;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #0d2137 0%, #1565c0 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1em;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(21, 101, 192, 0.4);
+        }
+
+        .checkmark {
+            color: #4caf50;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .timeline-item {
+            margin-bottom: 30px;
+            padding-left: 40px;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            background: #1565c0;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 3px #1565c0;
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 25px;
+            width: 3px;
+            height: 30px;
+            background: #1565c0;
+        }
+
+        .timeline-item:last-child::after {
+            display: none;
+        }
+
+        .timeline-title {
+            font-weight: bold;
+            color: #1565c0;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+        }
+
+        .comparison-table th {
+            background: linear-gradient(135deg, #0d2137 0%, #1565c0 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .comparison-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .comparison-table tr:hover {
+            background: #f9f9f9;
+        }
+
+        footer {
+            background: #f5f5f5;
+            padding: 30px 40px;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #ddd;
+        }
+
+        .toc {
+            background: #f0f6ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border-left: 5px solid #1565c0;
+        }
+
+        .toc-title {
+            color: #1565c0;
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding-left: 20px;
+        }
+
+        .toc li {
+            margin: 8px 0;
+        }
+
+        .toc a {
+            color: #1565c0;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .toc a:hover {
+            color: #0d2137;
+            text-decoration: underline;
+        }
+
+        .success-message {
+            display: none;
+            background: #c8e6c9;
+            color: #2e7d32;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border-left: 5px solid #4caf50;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+            }
+
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .flow-step {
+                display: block;
+                margin: 10px 0;
+            }
+
+            .comparison-table {
+                font-size: 0.9em;
+            }
+
+            .comparison-table th, .comparison-table td {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 Cách Hệ Thống Phần Mềm Hoạt Động</h1>
+            <p>Khóa đào tạo dành cho người mới bắt đầu</p>
+        </header>
+
+        <div class="content">
+            <!-- Mục lục -->
+            <div class="toc">
+                <div class="toc-title">📋 Nội dung khóa học:</div>
+                <ul>
+                    <li><a href="#intro">1. Giới thiệu cơ bản</a></li>
+                    <li><a href="#concept">2. Khái niệm cơ bản</a></li>
+                    <li><a href="#how-it-works">3. Cách hoạt động chi tiết</a></li>
+                    <li><a href="#components">4. Các thành phần chính</a></li>
+                    <li><a href="#real-example">5. Ví dụ thực tế chi tiết</a></li>
+                    <li><a href="#types">6. Loại hệ thống phần mềm</a></li>
+                    <li><a href="#quiz">7. Bài kiểm tra đánh giá</a></li>
+                </ul>
+            </div>
+
+            <!-- Phần 1: Giới thiệu -->
+            <div class="section" id="intro">
+                <h2><span class="section-icon">💡</span>1. Giới thiệu cơ bản</h2>
+                
+                <p>
+                    Hệ thống phần mềm là những chương trình máy tính được thiết kế để thực hiện các công việc cụ thể. 
+                    Nó giống như một <span class="highlight">robot ảo</span> mà bạn tạo ra để làm những việc mà máy tính có thể làm.
+                </p>
+
+                <div class="example-box">
+                    <div class="example-title">📱 Ví dụ quen thuộc:</div>
+                    <p>
+                        Ứng dụng WhatsApp trên điện thoại của bạn là một hệ thống phần mềm. 
+                        Nó nhận lệnh từ bạn (gõ tin nhắn, nhấn gửi), xử lý thông tin (mã hóa, gửi), 
+                        và trả về kết quả (tin nhắn đến bạn bè).
+                    </p>
+                </div>
+
+                <h3>Tại sao cần học về hệ thống phần mềm?</h3>
+                <ul style="margin-left: 20px; margin-bottom: 20px;">
+                    <li>Để hiểu cách các ứng dụng mà bạn dùng hàng ngày hoạt động</li>
+                    <li>Để có thể tham gia vào quá trình phát triển ứng dụng</li>
+                    <li>Để giao tiếp tốt hơn với các lập trình viên</li>
+                    <li>Để giải quyết vấn đề khi ứng dụng không hoạt động đúng</li>
+                </ul>
+            </div>
+
+            <!-- Phần 2: Khái niệm cơ bản -->
+            <div class="section" id="concept">
+                <h2><span class="section-icon">🎯</span>2. Khái niệm cơ bản</h2>
+
+                <h3>Phần mềm (Software) là gì?</h3>
+                <p>
+                    Phần mềm là các <span class="highlight">hướng dẫn (lệnh)</span> được viết bằng một ngôn ngữ lập trình 
+                    mà máy tính có thể hiểu. Những lệnh này được sắp xếp theo một thứ tự logic để hoàn thành một nhiệm vụ.
+                </p>
+
+                <div class="example-box">
+                    <div class="example-title">📝 Ví dụ dễ hiểu:</div>
+                    <p>
+                        Giống như công thức nấu ăn:
+                    </p>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>Công thức = Hệ thống phần mềm</li>
+                        <li>Các bước: "thêm bột, trộn, nướng" = Các lệnh trong code</li>
+                        <li>Món ăn hoàn thành = Kết quả chạy chương trình</li>
+                    </ul>
+                </p>
+                </div>
+
+                <h3>Lập trình viên (Developer) là ai?</h3>
+                <p>
+                    Là những người viết các hướng dẫn (code) để tạo ra phần mềm. 
+                    Họ giống như kiến trúc sư, họ thiết kế và xây dựng hệ thống phần mềm.
+                </p>
+
+                <h3>Code (Mã lệnh) là gì?</h3>
+                <p>
+                    Code là những dòng chữ được viết bằng ngôn ngữ lập trình (như Python, JavaScript, Java...). 
+                    Mỗi dòng code là một lệnh nhỏ cho máy tính.
+                </p>
+
+                <div class="example-box">
+                    <div class="example-title">💻 Một ví dụ code đơn giản:</div>
+                    <p style="background: #f0f0f0; padding: 15px; border-radius: 5px; font-family: monospace; overflow-x: auto;">
+                        if (user.age > 18) {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;allow_access("Adult content")<br>
+                        } else {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;block_access()<br>
+                        }
+                    </p>
+                    <p style="margin-top: 10px;">
+                        Ý nghĩa: Nếu tuổi người dùng lớn hơn 18, cho phép truy cập. Nếu không, chặn truy cập.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Phần 3: Cách hoạt động -->
+            <div class="section" id="how-it-works">
+                <h2><span class="section-icon">⚙️</span>3. Cách hoạt động chi tiết</h2>
+
+                <p>
+                    Mọi hệ thống phần mềm đều hoạt động theo một quy trình cơ bản: 
+                    <span class="highlight">Input → Xử lý → Output</span>
+                </p>
+
+                <div class="flow-diagram">
+                    <div style="margin: 20px 0;">
+                        <div class="flow-step">📥 Input (Nhập)</div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">⚙️ Xử lý</div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">📤 Output (Xuất)</div>
+                    </div>
+                </div>
+
+                <h3>1️⃣ Input (Nhập dữ liệu)</h3>
+                <p>
+                    Đây là thông tin mà hệ thống nhận được từ người dùng hoặc từ các nguồn khác.
+                </p>
+                <div class="example-box">
+                    <div class="example-title">📱 Ví dụ:</div>
+                    <ul style="margin-left: 20px;">
+                        <li>Khi bạn gõ tin nhắn trên WhatsApp → Input là nội dung tin nhắn</li>
+                        <li>Khi bạn nhập email và password để đăng nhập → Input là thông tin đăng nhập</li>
+                        <li>Khi bạn click một nút trên trang web → Input là sự kiện click</li>
+                    </ul>
+                </div>
+
+                <h3>2️⃣ Xử lý (Processing)</h3>
+                <p>
+                    Đây là phần tính toán, so sánh, sắp xếp, lưu trữ dữ liệu. 
+                    Máy tính thực hiện các lệnh trong code để biến đổi dữ liệu đầu vào.
+                </p>
+                <div class="example-box">
+                    <div class="example-title">⚙️ Ví dụ:</div>
+                    <ul style="margin-left: 20px;">
+                        <li>Mã hóa tin nhắn trước khi gửi</li>
+                        <li>Kiểm tra email và password có đúng không (so sánh với database)</li>
+                        <li>Tìm kiếm sản phẩm phù hợp từ cơ sở dữ liệu</li>
+                        <li>Tính toán tổng hóa đơn</li>
+                    </ul>
+                </div>
+
+                <h3>3️⃣ Output (Xuất dữ liệu)</h3>
+                <p>
+                    Đây là kết quả mà hệ thống trả về cho người dùng hoặc gửi đến những hệ thống khác.
+                </p>
+                <div class="example-box">
+                    <div class="example-title">📤 Ví dụ:</div>
+                    <ul style="margin-left: 20px;">
+                        <li>Tin nhắn được hiển thị trên màn hình của người bạn</li>
+                        <li>Trang chủ được tải lên sau khi đăng nhập thành công</li>
+                        <li>Danh sách sản phẩm được hiển thị trên trang web</li>
+                        <li>Âm thanh, hình ảnh, hoặc dữ liệu được lưu trữ</li>
+                    </ul>
+                </div>
+
+                <div class="important">
+                    <div class="important-title">⚡ Điều quan trọng:</div>
+                    <p>
+                        Tất cả các hệ thống phần mềm, từ đơn giản nhất đến phức tạp nhất, 
+                        đều tuân theo mô hình này: Input → Xử lý → Output
+                    </p>
+                </div>
+            </div>
+
+            <!-- Phần 4: Các thành phần chính -->
+            <div class="section" id="components">
+                <h2><span class="section-icon">🔧</span>4. Các thành phần chính</h2>
+
+                <p>
+                    Mọi hệ thống phần mềm đều có các thành phần chính sau:
+                </p>
+
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-title">Frontend (Giao diện người dùng)</div>
+                        <p>
+                            Là phần mà người dùng thấy và tương tác. Bao gồm nút bấm, textbox, hình ảnh, video.
+                        </p>
+                        <div class="example-box">
+                            <div class="example-title">👁️ Ví dụ:</div>
+                            <ul style="margin-left: 20px;">
+                                <li>Giao diện của ứng dụng WhatsApp trên điện thoại</li>
+                                <li>Thanh tìm kiếm Google</li>
+                                <li>Trang chủ Facebook</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-title">Backend (Xử lý phía sau)</div>
+                        <p>
+                            Là phần logic, xử lý dữ liệu. Người dùng không nhìn thấy, nhưng nó hoạt động phía sau.
+                        </p>
+                        <div class="example-box">
+                            <div class="example-title">🔐 Ví dụ:</div>
+                            <ul style="margin-left: 20px;">
+                                <li>Kiểm tra password có đúng không</li>
+                                <li>Tìm kiếm từ khóa trong cơ sở dữ liệu</li>
+                                <li>Tính toán giá tiền, thuế</li>
+                                <li>Mã hóa thông tin người dùng</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-title">Database (Cơ sở dữ liệu)</div>
+                        <p>
+                            Là kho lưu trữ thông tin. Nơi hệ thống lưu các dữ liệu như thông tin người dùng, tin nhắn, sản phẩm.
+                        </p>
+                        <div class="example-box">
+                            <div class="example-title">💾 Ví dụ:</div>
+                            <ul style="margin-left: 20px;">
+                                <li>Database chứa danh sách tất cả người dùng Facebook</li>
+                                <li>Database chứa tất cả sản phẩm trên Shopee</li>
+                                <li>Database chứa tất cả tin nhắn trên Telegram</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-title">API (Cầu nối giao tiếp)</div>
+                        <p>
+                            Là "cầu nối" giữa Frontend và Backend. Nó định nghĩa cách Frontend gửi yêu cầu đến Backend.
+                        </p>
+                        <div class="example-box">
+                            <div class="example-title">🌉 Ví dụ:</div>
+                            <ul style="margin-left: 20px;">
+                                <li>Khi bạn click "Đăng nhập", Frontend gửi yêu cầu qua API: "Kiểm tra email: user@gmail.com, password: 123456"</li>
+                                <li>Backend nhận, xử lý, rồi trả về: "Đúng" hoặc "Sai"</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Sơ đồ tổng quát:</h3>
+                <div class="diagram-container">
+                    <p style="margin-bottom: 20px; font-weight: bold;">Một hệ thống phần mềm hoàn chỉnh:</p>
+                    <div>
+                        <div class="component-box">
+                            <strong>👤 Người dùng</strong>
+                        </div>
+                    </div>
+                    <div style="margin: 20px 0; font-size: 1.5em; color: #1565c0;">⬇️</div>
+                    <div>
+                        <div class="component-box">
+                            <strong>Frontend</strong><br>
+                            <small>Giao diện</small>
+                        </div>
+                    </div>
+                    <div style="margin: 20px 0; font-size: 1.5em; color: #1565c0;">⬇️ (Thông qua API)</div>
+                    <div>
+                        <div class="component-box">
+                            <strong>Backend</strong><br>
+                            <small>Xử lý logic</small>
+                        </div>
+                    </div>
+                    <div style="margin: 20px 0; font-size: 1.5em; color: #1565c0;">⬇️</div>
+                    <div>
+                        <div class="component-box">
+                            <strong>Database</strong><br>
+                            <small>Lưu trữ dữ liệu</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phần 5: Ví dụ thực tế -->
+            <div class="section" id="real-example">
+                <h2><span class="section-icon">📱</span>5. Ví dụ thực tế chi tiết: Ứng dụng Ngân Hàng</h2>
+
+                <p>
+                    Hãy theo dõi toàn bộ quy trình khi bạn chuyển tiền qua ứng dụng ngân hàng:
+                </p>
+
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-title">Bước 1: Người dùng gõ thông tin (Input)</div>
+                        <p>
+                            Bạn mở ứng dụng ngân hàng, nhập:
+                        </p>
+                        <ul style="margin-left: 20px;">
+                            <li>Số tài khoản người nhận</li>
+                            <li>Số tiền: 1.000.000 VND</li>
+                            <li>Nhấn "Xác nhận chuyển"</li>
+                        </ul>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-title">Bước 2: Frontend nhận thông tin</div>
+                        <p>
+                            Ứng dụng trên điện thoại (Frontend) nhận dữ liệu này. 
+                            Nó có thể kiểm tra sơ bộ: số tiền hợp lệ không? Tài khoản người nhận có đúng không?
+                        </p>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-title">Bước 3: Frontend gửi yêu cầu (API)</div>
+                        <p>
+                            Frontend gửi yêu cầu qua API đến Backend:
+                        </p>
+                        <div style="background: #f0f0f0; padding: 10px; border-radius: 5px; margin: 10px 0; font-family: monospace; font-size: 0.9em;">
+                            POST /api/transfer<br>
+                            {<br>
+                            &nbsp;&nbsp;from_account: "12345678",<br>
+                            &nbsp;&nbsp;to_account: "87654321",<br>
+                            &nbsp;&nbsp;amount: 1000000,<br>
+                            &nbsp;&nbsp;currency: "VND"<br>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-title">Bước 4: Backend xử lý (Xử lý dữ liệu)</div>
+                        <p>
+                            Backend nhận yêu cầu và thực hiện:
+                        </p>
+                        <ul style="margin-left: 20px;">
+                            <li>✓ Kiểm tra tài khoản người dùng có tồn tại không?</li>
+                            <li>✓ Kiểm tra số dư đủ không (có ≥ 1.000.000 VND)?</li>
+                            <li>✓ Kiểm tra tài khoản người nhận có tồn tại không?</li>
+                            <li>✓ Kiểm tra tài khoản có bị khóa không?</li>
+                        </ul>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-title">Bước 5: Backend tương tác Database</div>
+                        <p>
+                            Nếu tất cả kiểm tra đều hợp lệ, Backend yêu cầu Database:
+                        </p>
+                        <ul style="margin-left: 20px;">
+                            <li>📝 Trừ 1.000.000 VND từ tài khoản của bạn</li>
+                            <li>📝 Cộng 1.000.000 VND vào tài khoản người nhận</li>
+                            <li>📝 Ghi lại giao dịch này vào lịch sử (transaction log)</li>
+                        </ul>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-title">Bước 6: Backend trả kết quả (Output)</div>
+                        <p>
+                            Backend gửi trả kết quả qua API:
+                        </p>
+                        <div style="background: #f0f0f0; padding: 10px; border-radius: 5px; margin: 10px 0; font-family: monospace; font-size: 0.9em;">
+                            {<br>
+                            &nbsp;&nbsp;status: "success",<br>
+                            &nbsp;&nbsp;message: "Chuyển tiền thành công",<br>
+                            &nbsp;&nbsp;transaction_id: "TXN12345",<br>
+                            &nbsp;&nbsp;new_balance: 4000000<br>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-title">Bước 7: Frontend hiển thị kết quả</div>
+                        <p>
+                            Frontend nhận kết quả và hiển thị thông báo cho người dùng:
+                        </p>
+                        <div style="background: #c8e6c9; padding: 15px; border-radius: 5px; margin: 10px 0; border-left: 5px solid #4caf50;">
+                            ✓ <strong>Chuyển tiền thành công!</strong><br>
+                            Người nhận: Người X<br>
+                            Số tiền: 1.000.000 VND<br>
+                            Mã giao dịch: TXN12345<br>
+                            Số dư hiện tại: 4.000.000 VND
+                        </div>
+                    </div>
+                </div>
+
+                <div class="important">
+                    <div class="important-title">🔑 Yếu tố quan trọng trong ví dụ này:</div>
+                    <ul style="margin-left: 20px;">
+                        <li><strong>Bảo mật:</strong> Dữ liệu được mã hóa, kiểm tra kỹ lưỡng</li>
+                        <li><strong>Độ tin cậy:</strong> Hệ thống phải đảm bảo tiền được chuyển một lần duy nhất</li>
+                        <li><strong>Tốc độ:</strong> Mọi bước trên diễn ra trong vài giây</li>
+                        <li><strong>Lưu trữ:</strong> Tất cả được ghi lại để có thể kiểm tra sau</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Phần 6: Loại hệ thống -->
+            <div class="section" id="types">
+                <h2><span class="section-icon">🌍</span>6. Loại hệ thống phần mềm</h2>
+
+                <p>
+                    Có nhiều loại hệ thống phần mềm khác nhau, tùy thuộc vào mục đích sử dụng:
+                </p>
+
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Loại hệ thống</th>
+                            <th>Đặc điểm</th>
+                            <th>Ví dụ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Web Application</strong></td>
+                            <td>Chạy trên trình duyệt, truy cập qua URL</td>
+                            <td>Gmail, Google Docs, Facebook</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Mobile App</strong></td>
+                            <td>Chạy trên điện thoại, tải từ App Store/Play Store</td>
+                            <td>WhatsApp, Instagram, Spotify</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Desktop Software</strong></td>
+                            <td>Cài đặt trên máy tính Windows/Mac/Linux</td>
+                            <td>Microsoft Word, Photoshop, Visual Studio</td>
+                        </tr>
+                        <tr>
+                            <td><strong>IoT (Internet of Things)</strong></td>
+                            <td>Chạy trên thiết bị thông minh</td>
+                            <td>Đèn thông minh, camera an ninh, quạt thông minh</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Game</strong></td>
+                            <td>Giải trí, chạy trên nhiều nền tảng</td>
+                            <td>PUBG, Candy Crush, Minecraft</td>
+                        </tr>
+                        <tr>
+                            <td><strong>System Software</strong></td>
+                            <td>Quản lý máy tính cơ bản</td>
+                            <td>Windows, macOS, Linux, Android</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Mối liên hệ giữa các loại:</h3>
+                <p>
+                    Trong thế giới hiện đại, một ứng dụng thường là <span class="highlight">sự kết hợp của nhiều loại</span>:
+                </p>
+                <div class="example-box">
+                    <div class="example-title">📱 Ví dụ: Ứng dụng Shopee</div>
+                    <ul style="margin-left: 20px;">
+                        <li>📲 Mobile App: Ứng dụng trên điện thoại</li>
+                        <li>🌐 Web Application: Website shopee.vn</li>
+                        <li>⚙️ Backend: Server xử lý đơn hàng, thanh toán</li>
+                        <li>💾 Database: Lưu thông tin sản phẩm, người dùng, đơn hàng</li>
+                        <li>🔗 API: Kết nối giữa Mobile App, Web App, và Backend</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Phần 7: Bài kiểm tra -->
+            <div class="section quiz-section" id="quiz">
+                <h2><span class="section-icon">✅</span>7. Bài kiểm tra đánh giá</h2>
+                <p>
+                    Hãy trả lời các câu hỏi dưới đây để kiểm tra hiểu biết của bạn. 
+                    Nhấn "Xem đáp án" để kiểm tra câu trả lời.
+                </p>
+
+                <form id="quizForm">
+                    <!-- Câu 1 -->
+                    <div class="question">
+                        <p>1️⃣ Quy trình hoạt động cơ bản của mọi hệ thống phần mềm là gì?</p>
+                        <div class="options">
+                            <label class="option">
+                                <input type="radio" name="q1" value="a"> 
+                                <span>a) Compile → Run → Debug</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q1" value="b"> 
+                                <span>b) Input → Xử lý → Output</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q1" value="c"> 
+                                <span>c) Download → Install → Use</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q1" value="d"> 
+                                <span>d) Frontend → Backend → Database</span>
+                            </label>
+                        </div>
+                        <button type="button" class="submit-btn" onclick="showAnswer('answer1')">Xem đáp án</button>
+                        <div class="answer" id="answer1">
+                            <div class="answer-title"><span class="checkmark">✓</span>Đáp án đúng: b) Input → Xử lý → Output</div>
+                            <p>
+                                Tất cả các hệ thống phần mềm đều tuân theo mô hình này. 
+                                Nhân dữ liệu từ người dùng (Input), xử lý dữ liệu (Xử lý), 
+                                rồi trả kết quả (Output).
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Câu 2 -->
+                    <div class="question">
+                        <p>2️⃣ Frontend là gì?</p>
+                        <div class="options">
+                            <label class="option">
+                                <input type="radio" name="q2" value="a"> 
+                                <span>a) Phần xử lý dữ liệu phía sau màn hình</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q2" value="b"> 
+                                <span>b) Phần mà người dùng thấy và tương tác</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q2" value="c"> 
+                                <span>c) Kho lưu trữ dữ liệu</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q2" value="d"> 
+                                <span>d) Cầu nối giữa các hệ thống</span>
+                            </label>
+                        </div>
+                        <button type="button" class="submit-btn" onclick="showAnswer('answer2')">Xem đáp án</button>
+                        <div class="answer" id="answer2">
+                            <div class="answer-title"><span class="checkmark">✓</span>Đáp án đúng: b) Phần mà người dùng thấy và tương tác</div>
+                            <p>
+                                Frontend là giao diện người dùng (UI). 
+                                Bao gồm các nút bấm, textbox, hình ảnh, video mà bạn tương tác hàng ngày.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Câu 3 -->
+                    <div class="question">
+                        <p>3️⃣ Database dùng để làm gì?</p>
+                        <div class="options">
+                            <label class="option">
+                                <input type="radio" name="q3" value="a"> 
+                                <span>a) Xử lý tất cả logic của ứng dụng</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q3" value="b"> 
+                                <span>b) Lưu trữ và quản lý dữ liệu</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q3" value="c"> 
+                                <span>c) Hiển thị giao diện cho người dùng</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q3" value="d"> 
+                                <span>d) Kết nối Frontend và Backend</span>
+                            </label>
+                        </div>
+                        <button type="button" class="submit-btn" onclick="showAnswer('answer3')">Xem đáp án</button>
+                        <div class="answer" id="answer3">
+                            <div class="answer-title"><span class="checkmark">✓</span>Đáp án đúng: b) Lưu trữ và quản lý dữ liệu</div>
+                            <p>
+                                Database là kho lưu trữ thông tin. 
+                                Nó chứa tất cả dữ liệu như thông tin người dùng, sản phẩm, tin nhắn, v.v.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Câu 4 -->
+                    <div class="question">
+                        <p>4️⃣ API có chức năng gì?</p>
+                        <div class="options">
+                            <label class="option">
+                                <input type="radio" name="q4" value="a"> 
+                                <span>a) Lưu trữ tất cả dữ liệu của ứng dụng</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q4" value="b"> 
+                                <span>b) Là cầu nối giao tiếp giữa Frontend và Backend</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q4" value="c"> 
+                                <span>c) Thiết kế giao diện người dùng</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q4" value="d"> 
+                                <span>d) Tạo báo cáo từ dữ liệu</span>
+                            </label>
+                        </div>
+                        <button type="button" class="submit-btn" onclick="showAnswer('answer4')">Xem đáp án</button>
+                        <div class="answer" id="answer4">
+                            <div class="answer-title"><span class="checkmark">✓</span>Đáp án đúng: b) Là cầu nối giao tiếp giữa Frontend và Backend</div>
+                            <p>
+                                API (Application Programming Interface) định nghĩa cách Frontend 
+                                và Backend giao tiếp với nhau. Nó chỉ định những yêu cầu nào có thể gửi 
+                                và dữ liệu phải có format như thế nào.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Câu 5 -->
+                    <div class="question">
+                        <p>5️⃣ Khi bạn chuyển tiền qua ứng dụng ngân hàng, Backend phải làm những công việc nào?</p>
+                        <div class="options">
+                            <label class="option">
+                                <input type="radio" name="q5" value="a"> 
+                                <span>a) Chỉ hiển thị thông báo "Thành công"</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q5" value="b"> 
+                                <span>b) Kiểm tra số dư, trừ tiền từ tài khoản, cộng tiền vào tài khoản người nhận, ghi lại giao dịch</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q5" value="c"> 
+                                <span>c) Chỉ cần lưu trữ số tiền</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q5" value="d"> 
+                                <span>d) Gửi tiền qua mạng internet</span>
+                            </label>
+                        </div>
+                        <button type="button" class="submit-btn" onclick="showAnswer('answer5')">Xem đáp án</button>
+                        <div class="answer" id="answer5">
+                            <div class="answer-title"><span class="checkmark">✓</span>Đáp án đúng: b) Kiểm tra số dư, trừ tiền từ tài khoản, cộng tiền vào tài khoản người nhận, ghi lại giao dịch</div>
+                            <p>
+                                Backend phải thực hiện nhiều công việc phức tạp: kiểm tra dữ liệu, 
+                                đảm bảo tính bảo mật, cập nhật database, ghi lại toàn bộ quá trình để có thể kiểm tra sau.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Câu 6 -->
+                    <div class="question">
+                        <p>6️⃣ Lập trình viên (Developer) chủ yếu làm việc ở phần nào?</p>
+                        <div class="options">
+                            <label class="option">
+                                <input type="radio" name="q6" value="a"> 
+                                <span>a) Chỉ viết code cho Frontend</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q6" value="b"> 
+                                <span>b) Chỉ viết code cho Backend</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q6" value="c"> 
+                                <span>c) Viết code cho cả Frontend, Backend, Database</span>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q6" value="d"> 
+                                <span>d) Không viết code, chỉ thiết kế giao diện</span>
+                            </label>
+                        </div>
+                        <button type="button" class="submit-btn" onclick="showAnswer('answer6')">Xem đáp án</button>
+                        <div class="answer" id="answer6">
+                            <div class="answer-title"><span class="checkmark">✓</span>Đáp án đúng: c) Viết code cho cả Frontend, Backend, Database</div>
+                            <p>
+                                Một số developer chuyên một phần (Frontend Developer, Backend Developer), 
+                                nhưng nhiều developer là "Full-stack" (làm được cả Frontend, Backend, Database).
+                            </p>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 30px;">
+                        <button type="button" class="submit-btn" onclick="submitQuiz()" style="padding: 15px 50px; font-size: 1.1em;">
+                            📊 Hoàn thành bài kiểm tra
+                        </button>
+                    </div>
+                </form>
+
+                <div class="success-message" id="successMessage">
+                    <h3>🎉 Chúc mừng!</h3>
+                    <p>Bạn đã hoàn thành bài kiểm tra. Bạn có thể quay lại xem lại các câu hỏi để ôn tập thêm.</p>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>
+                <strong>Khóa đào tạo "Cách Hệ Thống Phần Mềm Hoạt Động"</strong>
+            </p>
+            <p style="margin-top: 10px; font-size: 0.9em;">
+                Tài liệu này được tạo để giúp người mới bắt đầu hiểu rõ hơn về phát triển phần mềm. 
+                Hãy tiếp tục tìm hiểu thêm và thực hành để nâng cao kiến thức của mình! 💪
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        function showAnswer(id) {
+            const answerElement = document.getElementById(id);
+            answerElement.classList.toggle('show');
+        }
+
+        function submitQuiz() {
+            // Kiểm tra xem có bao nhiêu câu được trả lời
+            const form = document.getElementById('quizForm');
+            let answeredCount = 0;
+            
+            for (let i = 1; i <= 6; i++) {
+                const selected = form.querySelector(`input[name="q${i}"]:checked`);
+                if (selected) {
+                    answeredCount++;
+                }
+            }
+
+            if (answeredCount < 6) {
+                alert(`⚠️ Bạn chưa trả lời đủ câu hỏi. Đã trả lời: ${answeredCount}/6. Vui lòng trả lời tất cả câu hỏi.`);
+            } else {
+                document.getElementById('successMessage').classList.add('show');
+                // Cuộn đến thông báo thành công
+                document.getElementById('successMessage').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Smooth scroll cho các link trong toc
+        document.querySelectorAll('.toc a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

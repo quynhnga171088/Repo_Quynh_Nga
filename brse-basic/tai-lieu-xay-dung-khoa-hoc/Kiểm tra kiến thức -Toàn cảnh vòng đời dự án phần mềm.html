@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kiểm tra kiến thức — Toàn cảnh vòng đời dự án phần mềm</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #F8F7F3;
+      --bg-card: #FFFFFF;
+      --bg-step: #FAFAF7;
+      --bg-highlight: #E8F4EC;
+      --bg-accent: #F0EDE6;
+      --text-primary: #1C1C1C;
+      --text-secondary: #404040;
+      --text-muted: #767676;
+      --accent-green: #2D8B5E;
+      --accent-green-light: #3DA873;
+      --accent-blue: #3A6BD4;
+      --accent-red: #C74B4B;
+      --border-light: #E5E3DC;
+      --border-card: #DDD9CF;
+      --shadow-sm: 0 1px 4px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+      --radius-xl: 20px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Lexend', sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.8;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page-wrapper {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 40px 24px 100px;
+    }
+
+    /* ===== HEADER ===== */
+    .header {
+      text-align: center;
+      background: linear-gradient(135deg, #FFFFFF 0%, #F0EDE6 50%, #E8F4EC 100%);
+      border-radius: var(--radius-xl);
+      padding: 60px 48px;
+      margin-bottom: 36px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-md);
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(45,139,94,0.08) 0%, transparent 70%);
+    }
+
+    .header::after {
+      content: '';
+      position: absolute;
+      bottom: -40px; left: -40px;
+      width: 150px; height: 150px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(212,120,58,0.06) 0%, transparent 70%);
+    }
+
+    .header-badge {
+      display: inline-block;
+      background: var(--accent-green);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 6px 18px;
+      border-radius: 20px;
+      margin-bottom: 24px;
+    }
+
+    .header h1 {
+      font-family: 'Source Serif 4', serif;
+      font-size: 2.1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.3;
+      margin-bottom: 14px;
+    }
+
+    .header-sub {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      margin-bottom: 14px;
+      line-height: 1.7;
+    }
+
+    .header-trainer {
+      font-size: 0.95rem;
+      color: var(--accent-green);
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+
+    .header-meta {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-weight: 300;
+    }
+
+    /* ===== PROGRESS BAR ===== */
+    .progress-bar-wrap {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-xl);
+      padding: 20px 28px;
+      margin-bottom: 28px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .progress-label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--accent-green);
+      white-space: nowrap;
+      letter-spacing: 0.5px;
+    }
+
+    .progress-track {
+      flex: 1;
+      height: 7px;
+      background: var(--bg-accent);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--accent-green);
+      border-radius: 4px;
+      transition: width 0.4s ease;
+      width: 0%;
+    }
+
+    .progress-count {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    /* ===== QUIZ CARD ===== */
+    .quiz-card {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-card);
+      border-radius: 16px;
+      padding: 32px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-sm);
+      transition: border-color 0.3s;
+    }
+
+    .quiz-card.correct  { border-color: var(--accent-green); }
+    .quiz-card.incorrect { border-color: var(--accent-red); }
+
+    .quiz-q-num {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent-green);
+      margin-bottom: 8px;
+    }
+
+    .quiz-question {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 18px;
+      line-height: 1.65;
+    }
+
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .quiz-option {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 13px 16px;
+      background: var(--bg-step);
+      border: 1.5px solid var(--border-light);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+
+    .quiz-option:hover {
+      border-color: var(--accent-green);
+      background: var(--bg-highlight);
+    }
+
+    .quiz-option.selected {
+      border-color: var(--accent-blue);
+      background: #EBF2FF;
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    .quiz-option.selected.is-correct {
+      border-color: var(--accent-green);
+      background: var(--bg-highlight);
+    }
+
+    .quiz-option.selected.is-wrong {
+      border-color: var(--accent-red);
+      background: #FDEAEA;
+    }
+
+    .quiz-option.show-correct {
+      border-color: var(--accent-green);
+      background: var(--bg-highlight);
+    }
+
+    .quiz-radio {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 2px solid var(--border-card);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.2s;
+      margin-top: 1px;
+    }
+
+    .quiz-option.selected .quiz-radio { border-color: var(--accent-blue); }
+    .quiz-option.selected .quiz-radio::after {
+      content: '';
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--accent-blue);
+    }
+
+    .quiz-option.selected.is-correct .quiz-radio { border-color: var(--accent-green); }
+    .quiz-option.selected.is-correct .quiz-radio::after { background: var(--accent-green); }
+    .quiz-option.selected.is-wrong .quiz-radio { border-color: var(--accent-red); }
+    .quiz-option.selected.is-wrong .quiz-radio::after { background: var(--accent-red); }
+
+    .quiz-feedback {
+      margin-top: 14px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      line-height: 1.65;
+      display: none;
+    }
+
+    .quiz-feedback.show { display: block; }
+    .quiz-feedback.correct-fb { background: var(--bg-highlight); color: #1f6b45; }
+    .quiz-feedback.incorrect-fb { background: #FDEAEA; color: var(--accent-red); }
+
+    /* ===== SUBMIT AREA ===== */
+    .quiz-submit-area {
+      text-align: center;
+      margin-top: 36px;
+      padding: 36px 32px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn-submit {
+      display: inline-block;
+      background: var(--accent-green);
+      color: white;
+      font-family: 'Lexend', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      padding: 14px 52px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.25s;
+      box-shadow: var(--shadow-sm);
+      letter-spacing: 0.3px;
+    }
+
+    .btn-submit:hover {
+      background: var(--accent-green-light);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-1px);
+    }
+
+    .btn-reset {
+      display: inline-block;
+      background: transparent;
+      color: var(--text-muted);
+      font-family: 'Lexend', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      padding: 10px 28px;
+      border: 1px solid var(--border-light);
+      border-radius: 10px;
+      cursor: pointer;
+      margin-left: 12px;
+      transition: all 0.2s;
+    }
+
+    .btn-reset:hover {
+      border-color: var(--text-muted);
+      color: var(--text-primary);
+    }
+
+    .score-result {
+      margin-top: 24px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      display: none;
+      line-height: 1.6;
+    }
+
+    .score-result.show { display: block; }
+
+    .score-bar {
+      width: 100%;
+      max-width: 420px;
+      height: 8px;
+      background: var(--bg-accent);
+      border-radius: 4px;
+      margin: 14px auto 0;
+      overflow: hidden;
+    }
+
+    .score-bar-fill {
+      height: 100%;
+      background: var(--accent-green);
+      border-radius: 4px;
+      transition: width 0.8s ease;
+      width: 0%;
+    }
+
+    .score-emoji {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      text-align: center;
+      padding: 32px;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      margin-top: 24px;
+      border-top: 1px solid var(--border-light);
+      line-height: 1.7;
+    }
+
+    .footer .trainer-name {
+      font-weight: 600;
+      color: var(--accent-green);
+    }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate-in {
+      animation: fadeInUp 0.5s ease forwards;
+      opacity: 0;
+    }
+
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 640px) {
+      .page-wrapper { padding: 20px 16px 60px; }
+      .header { padding: 36px 24px; }
+      .header h1 { font-size: 1.5rem; }
+      .quiz-card { padding: 22px; }
+      .quiz-submit-area { padding: 24px 20px; }
+    }
+
+    @media print {
+      body { background: white; }
+      .quiz-option { break-inside: avoid; }
+      .quiz-card { break-inside: avoid; }
+      .btn-submit, .btn-reset { display: none; }
+    }
+  </style>
+</head>
+<body>
+<div class="page-wrapper">
+
+  <!-- HEADER -->
+  <div class="header animate-in">
+    <div class="header-badge">Kiểm tra kiến thức</div>
+    <h1>Toàn cảnh vòng đời<br>dự án phần mềm</h1>
+    <p class="header-sub">15 câu hỏi trắc nghiệm — Kiểm tra mức độ tiếp thu bài học</p>
+    <p class="header-trainer">Quỳnh Nga BrSE Japan — Đồng Hành Cùng Bạn</p>
+    <p class="header-meta">Đọc kỹ câu hỏi &bull; Chọn đáp án &bull; Nộp bài khi hoàn thành</p>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-bar-wrap animate-in delay-1">
+    <span class="progress-label">Tiến độ</span>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <span class="progress-count" id="progressCount">0 / 15</span>
+  </div>
+
+  <!-- ===== Q1 ===== -->
+  <div class="quiz-card animate-in delay-2" data-correct="b">
+    <div class="quiz-q-num">Câu hỏi 01</div>
+    <div class="quiz-question">Trong một công ty outsource, bước đầu tiên để một dự án phần mềm bắt đầu là gì?</div>
+    <div class="quiz-options">
+      <div class="quiz-option" data-value="a"><div class="quiz-radio"></div><span>Tổ chức Kickoff Meeting với toàn bộ team dự án</span></div>
+      <div class="quiz-option" data-value="b"><div class="quiz-radio"></div><span>Bộ phận Sales tiếp cận và mang dự án từ khách hàng về</span></div>
+      <div class="quiz-option" data-value="c"><div class="quiz-radio"></div><span>Developer bắt đầu viết code theo yêu cầu</span></div>
+      <div class="quiz-option" data-value="d"><div class="quiz-radio"></div><span>BA tạo tài liệu SRS và đặc tả yêu cầu</span></div>
+    </div>
+    <div class="quiz-feedback correct-fb">✅ Chính xác! Sales là bộ phận khởi đầu — tìm kiếm, tiếp cận khách hàng tiềm năng, giới thiệu năng lực công ty và đưa dự án về cho đội phát triển.</div>
+    <div class="quiz-feedback incorrect-fb">❌ Chưa đúng. Bước khởi đầu là bộ phận <strong>Sales</strong> tiếp cận khách hàng để mang dự án về — chứ không phải bắt đầu từ kỹ thuật.</div>
+  </div>
+
+  <!-- ===== Q2 ===== -->
+  <div class="quiz-card" data-correct="c">
+    <div class="quiz-q-num">Câu hỏi 02</div>
+    <div class="quiz-question">Nhiệm vụ của bộ phận Sales trong quy trình phát triển phần mềm là gì?</div>
+    <div class="quiz-options">
+      <div class="quiz-option" data-value="a"><div class="quiz-radio"></div><span>Viết tài liệu đặc tả yêu cầu (SRS) và Basic Design</span></div>
+      <div class="quiz-option" data-value="b"><div class="quiz-radio"></div><span>Kiểm thử sản phẩm trước khi bàn giao cho khách hàng</span></div>
+      <div class="quiz-option" data-value="c"><div class="quiz-radio"></div><span>Tiếp cận khách hàng, giới thiệu công ty và thu thập nhu cầu ban đầu</span></div>
+      <div class="quiz-option" data-value="d"><div class="quiz-radio"></div><span>Quản lý tiến độ phát triển và báo cáo với khách hàng</span></div>
+    </div>
+    <div class="quiz-feedback correct-fb">✅ Đúng! Sales tìm kiếm & tiếp cận khách hàng tiềm năng, giới thiệu năng lực công ty, thu thập nhu cầu ban đầu rồi đưa dự án về cho đội phát triển.</div>
+    <div class="quiz-feedback incorrect-fb">❌ Chưa đúng. Nhiệm vụ của Sales là <strong>tiếp cận khách hàng, giới thiệu công ty và thu thập nhu cầu ban đầu</strong> — không liên quan đến kỹ thuật hay kiểm thử.</div>
+  </div>
+
+  <!-- ===== Q3 ===== -->
+  <div class="quiz-card" data-correct="a">
+    <div class="quiz-q-num">Câu hỏi 03</div>
+    <div class="quiz-question">Giai đoạn Bidding (Đấu thầu) là trách nhiệm của ai?</div>
+    <div class="quiz-options">
+      <div class="quiz-option" data-value="a"><div class="quiz-radio"></div><span>Presales / BU / SBU / PM / BrSE (tùy công ty)</span></div>
+      <div class="quiz-option" data-value="b"><div class="quiz-radio"></div><span>Chỉ có Tester và QA thực hiện</span></div>
+      <div class="quiz-option" data-value="c"><div class="quiz-radio"></div><span>Chỉ có khách hàng và Sales thực hiện</span></div>
+      <div class="quiz-option" data-value="d"><div class="quiz-radio"></div><span>Developer tự phân tích yêu cầu và estimate</span></div>
+    </div>
+    <div class="quiz-feedback correct-fb">✅ Chính xác! Giai đoạn Bidding do phòng phát triển đảm nhận — có thể là Presales, BU, SBU, PM hoặc BrSE tùy theo cơ cấu của từng công ty.</div>
+    <div class="quiz-feedback incorrect-fb">❌ Chưa đúng. Giai đoạn Bidding là trách nhiệm của <strong>Presales / BU / SBU / PM / BrSE</strong> — không phải Tester hay Sales thuần túy.</div>
+  </div>
+
+  <!-- ===== Q4 ===== -->
+  <div class="quiz-card" data-correct="d">
+    <div class="quiz-q-num">Câu hỏi 04</div>
+    <div class="quiz-question">Trong giai đoạn Bidding, đội ngũ kỹ thuật cần tạo ra những tài liệu nào để gửi cho khách hàng?</div>
+    <div class="quiz-options">
+      <div class="quiz-option" data-value="a"><div class="quiz-radio"></div><span>SRS và Basic Design</span></div>
+      <div class="quiz-option" data-value="b"><div class="quiz-radio"></div><span>Function List và Prototype chi tiết</span></div>
+      <div class="quiz-option" data-value="c"><div class="quiz-radio"></div><span>Source code và Test Report</span></div>
+      <div class="quiz-option" data-value="d"><div class="quiz-radio"></div><span>Proposal (đề xuất) và Estimate (ước lượng chi phí, thời gian)</span></div>
+    </div>
+    <div class="quiz-feedback correct-fb">✅ Đúng rồi! Giai đoạn Bidding cần tạo <strong>Proposal</strong> (bản đề xuất dự án) và <strong>Estimate</strong> (ước lượng chi phí & thời gian thực hiện) để gửi cho khách hàng xem xét.</div>
+    <div class="quiz-feedback incorrect-fb">❌ Chưa đúng. Giai đoạn Bidding cần tạo <strong>Proposal</strong> và <strong>Estimate</strong> — SRS và Basic Design thuộc về giai đoạn Specs (Bước 3.1) sau khi đã có hợp đồng.</div>
+  </div>
+
+  <!-- ===== Q5 ===== -->
+  <div class="quiz-card" data-correct="b">
+    <div class="quiz-q-num">Câu hỏi 05</div>
+    <div class="quiz-question">Tại sao việc tạo Draft Prototype (bản mẫu giao diện sơ bộ) trong giai đoạn Bidding lại có giá trị?</div>
+    <div class="quiz-options">
+      <div class="quiz-option" data-value="a"><div class="quiz-radio"></div><span>Vì đó là yêu cầu bắt buộc theo quy định của mọi hợp đồng outsource</span></div>
+      <div class="quiz-option" data-value="b"><div class="quiz-radio"></div><span>Vì khi nhìn thấy hình ảnh trực quan, khách hàng dễ hình dung và ra quyết định nhanh hơn</span></div>
+      <div class="quiz-option" data-value="c"><div class="quiz-radio"></div><span>Vì Developer cần prototype để bắt đầu code ngay lập tức</span></div>
+      <div class="quiz-option" data-value="d"><div class="quiz-radio"></div><span>Vì Tester cần prototype để viết test case từ sớm</span></div>
+    </div>
+    <div class="quiz-feedback correct-fb">✅ Chính xác! Draft Prototype giúp khách hàng <strong>hình dung trực quan</strong> về sản phẩm sẽ được xây dựng, từ đó dễ dàng ra quyết định và chốt hợp đồng nhanh hơn.</div>
+    <div class="quiz-feedback incorrect-fb">❌ Chưa đúng. Lý do chính là để <strong>khách hàng dễ hình dung sản phẩm và ra quyết định nhanh hơn</strong> — đây là công cụ hỗ trợ bán hàng, không phải yêu cầu bắt buộc.</div>
+  </div>
+
+  <!-- ===== Q6 ===== -->
+  <div class="quiz-card" data-correct="c">
+    <div class="quiz-q-num">Câu hỏi 06</div>
+    <div class="quiz-question">Kickoff Meeting diễn ra ở thời điểm nào trong quy trình dự án?</div>
+    <div class="quiz-options">
+      <div class="quiz-option" data-value="a"><div class="quiz-radio"></div><span>Ngay khi Sales mới gặp khách hàng lần đầu</span></div>
+      <div class="quiz-option" data-value="b"><div class="quiz-radio"></div><span>Sau khi giai đoạn Test hoàn thành</span></div>
+      <div class="quiz-option" data-value="c"><div class="quiz-radio"></div><span>Sau khi khách hàng đồng ý và dự án chính thức bắt đầu</span></div>
+      <div class="quiz-option" data-value="d"><div class="quiz-radio"></div><span>Sau khi bàn giao phần mềm cho khách hàng</span></div>
+    </div>
+    <div class="quiz-feedback correct-fb">✅ Đúng! Kickoff Meeting được tổ chức <strong>sau khi khách hàng đồng ý hợp tác</strong>, đánh dấu thời điểm dự án chính thức khởi động với sự tham gia của khách hàng, Sales, PM và toàn bộ team dự án.</div>
+    <div class="quiz-feedback incorrect-fb">❌ Chưa đúng. Kickoff Meeting diễn ra <strong>sau khi khách hàng đã đồng ý</strong> — đây là cuộc họp khởi động chính thức của dự án, không phải lúc Sales mới gặp lần đầu.</div>
+  </div>
+
+  <!-- ===== Q7 ===== -->
+  <div class="quiz-card" data-correct="a">
+    <div class="quiz-q-num">Câu hỏi 07</div>
+    <div class="quiz-question">Những ai tham gia buổi Kickoff Meeting?</div>
+    <div class="quiz-options">
+      <div class="quiz-option" data-value="a"><div class="quiz-radio"></div><span>Khách hàng + Sales + PM + toàn bộ team dự án</span></div>
+      <div class="quiz-option" data-value="b"><div class="quiz-radio"></div><span>Chỉ có PM và Developer nội bộ</span></div>
+      <div class="quiz-option" data-value="c"><div class="quiz-radio"></div><span>Chỉ có Sales và khách hàng — team kỹ thuật không tham gia</span></div>
+      <div class="quiz-option" data-value="d"><div class="quiz-radio"></div><span>Chỉ có BrSE và Tester</span></div>
+    </div>
+    <div class="quiz-feedback correct-fb">✅ Đúng! Kickoff Meeting là buổi họp quy tụ đầy đủ: <strong>Khách hàng + Sales + PM + toàn bộ team dự án</strong> — để cùng thống nhất mục tiêu, phạm vi và kế hoạch dự án.</div>
+    <div class="quiz-feedback incorrect-fb">❌ Chưa đúng. Kickoff Meeting cần có <strong>Khách hàng + Sales + PM + toàn bộ team dự án</strong> — đây là buổi họp quan trọng để tất cả các bên cùng thống nhất từ đầu.</div>
+  </div>
+
+  <!-- ===== Q8 ===== -->
+  <div class="quiz-card" data-correct="b">
+    <div class="quiz-q-num">Câu hỏi 08</div>
+    <div class="quiz-question">Trong giai đoạn tạo Specs (Bước 3.1), ai là người "hearing" (lắng nghe) khách hàng để nắm bắt yêu cầu chi tiết?</div>
+    <div class="quiz-options">
+      <div class="quiz-option" data-value="a"><div class="quiz-radio"></div><span>Developer và Tester</span></div>
+      <div class="quiz-option" data-value="b"><div class="quiz-radio"></div><span>BA (Business Analyst) và/hoặc BrSE</span></div>
+      <div class="quiz-option" data-value="c"><div class="quiz-radio"></div><span>Sales và PM</span></div>
+      <div class="quiz-option" data-value="d"><div class="quiz-radio"></div><span>Khách hàng tự viết tài liệu và gửi cho team</span></div>
+    </div>
+    <div class="quiz-feedback correct-fb">✅ Chính xác! <strong>BA (Business Analyst) và/hoặc BrSE</strong> đóng vai trò lắng nghe, khai thác yêu cầu từ khách hàng rồi chuyển hóa thành các tài liệu đặc tả kỹ thuật.</div>
+    <div class="quiz-feedback incorrect-fb">❌ Chưa đúng. Người trực tiếp "hearing" khách hàng trong giai đoạn Specs là <strong>BA (Business Analyst) và/hoặc BrSE</strong> — họ là cầu nối giữa nghiệp vụ và kỹ thuật.</div>
+  </div>
+
+  <!-- ===== Q9 ===== -->
+  <div class="quiz-card" data-correct="c">
+    <div class="quiz-q-num">Câu hỏi 09</div>
+    <div class="quiz-question">Tài liệu nào KHÔNG thuộc danh sách được tạo trong giai đoạn Specs (Bước 3.1)?</div>
+    <div class="quiz-options">
+      <div class="quiz-option" data-value="a"><div class="quiz-radio"></div><span>Function List (Danh sách chức năng)</span></div>
+      <div class="quiz-option" data-value="b"><div class="quiz-radio"></div><span>SRS (Software Requirement Specification)</span></div>
+      <div class="quiz-option" data-value="c"><div class="quiz-radio"></div><span>Test Report (Báo cáo kiểm thử)</span></div>
+      <div class="quiz-option" data-value="d"><div class="quiz-radio"></div><span>Basic Design (Thiết kế cơ bản)</span></div>
+    </div>
+    <div class="quiz-feedback correct-fb">✅ Đúng! <strong>Test Report</strong> thuộc giai đoạn kiểm thử (Bước 3.2), không phải giai đoạn tạo Specs. Giai đoạn 3.1 tạo ra: Function List, Prototype, SRS và Basic Design.</div>
+    <div class="quiz-feedback incorrect-fb">❌ Chưa đúng. <strong>Test Report</strong> mới là tài liệu không thuộc giai đoạn Specs — nó được tạo ra trong quá trình kiểm thử (Bước 3.2), sau khi Coding đã hoàn thành.</div>
+  </div>
+
+  <!-- ===== Q10 ===== -->
+  <div class="quiz-card" data-correct="d">
+    <div class="quiz-q-num">Câu hỏi 10</div>
+    <div class="quiz-question">Sau khi hoàn thành tài liệu Specs, điều kiện bắt buộc để chuyển sang giai đoạn Coding là gì?</div>
+    <div class="quiz-options">
+      <div class="quiz-option" data-value="a"><div class="quiz-radio"></div><span>PM xem xét và tự quyết định cho phép bắt đầu</span></div>
+      <div class="quiz-option" data-value="b"><div class="quiz-radio"></div><span>Developer đọc và hiểu hết tài liệu</span></div>
+      <div class="quiz-option" data-value="c"><div class="quiz-radio"></div><span>Tester đã chuẩn bị xong test case</span></div>
+      <div class="quiz-option" data-value="d"><div class="quiz-radio"></div><span>Khách hàng đã phê duyệt (approve) tài liệu Specs</span></div>
+    </div>
+    <div class="quiz-feedback correct-fb">✅ Chính xác! Tài liệu Specs phải được <strong>khách hàng phê duyệt (approve)</strong> trước khi team bắt tay vào phát triển — điều này đảm bảo mọi người hiểu đúng yêu cầu và tránh làm lại sau này.</div>
+    <div class="quiz-feedback incorrect-fb">❌ Chưa đúng. Bắt buộc phải có <strong>sự phê duyệt (approve) của khách hàng</strong> — không ai tự ý bắt đầu Coding mà không có chữ ký chấp thuận từ phía khách.</div>
+  </div>
+
+  <!-- ===== Q11 ===== -->
+  <div class="quiz-card" data-correct="a">
+    <div class="quiz-q-num">Câu hỏi 11</div>
+    <div class="quiz-question">Thứ tự đúng của các giai đoạn trong Bước 3.2 là gì?</div>
+    <div class="quiz-options">
+      <div class="quiz-option" data-value="a"><div class="quiz-radio"></div><span>Coding → Test (nội bộ) → UAT (khách hàng nghiệm thu)</span></div>
+      <div class="quiz-option" data-value="b"><div class="quiz-radio"></div><span>UAT → Coding → Test nội bộ</span></div>
+      <div class="quiz-option" data-value="c"><div class="quiz-radio"></div><span>Test nội bộ → Coding → UAT</span></div>
+      <div class="quiz-option" data-value="d"><div class="quiz-radio"></div><span>Coding → UAT → Test nội bộ</span></div>
+    </div>
+    <div class="quiz-feedback correct-fb">✅ Đúng! Thứ tự chuẩn là <strong>Coding → Test → UAT</strong>: Developer viết code → Tester/QA kiểm thử nội bộ → Khách hàng nghiệm thu (UAT).</div>
+    <div class="quiz-feedback incorrect-fb">❌ Chưa đúng. Thứ tự đúng là <strong>Coding → Test → UAT</strong>. Phải viết code trước, kiểm thử nội bộ tiếp theo, rồi mới mời khách hàng nghiệm thu cuối cùng.</div>
+  </div>
+
+  <!-- ===== Q12 ===== -->
+  <div class="quiz-card" data-correct="b">
+    <div class="quiz-q-num">Câu hỏi 12</div>
+    <div class="quiz-question">UAT (User Acceptance Testing) là gì, và ai chịu trách nhiệm thực hiện?</div>
+    <div class="quiz-options">
+      <div class="quiz-option" data-value="a"><div class="quiz-radio"></div><span>Unit Automated Testing — do hệ thống CI/CD tự chạy</span></div>
+      <div class="quiz-option" data-value="b"><div class="quiz-radio"></div><span>User Acceptance Testing — do khách hàng thực hiện để nghiệm thu sản phẩm</span></div>
+      <div class="quiz-option" data-value="c"><div class="quiz-radio"></div><span>User Application Testing — do Tester nội bộ thực hiện thay mặt khách hàng</span></div>
+      <div class="quiz-option" data-value="d"><div class="quiz-radio"></div><span>Unified Assurance Testing — do QA Lead thực hiện sau khi release</span></div>
+    </div>
+    <div class="quiz-feedback correct-fb">✅ Chính xác! UAT = <strong>User Acceptance Testing</strong> — khách hàng trực tiếp kiểm thử và nghiệm thu sản phẩm, quyết định chấp nhận hay yêu cầu chỉnh sửa thêm.</div>
+    <div class="quiz-feedback incorrect-fb">❌ Chưa đúng. UAT là <strong>User Acceptance Testing</strong> — chính <strong>khách hàng</strong> là người thực hiện để nghiệm thu, không phải team kỹ thuật hay hệ thống tự động.</div>
+  </div>
+
+  <!-- ===== Q13 ===== -->
+  <div class="quiz-card" data-correct="c">
+    <div class="quiz-q-num">Câu hỏi 13</div>
+    <div class="quiz-question">Trong giai đoạn Test nội bộ, nếu Tester phát hiện bug thì bước xử lý tiếp theo là gì?</div>
+    <div class="quiz-options">
+      <div class="quiz-option" data-value="a"><div class="quiz-radio"></div><span>Báo ngay cho khách hàng và chờ khách hàng quyết định</span></div>
+      <div class="quiz-option" data-value="b"><div class="quiz-radio"></div><span>Tester tự fix bug luôn để tiết kiệm thời gian</span></div>
+      <div class="quiz-option" data-value="c"><div class="quiz-radio"></div><span>Tester yêu cầu Developer fix bug trước khi chuyển sang bước tiếp theo</span></div>
+      <div class="quiz-option" data-value="d"><div class="quiz-radio"></div><span>PM quyết định bỏ qua bug và đẩy thẳng lên UAT</span></div>
+    </div>
+    <div class="quiz-feedback correct-fb">✅ Đúng! Khi phát hiện bug, Tester báo lại để <strong>Developer fix</strong> — đây là vòng lặp kiểm thử chuẩn, đảm bảo sản phẩm hoạt động đúng theo Specs trước khi đến tay khách hàng.</div>
+    <div class="quiz-feedback incorrect-fb">❌ Chưa đúng. Khi có bug, Tester <strong>yêu cầu Developer fix</strong> — không tự fix, không bỏ qua, và không báo thẳng ra khách hàng khi đang ở giai đoạn kiểm thử nội bộ.</div>
+  </div>
+
+  <!-- ===== Q14 ===== -->
+  <div class="quiz-card" data-correct="d">
+    <div class="quiz-q-num">Câu hỏi 14</div>
+    <div class="quiz-question">Điều kiện để chuyển sang Bước 4 (Release & Bảo hành) là gì?</div>
+    <div class="quiz-options">
+      <div class="quiz-option" data-value="a"><div class="quiz-radio"></div><span>Developer hoàn thành toàn bộ code và không còn lỗi kỹ thuật</span></div>
+      <div class="quiz-option" data-value="b"><div class="quiz-radio"></div><span>Tester xác nhận đã kiểm thử xong 100% test case</span></div>
+      <div class="quiz-option" data-value="c"><div class="quiz-radio"></div><span>PM gửi báo cáo dự án lên ban giám đốc</span></div>
+      <div class="quiz-option" data-value="d"><div class="quiz-radio"></div><span>Khách hàng chấp nhận sản phẩm sau khi hoàn thành UAT</span></div>
+    </div>
+    <div class="quiz-feedback correct-fb">✅ Chính xác! Chỉ khi <strong>khách hàng nghiệm thu và chấp nhận sản phẩm qua UAT</strong>, team mới chính thức chuyển sang Bước 4 để tiến hành bàn giao và bảo hành.</div>
+    <div class="quiz-feedback incorrect-fb">❌ Chưa đúng. Điều kiện quyết định là <strong>khách hàng chấp nhận sản phẩm sau UAT</strong> — dù Dev xong hay Tester xong, vẫn phải chờ khách hàng xác nhận mới được chuyển sang bàn giao.</div>
+  </div>
+
+  <!-- ===== Q15 ===== -->
+  <div class="quiz-card" data-correct="a">
+    <div class="quiz-q-num">Câu hỏi 15</div>
+    <div class="quiz-question">BrSE giỏi và BrSE thông thường khác nhau ở phạm vi công việc đảm nhận như thế nào?</div>
+    <div class="quiz-options">
+      <div class="quiz-option" data-value="a"><div class="quiz-radio"></div><span>BrSE giỏi phụ trách từ Bước 2 (Bidding) đến Bước 3.1 (Specs); BrSE thông thường từ Bước 3.2 đến Bước 4</span></div>
+      <div class="quiz-option" data-value="b"><div class="quiz-radio"></div><span>BrSE giỏi chỉ làm Bước 1 (Sales); BrSE thông thường làm tất cả các bước còn lại</span></div>
+      <div class="quiz-option" data-value="c"><div class="quiz-radio"></div><span>Cả hai đều phụ trách như nhau, chỉ khác nhau ở tốc độ làm việc</span></div>
+      <div class="quiz-option" data-value="d"><div class="quiz-radio"></div><span>BrSE giỏi chỉ phụ trách Bước 4 (Release); BrSE thông thường phụ trách Bước 1 đến Bước 3</span></div>
+    </div>
+    <div class="quiz-feedback correct-fb">✅ Chính xác! <strong>BrSE giỏi</strong> tham gia ngay từ giai đoạn đấu thầu và đặc tả (Bước 2–3.1). <strong>BrSE thông thường</strong> vào từ giai đoạn phát triển, bàn giao và bảo hành (Bước 3.2–4).</div>
+    <div class="quiz-feedback incorrect-fb">❌ Chưa đúng. <strong>BrSE giỏi</strong> phụ trách từ Bước 2 (Bidding) đến Bước 3.1 (Specs). <strong>BrSE thông thường</strong> phụ trách từ Bước 3.2 (Dev & Test) đến Bước 4 (Release & Bảo hành).</div>
+  </div>
+
+  <!-- SUBMIT AREA -->
+  <div class="quiz-submit-area">
+    <div class="score-emoji" id="scoreEmoji" style="display:none;"></div>
+    <button class="btn-submit" onclick="submitQuiz()">Nộp bài</button>
+    <button class="btn-reset" onclick="resetQuiz()">Làm lại từ đầu</button>
+    <div class="score-result" id="scoreResult"></div>
+    <div class="score-bar" id="scoreBar" style="display:none;">
+      <div class="score-bar-fill" id="scoreBarFill"></div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <p>Tài liệu đào tạo bởi <span class="trainer-name">Quỳnh Nga BrSE Japan — Đồng Hành Cùng Bạn</span></p>
+    <p style="margin-top:6px;">Bài kiểm tra: Toàn cảnh vòng đời dự án phần mềm &bull; 15 câu hỏi trắc nghiệm</p>
+  </div>
+
+</div>
+
+<script>
+  /* ── Progress tracker ── */
+  function updateProgress() {
+    const total = document.querySelectorAll('.quiz-card').length;
+    const answered = document.querySelectorAll('.quiz-card .quiz-option.selected').length;
+    const uniqueAnswered = new Set(
+      Array.from(document.querySelectorAll('.quiz-card')).map(card => {
+        const sel = card.querySelector('.quiz-option.selected');
+        return sel ? card : null;
+      }).filter(Boolean)
+    ).size;
+    document.getElementById('progressCount').textContent = uniqueAnswered + ' / ' + total;
+    document.getElementById('progressFill').style.width = (uniqueAnswered / total * 100) + '%';
+  }
+
+  /* ── Option click ── */
+  document.querySelectorAll('.quiz-option').forEach(option => {
+    option.addEventListener('click', function () {
+      const card = this.closest('.quiz-card');
+      if (card.classList.contains('submitted')) return;
+      card.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected'));
+      this.classList.add('selected');
+      updateProgress();
+    });
+  });
+
+  /* ── Submit ── */
+  function submitQuiz() {
+    const cards = document.querySelectorAll('.quiz-card');
+    let correct = 0;
+    const total = cards.length;
+    let allAnswered = true;
+
+    cards.forEach(card => {
+      const selected = card.querySelector('.quiz-option.selected');
+      if (!selected) { allAnswered = false; return; }
+    });
+
+    if (!allAnswered) {
+      alert('Vui lòng trả lời tất cả 15 câu hỏi trước khi nộp bài!');
+      return;
+    }
+
+    cards.forEach(card => {
+      const selected = card.querySelector('.quiz-option.selected');
+      card.classList.add('submitted');
+      const correctAnswer = card.dataset.correct;
+      const selectedValue = selected.dataset.value;
+      const feedbacks = card.querySelectorAll('.quiz-feedback');
+
+      card.querySelectorAll('.quiz-option').forEach(o => {
+        if (o.dataset.value === correctAnswer) o.classList.add('show-correct');
+      });
+
+      if (selectedValue === correctAnswer) {
+        correct++;
+        selected.classList.add('is-correct');
+        card.classList.add('correct');
+        feedbacks[0].classList.add('show');
+      } else {
+        selected.classList.add('is-wrong');
+        card.classList.add('incorrect');
+        feedbacks[1].classList.add('show');
+      }
+    });
+
+    const pct = Math.round((correct / total) * 100);
+    let msg = '';
+    let emoji = '';
+
+    if (pct === 100)      { msg = 'Xuất sắc! Bạn nắm vững toàn bộ kiến thức!';       emoji = '🏆'; }
+    else if (pct >= 80)   { msg = 'Rất tốt! Bạn đã hiểu sâu phần lớn nội dung.';      emoji = '⭐'; }
+    else if (pct >= 67)   { msg = 'Tốt! Bạn nắm được những điểm cốt lõi.';            emoji = '👍'; }
+    else if (pct >= 50)   { msg = 'Khá ổn, nhưng nên xem lại một số phần nhé.';       emoji = '📖'; }
+    else                  { msg = 'Bạn cần ôn lại bài học kỹ hơn — cố lên nhé!';     emoji = '💪'; }
+
+    const emojiEl = document.getElementById('scoreEmoji');
+    emojiEl.textContent = emoji;
+    emojiEl.style.display = 'block';
+
+    const scoreEl = document.getElementById('scoreResult');
+    scoreEl.innerHTML = `Kết quả: <strong>${correct}/${total}</strong> câu đúng (${pct}%)<br><span style="font-size:0.9rem;font-weight:400;color:var(--text-secondary);">${msg}</span>`;
+    scoreEl.classList.add('show');
+
+    const bar = document.getElementById('scoreBar');
+    const fill = document.getElementById('scoreBarFill');
+    bar.style.display = 'block';
+    setTimeout(() => { fill.style.width = pct + '%'; }, 100);
+
+    scoreEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  /* ── Reset ── */
+  function resetQuiz() {
+    document.querySelectorAll('.quiz-card').forEach(card => {
+      card.classList.remove('submitted', 'correct', 'incorrect');
+      card.querySelectorAll('.quiz-option').forEach(o => {
+        o.classList.remove('selected', 'is-correct', 'is-wrong', 'show-correct');
+      });
+      card.querySelectorAll('.quiz-feedback').forEach(f => f.classList.remove('show'));
+    });
+    const scoreEl = document.getElementById('scoreResult');
+    scoreEl.classList.remove('show');
+    scoreEl.innerHTML = '';
+    document.getElementById('scoreBar').style.display = 'none';
+    document.getElementById('scoreBarFill').style.width = '0%';
+    document.getElementById('scoreEmoji').style.display = 'none';
+    document.getElementById('progressFill').style.width = '0%';
+    document.getElementById('progressCount').textContent = '0 / 15';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  /* ── Scroll animation ── */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.quiz-card').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(18px)';
+    el.style.transition = 'opacity 0.45s ease, transform 0.45s ease';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>

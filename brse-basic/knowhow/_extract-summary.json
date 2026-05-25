@@ -1,0 +1,16 @@
+{
+  "stats": {
+    "processed": 217,
+    "empty": 3,
+    "errors": 0
+  },
+  "skipped_count": 37,
+  "sizes_bytes": {
+    "phan_tich_nghiep_vu": 7666154,
+    "quan_ly": 2465024,
+    "tieng_nhat": 8839733,
+    "ai": 7394910,
+    "content": 7803091,
+    "viet_sach": 1669231
+  }
+}

@@ -11,7 +11,7 @@ description: >-
 # Skill: Viết Content Cá Nhân
 
 Trước khi viết, đọc [about-author.md](about-author.md) để hiểu tác giả.
-Đọc thêm [references/content-rules.md](references/content-rules.md) để nắm quy tắc văn phong.
+Đọc thêm [references/brand-voice-dna.md](references/brand-voice-dna.md) để nắm quy tắc văn phong.
 
 ---
 
@@ -30,7 +30,7 @@ Tác giả sẽ chỉ định hoặc AI đề xuất dựa theo chủ đề. Ba 
 
 **Thật thà** - giọng mặc định, phù hợp đa số bài mạng xã hội
 - Nói thẳng, không màu mè, không tự đề cao
-- Dùng ngôn ngữ đời thường, câu ngắn, nhịp tự nhiên
+- Dùng ngôn ngữ đời thường, câu ngắn và câu dài đan xen nhịp tự nhiên
 - Mẫu: xem [references/sample-that-tha.md](references/sample-that-tha.md)
 
 **Chuyên gia** - chia sẻ kiến thức BrSE / IT / tiếng Nhật / quy trình làm việc
@@ -69,15 +69,15 @@ Tham khảo 6 storytelling framework trong [references/storytelling-model.md](re
 
 ## Quy tắc văn phong - tóm tắt nhanh
 
-Chi tiết đầy đủ trong [references/content-rules.md](references/content-rules.md).
+Chi tiết đầy đủ trong [references/brand-voice-dna.md](references/brand-voice-dna.md).
 
 **Phải có:**
-- Đoạn ngắn, mặc định 1-2 câu, tối đa 3-4
+- Đoạn ngắn, mặc định 1-2 câu, tối đa 3
 - Nhịp điệu đa dạng: câu ngắn xen câu dài, có thể dùng câu cụt
 - Viết trực diện, cụ thể, có số liệu/tên/chi tiết thực tế khi có thể
 
 **Tuyệt đối không:**
-- Dùng dấu gạch dài (—), thay bằng dấu gạch ngang (-)
+- Dùng dấu gạch dài em-dash (—), thay bằng dấu phẩy, chấm, hai chấm hoặc ngoặc đơn
 - Dùng bullet point dày đặc hoặc icon ✅ ❌ 🔥 tràn lan
 - Dùng heading H2, H3 trong thân bài
 - Dùng cụm: "đăng ký ngay", "cơ hội cuối cùng", "chuyên gia hàng đầu"

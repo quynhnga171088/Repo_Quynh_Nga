@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kiểm tra kiến thức | Hiểu hệ thống từ góc nhìn User</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #F8F7F3;
+      --bg-card: #FFFFFF;
+      --bg-step: #FAFAF7;
+      --text-primary: #1C1C1C;
+      --text-secondary: #404040;
+      --text-muted: #767676;
+      --accent-blue: #1D4ED8;
+      --accent-blue-light: #DBEAFE;
+      --accent-green: #2D8B5E;
+      --accent-green-light: #DCFCE7;
+      --accent-purple: #7C3AED;
+      --accent-purple-light: #EDE9FE;
+      --border-light: #E5E3DC;
+      --shadow-sm: 0 1px 4px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Lexend', sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page-wrapper {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 40px 24px 100px;
+    }
+
+    .header {
+      text-align: center;
+      background: linear-gradient(135deg, #FFFFFF 0%, #F0EDE6 50%, #E8F4EC 100%);
+      border-radius: 20px;
+      padding: 56px 48px;
+      margin-bottom: 28px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-md);
+    }
+
+    .header-badge {
+      display: inline-block;
+      background: var(--accent-green);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 6px 18px;
+      border-radius: 20px;
+      margin-bottom: 18px;
+    }
+
+    .header h1 {
+      font-family: 'Source Serif 4', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 12px;
+    }
+
+    .header-sub { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.7; }
+    .header-trainer { font-size: 0.95rem; color: var(--accent-green); font-weight: 500; margin-top: 14px; }
+    .header-meta { font-size: 0.82rem; color: var(--text-muted); margin-top: 6px; }
+
+    .top-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .nav-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      font-size: 14px;
+      color: var(--accent-blue);
+      font-weight: 600;
+      background: #EFF6FF;
+      border: 1px solid #BFDBFE;
+      padding: 10px 14px;
+      border-radius: 12px;
+    }
+
+    .nav-link:hover { background: #DBEAFE; }
+    .nav-note { font-size: 13px; color: var(--text-muted); }
+
+    .quiz-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: 20px;
+      padding: 36px 40px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 28px;
+    }
+
+    .quiz-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 28px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid var(--border-light);
+    }
+
+    .quiz-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      flex-shrink: 0;
+      color: #fff;
+    }
+
+    .quiz-icon.basic { background: linear-gradient(135deg, #1D4ED8, #3B82F6); }
+    .quiz-icon.advanced { background: linear-gradient(135deg, #7C3AED, #5B21B6); }
+
+    .quiz-title { font-size: 22px; font-weight: 800; }
+    .quiz-subtitle { font-size: 14px; color: var(--text-muted); margin-top: 4px; }
+
+    .level-pill {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+    }
+
+    .level-pill.basic { background: var(--accent-blue-light); color: var(--accent-blue); }
+    .level-pill.advanced { background: var(--accent-purple-light); color: var(--accent-purple); }
+
+    .question-block {
+      margin-bottom: 28px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid #F0EEE8;
+    }
+
+    .question-block:last-of-type { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+
+    .question-num {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 6px;
+      margin-bottom: 10px;
+    }
+
+    .question-block[data-level="basic"] .question-num {
+      background: var(--accent-blue-light);
+      color: var(--accent-blue);
+    }
+
+    .question-block[data-level="advanced"] .question-num {
+      background: var(--accent-purple-light);
+      color: var(--accent-purple);
+    }
+
+    .question-text {
+      font-size: 15.5px;
+      font-weight: 600;
+      margin-bottom: 14px;
+      line-height: 1.5;
+    }
+
+    .options { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 16px;
+      border: 1.5px solid var(--border-light);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      background: var(--bg-step);
+      font-size: 14.5px;
+      color: var(--text-secondary);
+      user-select: none;
+    }
+
+    .option:hover { border-color: #93C5FD; background: #EFF6FF; color: var(--accent-blue); }
+    .option.selected { border-color: #93C5FD; background: #EFF6FF; color: var(--accent-blue); }
+    .option.correct { border-color: #86EFAC; background: #F0FDF4; color: #166534; }
+    .option.wrong { border-color: #FECACA; background: #FEF2F2; color: #991B1B; }
+
+    .option-letter {
+      width: 26px;
+      height: 26px;
+      border-radius: 6px;
+      background: var(--border-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      flex-shrink: 0;
+      color: var(--text-muted);
+    }
+
+    .option.correct .option-letter { background: #BBF7D0; color: #166534; }
+    .option.wrong .option-letter { background: #FECACA; color: #991B1B; }
+    .option.selected .option-letter { background: #BFDBFE; color: #1D4ED8; }
+
+    .answer-feedback {
+      margin-top: 10px;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      display: none;
+      line-height: 1.65;
+    }
+
+    .answer-feedback.show { display: block; }
+    .answer-feedback.correct { background: #F0FDF4; border: 1px solid #BBF7D0; color: #166534; }
+    .answer-feedback.wrong { background: #FEF2F2; border: 1px solid #FECACA; color: #991B1B; }
+
+    .check-btn {
+      margin-top: 12px;
+      padding: 9px 22px;
+      background: var(--accent-blue);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-family: 'Lexend', sans-serif;
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .check-btn:hover { background: #1E40AF; }
+    .check-btn:disabled { background: #9CA3AF; cursor: default; }
+
+    .quiz-result-box {
+      margin-top: 28px;
+      padding: 28px 32px;
+      border-radius: 14px;
+      text-align: center;
+      color: #fff;
+      display: none;
+    }
+
+    .quiz-result-box.show { display: block; }
+    .quiz-result-box.basic { background: linear-gradient(135deg, #1D4ED8, #3B82F6); }
+    .quiz-result-box.advanced { background: linear-gradient(135deg, #7C3AED, #5B21B6); }
+
+    .result-score { font-size: 44px; font-weight: 800; margin-bottom: 8px; }
+    .result-label { font-size: 16px; color: rgba(255,255,255,0.9); margin-bottom: 12px; }
+    .result-comment { font-size: 14px; color: rgba(255,255,255,0.78); line-height: 1.65; }
+
+    .retake-btn {
+      margin-top: 18px;
+      padding: 10px 28px;
+      background: rgba(255,255,255,0.15);
+      border: 1.5px solid rgba(255,255,255,0.35);
+      border-radius: 8px;
+      color: #fff;
+      font-family: 'Lexend', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .retake-btn:hover { background: rgba(255,255,255,0.25); }
+
+    .footer {
+      text-align: center;
+      padding: 32px;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    .footer strong { color: var(--text-secondary); }
+
+    @media (max-width: 680px) {
+      .header { padding: 36px 28px; }
+      .header h1 { font-size: 1.5rem; }
+      .quiz-section { padding: 24px 20px; }
+      .top-nav { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrapper">
+    <div class="header">
+      <div class="header-badge">Kiểm tra kiến thức</div>
+      <h1>Hiểu hệ thống từ góc nhìn User</h1>
+      <p class="header-sub">20 câu hỏi — 10 cơ bản + 10 nâng cao. Chọn đáp án rồi bấm “Kiểm tra” từng câu.</p>
+      <p class="header-trainer">Quỳnh Nga BrSE Japan — Đồng Hành Cùng Bạn</p>
+      <p class="header-meta">Tự chấm điểm · Có giải thích · Gắn với bài học LMS</p>
+    </div>
+
+    <div class="top-nav">
+      <a class="nav-link" href="hieu-he-thong-tu-goc-nhin-user.html">← Quay lại bài học</a>
+      <span class="nav-note">Làm phần Cơ bản trước, sau đó làm phần Nâng cao.</span>
+    </div>
+
+    <!-- ===== PHẦN CƠ BẢN ===== -->
+    <div class="quiz-section" id="section-basic">
+      <div class="quiz-header">
+        <div class="quiz-icon basic">📘</div>
+        <div>
+          <div class="quiz-title">Kiến thức cơ bản</div>
+          <div class="quiz-subtitle">10 câu — nền tảng: mục đích, portal, role, function</div>
+        </div>
+      </div>
+      <span class="level-pill basic">Mức 1 · Cơ bản</span>
+
+      <div class="question-block" data-level="basic" id="q1">
+        <div class="question-num">Câu 1</div>
+        <div class="question-text">“Câu hỏi vàng” khi phân tích hệ thống từ góc User là gì?</div>
+        <ul class="options" data-correct="b">
+          <li class="option" data-val="a" onclick="selectOption(this)"><span class="option-letter">A</span> Hệ thống viết bằng ngôn ngữ gì?</li>
+          <li class="option" data-val="b" onclick="selectOption(this)"><span class="option-letter">B</span> User vào đây để làm gì?</li>
+          <li class="option" data-val="c" onclick="selectOption(this)"><span class="option-letter">C</span> Database có bao nhiêu bảng?</li>
+          <li class="option" data-val="d" onclick="selectOption(this)"><span class="option-letter">D</span> Server đặt ở đâu?</li>
+        </ul>
+        <button class="check-btn" onclick="checkAnswer(this, 'q1', 'basic')">Kiểm tra</button>
+        <div class="answer-feedback" id="fb-q1"></div>
+      </div>
+
+      <div class="question-block" data-level="basic" id="q2">
+        <div class="question-num">Câu 2</div>
+        <div class="question-text">Portal trong hệ thống được hiểu là gì?</div>
+        <ul class="options" data-correct="a">
+          <li class="option" data-val="a" onclick="selectOption(this)"><span class="option-letter">A</span> Cổng truy cập theo nhóm đối tượng (Admin portal, User portal…)</li>
+          <li class="option" data-val="b" onclick="selectOption(this)"><span class="option-letter">B</span> Tên miền website</li>
+          <li class="option" data-val="c" onclick="selectOption(this)"><span class="option-letter">C</span> Ngôn ngữ lập trình backend</li>
+          <li class="option" data-val="d" onclick="selectOption(this)"><span class="option-letter">D</span> Loại database</li>
+        </ul>
+        <button class="check-btn" onclick="checkAnswer(this, 'q2', 'basic')">Kiểm tra</button>
+        <div class="answer-feedback" id="fb-q2"></div>
+      </div>
+
+      <div class="question-block" data-level="basic" id="q3">
+        <div class="question-num">Câu 3</div>
+        <div class="question-text">Admin Portal thường được triển khai chủ yếu bằng hình thức nào?</div>
+        <ul class="options" data-correct="c">
+          <li class="option" data-val="a" onclick="selectOption(this)"><span class="option-letter">A</span> Chỉ Mobile App</li>
+          <li class="option" data-val="b" onclick="selectOption(this)"><span class="option-letter">B</span> Chỉ SMS</li>
+          <li class="option" data-val="c" onclick="selectOption(this)"><span class="option-letter">C</span> Web (trình duyệt PC), có thể kèm CMS</li>
+          <li class="option" data-val="d" onclick="selectOption(this)"><span class="option-letter">D</span> Email</li>
+        </ul>
+        <button class="check-btn" onclick="checkAnswer(this, 'q3', 'basic')">Kiểm tra</button>
+        <div class="answer-feedback" id="fb-q3"></div>
+      </div>
+
+      <div class="question-block" data-level="basic" id="q4">
+        <div class="question-num">Câu 4</div>
+        <div class="question-text">User Portal (ví dụ LMS) thường có những hình thức nào?</div>
+        <ul class="options" data-correct="b">
+          <li class="option" data-val="a" onclick="selectOption(this)"><span class="option-letter">A</span> Chỉ CMS nội bộ</li>
+          <li class="option" data-val="b" onclick="selectOption(this)"><span class="option-letter">B</span> Web và/hoặc Mobile App</li>
+          <li class="option" data-val="c" onclick="selectOption(this)"><span class="option-letter">C</span> Chỉ API document</li>
+          <li class="option" data-val="d" onclick="selectOption(this)"><span class="option-letter">D</span> Chỉ Desktop cài trên server</li>
+        </ul>
+        <button class="check-btn" onclick="checkAnswer(this, 'q4', 'basic')">Kiểm tra</button>
+        <div class="answer-feedback" id="fb-q4"></div>
+      </div>
+
+      <div class="question-block" data-level="basic" id="q5">
+        <div class="question-num">Câu 5</div>
+        <div class="question-text">Role trong hệ thống có nghĩa là gì?</div>
+        <ul class="options" data-correct="d">
+          <li class="option" data-val="a" onclick="selectOption(this)"><span class="option-letter">A</span> Tên file source code</li>
+          <li class="option" data-val="b" onclick="selectOption(this)"><span class="option-letter">B</span> Loại server</li>
+          <li class="option" data-val="c" onclick="selectOption(this)"><span class="option-letter">C</span> Ngôn ngữ giao tiếp với khách hàng</li>
+          <li class="option" data-val="d" onclick="selectOption(this)"><span class="option-letter">D</span> Vai trò người dùng — quyền và công việc tương ứng</li>
+        </ul>
+        <button class="check-btn" onclick="checkAnswer(this, 'q5', 'basic')">Kiểm tra</button>
+        <div class="answer-feedback" id="fb-q5"></div>
+      </div>
+
+      <div class="question-block" data-level="basic" id="q6">
+        <div class="question-num">Câu 6</div>
+        <div class="question-text">Function trong phân tích hệ thống là gì?</div>
+        <ul class="options" data-correct="a">
+          <li class="option" data-val="a" onclick="selectOption(this)"><span class="option-letter">A</span> Một hành động user có thể thực hiện trên hệ thống</li>
+          <li class="option" data-val="b" onclick="selectOption(this)"><span class="option-letter">B</span> Tên công ty phát triển phần mềm</li>
+          <li class="option" data-val="c" onclick="selectOption(this)"><span class="option-letter">C</span> Phiên bản hệ điều hành</li>
+          <li class="option" data-val="d" onclick="selectOption(this)"><span class="option-letter">D</span> Hợp đồng lao động</li>
+        </ul>
+        <button class="check-btn" onclick="checkAnswer(this, 'q6', 'basic')">Kiểm tra</button>
+        <div class="answer-feedback" id="fb-q6"></div>
+      </div>
+
+      <div class="question-block" data-level="basic" id="q7">
+        <div class="question-num">Câu 7</div>
+        <div class="question-text">Tích hợp Internal (nội bộ) nghĩa là gì?</div>
+        <ul class="options" data-correct="b">
+          <li class="option" data-val="a" onclick="selectOption(this)"><span class="option-letter">A</span> Kết nối với Facebook, Google</li>
+          <li class="option" data-val="b" onclick="selectOption(this)"><span class="option-letter">B</span> Kết nối hệ thống cùng tổ chức (VD: HRM nội bộ)</li>
+          <li class="option" data-val="c" onclick="selectOption(this)"><span class="option-letter">C</span> Không kết nối hệ thống nào khác</li>
+          <li class="option" data-val="d" onclick="selectOption(this)"><span class="option-letter">D</span> Chỉ dùng Excel offline</li>
+        </ul>
+        <button class="check-btn" onclick="checkAnswer(this, 'q7', 'basic')">Kiểm tra</button>
+        <div class="answer-feedback" id="fb-q7"></div>
+      </div>
+
+      <div class="question-block" data-level="basic" id="q8">
+        <div class="question-num">Câu 8</div>
+        <div class="question-text">Trong LMS, Primary user (người dùng chính) thường là ai?</div>
+        <ul class="options" data-correct="c">
+          <li class="option" data-val="a" onclick="selectOption(this)"><span class="option-letter">A</span> Admin hệ thống</li>
+          <li class="option" data-val="b" onclick="selectOption(this)"><span class="option-letter">B</span> Giáo viên</li>
+          <li class="option" data-val="c" onclick="selectOption(this)"><span class="option-letter">C</span> Học viên</li>
+          <li class="option" data-val="d" onclick="selectOption(this)"><span class="option-letter">D</span> Kế toán công ty</li>
+        </ul>
+        <button class="check-btn" onclick="checkAnswer(this, 'q8', 'basic')">Kiểm tra</button>
+        <div class="answer-feedback" id="fb-q8"></div>
+      </div>
+
+      <div class="question-block" data-level="basic" id="q9">
+        <div class="question-num">Câu 9</div>
+        <div class="question-text">CMS trong ngữ cảnh portal thường dùng để làm gì?</div>
+        <ul class="options" data-correct="a">
+          <li class="option" data-val="a" onclick="selectOption(this)"><span class="option-letter">A</span> Soạn và đăng nội dung — thường trong Admin portal</li>
+          <li class="option" data-val="b" onclick="selectOption(this)"><span class="option-letter">B</span> Học viên làm bài quiz</li>
+          <li class="option" data-val="c" onclick="selectOption(this)"><span class="option-letter">C</span> Thanh toán học phí</li>
+          <li class="option" data-val="d" onclick="selectOption(this)"><span class="option-letter">D</span> Gửi email marketing</li>
+        </ul>
+        <button class="check-btn" onclick="checkAnswer(this, 'q9', 'basic')">Kiểm tra</button>
+        <div class="answer-feedback" id="fb-q9"></div>
+      </div>
+
+      <div class="question-block" data-level="basic" id="q10">
+        <div class="question-num">Câu 10</div>
+        <div class="question-text">“Điểm cần xác nhận” nên dùng khi nào?</div>
+        <ul class="options" data-correct="d">
+          <li class="option" data-val="a" onclick="selectOption(this)"><span class="option-letter">A</span> Sau khi deploy production 1 năm</li>
+          <li class="option" data-val="b" onclick="selectOption(this)"><span class="option-letter">B</span> Khi viết code xong hết</li>
+          <li class="option" data-val="c" onclick="selectOption(this)"><span class="option-letter">C</span> Chỉ khi nghỉ việc</li>
+          <li class="option" data-val="d" onclick="selectOption(this)"><span class="option-letter">D</span> Khi trình bày lại hiểu biết với khách hàng / team</li>
+        </ul>
+        <button class="check-btn" onclick="checkAnswer(this, 'q10', 'basic')">Kiểm tra</button>
+        <div class="answer-feedback" id="fb-q10"></div>
+      </div>
+
+      <div class="quiz-result-box basic" id="quiz-result-basic">
+        <div class="result-score" id="result-score-basic">0/10</div>
+        <div class="result-label" id="result-label-basic">Kết quả phần Cơ bản</div>
+        <div class="result-comment" id="result-comment-basic"></div>
+        <button class="retake-btn" type="button" onclick="retakeSection('basic')">Làm lại phần Cơ bản</button>
+      </div>
+    </div>
+
+    <!-- ===== PHẦN NÂNG CAO ===== -->
+    <div class="quiz-section" id="section-advanced">
+      <div class="quiz-header">
+        <div class="quiz-icon advanced">🎯</div>
+        <div>
+          <div class="quiz-title">Kiến thức nâng cao</div>
+          <div class="quiz-subtitle">10 câu — phân biệt sâu, LMS, BrSE thực tế</div>
+        </div>
+      </div>
+      <span class="level-pill advanced">Mức 2 · Nâng cao</span>
+
+      <div class="question-block" data-level="advanced" id="q11">
+        <div class="question-num">Câu 11</div>
+        <div class="question-text">Portal và Web / Mobile App / CMS khác nhau thế nào?</div>
+        <ul class="options" data-correct="c">
+          <li class="option" data-val="a" onclick="selectOption(this)"><span class="option-letter">A</span> Là một — chỉ khác tên gọi</li>
+          <li class="option" data-val="b" onclick="selectOption(this)"><span class="option-letter">B</span> Portal thay thế hoàn toàn cho Function</li>
+          <li class="option" data-val="c" onclick="selectOption(this)"><span class="option-letter">C</span> Portal = cổng theo đối tượng; Web/App/CMS = hình thức triển khai</li>
+          <li class="option" data-val="d" onclick="selectOption(this)"><span class="option-letter">D</span> CMS luôn là portal riêng cho học viên</li>
+        </ul>
+        <button class="check-btn" onclick="checkAnswer(this, 'q11', 'advanced')">Kiểm tra</button>
+        <div class="answer-feedback" id="fb-q11"></div>
+      </div>
+
+      <div class="question-block" data-level="advanced" id="q12">
+        <div class="question-num">Câu 12</div>
+        <div class="question-text">Khi lập Function list, quy tắc vàng là gì?</div>
+        <ul class="options" data-correct="b">
+          <li class="option" data-val="a" onclick="selectOption(this)"><span class="option-letter">A</span> Gộp tất cả role vào một bảng chung</li>
+          <li class="option" data-val="b" onclick="selectOption(this)"><span class="option-letter">B</span> Viết riêng theo từng Role — không trộn Admin với Học viên</li>
+          <li class="option" data-val="c" onclick="selectOption(this)"><span class="option-letter">C</span> Chỉ liệt kê tên màn hình, không cần hành động</li>
+          <li class="option" data-val="d" onclick="selectOption(this)"><span class="option-letter">D</span> Copy từ tài liệu đối thủ, không cần xác nhận</li>
+        </ul>
+        <button class="check-btn" onclick="checkAnswer(this, 'q12', 'advanced')">Kiểm tra</button>
+        <div class="answer-feedback" id="fb-q12"></div>
+      </div>
+
+      <div class="question-block" data-level="advanced" id="q13">
+        <div class="question-num">Câu 13</div>
+        <div class="question-text">Udemy / Coursera tích hợp với LMS thường được phân loại là gì?</div>
+        <ul class="options" data-correct="a">
+          <li class="option" data-val="a" onclick="selectOption(this)"><span class="option-letter">A</span> External — hệ thống bên thứ ba</li>
+          <li class="option" data-val="b" onclick="selectOption(this)"><span class="option-letter">B</span> Internal — cùng công ty</li>
+          <li class="option" data-val="c" onclick="selectOption(this)"><span class="option-letter">C</span> Không phải tích hợp</li>
+          <li class="option" data-val="d" onclick="selectOption(this)"><span class="option-letter">D</span> Primary user</li>
+        </ul>
+        <button class="check-btn" onclick="checkAnswer(this, 'q13', 'advanced')">Kiểm tra</button>
+        <div class="answer-feedback" id="fb-q13"></div>
+      </div>
+
+      <div class="question-block" data-level="advanced" id="q14">
+        <div class="question-num">Câu 14</div>
+        <div class="question-text">Thuật ngữ tiếng Nhật 受講 (juko) trong LMS thường nghĩa là gì?</div>
+        <ul class="options" data-correct="c">
+          <li class="option" data-val="a" onclick="selectOption(this)"><span class="option-letter">A</span> Chấm điểm bài tập</li>
+          <li class="option" data-val="b" onclick="selectOption(this)"><span class="option-letter">B</span> Xóa tài khoản</li>
+          <li class="option" data-val="c" onclick="selectOption(this)"><span class="option-letter">C</span> Đăng ký / tham gia học (Enrollment)</li>
+          <li class="option" data-val="d" onclick="selectOption(this)"><span class="option-letter">D</span> Cấu hình server</li>
+        </ul>
+        <button class="check-btn" onclick="checkAnswer(this, 'q14', 'advanced')">Kiểm tra</button>
+        <div class="answer-feedback" id="fb-q14"></div>
+      </div>
+
+      <div class="question-block" data-level="advanced" id="q15">
+        <div class="question-num">Câu 15</div>
+        <div class="question-text">修了 (shuryo) trong ngữ cảnh đào tạo thường có nghĩa là gì?</div>
+        <ul class="options" data-correct="b">
+          <li class="option" data-val="a" onclick="selectOption(this)"><span class="option-letter">A</span> Bắt đầu khóa học</li>
+          <li class="option" data-val="b" onclick="selectOption(this)"><span class="option-letter">B</span> Hoàn thành khóa học / đủ điều kiện kết thúc</li>
+          <li class="option" data-val="c" onclick="selectOption(this)"><span class="option-letter">C</span> Đăng nhập lần đầu</li>
+          <li class="option" data-val="d" onclick="selectOption(this)"><span class="option-letter">D</span> Upload video</li>
+        </ul>
+        <button class="check-btn" onclick="checkAnswer(this, 'q15', 'advanced')">Kiểm tra</button>
+        <div class="answer-feedback" id="fb-q15"></div>
+      </div>
+
+      <div class="question-block" data-level="advanced" id="q16">
+        <div class="question-num">Câu 16</div>
+        <div class="question-text">Glossary nên được lập như thế nào khi làm dự án Nhật?</div>
+        <ul class="options" data-correct="d">
+          <li class="option" data-val="a" onclick="selectOption(this)"><span class="option-letter">A</span> Chỉ dịch Google một lần, không cần cập nhật</li>
+          <li class="option" data-val="b" onclick="selectOption(this)"><span class="option-letter">B</span> Chỉ ghi tiếng Việt, bỏ qua thuật ngữ gốc</li>
+          <li class="option" data-val="c" onclick="selectOption(this)"><span class="option-letter">C</span> Không cần vì đã biết tiếng Nhật</li>
+          <li class="option" data-val="d" onclick="selectOption(this)"><span class="option-letter">D</span> Từ tài liệu/màn hình/họp; có thể dùng AI nhưng phải đối chiếu</li>
+        </ul>
+        <button class="check-btn" onclick="checkAnswer(this, 'q16', 'advanced')">Kiểm tra</button>
+        <div class="answer-feedback" id="fb-q16"></div>
+      </div>
+
+      <div class="question-block" data-level="advanced" id="q17">
+        <div class="question-num">Câu 17</div>
+        <div class="question-text">Quan hệ Function và Screen thường là gì?</div>
+        <ul class="options" data-correct="a">
+          <li class="option" data-val="a" onclick="selectOption(this)"><span class="option-letter">A</span> Thường 1 Function chính → 1 Screen chính</li>
+          <li class="option" data-val="b" onclick="selectOption(this)"><span class="option-letter">B</span> Screen không liên quan Function</li>
+          <li class="option" data-val="c" onclick="selectOption(this)"><span class="option-letter">C</span> Một Screen luôn có 10 Function</li>
+          <li class="option" data-val="d" onclick="selectOption(this)"><span class="option-letter">D</span> Function chỉ dành cho dev, không cho BrSE</li>
+        </ul>
+        <button class="check-btn" onclick="checkAnswer(this, 'q17', 'advanced')">Kiểm tra</button>
+        <div class="answer-feedback" id="fb-q17"></div>
+      </div>
+
+      <div class="question-block" data-level="advanced" id="q18">
+        <div class="question-num">Câu 18</div>
+        <div class="question-text">Thứ tự phân tích hệ thống đúng theo bài học là gì?</div>
+        <ul class="options" data-correct="c">
+          <li class="option" data-val="a" onclick="selectOption(this)"><span class="option-letter">A</span> Function → Role → Portal → Mục đích</li>
+          <li class="option" data-val="b" onclick="selectOption(this)"><span class="option-letter">B</span> Tích hợp → Glossary → Function</li>
+          <li class="option" data-val="c" onclick="selectOption(this)"><span class="option-letter">C</span> Khái quát → Role → Function/Screen → User Flow &amp; Detail → Glossary</li>
+          <li class="option" data-val="d" onclick="selectOption(this)"><span class="option-letter">D</span> Chỉ cần Glossary là đủ onboard</li>
+        </ul>
+        <button class="check-btn" onclick="checkAnswer(this, 'q18', 'advanced')">Kiểm tra</button>
+        <div class="answer-feedback" id="fb-q18"></div>
+      </div>
+
+      <div class="question-block" data-level="advanced" id="q19">
+        <div class="question-num">Câu 19</div>
+        <div class="question-text">Teacher Leader trong LMS khác Teacher thường ở điểm nào?</div>
+        <ul class="options" data-correct="b">
+          <li class="option" data-val="a" onclick="selectOption(this)"><span class="option-letter">A</span> Chỉ học viên mới có Leader</li>
+          <li class="option" data-val="b" onclick="selectOption(this)"><span class="option-letter">B</span> Thêm quyền duyệt bài / giám sát nhóm giáo viên</li>
+          <li class="option" data-val="c" onclick="selectOption(this)"><span class="option-letter">C</span> Không đăng nhập được</li>
+          <li class="option" data-val="d" onclick="selectOption(this)"><span class="option-letter">D</span> Chỉ dùng Mobile App</li>
+        </ul>
+        <button class="check-btn" onclick="checkAnswer(this, 'q19', 'advanced')">Kiểm tra</button>
+        <div class="answer-feedback" id="fb-q19"></div>
+      </div>
+
+      <div class="question-block" data-level="advanced" id="q20">
+        <div class="question-num">Câu 20</div>
+        <div class="question-text">VNPay tích hợp LMS để làm gì? Mục đích tích hợp là gì?</div>
+        <ul class="options" data-correct="a">
+          <li class="option" data-val="a" onclick="selectOption(this)"><span class="option-letter">A</span> Thu học phí / thanh toán trực tuyến — External</li>
+          <li class="option" data-val="b" onclick="selectOption(this)"><span class="option-letter">B</span> Đồng bộ danh sách nhân sự nội bộ</li>
+          <li class="option" data-val="c" onclick="selectOption(this)"><span class="option-letter">C</span> Soạn bài giảng bằng video</li>
+          <li class="option" data-val="d" onclick="selectOption(this)"><span class="option-letter">D</span> Dịch tài liệu sang tiếng Nhật</li>
+        </ul>
+        <button class="check-btn" onclick="checkAnswer(this, 'q20', 'advanced')">Kiểm tra</button>
+        <div class="answer-feedback" id="fb-q20"></div>
+      </div>
+
+      <div class="quiz-result-box advanced" id="quiz-result-advanced">
+        <div class="result-score" id="result-score-advanced">0/10</div>
+        <div class="result-label" id="result-label-advanced">Kết quả phần Nâng cao</div>
+        <div class="result-comment" id="result-comment-advanced"></div>
+        <button class="retake-btn" type="button" onclick="retakeSection('advanced')">Làm lại phần Nâng cao</button>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p><strong>Quỳnh Nga BrSE Japan — Đồng Hành Cùng Bạn</strong></p>
+      <p style="margin-top:6px;">Training IT cho người mới · Hiểu hệ thống từ góc nhìn User</p>
+    </div>
+  </div>
+
+<script>
+  const SECTIONS = {
+    basic: { ids: ['q1','q2','q3','q4','q5','q6','q7','q8','q9','q10'], total: 10 },
+    advanced: { ids: ['q11','q12','q13','q14','q15','q16','q17','q18','q19','q20'], total: 10 }
+  };
+
+  const answers = {
+    q1:'b', q2:'a', q3:'c', q4:'b', q5:'d', q6:'a', q7:'b', q8:'c', q9:'a', q10:'d',
+    q11:'c', q12:'b', q13:'a', q14:'c', q15:'b', q16:'d', q17:'a', q18:'c', q19:'b', q20:'a'
+  };
+
+  const feedbacks = {
+    q1:{correct:'Đúng! Đây là điểm xuất phát của mọi phân tích user-facing.',wrong:'Chưa đúng. Câu hỏi vàng: “User vào đây để làm gì?”'},
+    q2:{correct:'Chính xác! Portal = cổng theo đối tượng sử dụng.',wrong:'Chưa đúng. Portal là cổng truy cập (Admin/User…), không phải tên miền hay database.'},
+    q3:{correct:'Đúng! Admin cần màn hình lớn, thao tác phức tạp — thường là Web (+ CMS).',wrong:'Chưa đúng. Admin Portal chủ yếu dùng Web trên PC.'},
+    q4:{correct:'Đúng! User portal phục vụ học viên/khách — hay có Web + App.',wrong:'Chưa đúng. User Portal thường có Web và/hoặc Mobile App.'},
+    q5:{correct:'Chính xác! Role = vai trò trong hệ thống.',wrong:'Chưa đúng. Role là vai trò người dùng (Admin, Học viên…).'},
+    q6:{correct:'Đúng! Function = một hành động user làm được.',wrong:'Chưa đúng. Function là hành động trên hệ thống (Login, Search…).'},
+    q7:{correct:'Đúng! Internal = hệ thống cùng tổ chức, VD HRM.',wrong:'Chưa đúng. Internal là hệ thống nội bộ cùng công ty.'},
+    q8:{correct:'Chính xác! Học viên là trải nghiệm chính của LMS.',wrong:'Chưa đúng. Primary user của LMS thường là Học viên.'},
+    q9:{correct:'Đúng! CMS dùng để soạn/đăng nội dung, thường trong Admin.',wrong:'Chưa đúng. CMS phục vụ quản trị nội dung, không phải học viên làm quiz.'},
+    q10:{correct:'Đúng! List câu hỏi dùng khi walkthrough / họp xác nhận.',wrong:'Chưa đúng. Dùng khi trình bày hiểu biết để hỏi khách hàng/team.'},
+    q11:{correct:'Chính xác! Portal ≠ Platform — hai lớp khái niệm khác nhau.',wrong:'Chưa đúng. Portal theo đối tượng; Web/App/CMS là hình thức triển khai.'},
+    q12:{correct:'Đúng! Trộn role là lỗi phổ biến khi mới làm BrSE.',wrong:'Chưa đúng. Viết function list riêng theo từng Role.'},
+    q13:{correct:'Đúng! Udemy/Coursera là bên thứ ba → External.',wrong:'Chưa đúng. Đây là tích hợp External (bên ngoài).'},
+    q14:{correct:'Chính xác! 受講 = đăng ký/tham gia học.',wrong:'Chưa đúng. 受講 (juko) ≈ enrollment / tham gia khóa học.'},
+    q15:{correct:'Đúng! 修了 = hoàn thành khóa / đủ điều kiện kết thúc.',wrong:'Chưa đúng. 修了 (shuryo) = course completion.'},
+    q16:{correct:'Chính xác! Glossary lấy từ dự án thật; AI chỉ hỗ trợ, phải verify.',wrong:'Chưa đúng. Lập từ tài liệu/họp/màn hình; AI hỗ trợ nhưng cần đối chiếu.'},
+    q17:{correct:'Đúng! Quy tắc 1 function → 1 screen chính giúp mapping rõ.',wrong:'Chưa đúng. Thường 1 Function đi với 1 Screen chính.'},
+    q18:{correct:'Chính xác! Đúng thứ tự 6 phần trong bài học.',wrong:'Chưa đúng. Thứ tự: Khái quát → Role → Function/Screen → User Flow & Detail → Glossary.'},
+    q19:{correct:'Đúng! Leader thêm nhiệm vụ duyệt/giám sát giáo viên.',wrong:'Chưa đúng. Teacher Leader có thêm quyền duyệt bài, quản lý nhóm GV.'},
+    q20:{correct:'Chính xác! VNPay = thanh toán học phí, hệ thống External.',wrong:'Chưa đúng. VNPay dùng để thu học phí online (External).'}
+  };
+
+  const answered = {};
+  const scores = { basic: 0, advanced: 0 };
+
+  function selectOption(el) {
+    const block = el.closest('.question-block');
+    const qId = block.id;
+    if (answered[qId]) return;
+    block.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  function checkAnswer(btn, qId, sectionKey) {
+    if (answered[qId]) return;
+    const block = document.getElementById(qId);
+    const selected = block.querySelector('.option.selected');
+    const fb = document.getElementById('fb-' + qId);
+
+    if (!selected) {
+      fb.textContent = 'Bạn chưa chọn đáp án nào.';
+      fb.className = 'answer-feedback wrong show';
+      return;
+    }
+
+    const userVal = selected.getAttribute('data-val');
+    const correctVal = answers[qId];
+    answered[qId] = userVal;
+
+    block.querySelectorAll('.option').forEach(o => {
+      if (o.getAttribute('data-val') === correctVal) o.classList.add('correct');
+    });
+
+    if (userVal === correctVal) {
+      selected.classList.add('correct');
+      fb.textContent = '✓ ' + feedbacks[qId].correct;
+      fb.className = 'answer-feedback correct show';
+      scores[sectionKey]++;
+    } else {
+      selected.classList.add('wrong');
+      fb.textContent = '✗ ' + feedbacks[qId].wrong;
+      fb.className = 'answer-feedback wrong show';
+    }
+
+    btn.disabled = true;
+
+    const section = SECTIONS[sectionKey];
+    if (section.ids.every(id => answered[id])) {
+      showSectionResult(sectionKey);
+    }
+  }
+
+  function showSectionResult(sectionKey) {
+    const total = SECTIONS[sectionKey].total;
+    const score = scores[sectionKey];
+    const box = document.getElementById('quiz-result-' + sectionKey);
+    document.getElementById('result-score-' + sectionKey).textContent = score + '/' + total;
+
+    const labelEl = document.getElementById('result-label-' + sectionKey);
+    const commentEl = document.getElementById('result-comment-' + sectionKey);
+
+    if (sectionKey === 'basic') {
+      labelEl.textContent = score === total ? 'Xuất sắc — Cơ bản!' : score >= 8 ? 'Rất tốt — Cơ bản' : score >= 6 ? 'Khá — ôn thêm Cơ bản' : 'Cần đọc lại Phần 1–2';
+    } else {
+      labelEl.textContent = score === total ? 'Xuất sắc — Nâng cao!' : score >= 8 ? 'Rất tốt — Nâng cao' : score >= 6 ? 'Khá — ôn thêm Nâng cao' : 'Cần đọc lại toàn bài';
+    }
+
+    const pct = score / total;
+    if (pct === 1) {
+      commentEl.textContent = 'Bạn nắm vững phần này. Có thể chuyển sang phần tiếp theo hoặc áp dụng ngay cho dự án thật.';
+    } else if (pct >= 0.8) {
+      commentEl.textContent = 'Hiểu tốt. Xem lại các câu sai và làm lại một lần nữa cho chắc.';
+    } else if (pct >= 0.6) {
+      commentEl.textContent = 'Nền tảng ổn. Đọc lại bài học phần liên quan rồi thử lại.';
+    } else {
+      commentEl.textContent = 'Đừng nản — quay lại bài học, làm lại phần này từ đầu.';
+    }
+
+    box.classList.add('show');
+    box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  function retakeSection(sectionKey) {
+    SECTIONS[sectionKey].ids.forEach(qId => {
+      delete answered[qId];
+      const block = document.getElementById(qId);
+      block.querySelectorAll('.option').forEach(o => { o.className = 'option'; });
+      const fb = document.getElementById('fb-' + qId);
+      fb.className = 'answer-feedback';
+      fb.textContent = '';
+      block.querySelector('.check-btn').disabled = false;
+    });
+    scores[sectionKey] = 0;
+    document.getElementById('quiz-result-' + sectionKey).classList.remove('show');
+    document.getElementById('section-' + sectionKey).scrollIntoView({ behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>

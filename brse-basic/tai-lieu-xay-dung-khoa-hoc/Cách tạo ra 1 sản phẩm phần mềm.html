@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cách tạo ra 1 sản phẩm phần mềm trong công ty Outsource</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #FAFAF7;
+            --bg-card: #FFFFFF;
+            --bg-accent: #F0EDE6;
+            --bg-highlight: #E8F4EC;
+            --bg-step: #F7F5F0;
+            --text-primary: #1A1A1A;
+            --text-secondary: #4A4A4A;
+            --text-muted: #7A7A7A;
+            --accent-green: #2D8B5E;
+            --accent-green-light: #3DA873;
+            --accent-orange: #D4783A;
+            --accent-blue: #3A6BD4;
+            --accent-red: #C74B4B;
+            --border-light: #E5E2DA;
+            --border-card: #DDD9CF;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+            --shadow-lg: 0 8px 32px rgba(0,0,0,0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Lexend', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.75;
+            font-weight: 400;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .page-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 24px 80px;
+        }
+
+        /* HEADER */
+        .header {
+            text-align: center;
+            padding: 60px 40px;
+            background: linear-gradient(135deg, #FFFFFF 0%, #F0EDE6 50%, #E8F4EC 100%);
+            border-radius: 20px;
+            border: 1px solid var(--border-light);
+            margin-bottom: 48px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -60px;
+            right: -60px;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(45,139,94,0.08) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -40px;
+            left: -40px;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(212,120,58,0.06) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .header-badge {
+            display: inline-block;
+            background: var(--accent-green);
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 6px 18px;
+            border-radius: 20px;
+            margin-bottom: 24px;
+        }
+
+        .header h1 {
+            font-family: 'Source Serif 4', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.3;
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .header-trainer {
+            font-size: 0.95rem;
+            color: var(--accent-green);
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .header-trainer span {
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .header-meta {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+
+        /* TABLE OF CONTENTS */
+        .toc {
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: 16px;
+            padding: 32px 36px;
+            margin-bottom: 48px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .toc h2 {
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent-green);
+            margin-bottom: 20px;
+        }
+
+        .toc-list {
+            list-style: none;
+            counter-reset: toc-counter;
+        }
+
+        .toc-list li {
+            counter-increment: toc-counter;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-light);
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .toc-list li:last-child { border-bottom: none; }
+
+        .toc-list li:hover { color: var(--accent-green); }
+
+        .toc-list li::before {
+            content: counter(toc-counter, decimal-leading-zero);
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--accent-green);
+            min-width: 28px;
+        }
+
+        /* INTRODUCTION */
+        .intro {
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: 16px;
+            padding: 36px;
+            margin-bottom: 48px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .intro h2 {
+            font-family: 'Source Serif 4', serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+
+        .intro p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.85;
+        }
+
+        .intro .highlight-box {
+            background: var(--bg-highlight);
+            border-left: 4px solid var(--accent-green);
+            padding: 16px 20px;
+            border-radius: 0 10px 10px 0;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        /* PROCESS OVERVIEW */
+        .overview {
+            margin-bottom: 48px;
+        }
+
+        .overview h2 {
+            font-family: 'Source Serif 4', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .flow-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 32px 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .flow-step {
+            background: var(--bg-step);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            padding: 14px 20px;
+            text-align: center;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            min-width: 120px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .flow-step:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .flow-step .step-num {
+            display: block;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--accent-green);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .flow-arrow {
+            color: var(--accent-green);
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        /* STEP SECTIONS */
+        .step-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: 16px;
+            padding: 36px;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .step-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+        }
+
+        .step-section.step-1::before { background: var(--accent-orange); }
+        .step-section.step-2::before { background: var(--accent-blue); }
+        .step-section.step-3::before { background: var(--accent-green); }
+        .step-section.step-4::before { background: #6B5BA8; }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .step-number {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .step-1 .step-number { background: var(--accent-orange); }
+        .step-2 .step-number { background: var(--accent-blue); }
+        .step-3 .step-number { background: var(--accent-green); }
+        .step-4 .step-number { background: #6B5BA8; }
+
+        .step-title {
+            font-family: 'Source Serif 4', serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .step-subtitle {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-top: 2px;
+        }
+
+        .step-content {
+            padding-left: 64px;
+        }
+
+        .step-content p {
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            line-height: 1.85;
+            margin-bottom: 14px;
+        }
+
+        .step-content strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* SUB-STEPS */
+        .sub-step {
+            background: var(--bg-step);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-bottom: 16px;
+        }
+
+        .sub-step-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sub-step-badge {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            padding: 3px 10px;
+            border-radius: 6px;
+            color: white;
+        }
+
+        .badge-spec { background: var(--accent-blue); }
+        .badge-dev { background: var(--accent-green); }
+        .badge-test { background: var(--accent-orange); }
+        .badge-uat { background: var(--accent-red); }
+        .badge-release { background: #6B5BA8; }
+
+        .sub-step p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.8;
+        }
+
+        .sub-step ul {
+            list-style: none;
+            margin-top: 8px;
+        }
+
+        .sub-step ul li {
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+            padding: 4px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .sub-step ul li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent-green);
+            font-weight: 600;
+        }
+
+        /* WHO DOES WHAT TABLE */
+        .role-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+            font-size: 0.88rem;
+        }
+
+        .role-table th {
+            background: var(--bg-accent);
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            border-bottom: 2px solid var(--border-card);
+        }
+
+        .role-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-light);
+            color: var(--text-secondary);
+        }
+
+        .role-table tr:last-child td { border-bottom: none; }
+
+        .role-table .role-tag {
+            display: inline-block;
+            background: var(--bg-highlight);
+            color: var(--accent-green);
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 6px;
+        }
+
+        /* BRSE CALLOUT */
+        .brse-callout {
+            background: linear-gradient(135deg, #F7F5F0 0%, #E8F4EC 100%);
+            border: 1px solid var(--border-card);
+            border-radius: 16px;
+            padding: 32px;
+            margin: 40px 0;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .brse-callout h3 {
+            font-family: 'Source Serif 4', serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .brse-level {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .brse-card {
+            flex: 1;
+            min-width: 240px;
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--border-light);
+        }
+
+        .brse-card h4 {
+            font-size: 0.88rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .brse-card.expert h4 { color: var(--accent-green); }
+        .brse-card.normal h4 { color: var(--accent-blue); }
+
+        .brse-card p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* QUIZ SECTION */
+        .quiz-section {
+            margin-top: 56px;
+        }
+
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .quiz-header h2 {
+            font-family: 'Source Serif 4', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .quiz-header p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 8px;
+        }
+
+        .quiz-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-sm);
+            transition: border-color 0.3s;
+        }
+
+        .quiz-card.correct { border-color: var(--accent-green); }
+        .quiz-card.incorrect { border-color: var(--accent-red); }
+
+        .quiz-q-num {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--accent-green);
+            margin-bottom: 10px;
+        }
+
+        .quiz-question {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 18px;
+            line-height: 1.6;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .quiz-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 18px;
+            background: var(--bg-step);
+            border: 1.5px solid var(--border-light);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .quiz-option:hover {
+            border-color: var(--accent-green);
+            background: var(--bg-highlight);
+        }
+
+        .quiz-option.selected {
+            border-color: var(--accent-blue);
+            background: #EBF2FF;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .quiz-option.selected.is-correct {
+            border-color: var(--accent-green);
+            background: var(--bg-highlight);
+        }
+
+        .quiz-option.selected.is-wrong {
+            border-color: var(--accent-red);
+            background: #FDEAEA;
+        }
+
+        .quiz-option.show-correct {
+            border-color: var(--accent-green);
+            background: var(--bg-highlight);
+        }
+
+        .quiz-radio {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 2px solid var(--border-card);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: border-color 0.2s;
+        }
+
+        .quiz-option.selected .quiz-radio {
+            border-color: var(--accent-blue);
+        }
+
+        .quiz-option.selected .quiz-radio::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent-blue);
+        }
+
+        .quiz-option.selected.is-correct .quiz-radio { border-color: var(--accent-green); }
+        .quiz-option.selected.is-correct .quiz-radio::after { background: var(--accent-green); }
+        .quiz-option.selected.is-wrong .quiz-radio { border-color: var(--accent-red); }
+        .quiz-option.selected.is-wrong .quiz-radio::after { background: var(--accent-red); }
+
+        .quiz-feedback {
+            margin-top: 14px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            display: none;
+        }
+
+        .quiz-feedback.show { display: block; }
+        .quiz-feedback.correct-fb { background: var(--bg-highlight); color: var(--accent-green); }
+        .quiz-feedback.incorrect-fb { background: #FDEAEA; color: var(--accent-red); }
+
+        /* SUBMIT BUTTON */
+        .quiz-submit-area {
+            text-align: center;
+            margin-top: 36px;
+        }
+
+        .btn-submit {
+            display: inline-block;
+            background: var(--accent-green);
+            color: white;
+            font-family: 'Lexend', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 14px 48px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.25s;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-submit:hover {
+            background: var(--accent-green-light);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
+        }
+
+        .btn-reset {
+            display: inline-block;
+            background: transparent;
+            color: var(--text-muted);
+            font-family: 'Lexend', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            padding: 10px 28px;
+            border: 1px solid var(--border-light);
+            border-radius: 10px;
+            cursor: pointer;
+            margin-left: 12px;
+            transition: all 0.2s;
+        }
+
+        .btn-reset:hover {
+            border-color: var(--text-muted);
+            color: var(--text-primary);
+        }
+
+        .score-result {
+            margin-top: 24px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: none;
+        }
+
+        .score-result.show { display: block; }
+
+        .score-bar {
+            width: 100%;
+            max-width: 400px;
+            height: 8px;
+            background: var(--bg-accent);
+            border-radius: 4px;
+            margin: 12px auto 0;
+            overflow: hidden;
+        }
+
+        .score-bar-fill {
+            height: 100%;
+            background: var(--accent-green);
+            border-radius: 4px;
+            transition: width 0.6s ease;
+            width: 0%;
+        }
+
+        /* FOOTER */
+        .footer {
+            text-align: center;
+            margin-top: 56px;
+            padding-top: 32px;
+            border-top: 1px solid var(--border-light);
+        }
+
+        .footer p {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
+        .footer .trainer-name {
+            font-weight: 600;
+            color: var(--accent-green);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 640px) {
+            .page-wrapper { padding: 20px 16px 60px; }
+            .header { padding: 40px 24px; }
+            .header h1 { font-size: 1.6rem; }
+            .step-content { padding-left: 0; margin-top: 16px; }
+            .flow-diagram { flex-direction: column; }
+            .flow-arrow { transform: rotate(90deg); }
+            .brse-level { flex-direction: column; }
+            .toc, .intro, .step-section, .quiz-card { padding: 24px; }
+        }
+
+        /* PRINT */
+        @media print {
+            body { background: white; }
+            .quiz-option { break-inside: avoid; }
+            .step-section { break-inside: avoid; }
+            .btn-submit, .btn-reset { display: none; }
+        }
+
+        /* ANIMATIONS */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.5s ease forwards;
+            opacity: 0;
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+    </style>
+</head>
+<body>
+
+<div class="page-wrapper">
+
+    <!-- HEADER -->
+    <header class="header animate-in">
+        <div class="header-badge">Tài liệu đào tạo</div>
+        <h1>Cách tạo ra 1 sản phẩm phần mềm<br>trong công ty Outsource</h1>
+        <p class="header-trainer">Quỳnh Nga BrSE Japan — Đồng Hành Cùng Bạn</p>
+        <p class="header-meta">Dành cho người mới &bull; Dễ hiểu &bull; Thực tế</p>
+    </header>
+
+    <!-- TABLE OF CONTENTS -->
+    <nav class="toc animate-in delay-1">
+        <h2>Nội dung bài học</h2>
+        <ol class="toc-list">
+            <li onclick="document.getElementById('intro').scrollIntoView({behavior:'smooth'})">Giới thiệu tổng quan</li>
+            <li onclick="document.getElementById('step1').scrollIntoView({behavior:'smooth'})">Sales — Tiếp cận khách hàng</li>
+            <li onclick="document.getElementById('step2').scrollIntoView({behavior:'smooth'})">Bidding — Đấu thầu dự án</li>
+            <li onclick="document.getElementById('step3').scrollIntoView({behavior:'smooth'})">Kickoff &amp; Triển khai dự án</li>
+            <li onclick="document.getElementById('step4').scrollIntoView({behavior:'smooth'})">Release &amp; Bảo hành</li>
+            <li onclick="document.getElementById('brse').scrollIntoView({behavior:'smooth'})">Vai trò của BrSE</li>
+            <li onclick="document.getElementById('quiz').scrollIntoView({behavior:'smooth'})">Kiểm tra kiến thức</li>
+        </ol>
+    </nav>
+
+    <!-- INTRODUCTION -->
+    <section id="intro" class="intro animate-in delay-2">
+        <h2>Giới thiệu</h2>
+        <p>
+            Bạn đã bao giờ thắc mắc: từ lúc khách hàng có một ý tưởng, đến khi phần mềm được hoàn thành và sử dụng — quá trình đó diễn ra như thế nào trong một <strong>công ty outsource</strong>?
+        </p>
+        <p>
+            Bài học này sẽ giúp bạn hiểu toàn bộ quy trình tạo ra một sản phẩm phần mềm, từ bước đầu tiên đến bước cuối cùng. Nội dung được viết dễ hiểu — kể cả bạn là người ngoài ngành, chưa biết gì về IT, cũng có thể nắm bắt được.
+        </p>
+    </section>
+
+    <!-- PROCESS OVERVIEW -->
+    <section class="overview animate-in delay-3">
+        <h2>Quy trình tổng quan</h2>
+        <div class="flow-diagram">
+            <div class="flow-step">
+                <span class="step-num">Bước 1</span>
+                Sales
+            </div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step">
+                <span class="step-num">Bước 2</span>
+                Bidding
+            </div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step">
+                <span class="step-num">Bước 3.1</span>
+                Specs
+            </div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step">
+                <span class="step-num">Bước 3.2</span>
+                Dev & Test
+            </div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step">
+                <span class="step-num">Bước 4</span>
+                Release
+            </div>
+        </div>
+    </section>
+
+    <!-- STEP 1: SALES -->
+    <section id="step1" class="step-section step-1 animate-in">
+        <div class="step-header">
+            <div class="step-number">1</div>
+            <div>
+                <div class="step-title">Sales — Tiếp cận khách hàng</div>
+                <div class="step-subtitle">Bộ phận Sales</div>
+            </div>
+        </div>
+        <div class="step-content">
+            <p>
+                Mọi dự án đều bắt đầu từ <strong>bộ phận Sales</strong>. Nhiệm vụ của Sales là tìm kiếm và tiếp cận khách hàng tiềm năng, giới thiệu năng lực của công ty, và đưa dự án về cho đội phát triển.
+            </p>
+            <table class="role-table">
+                <thead>
+                    <tr>
+                        <th>Ai làm?</th>
+                        <th>Làm gì?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="role-tag">Sales</span></td>
+                        <td>Tiếp cận khách hàng, giới thiệu công ty, thu thập nhu cầu ban đầu, đưa dự án về đội phát triển</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- STEP 2: BIDDING -->
+    <section id="step2" class="step-section step-2 animate-in">
+        <div class="step-header">
+            <div class="step-number">2</div>
+            <div>
+                <div class="step-title">Bidding — Đấu thầu dự án</div>
+                <div class="step-subtitle">Phòng phát triển — Presales / BU / SBU / PM / BrSE (tùy công ty)</div>
+            </div>
+        </div>
+        <div class="step-content">
+            <p>
+                Khi Sales đưa dự án về, đội ngũ kỹ thuật sẽ phân tích yêu cầu và tạo ra bộ tài liệu <strong>Proposal</strong> (đề xuất) và <strong>Estimate</strong> (ước lượng chi phí, thời gian) để gửi cho khách hàng.
+            </p>
+            <div class="sub-step">
+                <div class="sub-step-title">
+                    <span class="sub-step-badge badge-spec">Mẹo</span>
+                    Tạo Draft Prototype
+                </div>
+                <p>
+                    Ở giai đoạn này, nếu tạo được một <strong>draft prototype</strong> (bản mẫu giao diện sơ bộ) cho khách hàng thì rất tốt. Khi khách hàng nhìn thấy hình ảnh trực quan của sản phẩm, họ sẽ dễ dàng hình dung và ra quyết định nhanh hơn.
+                </p>
+            </div>
+            <table class="role-table">
+                <thead>
+                    <tr>
+                        <th>Ai làm?</th>
+                        <th>Làm gì?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="role-tag">Presales / PM / BrSE</span></td>
+                        <td>Phân tích yêu cầu, tạo Proposal, Estimate, Draft Prototype</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- STEP 3: KICKOFF & DEVELOPMENT -->
+    <section id="step3" class="step-section step-3 animate-in">
+        <div class="step-header">
+            <div class="step-number">3</div>
+            <div>
+                <div class="step-title">Kickoff Meeting &amp; Triển khai dự án</div>
+                <div class="step-subtitle">Khách hàng + Sales + PM + Team dự án</div>
+            </div>
+        </div>
+        <div class="step-content">
+            <p>
+                Sau khi khách hàng đồng ý, dự án chính thức bắt đầu bằng một buổi <strong>Kickoff Meeting</strong> giữa khách hàng, Sales, PM (Project Manager) và cả team dự án. Trong <strong>Bước 3</strong>, dự án triển khai hai phần chính — Specs (3.1) và Phát triển gồm Coding, Test, UAT (3.2). Sau khi khách hàng chấp nhận sản phẩm qua UAT, team chuyển sang <strong>Bước 4</strong> — bàn giao và bảo hành (xem mục tiếp theo).
+            </p>
+
+            <!-- 3.1 Specs -->
+            <div class="sub-step">
+                <div class="sub-step-title">
+                    <span class="sub-step-badge badge-spec">3.1</span>
+                    Tạo tài liệu Specs (Đặc tả yêu cầu)
+                </div>
+                <p>
+                    <strong>BA (Business Analyst) / BrSE</strong> sẽ hearing (lắng nghe) khách hàng để nắm bắt yêu cầu chi tiết, sau đó tạo ra các tài liệu đặc tả:
+                </p>
+                <ul>
+                    <li><strong>Function List</strong> — Danh sách chức năng</li>
+                    <li><strong>Prototype</strong> — Bản mẫu giao diện</li>
+                    <li><strong>SRS</strong> — Tài liệu đặc tả yêu cầu phần mềm</li>
+                    <li><strong>Basic Design</strong> — Thiết kế cơ bản</li>
+                </ul>
+                <p style="margin-top: 12px;">
+                    Sau khi hoàn thành, gửi cho khách hàng <strong>phê duyệt</strong> (approve) trước khi bắt tay vào phát triển.
+                </p>
+            </div>
+
+            <!-- 3.2 Development -->
+            <div class="sub-step">
+                <div class="sub-step-title">
+                    <span class="sub-step-badge badge-dev">3.2</span>
+                    Phát triển: Coding → Test → UAT
+                </div>
+
+                <table class="role-table">
+                    <thead>
+                        <tr>
+                            <th>Giai đoạn</th>
+                            <th>Ai làm?</th>
+                            <th>Mô tả</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Coding</strong></td>
+                            <td><span class="role-tag">Developer</span></td>
+                            <td>Lập trình viên viết code để xây dựng sản phẩm theo specs đã được phê duyệt</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Test</strong></td>
+                            <td><span class="role-tag">Tester / QA</span></td>
+                            <td>Kiểm thử sản phẩm xem có hoạt động đúng theo specs không, có chạy mượt không, có bug (lỗi) không. Nếu có bug → yêu cầu Dev fix</td>
+                        </tr>
+                        <tr>
+                            <td><strong>UAT</strong></td>
+                            <td><span class="role-tag">Khách hàng</span></td>
+                            <td>Khách hàng test nghiệm thu sản phẩm — quyết định chấp nhận hay yêu cầu chỉnh sửa</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- STEP 4: RELEASE & MAINTAIN -->
+    <section id="step4" class="step-section step-4 animate-in">
+        <div class="step-header">
+            <div class="step-number">4</div>
+            <div>
+                <div class="step-title">Release &amp; Bảo hành (Maintain)</div>
+                <div class="step-subtitle">Sau UAT — PM, team dự án &amp; khách hàng</div>
+            </div>
+        </div>
+        <div class="step-content">
+            <p>
+                Sau khi khách hàng nghiệm thu và chấp nhận sản phẩm qua UAT, tiến hành <strong>bàn giao phần mềm</strong>.
+            </p>
+            <p>
+                Khi khách hàng đưa sản phẩm vào sử dụng, công ty sẽ <strong>bảo hành</strong> trong khoảng <strong>3 tháng đến 1 năm</strong> (tùy hợp đồng). Trong thời gian bảo hành, nếu phát hiện bug nằm trong phạm vi (scope) thì phải fix <strong>miễn phí</strong> cho khách.
+            </p>
+        </div>
+    </section>
+
+    <!-- BRSE CALLOUT -->
+    <section id="brse" class="brse-callout animate-in">
+        <h3>BrSE có thể đảm nhận những bước nào?</h3>
+        <div class="brse-level">
+            <div class="brse-card expert">
+                <h4>⭐ BrSE giỏi</h4>
+                <p>Có thể phụ trách từ <strong>Bước 2 (Bidding)</strong> đến hết <strong>Bước 3.1 (Tạo Specs)</strong> — tức là tham gia ngay từ giai đoạn đấu thầu, phân tích yêu cầu, đến việc tạo tài liệu đặc tả.</p>
+            </div>
+            <div class="brse-card normal">
+                <h4>💼 BrSE thông thường</h4>
+                <p>Phụ trách từ <strong>Bước 3.2 đến Bước 4</strong> — hỗ trợ trong giai đoạn phát triển, kiểm thử, giao tiếp với khách hàng, bàn giao và giai đoạn bảo hành.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- QUIZ SECTION -->
+    <section id="quiz" class="quiz-section animate-in">
+        <div class="quiz-header">
+            <h2>Kiểm tra kiến thức</h2>
+            <p>Trả lời 8 câu hỏi dưới đây để kiểm tra mức độ hiểu bài của bạn</p>
+        </div>
+
+        <!-- Q1 -->
+        <div class="quiz-card" data-correct="b">
+            <div class="quiz-q-num">Câu hỏi 01</div>
+            <div class="quiz-question">Bước đầu tiên để một dự án phần mềm bắt đầu trong công ty outsource là gì?</div>
+            <div class="quiz-options">
+                <div class="quiz-option" data-value="a">
+                    <div class="quiz-radio"></div>
+                    <span>Kickoff meeting với team dự án</span>
+                </div>
+                <div class="quiz-option" data-value="b">
+                    <div class="quiz-radio"></div>
+                    <span>Sales tiếp cận khách hàng để lấy dự án</span>
+                </div>
+                <div class="quiz-option" data-value="c">
+                    <div class="quiz-radio"></div>
+                    <span>Developer bắt đầu coding ngay</span>
+                </div>
+                <div class="quiz-option" data-value="d">
+                    <div class="quiz-radio"></div>
+                    <span>Tester kiểm thử sản phẩm</span>
+                </div>
+            </div>
+            <div class="quiz-feedback correct-fb">Chính xác! Sales là bộ phận khởi đầu, tiếp cận khách hàng và đưa dự án về cho đội phát triển.</div>
+            <div class="quiz-feedback incorrect-fb">Chưa đúng. Bước đầu tiên là Sales tiếp cận khách hàng để lấy dự án về.</div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="quiz-card" data-correct="c">
+            <div class="quiz-q-num">Câu hỏi 02</div>
+            <div class="quiz-question">Trong giai đoạn Bidding, đội ngũ cần tạo ra những tài liệu nào?</div>
+            <div class="quiz-options">
+                <div class="quiz-option" data-value="a">
+                    <div class="quiz-radio"></div>
+                    <span>Source code và test case</span>
+                </div>
+                <div class="quiz-option" data-value="b">
+                    <div class="quiz-radio"></div>
+                    <span>Hợp đồng bảo hành</span>
+                </div>
+                <div class="quiz-option" data-value="c">
+                    <div class="quiz-radio"></div>
+                    <span>Proposal (đề xuất) và Estimate (ước lượng)</span>
+                </div>
+                <div class="quiz-option" data-value="d">
+                    <div class="quiz-radio"></div>
+                    <span>SRS và Basic Design</span>
+                </div>
+            </div>
+            <div class="quiz-feedback correct-fb">Đúng rồi! Giai đoạn Bidding cần tạo Proposal và Estimate để gửi khách hàng.</div>
+            <div class="quiz-feedback incorrect-fb">Chưa đúng. Giai đoạn Bidding cần tạo Proposal (đề xuất) và Estimate (ước lượng chi phí, thời gian).</div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="quiz-card" data-correct="b">
+            <div class="quiz-q-num">Câu hỏi 03</div>
+            <div class="quiz-question">Tại sao nên tạo draft prototype trong giai đoạn Bidding?</div>
+            <div class="quiz-options">
+                <div class="quiz-option" data-value="a">
+                    <div class="quiz-radio"></div>
+                    <span>Vì đó là yêu cầu bắt buộc của mọi dự án</span>
+                </div>
+                <div class="quiz-option" data-value="b">
+                    <div class="quiz-radio"></div>
+                    <span>Vì khách hàng nhìn trực quan sẽ dễ dàng ra quyết định hơn</span>
+                </div>
+                <div class="quiz-option" data-value="c">
+                    <div class="quiz-radio"></div>
+                    <span>Vì developer cần prototype để bắt đầu coding</span>
+                </div>
+                <div class="quiz-option" data-value="d">
+                    <div class="quiz-radio"></div>
+                    <span>Vì tester cần prototype để viết test case</span>
+                </div>
+            </div>
+            <div class="quiz-feedback correct-fb">Chính xác! Prototype giúp khách hàng hình dung sản phẩm một cách trực quan, từ đó dễ ra quyết định.</div>
+            <div class="quiz-feedback incorrect-fb">Chưa đúng. Lý do chính là vì prototype trực quan giúp khách hàng dễ dàng ra quyết định hơn.</div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="quiz-card" data-correct="a">
+            <div class="quiz-q-num">Câu hỏi 04</div>
+            <div class="quiz-question">Ai là người tham gia Kickoff Meeting?</div>
+            <div class="quiz-options">
+                <div class="quiz-option" data-value="a">
+                    <div class="quiz-radio"></div>
+                    <span>Khách hàng + Sales + PM + Team dự án</span>
+                </div>
+                <div class="quiz-option" data-value="b">
+                    <div class="quiz-radio"></div>
+                    <span>Chỉ có PM và Developer</span>
+                </div>
+                <div class="quiz-option" data-value="c">
+                    <div class="quiz-radio"></div>
+                    <span>Chỉ có Sales và khách hàng</span>
+                </div>
+                <div class="quiz-option" data-value="d">
+                    <div class="quiz-radio"></div>
+                    <span>Chỉ có BrSE và Tester</span>
+                </div>
+            </div>
+            <div class="quiz-feedback correct-fb">Đúng! Kickoff Meeting cần có đầy đủ khách hàng, Sales, PM và team dự án.</div>
+            <div class="quiz-feedback incorrect-fb">Chưa đúng. Kickoff Meeting bao gồm khách hàng + PM + team dự án.</div>
+        </div>
+
+        <!-- Q5 -->
+        <div class="quiz-card" data-correct="d">
+            <div class="quiz-q-num">Câu hỏi 05</div>
+            <div class="quiz-question">Tài liệu nào KHÔNG thuộc giai đoạn tạo Specs (3.1)?</div>
+            <div class="quiz-options">
+                <div class="quiz-option" data-value="a">
+                    <div class="quiz-radio"></div>
+                    <span>Function List</span>
+                </div>
+                <div class="quiz-option" data-value="b">
+                    <div class="quiz-radio"></div>
+                    <span>SRS (Software Requirement Specification)</span>
+                </div>
+                <div class="quiz-option" data-value="c">
+                    <div class="quiz-radio"></div>
+                    <span>Basic Design</span>
+                </div>
+                <div class="quiz-option" data-value="d">
+                    <div class="quiz-radio"></div>
+                    <span>Test Report</span>
+                </div>
+            </div>
+            <div class="quiz-feedback correct-fb">Đúng! Test Report thuộc giai đoạn kiểm thử (Test), không phải giai đoạn tạo Specs.</div>
+            <div class="quiz-feedback incorrect-fb">Chưa đúng. Test Report là tài liệu thuộc giai đoạn Test, không phải giai đoạn tạo Specs.</div>
+        </div>
+
+        <!-- Q6 -->
+        <div class="quiz-card" data-correct="c">
+            <div class="quiz-q-num">Câu hỏi 06</div>
+            <div class="quiz-question">UAT là gì và ai thực hiện?</div>
+            <div class="quiz-options">
+                <div class="quiz-option" data-value="a">
+                    <div class="quiz-radio"></div>
+                    <span>Unit Acceptance Testing — do Developer thực hiện</span>
+                </div>
+                <div class="quiz-option" data-value="b">
+                    <div class="quiz-radio"></div>
+                    <span>User Application Testing — do Tester thực hiện</span>
+                </div>
+                <div class="quiz-option" data-value="c">
+                    <div class="quiz-radio"></div>
+                    <span>User Acceptance Testing — do khách hàng thực hiện để nghiệm thu sản phẩm</span>
+                </div>
+                <div class="quiz-option" data-value="d">
+                    <div class="quiz-radio"></div>
+                    <span>Unified Automated Testing — do hệ thống tự động thực hiện</span>
+                </div>
+            </div>
+            <div class="quiz-feedback correct-fb">Chính xác! UAT (User Acceptance Testing) là giai đoạn khách hàng test nghiệm thu sản phẩm.</div>
+            <div class="quiz-feedback incorrect-fb">Chưa đúng. UAT = User Acceptance Testing — khách hàng test nghiệm thu để quyết định chấp nhận sản phẩm.</div>
+        </div>
+
+        <!-- Q7 -->
+        <div class="quiz-card" data-correct="b">
+            <div class="quiz-q-num">Câu hỏi 07</div>
+            <div class="quiz-question">Thời gian bảo hành phần mềm sau khi bàn giao thường là bao lâu?</div>
+            <div class="quiz-options">
+                <div class="quiz-option" data-value="a">
+                    <div class="quiz-radio"></div>
+                    <span>1 tuần đến 1 tháng</span>
+                </div>
+                <div class="quiz-option" data-value="b">
+                    <div class="quiz-radio"></div>
+                    <span>3 tháng đến 1 năm (tùy hợp đồng)</span>
+                </div>
+                <div class="quiz-option" data-value="c">
+                    <div class="quiz-radio"></div>
+                    <span>Bảo hành vĩnh viễn</span>
+                </div>
+                <div class="quiz-option" data-value="d">
+                    <div class="quiz-radio"></div>
+                    <span>Không có bảo hành</span>
+                </div>
+            </div>
+            <div class="quiz-feedback correct-fb">Đúng! Thời gian bảo hành thường từ 3 tháng đến 1 năm, tùy theo hợp đồng ký kết.</div>
+            <div class="quiz-feedback incorrect-fb">Chưa đúng. Thời gian bảo hành thường là 3 tháng đến 1 năm, tùy vào hợp đồng.</div>
+        </div>
+
+        <!-- Q8 -->
+        <div class="quiz-card" data-correct="a">
+            <div class="quiz-q-num">Câu hỏi 08</div>
+            <div class="quiz-question">BrSE giỏi có thể phụ trách từ bước nào đến bước nào?</div>
+            <div class="quiz-options">
+                <div class="quiz-option" data-value="a">
+                    <div class="quiz-radio"></div>
+                    <span>Từ Bước 2 (Bidding) đến hết Bước 3.1 (Tạo Specs)</span>
+                </div>
+                <div class="quiz-option" data-value="b">
+                    <div class="quiz-radio"></div>
+                    <span>Chỉ Bước 1 (Sales)</span>
+                </div>
+                <div class="quiz-option" data-value="c">
+                    <div class="quiz-radio"></div>
+                    <span>Từ Bước 3.2 (Coding) trở đi</span>
+                </div>
+                <div class="quiz-option" data-value="d">
+                    <div class="quiz-radio"></div>
+                    <span>Chỉ Bước 4 (Release &amp; Bảo hành)</span>
+                </div>
+            </div>
+            <div class="quiz-feedback correct-fb">Chính xác! BrSE giỏi có thể phụ trách từ Bước 2 (Bidding) đến hết Bước 3.1 (Specs).</div>
+            <div class="quiz-feedback incorrect-fb">Chưa đúng. BrSE giỏi có thể phụ trách từ Bước 2 đến hết Bước 3.1. BrSE thông thường thì từ Bước 3.2 đến Bước 4.</div>
+        </div>
+
+        <!-- SUBMIT -->
+        <div class="quiz-submit-area">
+            <button class="btn-submit" onclick="submitQuiz()">Nộp bài</button>
+            <button class="btn-reset" onclick="resetQuiz()">Làm lại</button>
+            <div class="score-result" id="scoreResult"></div>
+            <div class="score-bar" id="scoreBar" style="display:none;">
+                <div class="score-bar-fill" id="scoreBarFill"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <p>
+            Tài liệu đào tạo bởi <span class="trainer-name">Quỳnh Nga BrSE Japan — Đồng Hành Cùng Bạn</span><br>
+            Ở các bài sau, chúng ta sẽ đi sâu vào từng bước: ai, ở đâu, làm gì, làm như thế nào.
+        </p>
+    </footer>
+
+</div>
+
+<script>
+    document.querySelectorAll('.quiz-option').forEach(option => {
+        option.addEventListener('click', function () {
+            const card = this.closest('.quiz-card');
+            if (card.classList.contains('submitted')) return;
+            card.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected'));
+            this.classList.add('selected');
+        });
+    });
+
+    function submitQuiz() {
+        const cards = document.querySelectorAll('.quiz-card');
+        let correct = 0;
+        let total = cards.length;
+        let allAnswered = true;
+
+        cards.forEach(card => {
+            const selected = card.querySelector('.quiz-option.selected');
+            if (!selected) {
+                allAnswered = false;
+                return;
+            }
+
+            card.classList.add('submitted');
+            const correctAnswer = card.dataset.correct;
+            const selectedValue = selected.dataset.value;
+            const feedbacks = card.querySelectorAll('.quiz-feedback');
+
+            card.querySelectorAll('.quiz-option').forEach(o => {
+                if (o.dataset.value === correctAnswer) {
+                    o.classList.add('show-correct');
+                }
+            });
+
+            if (selectedValue === correctAnswer) {
+                correct++;
+                selected.classList.add('is-correct');
+                card.classList.add('correct');
+                feedbacks[0].classList.add('show');
+            } else {
+                selected.classList.add('is-wrong');
+                card.classList.add('incorrect');
+                feedbacks[1].classList.add('show');
+            }
+        });
+
+        if (!allAnswered) {
+            alert('Vui lòng trả lời tất cả các câu hỏi trước khi nộp bài!');
+            return;
+        }
+
+        const scoreEl = document.getElementById('scoreResult');
+        const pct = Math.round((correct / total) * 100);
+        let msg = '';
+        if (pct === 100) msg = 'Xuất sắc! Bạn nắm vững kiến thức rồi!';
+        else if (pct >= 75) msg = 'Tốt lắm! Bạn đã hiểu hầu hết nội dung.';
+        else if (pct >= 50) msg = 'Khá ổn, nhưng nên xem lại một số phần nhé.';
+        else msg = 'Bạn cần ôn lại bài học kỹ hơn nhé!';
+
+        scoreEl.innerHTML = `Kết quả: <strong>${correct}/${total}</strong> câu đúng (${pct}%) — ${msg}`;
+        scoreEl.classList.add('show');
+
+        const bar = document.getElementById('scoreBar');
+        const fill = document.getElementById('scoreBarFill');
+        bar.style.display = 'block';
+        setTimeout(() => { fill.style.width = pct + '%'; }, 100);
+    }
+
+    function resetQuiz() {
+        document.querySelectorAll('.quiz-card').forEach(card => {
+            card.classList.remove('submitted', 'correct', 'incorrect');
+            card.querySelectorAll('.quiz-option').forEach(o => {
+                o.classList.remove('selected', 'is-correct', 'is-wrong', 'show-correct');
+            });
+            card.querySelectorAll('.quiz-feedback').forEach(f => f.classList.remove('show'));
+        });
+        const scoreEl = document.getElementById('scoreResult');
+        scoreEl.classList.remove('show');
+        scoreEl.innerHTML = '';
+        document.getElementById('scoreBar').style.display = 'none';
+        document.getElementById('scoreBarFill').style.width = '0%';
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.animationPlayState = 'running';
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.animate-in').forEach(el => {
+        el.style.animationPlayState = 'paused';
+        observer.observe(el);
+    });
+</script>
+
+</body>
+</html>

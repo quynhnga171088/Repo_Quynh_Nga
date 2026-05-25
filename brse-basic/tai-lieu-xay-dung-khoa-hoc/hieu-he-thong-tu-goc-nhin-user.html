@@ -1,0 +1,1797 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hiểu hệ thống từ góc nhìn User | Bài học</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #F8F7F3;
+      --bg-card: #FFFFFF;
+      --bg-step: #FAFAF7;
+      --text-primary: #1C1C1C;
+      --text-secondary: #404040;
+      --text-muted: #767676;
+      --accent-blue: #1D4ED8;
+      --accent-blue-light: #DBEAFE;
+      --accent-green: #166534;
+      --accent-green-light: #DCFCE7;
+      --accent-amber: #92400E;
+      --accent-amber-light: #FEF3C7;
+      --accent-purple: #5B21B6;
+      --accent-purple-light: #EDE9FE;
+      --border-light: #E5E3DC;
+      --shadow-sm: 0 1px 4px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+      --radius-xl: 20px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Lexend', sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.8;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page-wrapper {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 40px 24px 100px;
+    }
+
+    /* ===== Coverpage (HEADER) ===== */
+    .header {
+      text-align: center;
+      background: linear-gradient(135deg, #FFFFFF 0%, #F0EDE6 50%, #E8F4EC 100%);
+      border-radius: var(--radius-xl);
+      padding: 60px 48px;
+      margin-bottom: 36px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-md);
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(22,101,52,0.07) 0%, transparent 70%);
+    }
+
+    .header::after {
+      content: '';
+      position: absolute;
+      bottom: -40px; left: -40px;
+      width: 150px; height: 150px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(29,78,216,0.06) 0%, transparent 70%);
+    }
+
+    .header-badge {
+      display: inline-block;
+      background: #2D8B5E;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 6px 18px;
+      border-radius: 20px;
+      margin-bottom: 24px;
+    }
+
+    .header h1 {
+      font-family: 'Source Serif 4', serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.3;
+      margin-bottom: 14px;
+    }
+
+    .header-sub {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+      line-height: 1.7;
+    }
+
+    .header-trainer {
+      font-size: 0.95rem;
+      color: #2D8B5E;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .header-meta {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-weight: 300;
+    }
+
+    /* ===== Section wrappers ===== */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-sm);
+      padding: 32px 36px;
+      margin-bottom: 24px;
+    }
+
+    .section-label {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent-blue);
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 14px;
+      line-height: 1.35;
+    }
+
+    .section-desc {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.85;
+    }
+
+    .lesson-block {
+      border-top: 1px solid #F0EEE8;
+      padding-top: 22px;
+      margin-top: 22px;
+    }
+
+    .lesson-block:first-child {
+      border-top: none;
+      padding-top: 0;
+      margin-top: 0;
+    }
+
+    .block-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .block-subtitle {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent-blue);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+
+    .bullets {
+      margin-top: 10px;
+      padding-left: 18px;
+      color: var(--text-secondary);
+      font-size: 14.5px;
+      line-height: 1.85;
+    }
+
+    .callout {
+      margin-top: 14px;
+      border-radius: 12px;
+      padding: 12px 14px;
+      background: #EFF6FF;
+      border: 1px solid #BFDBFE;
+      color: #1E40AF;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .callout-green {
+      background: #F0FDF4;
+      border: 1px solid #BBF7D0;
+      color: #166534;
+    }
+
+    .callout-amber {
+      background: #FFFBEB;
+      border: 1px solid #FDE68A;
+      color: #92400E;
+    }
+
+    .callout-purple {
+      background: var(--accent-purple-light);
+      border: 1px solid #C4B5FD;
+      color: var(--accent-purple);
+    }
+
+    .phase-badge {
+      display: inline-block;
+      background: var(--accent-blue);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .mapping-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      font-size: 13.5px;
+    }
+
+    .mapping-table th {
+      background: #F8F7F3;
+      font-weight: 700;
+      text-align: left;
+      padding: 10px 14px;
+      border-bottom: 2px solid var(--border-light);
+      color: var(--text-primary);
+    }
+
+    .mapping-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid #F0EEE8;
+      color: var(--text-secondary);
+      vertical-align: top;
+    }
+
+    .mapping-table tr:last-child td { border-bottom: none; }
+
+    .mapping-table .role-cell {
+      font-weight: 700;
+      color: var(--text-primary);
+      white-space: nowrap;
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 6px;
+      margin: 2px 2px 2px 0;
+    }
+
+    .tag-blue { background: var(--accent-blue-light); color: var(--accent-blue); }
+    .tag-green { background: var(--accent-green-light); color: var(--accent-green); }
+    .tag-amber { background: var(--accent-amber-light); color: var(--accent-amber); }
+    .tag-purple { background: var(--accent-purple-light); color: var(--accent-purple); }
+
+    .system-tree {
+      font-family: 'Lexend', monospace;
+      font-size: 14px;
+      background: #F8F7F3;
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-top: 12px;
+      line-height: 2;
+      color: var(--text-secondary);
+      border: 1px solid #F0EEE8;
+    }
+
+    .system-tree strong { color: var(--text-primary); }
+
+    .flow-visual {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+      margin-top: 14px;
+    }
+
+    .flow-step {
+      background: var(--accent-blue-light);
+      color: var(--accent-blue);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 10px;
+    }
+
+    .flow-arrow { color: var(--text-muted); font-size: 16px; }
+
+    .subsection-bar {
+      background: linear-gradient(135deg, #166534 0%, #2D8B5E 100%);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 10px 16px;
+      border-radius: 8px;
+      margin-top: 20px;
+      margin-bottom: 12px;
+    }
+
+    .role-pick {
+      display: inline-block;
+      background: var(--accent-amber-light);
+      color: var(--accent-amber);
+      font-weight: 600;
+      font-size: 14px;
+      padding: 6px 14px;
+      border-radius: 8px;
+      margin: 10px 0 4px;
+    }
+
+    .screen-detail-card {
+      border: 1px solid var(--border-light);
+      border-radius: 14px;
+      padding: 18px 20px;
+      margin-top: 14px;
+      background: var(--bg-step);
+    }
+
+    .screen-detail-card h4 {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text-primary);
+    }
+
+    .screen-capture-placeholder {
+      background: #E8E6E0;
+      border: 2px dashed #C4C0B8;
+      border-radius: 10px;
+      min-height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 13px;
+      margin: 12px 0;
+      text-align: center;
+      padding: 16px;
+    }
+
+    .flow-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+
+    /* Diagram grid */
+    .diagram-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    @media (max-width: 600px) {
+      .diagram-grid { grid-template-columns: 1fr; }
+    }
+
+    .diagram-card {
+      border-radius: 14px;
+      padding: 16px 18px;
+      border: 1px solid var(--border-light);
+    }
+
+    .diagram-card.admin {
+      background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+      border-color: #BFDBFE;
+    }
+
+    .diagram-card.user {
+      background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%);
+      border-color: #BBF7D0;
+    }
+
+    .diagram-card h4 {
+      font-size: 14px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .diagram-card.admin h4 { color: #1D4ED8; }
+    .diagram-card.user h4 { color: #166534; }
+
+    .diagram-card p {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+
+    .platform-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .platform-chip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #fff;
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      flex: 1;
+      min-width: 140px;
+    }
+
+    .platform-chip .icon { font-size: 22px; }
+
+    .role-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .role-card {
+      border-radius: 14px;
+      padding: 14px 16px;
+      border: 1px solid var(--border-light);
+      background: #FAFAF7;
+    }
+
+    .role-card .role-icon { font-size: 28px; margin-bottom: 6px; }
+    .role-card .role-name { font-size: 14px; font-weight: 800; margin-bottom: 4px; }
+    .role-card .role-desc { font-size: 12.5px; color: var(--text-muted); line-height: 1.55; }
+
+    .matrix-visual {
+      margin-top: 14px;
+      overflow-x: auto;
+    }
+
+    .matrix-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      min-width: 480px;
+    }
+
+    .matrix-table th, .matrix-table td {
+      padding: 10px 12px;
+      border: 1px solid #E5E3DC;
+      text-align: center;
+    }
+
+    .matrix-table th {
+      background: #F8F7F3;
+      font-weight: 700;
+    }
+
+    .matrix-table td:first-child {
+      text-align: left;
+      font-weight: 700;
+      background: #FAFAF7;
+    }
+
+    .check { color: #16A34A; font-weight: 800; }
+    .cross { color: #DC2626; font-weight: 800; }
+
+    .golden-question {
+      text-align: center;
+      padding: 20px 24px;
+      background: linear-gradient(135deg, #1D4ED8 0%, #4338CA 100%);
+      border-radius: 16px;
+      color: #fff;
+      margin-top: 14px;
+    }
+
+    .golden-question p {
+      font-size: 12px;
+      opacity: 0.85;
+      margin-bottom: 6px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .golden-question strong {
+      font-family: 'Source Serif 4', serif;
+      font-size: 1.35rem;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    .lms-banner {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: linear-gradient(135deg, #F0FDF4 0%, #ECFDF5 100%);
+      border: 1px solid #86EFAC;
+      border-radius: 14px;
+      padding: 14px 18px;
+      margin-top: 14px;
+    }
+
+    .lms-banner .lms-icon { font-size: 36px; flex-shrink: 0; }
+    .lms-banner strong { color: #166534; font-size: 14px; }
+    .lms-banner span { font-size: 13px; color: #15803D; display: block; margin-top: 2px; }
+
+    .func-list {
+      margin: 0;
+      padding-left: 16px;
+      font-size: 13px;
+      line-height: 1.75;
+      color: var(--text-secondary);
+    }
+
+    .func-list li { margin-bottom: 2px; }
+
+    .purpose-header {
+      background: #2D8B5E;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 800;
+      padding: 10px 16px;
+      border-radius: 10px;
+      margin-bottom: 16px;
+    }
+
+    .purpose-questions {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .purpose-questions li {
+      font-size: 15px;
+      color: var(--text-primary);
+      font-weight: 600;
+      line-height: 1.75;
+      padding: 6px 0;
+    }
+
+    .purpose-questions li.sub {
+      font-weight: 400;
+      font-size: 14.5px;
+      color: var(--text-secondary);
+      padding-left: 0;
+    }
+
+    .purpose-examples {
+      margin-top: 10px;
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    .section-divider {
+      border: none;
+      border-top: 2px dashed #D4D1C8;
+      margin: 24px 0;
+    }
+
+    .example-heading {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+      line-height: 1.5;
+    }
+
+    .mindframe-intro {
+      font-size: 14.5px;
+      color: var(--text-secondary);
+      line-height: 1.85;
+      margin-bottom: 18px;
+    }
+
+    .mindframe-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    @media (max-width: 720px) {
+      .mindframe-grid { grid-template-columns: 1fr; }
+    }
+
+    .mindframe-card {
+      border-radius: 14px;
+      padding: 16px 16px 14px;
+      border: 1px solid var(--border-light);
+      background: #FAFAF7;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mindframe-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+    }
+
+    .mindframe-card.card-what::before { background: #1D4ED8; }
+    .mindframe-card.card-who::before { background: #2D8B5E; }
+    .mindframe-card.card-why::before { background: #7C3AED; }
+
+    .mindframe-card .mf-step {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .mindframe-card .mf-icon {
+      font-size: 26px;
+      margin-bottom: 8px;
+      line-height: 1;
+    }
+
+    .mindframe-card .mf-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+      line-height: 1.35;
+    }
+
+    .mindframe-card .mf-question {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent-blue);
+      margin-bottom: 8px;
+      line-height: 1.45;
+    }
+
+    .mindframe-card.card-who .mf-question { color: #166534; }
+    .mindframe-card.card-why .mf-question { color: #5B21B6; }
+
+    .mindframe-card .mf-desc {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+
+    .mindframe-flow {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px 16px;
+      background: linear-gradient(135deg, #F8F7F3 0%, #F0EDE6 100%);
+      border-radius: 12px;
+      border: 1px solid #E5E3DC;
+      margin-bottom: 16px;
+    }
+
+    .mindframe-flow span {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-secondary);
+    }
+
+    .mindframe-flow .mf-arrow {
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .mindframe-table th:first-child,
+    .mindframe-table td:first-child {
+      width: 28%;
+    }
+
+    .integration-table th {
+      background: #2D8B5E;
+      color: #fff;
+      border-bottom: none;
+    }
+
+    .integration-table td {
+      vertical-align: top;
+    }
+
+    .tag-internal {
+      background: #DCFCE7;
+      color: #166534;
+    }
+
+    .tag-external {
+      background: #FEF3C7;
+      color: #92400E;
+    }
+
+    .integration-questions {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    @media (max-width: 640px) {
+      .integration-questions { grid-template-columns: 1fr; }
+    }
+
+    .integration-q-card {
+      background: #FAFAF7;
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+
+    .integration-q-card strong {
+      display: block;
+      font-size: 13px;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .integration-q-card span {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    .glossary-table th {
+      background: #2D8B5E;
+      color: #fff;
+      border-bottom: none;
+    }
+
+    .glossary-table .jp-term {
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .confirm-list {
+      margin: 0;
+      padding-left: 0;
+      list-style: none;
+    }
+
+    .confirm-list li {
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      background: #FFFBEB;
+      border: 1px solid #FDE68A;
+      border-radius: 10px;
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+
+    .confirm-list li strong {
+      color: #92400E;
+    }
+
+    /* Quiz block */
+    .quiz-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-xl);
+      padding: 24px 28px;
+      box-shadow: var(--shadow-sm);
+      margin: 24px 0 36px;
+    }
+
+    .quiz-link-left { display: flex; gap: 14px; align-items: flex-start; }
+
+    .quiz-link-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #1D4ED8, #7C3AED);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .quiz-link-title {
+      font-size: 16px;
+      font-weight: 900;
+      margin-bottom: 4px;
+      color: var(--text-primary);
+    }
+
+    .quiz-link-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .quiz-link a {
+      text-decoration: none;
+      background: var(--accent-blue);
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .quiz-link a:hover { background: #1E40AF; }
+
+    /* Last page */
+    .closing {
+      background: linear-gradient(135deg, #FFFFFF 0%, #F0EDE6 50%, #E8F4EC 100%);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-md);
+      padding: 40px 44px;
+      margin-top: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .closing::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 180px; height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(29,78,216,0.06) 0%, transparent 70%);
+    }
+
+    .closing-title {
+      font-family: 'Source Serif 4', serif;
+      font-size: 1.7rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text-primary);
+      line-height: 1.3;
+    }
+
+    .closing-text {
+      color: var(--text-secondary);
+      font-size: 15px;
+      line-height: 1.85;
+      margin-bottom: 14px;
+    }
+
+    .closing-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 14px;
+      border: 1px solid var(--border-light);
+      background: #fff;
+      color: var(--text-primary);
+    }
+
+    .btn-primary {
+      background: var(--accent-blue);
+      color: #fff;
+      border-color: #1D4ED8;
+    }
+
+    .btn-primary:hover { background: #1E40AF; }
+
+    .footer {
+      text-align: center;
+      padding: 32px;
+      color: var(--text-muted);
+      font-size: 13px;
+      margin-top: 24px;
+    }
+
+    .footer strong { color: var(--text-secondary); }
+
+    /* Closing — 7 ý chính (visual) */
+    .memory-visual-wrap {
+      margin-top: 8px;
+      padding: 20px 18px 8px;
+      background: #fff;
+      border: 1px solid var(--border-light);
+      border-radius: 16px;
+    }
+
+    .memory-visual-caption {
+      font-size: 13px;
+      color: var(--text-muted);
+      text-align: center;
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+
+    .memory-flow-svg {
+      width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto 20px;
+      max-width: 880px;
+    }
+
+    .memory-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .memory-card {
+      border-radius: 14px;
+      padding: 14px 12px;
+      text-align: center;
+      border: 1.5px solid var(--border-light);
+      background: var(--bg-step);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .memory-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .memory-card-icon {
+      width: 44px;
+      height: 44px;
+      margin: 0 auto 10px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+    }
+
+    .memory-card-num {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .memory-card-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.35;
+      margin-bottom: 4px;
+    }
+
+    .memory-card-hint {
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    .memory-card-1 .memory-card-icon { background: #FEF3C7; }
+    .memory-card-2 .memory-card-icon { background: #DBEAFE; }
+    .memory-card-3 .memory-card-icon { background: #DCFCE7; }
+    .memory-card-4 .memory-card-icon { background: #EDE9FE; }
+    .memory-card-5 .memory-card-icon { background: #FFEDD5; }
+    .memory-card-6 .memory-card-icon { background: #E0E7FF; }
+    .memory-card-7 .memory-card-icon { background: #FCE7F3; }
+
+    .memory-card-7 {
+      grid-column: 2 / span 2;
+    }
+
+    @media (max-width: 720px) {
+      .memory-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .memory-card-7 {
+        grid-column: 1 / -1;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .memory-grid {
+        grid-template-columns: 1fr;
+      }
+      .memory-card-7 {
+        grid-column: auto;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .header { padding: 36px 28px; }
+      .header h1 { font-size: 24px; }
+      .card { padding: 24px 22px; }
+      .quiz-link { padding: 20px 18px; flex-direction: column; align-items: flex-start; }
+      .closing { padding: 28px 24px; }
+      .flow-visual { gap: 4px; }
+      .flow-step { font-size: 12px; padding: 5px 10px; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      .header, .card, .closing { box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrapper">
+
+    <!-- =========== COVERPAGE =========== -->
+    <div class="header" id="cover">
+      <div class="header-badge">Tài liệu đào tạo · IT cho người mới</div>
+      <h1>Hiểu hệ thống từ góc nhìn User</h1>
+      <p class="header-sub">Khung tư duy phân tích dự án,</p>
+      <p class="header-sub">định hướng cách tìm hiểu hệ thống và nắm bắt dự án nhanh hơn trong giai đoạn đầu.</p>
+      <p class="header-trainer">Quỳnh Nga BrSE Japan — Đồng Hành Cùng Bạn</p>
+      <p class="header-meta">Dành cho người mới · ~35 phút · 6 phần · Thực hành với LMS</p>
+    </div>
+
+    <!-- =========== MỤC TIÊU =========== -->
+    <section id="theory">
+      <div class="card">
+        <div class="section-label">Mục tiêu</div>
+        <div class="section-title">Sau bài này, bạn sẽ làm được gì?</div>
+        <p class="section-desc">Bài học này không đi theo hướng kỹ thuật. Thay vào đó, mình bắt đầu từ góc nhìn người dùng — cách tiếp cận dễ hiểu nhất cho người mới.</p>
+
+        <div class="lesson-block">
+          <div class="block-title">Bạn sẽ đạt được</div>
+          <ul class="bullets">
+            <li>Trả lời được: <strong>Hệ thống dùng để làm gì?</strong> — User vào đây để làm gì?</li>
+            <li>Liệt kê được <strong>Role</strong> (vai trò), lập được Function list, Screen list</li>
+            <li>Chọn <strong>1 primary role</strong> và mô tả <strong>1–2 user flow</strong> + <strong>1–2 màn hình chính</strong> ở mức khái quát</li>
+            <li>Nắm <strong>mục đích hệ thống</strong> và có mấy <strong>portal</strong> (Web / App / CMS)</li>
+            <li>Xác định <strong>tích hợp</strong> với hệ thống khác — Internal hay External, mục đích là gì</li>
+            <li>Lập <strong>Glossary</strong> (thuật ngữ JP/VI) và <strong>Điểm cần xác nhận</strong> để hỏi khách hàng / team</li>
+            <li>Áp dụng khung phân tích cho bất kỳ hệ thống nào (kèm template Excel sau bài)</li>
+          </ul>
+        </div>
+
+        <div class="lesson-block">
+          <div class="block-title">Lộ trình bài học — 6 phần</div>
+          <div class="flow-visual">
+            <span class="flow-step">① Khái quát hệ thống</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step">② Role</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step">③ Function / Screen</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step">④ User Flow &amp; Detail</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step">⑤ Glossary</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step">⑥ Kết bài</span>
+          </div>
+          <div class="lms-banner">
+            <span class="lms-icon">🎓</span>
+            <div>
+              <strong>Case study xuyên suốt: Hệ thống LMS (Learning Management System)</strong>
+              <span>Hệ thống học tập đào tạo trực tuyến — dùng làm ví dụ minh họa cho tất cả 6 phần.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- =========== PHẦN 1: KHÁI QUÁT HỆ THỐNG =========== -->
+      <div class="card">
+        <div class="phase-badge">Phần 1</div>
+        <div class="section-title">Khái quát hệ thống</div>
+        <div class="lesson-block">
+          <div class="block-subtitle">Khung tư duy</div>
+          <p class="mindframe-intro">
+            Mới tìm hiểu một hệ thống, hãy đi <strong>từ tổng quan</strong> trước — chưa cần vào từng màn hình hay chức năng. Ba nhóm câu hỏi dưới đây (A → B → C) giúp bạn “định vị” hệ thống trong vài phút.
+          </p>
+          <div class="mindframe-flow">
+            <span>① Mục đích</span>
+            <span class="mf-arrow">→</span>
+            <span>② Portal &amp; Web/App/CMS</span>
+            <span class="mf-arrow">→</span>
+            <span>③ Tích hợp</span>
+          </div>
+          <div class="block-title" style="margin-top:18px;">A. Mục đích hệ thống</div>
+          <table class="mapping-table mindframe-table">
+            <thead>
+              <tr><th>Câu hỏi</th><th>Ý nghĩa</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="role-cell">Hệ thống này là gì? Làm gì?</td>
+                <td>Loại hệ thống (LMS, EC, CRM…) và <strong>mục đích tổng thể</strong> — giải quyết vấn đề gì cho doanh nghiệp / tổ chức?</td>
+              </tr>
+              <tr>
+              </tr>
+            </tbody>
+          </table>
+          <div class="block-title" style="margin-top:20px;">B. Portal — Hệ thống có những cổng nào?</div>
+          <div class="callout callout-amber">
+            <strong>Làm rõ thuật ngữ:</strong><br>
+            • <strong>Portal</strong> = <em>cổng truy cập</em> theo nhóm đối tượng (Admin portal, User portal…) — thường URL hoặc app riêng.<br>
+            • <strong>Web / App / CMS</strong> = <em>hình thức</em> triển khai portal — không thay thế nhau.<br>
+            • <strong>CMS</strong> thường nằm trong <strong>Admin portal</strong> — soạn, đăng nội dung; không phải cổng cho người dùng cuối.
+          </div>
+          <div class="diagram-grid">
+            <div class="diagram-card admin">
+              <h4>🔧 Admin Portal</h4>
+              <p>
+                Dành cho vận hành và quản trị hệ thống. Thường là Web System trên PC; có thể kèm các chức năng quản lý nội dung hoặc cấu hình hệ thống.</strong> soạn bài.</p>
+            </div>
+            <div class="diagram-card user">
+              <h4>📱 User Portal</h4>
+              <p>Người dùng cuối (học, mua hàng…). Hay có <strong>Web</strong> + <strong>Mobile App</strong>.</p>
+            </div>
+          </div>
+          <div class="platform-row">
+            <div class="platform-chip">
+              <span class="icon">🖥️</span>
+              <div><strong>Web</strong><br><span style="font-weight:400;font-size:12px;">Trình duyệt — PC hoặc mobile</span></div>
+            </div>
+            <div class="platform-chip">
+              <span class="icon">📱</span>
+              <div><strong>Mobile App</strong><br><span style="font-weight:400;font-size:12px;">Cài từ Store — iOS / Android</span></div>
+            </div>
+            <div class="platform-chip">
+              <span class="icon">📝</span>
+              <div><strong>CMS</strong><br><span style="font-weight:400;font-size:12px;">Soạn / đăng nội dung — thường trong Admin</span></div>
+            </div>
+          </div>
+          <div class="golden-question" style="margin-top: 16px;">
+            <p>Câu hỏi vàng (Portal)</p>
+            <strong>“Hệ thống có mấy portal? Mỗi portal ai vào, bằng Web hay App?”</strong>
+          </div>
+          <div class="block-title" style="margin-top:24px;">C. Tích hợp — Có kết nối hệ thống khác không?</div>
+          <p class="mindframe-intro" style="margin-top:8px;">
+            Ngoài chức năng “bên trong”, nhiều hệ thống còn <strong>kết nối với hệ thống khác</strong> để chia sẻ dữ liệu hoặc dùng dịch vụ sẵn có — đó gọi là <strong>tích hợp (integration)</strong>.
+          </p>
+          <div class="integration-questions">
+            <div class="integration-q-card">
+              <strong>Có tích hợp không?</strong>
+              <span>Liệt kê tên các hệ thống bên ngoài hoặc nội bộ mà hệ thống hiện tại kết nối (API, SSO, import file…).</span>
+            </div>
+            <div class="integration-q-card">
+              <strong>Hệ thống đó là gì?</strong>
+              <span>Ghi <em>khái quát</em> 1–2 câu: đó là loại hệ thống gì (HRM, thanh toán, học trực tuyến…).</span>
+            </div>
+            <div class="integration-q-card">
+              <strong>Internal hay External?</strong>
+              <span><strong>Internal</strong> — cùng tổ chức, do công ty tự vận hành. <strong>External</strong> — bên thứ ba (Udemy, VNPay…).</span>
+            </div>
+            <div class="integration-q-card">
+              <strong>Mục đích tích hợp?</strong>
+              <span>Tại sao phải kết nối? VD: đồng bộ nhân sự, thu học phí, import khóa học có sẵn.</span>
+            </div>
+          </div>
+          <div class="callout callout-green" style="margin-top:14px;">
+            <strong>Mẹo BrSE:</strong> Không phải hệ thống nào cũng có tích hợp. Nếu chưa thấy → ghi <em>(Cần xác nhận)</em> và hỏi PM/khách hàng.
+          </div>
+          <div class="golden-question" style="margin-top: 16px;">
+            <p>Câu hỏi vàng (Tích hợp)</p>
+            <strong>“Hệ thống có tích hợp với hệ thống nào? Internal hay External — để làm gì?”</strong>
+          </div>
+        </div>
+        <div class="lesson-block">
+          <div class="block-subtitle">Ví dụ</div>
+          <div class="block-title">LMS — Khái quát hệ thống</div>
+          <p class="section-desc">
+            <strong>LMS</strong> — quản lý và cung cấp đào tạo trực tuyến. <strong>Mục đích doanh nghiệp:</strong> kết nối người dạy — người học — đơn vị đào tạo trên một nền tảng số.
+          </p>
+          <table class="mapping-table">
+            <thead>
+              <tr>
+                <th>Portal</th>
+                <th>Web / App / CMS</th>
+                <th>Ai dùng (sơ bộ)</th>
+                <th>Làm gì?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="role-cell">Admin Portal</td>
+                <td><span class="tag tag-blue">Web</span> <span class="tag tag-blue">CMS</span></td>
+                <td>Admin, School, Teacher</td>
+                <td>Quản trị, quản lý khóa/lớp, soạn &amp; đăng bài, chấm điểm</td>
+              </tr>
+              <tr>
+                <td class="role-cell">User Portal</td>
+                <td><span class="tag tag-green">Web</span> <span class="tag tag-green">Mobile App</span></td>
+                <td>Học viên</td>
+                <td>Học bài, làm quiz, nộp bài, xem điểm</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="system-tree" style="margin-top: 14px;">
+            <strong>LMS — Sơ đồ Portal</strong><br>
+            Hệ thống LMS<br>
+            ├── <strong>Admin Portal</strong> (Web + CMS)<br>
+            │&nbsp;&nbsp;&nbsp;└── Admin · School · Teacher<br>
+            └── <strong>User Portal</strong><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;├── Web → Học viên<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;└── Mobile App → Học viên
+          </div>
+          <div class="block-title" style="margin-top:20px;">LMS — Tích hợp</div>
+          <p class="section-desc">Ví dụ một LMS doanh nghiệp có thể kết nối các hệ thống sau:</p>
+          <table class="mapping-table integration-table">
+            <thead>
+              <tr>
+                <th>Hệ thống tích hợp</th>
+                <th>Khái quát</th>
+                <th>Mục đích tích hợp</th>
+                <th>Internal / External</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="role-cell">Hệ thống HRM</td>
+                <td>Hệ thống quản lý nhân sự</td>
+                <td>Đồng bộ danh sách nhân viên / học viên nội bộ, phòng ban, chức danh — tránh nhập tay trùng lặp</td>
+                <td><span class="tag tag-internal">Internal</span></td>
+              </tr>
+              <tr>
+                <td class="role-cell">Udemy</td>
+                <td>Hệ thống học tập trực tuyến</td>
+                <td>Import hoặc liên kết khóa học có sẵn từ nền tảng bên ngoài vào LMS</td>
+                <td><span class="tag tag-external">External</span></td>
+              </tr>
+              <tr>
+                <td class="role-cell">Coursera</td>
+                <td>Hệ thống học tập trực tuyến</td>
+                <td>Mở rộng thư viện khóa học — học viên học nội dung Coursera qua cổng LMS</td>
+                <td><span class="tag tag-external">External</span></td>
+              </tr>
+              <tr>
+                <td class="role-cell">VNPay</td>
+                <td>Hệ thống thanh toán</td>
+                <td>Thu học phí, phí đăng ký khóa học trực tuyến an toàn</td>
+                <td><span class="tag tag-external">External</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- =========== PHẦN 2: SYSTEM ROLE =========== -->
+      <div class="card">
+        <div class="phase-badge">Phần 2</div>
+        <div class="section-title">System Role</div>
+        <p class="section-desc"><strong>Role</strong> = vai trò người dùng trong hệ thống. Mỗi Role có quyền hạn và công việc khác nhau — phân tích đúng Role giúp bạn không “trộn” chức năng của Admin với Học viên.</p>
+
+        <div class="lesson-block">
+          <div class="block-subtitle">Khung tư duy</div>
+          <div class="block-title">Cách xác định Role</div>
+          <ul class="bullets">
+            <li>Liệt kê <strong>tất cả đối tượng</strong> có tài khoản hoặc truy cập hệ thống</li>
+            <li>Mỗi đối tượng → gán <strong>1 Role</strong> (có thể có Role phụ: Teacher thường vs Teacher Leader)</li>
+            <li>Đánh dấu <strong>Primary user</strong> — nhóm dùng nhiều nhất, quyết định trải nghiệm chính</li>
+          </ul>
+          <div class="callout callout-amber">
+            <strong>Lưu ý:</strong> Role ≠ Job title ngoài đời. Trong hệ thống, cùng một người có thể có nhiều Role — nhưng khi phân tích function, hãy tách từng Role riêng.
+          </div>
+        </div>
+
+        <div class="lesson-block">
+          <div class="block-subtitle">Ví dụ</div>
+          <div class="block-title">4 Role chính trong hệ thống LMS</div>
+
+          <div class="role-cards">
+            <div class="role-card">
+              <div class="role-icon">🛡️</div>
+              <div class="role-name">Admin</div>
+              <div class="role-desc">Quản trị toàn hệ thống: cấu hình, phân quyền, bảo trì dữ liệu master.</div>
+            </div>
+            <div class="role-card">
+              <div class="role-icon">🏫</div>
+              <div class="role-name">School</div>
+              <div class="role-desc">Đơn vị đào tạo: quản lý khóa học, lớp, học viên và giáo viên thuộc trường.</div>
+            </div>
+            <div class="role-card">
+              <div class="role-icon">👩‍🏫</div>
+              <div class="role-name">Teacher</div>
+              <div class="role-desc">
+                <strong>Teacher thường:</strong> Dạy lớp, soạn bài, chấm điểm.<br>
+                <strong>Teacher Leader:</strong> Thêm quyền duyệt bài giảng, quản lý nhóm giáo viên.
+              </div>
+            </div>
+            <div class="role-card">
+              <div class="role-icon">🎒</div>
+              <div class="role-name">Học viên</div>
+              <div class="role-desc">Người học — Primary user: trải nghiệm học tập là trọng tâm sản phẩm.</div>
+            </div>
+          </div>
+
+          <table id="9999999" class="mapping-table" style="margin-top: 16px;">
+            <thead>
+              <tr>
+                <th>Role</th>
+                <th>Mô tả ngắn</th>
+                <th>Primary user?</th>
+                <th>Ghi chú</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="role-cell">Admin</td>
+                <td>Vận hành & cấu hình hệ thống cấp cao nhất</td>
+                <td>Không</td>
+                <td>Ít người, quyền cao nhất</td>
+              </tr>
+              <tr>
+                <td class="role-cell">School</td>
+                <td>Đại diện trường / trung tâm đào tạo</td>
+                <td>Không</td>
+                <td>Quản lý trong phạm vi trường mình</td>
+              </tr>
+              <tr>
+                <td class="role-cell">Teacher</td>
+                <td>Giáo viên giảng dạy trên LMS</td>
+                <td>Có ✓</td>
+                <td>Có 2 cấp: Teacher thường & Teacher Leader.Đối tượng trải nghiệm chính của Admin Site</td>
+              </tr>
+              <tr>
+                <td class="role-cell">Học viên</td>
+                <td>Người tham gia khóa học, học và làm bài</td>
+                <td><strong>Có ✓</strong></td>
+                <td>Đối tượng trải nghiệm chính của User Site</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="system-tree">
+            <strong>LMS — Sơ đồ Role</strong><br>
+            System LMS<br>
+            ├── <strong>Admin</strong> — toàn hệ thống<br>
+            ├── <strong>School</strong> — theo đơn vị đào tạo<br>
+            ├── <strong>Teacher</strong><br>
+            │&nbsp;&nbsp;&nbsp;├── Teacher thường (giảng dạy)<br>
+            │&nbsp;&nbsp;&nbsp;└── Teacher Leader (duyệt + giám sát)<br>
+            └── <strong>Học viên</strong> — Primary user ★
+          </div>
+        </div>
+      </div>
+      <!-- =========== PHẦN 3: FUNCTION / SCREEN LIST =========== -->
+      <div class="card">
+        <div class="phase-badge">Phần 3</div>
+        <div class="section-title">Function list & Screen list</div>
+        <p class="section-desc">Sau Khái quát và Role — liệt kê <strong>tổng quan</strong> những gì mỗi Role làm được (Function) và màn hình tương ứng (Screen). Chưa cần mô tả chi tiết từng luồng — việc đó ở Phần 4.</p>
+
+        <div class="lesson-block">
+          <div class="block-subtitle">Khung tư duy</div>
+          <div class="block-title">Function vs Screen — Quy tắc đơn giản</div>
+          <table class="mapping-table">
+            <thead>
+              <tr><th>Khái niệm</th><th>Định nghĩa</th><th>Ví dụ LMS</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="role-cell">Function</td>
+                <td>1 hành động user có thể thực hiện</td>
+                <td>Đăng nhập, Xem bài giảng, Nộp bài tập, Chấm điểm</td>
+              </tr>
+              <tr>
+                <td class="role-cell">Screen</td>
+                <td>Màn hình hiển thị khi thực hiện function (thường 1 function → 1 screen chính)</td>
+                <td>Login screen, Lesson detail screen, Submit assignment screen</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="callout callout-amber">
+            <strong>Quy tắc vàng:</strong> Viết function list <strong>theo từng Role</strong> — không trộn Admin với Học viên trong cùng một bảng.
+          </div>
+        </div>
+
+        <div class="lesson-block">
+          <div class="block-subtitle">Ví dụ</div>
+          <div class="block-title">Bảng Function list theo Role (LMS)</div>
+
+          <table class="mapping-table">
+            <thead>
+              <tr>
+                <th style="width:18%">Role</th>
+                <th>Function list (chức năng chính)</th>
+                <th style="width:28%">Screen list (màn hình tiêu biểu)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="role-cell">Admin</td>
+                <td>
+                  <ul class="func-list">
+                    <li>Login / Logout</li>
+                    <li>Quản lý tài khoản & phân quyền (User management)</li>
+                    <li>Cấu hình hệ thống (System settings)</li>
+                    <li>Quản lý master data (khóa học template, danh mục)</li>
+                    <li>Xem log & báo cáo tổng hợp</li>
+                  </ul>
+                </td>
+                <td>Login, User list, Permission settings, System config, Dashboard admin</td>
+              </tr>
+              <tr>
+                <td class="role-cell">School</td>
+                <td>
+                  <ul class="func-list">
+                    <li>Quản lý thông tin trường / trung tâm</li>
+                    <li>Tạo & quản lý khóa học, lớp học</li>
+                    <li>Đăng ký / gán học viên, giáo viên vào lớp</li>
+                    <li>Xem báo cáo tiến độ theo trường</li>
+                  </ul>
+                </td>
+                <td>School profile, Course list, Class management, Enrollment, School report</td>
+              </tr>
+              <tr>
+                <td class="role-cell">Teacher</td>
+                <td>
+                  <ul class="func-list">
+                    <li>Đăng ký / upload bài giảng (Lesson register)</li>
+                    <li>Soạn nội dung bài học (video, slide, tài liệu)</li>
+                    <li>Giao bài tập & quiz cho lớp</li>
+                    <li>Chấm điểm & phản hồi bài nộp</li>
+                    <li>Xem danh sách & tiến độ học viên trong lớp</li>
+                  </ul>
+                </td>
+                <td>My classes, Lesson editor, Assignment create, Grading screen, Student progress</td>
+              </tr>
+              <tr>
+                <td class="role-cell">Teacher Leader</td>
+                <td>
+                  <ul class="func-list">
+                    <li>Tất cả function của Teacher, cộng thêm:</li>
+                    <li>Duyệt / từ chối bài giảng của giáo viên (Approve lesson)</li>
+                    <li>Quản lý nhóm giáo viên (Team management)</li>
+                    <li>Xem báo cáo chất lượng giảng dạy</li>
+                  </ul>
+                </td>
+                <td>Lesson approval queue, Teacher team list, Quality report</td>
+              </tr>
+              <tr>
+                <td class="role-cell">Học viên</td>
+                <td>
+                  <ul class="func-list">
+                    <li>Đăng ký / Đăng nhập</li>
+                    <li>Xem danh sách khóa học đã đăng ký</li>
+                    <li>Xem bài giảng (video, tài liệu)</li>
+                    <li>Làm quiz & nộp bài tập</li>
+                    <li>Xem điểm, tiến độ, chứng chỉ</li>
+                  </ul>
+                </td>
+                <td>Login, My courses, Lesson player, Quiz / Submit, Grade & certificate</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="callout callout-purple">
+            <strong>Gợi ý:</strong> Bảng trên là <strong>danh sách tổng quan</strong> theo Role. Phần 4 — chọn <strong>1 primary role</strong> và mô tả <strong>1–2 user flow</strong> + <strong>1–2 màn hình chính</strong> ở mức khái quát (kèm ảnh chụp màn hình).
+          </div>
+        </div>
+      </div>
+
+      <!-- =========== PHẦN 4: USER FLOW & SCREEN DETAIL =========== -->
+      <div class="card">
+        <div class="phase-badge">Phần 4</div>
+        <div class="section-title">User Flow &amp; Screen Detail</div>
+        <p class="section-desc">Mô tả <strong>1–2 user flow</strong> và <strong>1–2 màn hình chính</strong> thường dùng nhất — của <strong>1 role primary</strong> bạn chọn tìm hiểu trước. Đây là bước “đi vào thực tế” sau khi đã có function/screen list tổng quan.</p>
+
+        <div class="lesson-block">
+          <div class="block-subtitle">Khung tư duy</div>
+          <p class="mindframe-intro">
+            Ở giai đoạn <strong>khái quát</strong>, bạn <em>không cần</em> mô tả hết mọi luồng và mọi màn hình. Hãy chọn lọc:
+          </p>
+          <ul class="bullets">
+            <li><strong>1 Role primary</strong> — role dùng nhiều nhất, quyết định trải nghiệm chính (VD: Học viên trong LMS).</li>
+            <li><strong>1–2 User flow chính</strong> — chuỗi bước user làm để hoàn thành <em>1 nhiệm vụ nghiệp vụ quan trọng</em> (VD: hoàn thành 1 bài học).</li>
+            <li><strong>1–2 Màn hình chính</strong> — màn hình xuất hiện nhiều nhất hoặc quan trọng nhất trong flow đó; ghi các item/event chính + <strong>capture ảnh màn hình</strong>.</li>
+          </ul>
+          <table class="mapping-table" style="margin-top:14px;">
+            <thead>
+              <tr><th>Khái niệm</th><th>Ý nghĩa</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="role-cell">User Flow</td>
+                <td>Chuỗi bước user đi qua để xong <strong>1 việc</strong> — viết dạng mũi tên: A → B → C</td>
+              </tr>
+              <tr>
+                <td class="role-cell">Screen Detail</td>
+                <td>Mô tả <strong>chi tiết 1 màn hình</strong>: field, nút, luồng con, rule hiển thị — kèm ảnh chụp màn hình thật</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="callout callout-amber" style="margin-top:14px;">
+            <strong>Khi nào làm chi tiết hơn?</strong> Nếu thời gian tìm hiểu dự án <strong>dài</strong> và được yêu cầu <strong>tài liệu chi tiết</strong> (spec đầy đủ, test case…) — lúc đó mới mở rộng thêm flow/màn hình. Ở bài này, mình chỉ hướng dẫn <strong>khái quát</strong>: 1–2 flow, 1–2 màn hình là đủ để onboard nhanh.
+          </div>
+          <div class="golden-question" style="margin-top: 16px;">
+            <p>Câu hỏi vàng</p>
+            <strong>“Role primary là ai? 1–2 việc họ làm nhiều nhất là gì — và màn hình nào họ ở lâu nhất?”</strong>
+          </div>
+        </div>
+
+        <div class="lesson-block">
+          <div class="block-subtitle">Ví dụ</div>
+          <div class="block-title">LMS — User Flow &amp; Screen Detail (mức khái quát)</div>
+          <p class="section-desc">Chọn <strong>primary role</strong> trước, rồi mới viết flow và màn hình tiêu biểu.</p>
+          <div class="role-pick">Role: Học viên ★ (Primary user)</div>
+
+          <div class="subsection-bar">User flow tiêu biểu (của 1 role cần tìm hiểu trước)</div>
+          <p class="section-desc" style="margin-top:0;">Viết <strong>1–2</strong> luồng chính — không cần liệt kê hết mọi thao tác trong hệ thống.</p>
+
+          <p class="flow-label">User flow 1: Học viên hoàn thành 1 bài học</p>
+          <div class="flow-visual">
+            <span class="flow-step">Login</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step">My courses</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step">Chọn bài giảng</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step">Xem video</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step">Làm quiz</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step">Xem điểm</span>
+          </div>
+
+          <p class="flow-label" style="margin-top:18px;">User flow 2 (tuỳ chọn): Teacher chấm 1 bài tập</p>
+          <p class="section-desc" style="font-size:13px;margin-bottom:8px;">Nếu cần hiểu thêm role vận hành — có thể chọn <strong>1 flow phụ</strong> (không bắt buộc ở giai đoạn đầu).</p>
+          <div class="role-pick" style="background:#EDE9FE;color:#5B21B6;">Role: Teacher</div>
+          <div class="flow-visual">
+            <span class="flow-step">Login</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step">My classes</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step">Danh sách bài nộp</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step">Màn chấm điểm</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step">Gửi điểm &amp; feedback</span>
+          </div>
+
+          <div class="subsection-bar">Màn hình tiêu biểu (1–2 màn hình của role chính — ưu tiên tìm hiểu trước)</div>
+          <p class="section-desc" style="margin-top:0;">Giải thích các <strong>item / event</strong> trên màn hình, kèm <strong>capture ảnh</strong> màn hình thật (staging hoặc production được phép).</p>
+
+
+        </div>
+      </div>
+
+      <!-- =========== PHẦN 5: GLOSSARY & ĐIỂM CẦN XÁC NHẬN =========== -->
+      <div class="card">
+        <div class="phase-badge">Phần 5</div>
+        <div class="section-title">Glossary &amp; Điểm cần xác nhận</div>
+        <p class="section-desc">Bước cuối khi tìm hiểu hệ thống — đặc biệt quan trọng khi làm dự án <strong>Nhật Bản / nước ngoài</strong>: gom thuật ngữ và những gì bạn <strong>chưa chắc</strong> vào một chỗ, sẵn sàng hỏi khách hàng hoặc team.</p>
+
+        <div class="lesson-block">
+          <div class="block-subtitle">Khung tư duy</div>
+
+          <div class="block-title">A. Glossary — Bảng thuật ngữ dự án</div>
+          <p class="mindframe-intro" style="margin-bottom: 12px;">
+            Tài liệu, màn hình, họp kick-off thường dùng thuật ngữ nghiệp vụ hoặc tiếng Nhật. Bạn cần một <strong>bảng thuật ngữ (Glossary)</strong> để đọc hiểu ngay từ đầu — không phải tra cứu rời rạc mỗi lần gặp từ mới.
+          </p>
+          <ul class="bullets">
+            <li><strong>Lấy từ đâu?</strong> Tài liệu dự án có sẵn (BRD, spec, slide), màn hình hệ thống, biên bản họp, email khách hàng.</li>
+            <li><strong>Có thể dùng AI</strong> hỗ trợ liệt kê &amp; giải thích — nhưng <em>luôn đối chiếu</em> với tài liệu chính thức hoặc hỏi lại PM/BrSE.</li>
+            <li><strong>Cột gợi ý:</strong> Thuật ngữ (JP/EN) · Tiếng Việt · Ghi chú / ví dụ trong hệ thống.</li>
+          </ul>
+
+          <div class="block-title" style="margin-top: 20px;">B. Điểm cần xác nhận</div>
+          <p class="mindframe-intro" style="margin-bottom: 12px;">
+            Trong quá trình phân tích (Phần 1–4), bạn sẽ gặp chỗ <strong>chưa rõ, chưa hiểu, hoặc tài liệu mâu thuẫn</strong>. Đừng bỏ qua — ghi hết vào <strong>một mục “Điểm cần xác nhận”</strong>.
+          </p>
+          <ul class="bullets">
+            <li>Mỗi dòng = một câu hỏi / một giả định cần khách hàng hoặc team xác nhận.</li>
+            <li>Khi <strong>trình bày lại hiểu biết</strong> (walkthrough, onboarding) → dùng list này để hỏi luôn, tránh hiểu sai sang giai đoạn spec/test.</li>
+            <li>Gợi ý ghi kèm: <em>hỏi ai</em> (PM, khách hàng, dev) · <em>ưu tiên</em> (cao / trung bình).</li>
+          </ul>
+          <div class="callout callout-green">
+            <strong>Thói quen BrSE:</strong> Glossary và Điểm cần xác nhận cập nhật <strong>liên tục</strong> — không chỉ làm một lần rồi bỏ quên.
+          </div>
+        </div>
+
+        <div class="lesson-block">
+          <div class="block-subtitle">Ví dụ</div>
+          <div class="block-title">LMS — Glossary &amp; Điểm cần xác nhận (mẫu)</div>
+
+          <p class="section-desc" style="margin-bottom: 10px;"><strong>Glossary</strong> — một phần thuật ngữ thường gặp:</p>
+          <table class="mapping-table glossary-table">
+            <thead>
+              <tr>
+                <th>Thuật ngữ (JP)</th>
+                <th>Tiếng Việt</th>
+                <th>Ghi chú / ví dụ trong LMS</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="jp-term">コース</td>
+                <td>Khóa học</td>
+                <td>Đơn vị đào tạo lớn — gồm nhiều bài giảng / module</td>
+              </tr>
+              <tr>
+                <td class="jp-term">授業・レッスン</td>
+                <td>Bài giảng</td>
+                <td>Lesson — video, slide, tài liệu học</td>
+              </tr>
+              <tr>
+                <td class="jp-term">受講</td>
+                <td>Đăng ký / tham gia học</td>
+                <td>Enrollment — gán học viên vào khóa/lớp</td>
+              </tr>
+              <tr>
+                <td class="jp-term">課題</td>
+                <td>Bài tập</td>
+                <td>Assignment — học viên nộp, giáo viên chấm</td>
+              </tr>
+              <tr>
+                <td class="jp-term">修了</td>
+                <td>Hoàn thành khóa</td>
+                <td>Course completion — đủ điều kiện cấp chứng chỉ</td>
+              </tr>
+              <tr>
+                <td class="jp-term">受講者</td>
+                <td>Học viên</td>
+                <td>Learner — primary user của User portal</td>
+              </tr>
+              <tr>
+                <td class="jp-term">管理者</td>
+                <td>Quản trị viên</td>
+                <td>Admin — cấu hình hệ thống, phân quyền</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p class="section-desc" style="margin-top: 18px; margin-bottom: 10px;"><strong>Điểm cần xác nhận</strong> — ví dụ khi mới onboard LMS:</p>
+          <ul class="confirm-list">
+            <li><strong>Teacher Leader</strong> có tài khoản portal riêng hay dùng chung Admin portal với Teacher thường?</li>
+            <li>Học viên <strong>bắt buộc</strong> dùng Mobile App hay chỉ học trên Web cũng được?</li>
+            <li>Tích hợp <strong>Udemy / Coursera</strong>: đồng bộ khóa học tự động (API) hay import thủ công từng khóa?</li>
+            <li><strong>修了</strong> (hoàn thành khóa) được tính khi nào — đủ điểm quiz, hay phải xem hết 100% video?</li>
+            <li>Role <strong>School</strong> quản lý được bao nhiêu trường — một tenant hay nhiều trường con?</li>
+          </ul>
+          <div class="callout callout-amber" style="margin-top: 14px;">
+            <strong>Khi họp khách hàng:</strong> Mở file Excel → tab Glossary &amp; Điểm cần xác nhận → đi từng dòng. Đây là cách thể hiện bạn <em>chủ động</em> và <em>cẩn thận</em> — rất được đánh giá cao ở dự án offshore.
+          </div>
+        </div>
+      </div>
+      <!-- =========== TEMPLATE / THỰC HÀNH =========== -->
+      <div class="card">
+        <div class="section-label">Áp dụng thực tế</div>
+        <div class="section-title">Template phân tích — Bước tiếp theo của bạn</div>
+        <p class="section-desc">Bài học vừa rồi là <strong>mẫu phân tích hoàn chỉnh</strong> cho LMS. Giờ hãy áp dụng cùng khung cho hệ thống bạn đang làm việc.</p>
+
+        <div class="lesson-block">
+          <div class="block-title">6 mục trong template Excel (sau bài học)</div>
+          <ul class="bullets">
+            <li><strong>1. Khái quát hệ thống</strong> — Mục đích; portal; Web/App/CMS; tích hợp (nếu có)</li>
+            <li><strong>2. Role</strong> — Ai dùng? Primary user là ai?</li>
+            <li><strong>3. Function / Screen list</strong> — Theo từng Role</li>
+            <li><strong>4. User Flow & Screen Detail</strong> — 1 primary role; 1–2 flow; 1–2 màn hình + ảnh</li>
+            <li><strong>5. Glossary & Điểm cần xác nhận</strong> — JP/VI; câu hỏi cần hỏi lại</li>
+            <li><strong>6. Checklist hoàn thành</strong> — Đủ 5 mục trên trước khi onboard</li>
+          </ul>
+          <div class="callout callout-green">
+            <strong>Thực hành:</strong> Giảng viên sẽ cung cấp <strong>file Excel template</strong> — bạn điền cho dự án thật của mình. Mục tiêu: trong 1 tuần bạn có bản phân tích đủ để onboard.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========== CLOSING =========== -->
+    <section id="closing">
+      <div class="closing">
+        <div class="section-label">Kết bài</div>
+        <div class="closing-title">Bạn đã có "đôi mắt" để nhìn hệ thống</div>
+        <p class="closing-text">Chỉ với 6 phần — Khái quát → Role → Function/Screen → User Flow & Screen Detail → Glossary & Xác nhận — bạn có thể phân tích bất kỳ hệ thống nào mà không cần biết code. Hãy luyện với LMS hôm nay, rồi điền template Excel cho dự án thật của bạn.</p>
+
+        <div class="lesson-block">
+          <div class="block-title">7 ý chính cần nhớ — Sơ đồ tổng hợp</div>
+
+          <div class="memory-visual-wrap">
+            <p class="memory-visual-caption">Quy trình phân tích hệ thống từ góc nhìn User — đọc từ trái sang phải, theo thứ tự khi onboard dự án mới</p>
+
+            <svg class="memory-flow-svg" viewBox="0 0 900 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Sơ đồ 7 bước phân tích hệ thống">
+              <defs>
+                <linearGradient id="pathGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" style="stop-color:#1D4ED8;stop-opacity:0.15"/>
+                  <stop offset="100%" style="stop-color:#2D8B5E;stop-opacity:0.25"/>
+                </linearGradient>
+                <marker id="arrowHead" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                  <polygon points="0 0, 8 3, 0 6" fill="#94A3B8"/>
+                </marker>
+              </defs>
+              <path d="M 55 100 H 845" stroke="url(#pathGrad)" stroke-width="6" fill="none" stroke-linecap="round"/>
+              <path d="M 55 100 H 845" stroke="#CBD5E1" stroke-width="2" fill="none" stroke-dasharray="6 4" marker-end="url(#arrowHead)"/>
+              <circle cx="55" cy="100" r="32" fill="#FEF3C7" stroke="#F59E0B" stroke-width="2"/>
+              <text x="55" y="92" text-anchor="middle" font-size="20">&#127919;</text>
+              <text x="55" y="148" text-anchor="middle" font-size="11" font-weight="700" fill="#92400E">Mục đích</text>
+              <circle cx="185" cy="100" r="32" fill="#DBEAFE" stroke="#3B82F6" stroke-width="2"/>
+              <text x="185" y="92" text-anchor="middle" font-size="20">&#128101;</text>
+              <text x="185" y="148" text-anchor="middle" font-size="11" font-weight="700" fill="#1D4ED8">Role</text>
+              <circle cx="315" cy="100" r="32" fill="#DCFCE7" stroke="#22C55E" stroke-width="2"/>
+              <text x="315" y="92" text-anchor="middle" font-size="20">&#128682;</text>
+              <text x="315" y="148" text-anchor="middle" font-size="11" font-weight="700" fill="#166534">Portal</text>
+              <circle cx="445" cy="100" r="32" fill="#EDE9FE" stroke="#8B5CF6" stroke-width="2"/>
+              <text x="445" y="92" text-anchor="middle" font-size="20">&#128279;</text>
+              <text x="445" y="148" text-anchor="middle" font-size="11" font-weight="700" fill="#5B21B6">Tích hợp</text>
+              <circle cx="575" cy="100" r="32" fill="#FFEDD5" stroke="#F97316" stroke-width="2"/>
+              <text x="575" y="92" text-anchor="middle" font-size="20">&#128203;</text>
+              <text x="575" y="148" text-anchor="middle" font-size="10" font-weight="700" fill="#9A3412">Function</text>
+              <circle cx="705" cy="100" r="32" fill="#E0E7FF" stroke="#6366F1" stroke-width="2"/>
+              <text x="705" y="92" text-anchor="middle" font-size="20">&#128740;</text>
+              <text x="705" y="148" text-anchor="middle" font-size="10" font-weight="700" fill="#4338CA">User Flow</text>
+              <circle cx="845" cy="100" r="32" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+              <text x="845" y="92" text-anchor="middle" font-size="20">&#128214;</text>
+              <text x="845" y="148" text-anchor="middle" font-size="10" font-weight="700" fill="#9D174D">Glossary</text>
+              <rect x="8" y="28" width="94" height="36" rx="10" fill="#1D4ED8"/>
+              <text x="55" y="50" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">GÓC NHÌN USER</text>
+              <path d="M 55 64 L 55 68" stroke="#1D4ED8" stroke-width="2"/>
+            </svg>
+
+            <div class="memory-grid">
+              <article class="memory-card memory-card-1">
+                <div class="memory-card-num">Ý 1</div>
+                <div class="memory-card-icon">&#127919;</div>
+                <div class="memory-card-title">Câu hỏi vàng</div>
+                <p class="memory-card-hint">Hệ thống được dùng để làm gì?</p>
+              </article>
+              <article class="memory-card memory-card-2">
+                <div class="memory-card-num">Ý 2</div>
+                <div class="memory-card-icon">&#128101;</div>
+                <div class="memory-card-title">Role</div>
+                <p class="memory-card-hint">Ai dùng? Primary user?</p>
+              </article>
+              <article class="memory-card memory-card-3">
+                <div class="memory-card-num">Ý 3</div>
+                <div class="memory-card-icon">&#128682;</div>
+                <div class="memory-card-title">Portal</div>
+                <p class="memory-card-hint">Admin vs User · Web/App/CMS</p>
+              </article>
+              <article class="memory-card memory-card-4">
+                <div class="memory-card-num">Ý 4</div>
+                <div class="memory-card-icon">&#128279;</div>
+                <div class="memory-card-title">Tích hợp</div>
+                <p class="memory-card-hint">Internal / External</p>
+              </article>
+              <article class="memory-card memory-card-5">
+                <div class="memory-card-num">Ý 5</div>
+                <div class="memory-card-icon">&#128203;</div>
+                <div class="memory-card-title">Function &amp; Screen</div>
+                <p class="memory-card-hint">Theo từng Role — không trộn</p>
+              </article>
+              <article class="memory-card memory-card-6">
+                <div class="memory-card-num">Ý 6</div>
+                <div class="memory-card-icon">&#128740;</div>
+                <div class="memory-card-title">User Flow &amp; Detail</div>
+                <p class="memory-card-hint">1 primary role · 1–2 flow · 1–2 màn hình</p>
+              </article>
+              <article class="memory-card memory-card-7">
+                <div class="memory-card-num">Ý 7</div>
+                <div class="memory-card-icon">&#128214;</div>
+                <div class="memory-card-title">Glossary &amp; Xác nhận</div>
+                <p class="memory-card-hint">Thuật ngữ JP/VI · Câu hỏi cần hỏi lại khách hàng</p>
+              </article>
+            </div>
+          </div>
+
+
+                <div class="closing-actions">
+          <a class="btn btn-primary" href="#cover">↑ Về đầu trang</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      <p class="header-trainer">Quỳnh Nga BrSE Japan — Đồng Hành Cùng Bạn</p>
+      <p style="margin-top:6px;">Training IT cho người mới · Thực tế · Dễ hiểu · Có chiều sâu</p>
+    </div>
+  </div>
+</body>
+</html>

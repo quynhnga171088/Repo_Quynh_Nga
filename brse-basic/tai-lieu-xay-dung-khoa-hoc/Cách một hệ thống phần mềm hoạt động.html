@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cách Một Hệ Thống Phần Mềm Hoạt Động</title>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f0e8;
+    --bg2: #ebe5d5;
+    --bg3: #fff8ee;
+    --ink: #1a1208;
+    --ink2: #3d2e0e;
+    --ink3: #6b5a3e;
+    --accent: #c8420a;
+    --accent2: #1a6b8a;
+    --accent3: #2a8a3e;
+    --accent4: #7a2a8a;
+    --gold: #c8920a;
+    --border: #c8b89a;
+    --shadow: rgba(26,18,8,0.12);
+    --user-color: #1a6b8a;
+    --frontend-color: #2a8a3e;
+    --backend-color: #c8420a;
+    --db-color: #7a2a8a;
+    --integration-color: #c8920a;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--ink);
+    color: var(--bg);
+    padding: 56px 40px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: rgba(200,66,10,0.18);
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: 20%;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(26,107,138,0.15);
+  }
+  .header-badge {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 2px;
+    margin-bottom: 20px;
+  }
+  .header h1 {
+    font-family: 'Merriweather', serif;
+    font-size: clamp(26px, 5vw, 44px);
+    font-weight: 900;
+    line-height: 1.2;
+    max-width: 700px;
+    position: relative;
+    z-index: 1;
+  }
+  .header h1 span { color: #f5a060; }
+  .header-sub {
+    margin-top: 16px;
+    color: #c8b89a;
+    font-size: 15px;
+    max-width: 560px;
+    position: relative;
+    z-index: 1;
+  }
+  .header-meta {
+    margin-top: 28px;
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+  }
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #a89878;
+  }
+  .meta-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+
+  /* MAIN */
+  .main { max-width: 900px; margin: 0 auto; padding: 48px 24px 80px; }
+
+  /* INTRO */
+  .intro-box {
+    background: var(--bg3);
+    border-left: 5px solid var(--gold);
+    border-radius: 4px;
+    padding: 28px 32px;
+    margin-bottom: 48px;
+    box-shadow: 0 2px 12px var(--shadow);
+  }
+  .intro-box h2 {
+    font-family: 'Merriweather', serif;
+    font-size: 18px;
+    color: var(--ink2);
+    margin-bottom: 10px;
+  }
+  .intro-box p { color: var(--ink3); font-size: 15px; }
+  .intro-box .emoji { font-size: 28px; margin-bottom: 12px; display: block; }
+
+  /* SECTION TITLE */
+  .section-title {
+    font-family: 'Merriweather', serif;
+    font-size: 22px;
+    color: var(--ink);
+    margin-bottom: 8px;
+    padding-top: 8px;
+    border-top: 3px solid var(--accent);
+    display: inline-block;
+  }
+  .section-sub { color: var(--ink3); font-size: 14px; margin-bottom: 28px; }
+
+  /* FLOWCHART */
+  .flowchart-section { margin-bottom: 56px; }
+  .flowchart-wrap {
+    background: white;
+    border-radius: 8px;
+    border: 1.5px solid var(--border);
+    padding: 36px 20px;
+    box-shadow: 0 4px 24px var(--shadow);
+    overflow-x: auto;
+  }
+
+  .flow-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    min-width: 520px;
+  }
+
+  /* FLOW NODE */
+  .flow-node {
+    width: 100%;
+    max-width: 560px;
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 3px 16px rgba(0,0,0,0.10);
+    border: 1.5px solid rgba(0,0,0,0.08);
+    animation: fadeSlide 0.5s ease both;
+  }
+
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .flow-node:nth-child(1) { animation-delay: 0.05s; }
+  .flow-node:nth-child(3) { animation-delay: 0.15s; }
+  .flow-node:nth-child(5) { animation-delay: 0.25s; }
+  .flow-node:nth-child(7) { animation-delay: 0.35s; }
+  .flow-node:nth-child(9) { animation-delay: 0.45s; }
+
+  .node-icon {
+    width: 68px;
+    min-width: 68px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    color: white;
+  }
+  .node-body {
+    flex: 1;
+    padding: 16px 20px;
+  }
+  .node-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    opacity: 0.65;
+    margin-bottom: 3px;
+  }
+  .node-title {
+    font-family: 'Merriweather', serif;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+  .node-desc { font-size: 13px; opacity: 0.8; }
+
+  /* COLORS PER LAYER */
+  .node-user .node-icon { background: var(--user-color); }
+  .node-user { background: #e8f4fa; }
+  .node-user .node-title { color: var(--user-color); }
+
+  .node-frontend .node-icon { background: var(--frontend-color); }
+  .node-frontend { background: #e8f5ec; }
+  .node-frontend .node-title { color: var(--frontend-color); }
+
+  .node-backend .node-icon { background: var(--backend-color); }
+  .node-backend { background: #fdf0eb; }
+  .node-backend .node-title { color: var(--backend-color); }
+
+  .node-db .node-icon { background: var(--db-color); }
+  .node-db { background: #f5ebfa; }
+  .node-db .node-title { color: var(--db-color); }
+
+  .node-integration .node-icon { background: var(--integration-color); }
+  .node-integration { background: #fdf5e0; }
+  .node-integration .node-title { color: var(--integration-color); }
+
+  /* ARROW */
+  .flow-arrow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    padding: 4px 0;
+    animation: fadeIn 0.4s ease both;
+  }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  .arrow-line {
+    width: 2px;
+    height: 22px;
+    background: linear-gradient(to bottom, #aaa, #555);
+  }
+  .arrow-head {
+    width: 0; height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 10px solid #555;
+  }
+  .arrow-label {
+    font-size: 11px;
+    color: var(--ink3);
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2px 12px;
+    margin-bottom: 4px;
+    white-space: nowrap;
+  }
+
+  /* BIDIRECTIONAL */
+  .flow-arrow-bi {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 4px 0;
+  }
+  .bi-wrap { display: flex; flex-direction: column; align-items: center; }
+  .arrow-up-head {
+    width: 0; height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 10px solid #888;
+  }
+  .arrow-both-line {
+    width: 2px;
+    height: 14px;
+    background: #aaa;
+  }
+
+  /* DETAIL SECTIONS */
+  .detail-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+    margin-bottom: 48px;
+  }
+  .detail-card {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px var(--shadow);
+    border: 1.5px solid var(--border);
+    animation: fadeSlide 0.4s ease both;
+  }
+  .card-header {
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: white;
+    font-weight: 700;
+    font-size: 14px;
+  }
+  .card-header .icon { font-size: 20px; }
+  .card-body { background: white; padding: 18px 20px; }
+  .card-body ul { list-style: none; }
+  .card-body ul li {
+    padding: 7px 0;
+    border-bottom: 1px solid #f0ebe0;
+    font-size: 14px;
+    color: var(--ink2);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .card-body ul li:last-child { border-bottom: none; }
+  .li-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    margin-top: 7px;
+    flex-shrink: 0;
+  }
+
+  /* ANALOGY BOX */
+  .analogy-section { margin-bottom: 48px; }
+  .analogy-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+  }
+  .analogy-card {
+    background: white;
+    border-radius: 8px;
+    border: 1.5px solid var(--border);
+    padding: 20px 16px;
+    text-align: center;
+    box-shadow: 0 2px 8px var(--shadow);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: default;
+  }
+  .analogy-card:hover { transform: translateY(-3px); box-shadow: 0 6px 20px var(--shadow); }
+  .analogy-emoji { font-size: 36px; margin-bottom: 10px; }
+  .analogy-from { font-weight: 700; font-size: 14px; color: var(--ink); margin-bottom: 4px; }
+  .analogy-arrow { font-size: 12px; color: var(--ink3); margin-bottom: 4px; }
+  .analogy-to { font-size: 13px; color: var(--ink3); }
+
+  /* EXAMPLE FLOW */
+  .example-section { margin-bottom: 48px; }
+  .example-box {
+    background: white;
+    border-radius: 8px;
+    border: 1.5px solid var(--border);
+    overflow: hidden;
+    box-shadow: 0 3px 16px var(--shadow);
+  }
+  .example-header {
+    background: var(--ink);
+    color: white;
+    padding: 14px 24px;
+    font-family: 'Merriweather', serif;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .example-steps { padding: 8px 0; }
+  .example-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    padding: 12px 24px;
+    border-bottom: 1px solid #f0ebe0;
+    transition: background 0.15s;
+    cursor: default;
+  }
+  .example-step:hover { background: #fafaf7; }
+  .example-step:last-child { border-bottom: none; }
+  .step-num {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; color: white;
+    flex-shrink: 0;
+    margin-right: 14px;
+    margin-top: 1px;
+  }
+  .step-layer {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+  .step-action { font-size: 14px; color: var(--ink2); }
+
+  /* LEGEND */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 32px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 13px;
+    color: var(--ink2);
+  }
+  .legend-dot {
+    width: 12px; height: 12px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  /* KEY CONCEPTS */
+  .concepts-section { margin-bottom: 48px; }
+  .concepts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+  }
+  .concept-card {
+    background: var(--bg3);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 16px;
+    box-shadow: 0 1px 6px var(--shadow);
+  }
+  .concept-term {
+    font-family: 'Merriweather', serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .concept-def { font-size: 13px; color: var(--ink3); }
+
+  /* FOOTER */
+  .footer {
+    background: var(--ink);
+    color: #a89878;
+    text-align: center;
+    padding: 28px;
+    font-size: 13px;
+  }
+  .footer strong { color: #f5a060; }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .header { padding: 36px 20px 32px; }
+    .main { padding: 32px 16px 60px; }
+    .node-icon { width: 52px; min-width: 52px; font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-badge">📘 Tài Liệu Giảng Dạy</div>
+  <h1>Cách Một Hệ Thống <span>Phần Mềm</span> Hoạt Động</h1>
+  <p class="header-sub">Giải thích đơn giản, dễ hiểu — dành cho người chưa có kiến thức kỹ thuật. Từ "nhấn nút" đến "dữ liệu được lưu" — tất cả diễn ra thế nào?</p>
+  <div class="header-meta">
+    <div class="meta-item"><div class="meta-dot"></div> Cấp độ: Người mới bắt đầu</div>
+    <div class="meta-item"><div class="meta-dot" style="background:var(--accent2)"></div> Thời lượng: ~45 phút</div>
+    <div class="meta-item"><div class="meta-dot" style="background:var(--accent3)"></div> Giảng viên: 30 năm kinh nghiệm</div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- INTRO -->
+  <div class="intro-box">
+    <span class="emoji">🏪</span>
+    <h2>Hãy tưởng tượng một cửa hàng tiện lợi hiện đại</h2>
+    <p>Khi bạn bước vào, bạn thấy <strong>kệ hàng đẹp đẽ</strong> (giao diện). Bạn nói với <strong>nhân viên thu ngân</strong> điều bạn muốn (backend xử lý). Nhân viên tra cứu <strong>kho hàng</strong> phía sau (database). Và cửa hàng còn kết nối với <strong>ngân hàng, nhà cung cấp</strong> (tích hợp). Một hệ thống phần mềm hoạt động y hệt như vậy!</p>
+  </div>
+
+  <!-- FLOWCHART -->
+  <div class="flowchart-section">
+    <div class="section-title">📊 Sơ Đồ Luồng Hệ Thống</div>
+    <p class="section-sub">Hành trình từ khi người dùng "nhấn nút" đến khi nhận được kết quả</p>
+
+    <div class="flowchart-wrap">
+      <div class="flow-container">
+
+        <!-- USER -->
+        <div class="flow-node node-user">
+          <div class="node-icon">👤</div>
+          <div class="node-body">
+            <div class="node-label">Tầng 1</div>
+            <div class="node-title">Người Dùng (User)</div>
+            <div class="node-desc">Bạn — người sử dụng ứng dụng trên điện thoại, máy tính, hoặc trình duyệt web</div>
+          </div>
+        </div>
+
+        <div class="flow-arrow">
+          <div class="arrow-label">📱 Gõ, nhấn, chạm → Gửi yêu cầu</div>
+          <div class="arrow-line"></div>
+          <div class="arrow-head"></div>
+        </div>
+
+        <!-- FRONTEND -->
+        <div class="flow-node node-frontend">
+          <div class="node-icon">🖥️</div>
+          <div class="node-body">
+            <div class="node-label">Tầng 2</div>
+            <div class="node-title">Frontend — Giao Diện</div>
+            <div class="node-desc">Phần bạn nhìn thấy và chạm vào: nút bấm, hình ảnh, biểu mẫu, màu sắc. Giống như "mặt tiền cửa hàng"</div>
+          </div>
+        </div>
+
+        <div class="flow-arrow">
+          <div class="arrow-label">🌐 Gửi yêu cầu qua Internet (API Request)</div>
+          <div class="arrow-line"></div>
+          <div class="arrow-head"></div>
+        </div>
+
+        <!-- BACKEND -->
+        <div class="flow-node node-backend">
+          <div class="node-icon">⚙️</div>
+          <div class="node-body">
+            <div class="node-label">Tầng 3 — Trung Tâm Xử Lý</div>
+            <div class="node-title">Backend — Logic Nghiệp Vụ</div>
+            <div class="node-desc">Bộ não của hệ thống: kiểm tra quyền, tính toán, xử lý nghiệp vụ. Giống như "nhân viên phía sau quầy"</div>
+          </div>
+        </div>
+
+        <!-- BACKEND SPLITS -->
+        <div class="flow-arrow">
+          <div class="arrow-label">🔀 Đồng thời truy xuất dữ liệu & gọi dịch vụ ngoài</div>
+          <div class="arrow-line"></div>
+          <div class="arrow-head"></div>
+        </div>
+
+        <!-- DB + INTEGRATION ROW -->
+        <div style="display:flex; gap:16px; width:100%; max-width:560px;">
+          <div style="flex:1; display:flex; flex-direction:column; gap:0;">
+            <div class="flow-node node-db" style="max-width:100%">
+              <div class="node-icon" style="width:52px;min-width:52px;font-size:22px;">🗄️</div>
+              <div class="node-body" style="padding:12px 14px;">
+                <div class="node-label">Tầng 4a</div>
+                <div class="node-title" style="font-size:14px;">Database</div>
+                <div class="node-desc" style="font-size:12px;">Kho lưu trữ toàn bộ dữ liệu: tài khoản, đơn hàng, lịch sử</div>
+              </div>
+            </div>
+          </div>
+          <div style="flex:1; display:flex; flex-direction:column; gap:0;">
+            <div class="flow-node node-integration" style="max-width:100%">
+              <div class="node-icon" style="width:52px;min-width:52px;font-size:22px;">🔗</div>
+              <div class="node-body" style="padding:12px 14px;">
+                <div class="node-label">Tầng 4b</div>
+                <div class="node-title" style="font-size:14px;">Tích Hợp</div>
+                <div class="node-desc" style="font-size:12px;">Kết nối bên ngoài: thanh toán, SMS, bản đồ, email</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flow-arrow-bi" style="margin:0;">
+          <div class="bi-wrap">
+            <div class="arrow-up-head"></div>
+            <div class="arrow-both-line"></div>
+            <div style="font-size:11px;color:#888;background:#f5f0e8;border:1px solid #c8b89a;border-radius:20px;padding:2px 12px;margin:2px 0;">↕️ Trả kết quả về Backend → Frontend → Màn hình</div>
+            <div class="arrow-both-line"></div>
+            <div class="arrow-head"></div>
+          </div>
+        </div>
+
+        <!-- RESPONSE TO USER -->
+        <div class="flow-node node-user">
+          <div class="node-icon">✅</div>
+          <div class="node-body">
+            <div class="node-label">Kết Quả</div>
+            <div class="node-title">Người Dùng Nhận Phản Hồi</div>
+            <div class="node-desc">Màn hình cập nhật: thông báo thành công, hiển thị dữ liệu, chuyển trang — tất cả trong vài giây!</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- LAYER DETAIL -->
+  <div class="section-title">🔍 Chi Tiết Từng Tầng</div>
+  <p class="section-sub">Mỗi tầng có vai trò riêng — như các bộ phận của một nhà hàng</p>
+
+  <div class="detail-grid">
+
+    <div class="detail-card">
+      <div class="card-header" style="background:var(--user-color);">
+        <span class="icon">👤</span> Người Dùng (User)
+      </div>
+      <div class="card-body">
+        <ul>
+          <li><span class="li-dot" style="background:var(--user-color)"></span>Dùng điện thoại, máy tính bảng, laptop</li>
+          <li><span class="li-dot" style="background:var(--user-color)"></span>Nhấn nút, điền form, vuốt màn hình</li>
+          <li><span class="li-dot" style="background:var(--user-color)"></span>Không thấy bất cứ thứ gì phía "hậu trường"</li>
+          <li><span class="li-dot" style="background:var(--user-color)"></span>Chỉ quan tâm đến kết quả: nhanh, đúng, đẹp</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="detail-card">
+      <div class="card-header" style="background:var(--frontend-color);">
+        <span class="icon">🖥️</span> Frontend — Giao Diện
+      </div>
+      <div class="card-body">
+        <ul>
+          <li><span class="li-dot" style="background:var(--frontend-color)"></span>Nút bấm, hình ảnh, màu sắc, bố cục</li>
+          <li><span class="li-dot" style="background:var(--frontend-color)"></span>Hiển thị thông tin từ backend lên màn hình</li>
+          <li><span class="li-dot" style="background:var(--frontend-color)"></span>Kiểm tra lỗi đơn giản (thiếu mật khẩu, email sai định dạng)</li>
+          <li><span class="li-dot" style="background:var(--frontend-color)"></span>Công nghệ: HTML, CSS, JavaScript, React, Flutter...</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="detail-card">
+      <div class="card-header" style="background:var(--backend-color);">
+        <span class="icon">⚙️</span> Backend — Xử Lý Logic
+      </div>
+      <div class="card-body">
+        <ul>
+          <li><span class="li-dot" style="background:var(--backend-color)"></span>Nhận yêu cầu từ frontend qua Internet</li>
+          <li><span class="li-dot" style="background:var(--backend-color)"></span>Xác thực: "Người này có quyền không?"</li>
+          <li><span class="li-dot" style="background:var(--backend-color)"></span>Tính toán: giá tiền, thuế, chiết khấu...</li>
+          <li><span class="li-dot" style="background:var(--backend-color)"></span>Gọi database & dịch vụ tích hợp</li>
+          <li><span class="li-dot" style="background:var(--backend-color)"></span>Công nghệ: Java, Python, Node.js, .NET...</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="detail-card">
+      <div class="card-header" style="background:var(--db-color);">
+        <span class="icon">🗄️</span> Database — Kho Dữ Liệu
+      </div>
+      <div class="card-body">
+        <ul>
+          <li><span class="li-dot" style="background:var(--db-color)"></span>Lưu trữ mọi thông tin: user, sản phẩm, đơn hàng</li>
+          <li><span class="li-dot" style="background:var(--db-color)"></span>Tìm kiếm cực nhanh trong hàng triệu bản ghi</li>
+          <li><span class="li-dot" style="background:var(--db-color)"></span>Đảm bảo dữ liệu không bị mất, không trùng lặp</li>
+          <li><span class="li-dot" style="background:var(--db-color)"></span>Công nghệ: MySQL, PostgreSQL, MongoDB...</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="detail-card" style="grid-column: 1 / -1;">
+      <div class="card-header" style="background:var(--integration-color);">
+        <span class="icon">🔗</span> Tích Hợp — Kết Nối Bên Ngoài (Third-party Integration)
+      </div>
+      <div class="card-body">
+        <ul style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:0;">
+          <li><span class="li-dot" style="background:var(--integration-color)"></span>💳 Cổng thanh toán: VNPay, Momo, Stripe</li>
+          <li><span class="li-dot" style="background:var(--integration-color)"></span>📧 Gửi email tự động: xác nhận đơn hàng</li>
+          <li><span class="li-dot" style="background:var(--integration-color)"></span>📱 Gửi SMS OTP xác thực</li>
+          <li><span class="li-dot" style="background:var(--integration-color)"></span>🗺️ Bản đồ: Google Maps tính đường giao hàng</li>
+          <li><span class="li-dot" style="background:var(--integration-color)"></span>🤖 AI: ChatGPT, nhận diện khuôn mặt</li>
+          <li><span class="li-dot" style="background:var(--integration-color)"></span>📦 Logistics: tra cứu vận chuyển thực tế</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ANALOGY -->
+  <div class="analogy-section">
+    <div class="section-title">🏪 Tương Tự Trong Thực Tế</div>
+    <p class="section-sub">Các tầng phần mềm giống y hệt một nhà hàng — giúp bạn nhớ mãi không quên</p>
+    <div class="analogy-grid">
+      <div class="analogy-card">
+        <div class="analogy-emoji">🪑</div>
+        <div class="analogy-from">Frontend</div>
+        <div class="analogy-arrow">tương đương</div>
+        <div class="analogy-to">Không gian nhà hàng, thực đơn, bàn ghế đẹp — thứ khách nhìn thấy</div>
+      </div>
+      <div class="analogy-card">
+        <div class="analogy-emoji">🧑‍🍳</div>
+        <div class="analogy-from">Backend</div>
+        <div class="analogy-arrow">tương đương</div>
+        <div class="analogy-to">Đầu bếp trong bếp — nhận order, nấu đúng công thức, kiểm tra chất lượng</div>
+      </div>
+      <div class="analogy-card">
+        <div class="analogy-emoji">🏪</div>
+        <div class="analogy-from">Database</div>
+        <div class="analogy-arrow">tương đương</div>
+        <div class="analogy-to">Kho chứa nguyên liệu — tủ đông, kệ thức ăn được sắp xếp ngăn nắp</div>
+      </div>
+      <div class="analogy-card">
+        <div class="analogy-emoji">🚚</div>
+        <div class="analogy-from">Tích Hợp</div>
+        <div class="analogy-arrow">tương đương</div>
+        <div class="analogy-to">Nhà cung cấp bên ngoài: hàng cá, rau củ, dịch vụ giao hàng...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXAMPLE FLOW -->
+  <div class="example-section">
+    <div class="section-title">📖 Ví Dụ Thực Tế: Đặt Hàng Trên Shopee</div>
+    <p class="section-sub">Theo dõi từng bước khi bạn nhấn "Đặt Mua" — điều gì xảy ra phía sau màn hình?</p>
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:var(--user-color)"></div> Người dùng</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--frontend-color)"></div> Frontend</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--backend-color)"></div> Backend</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--db-color)"></div> Database</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--integration-color)"></div> Tích hợp</div>
+    </div>
+    <div class="example-box">
+      <div class="example-header">🛒 Kịch bản: Bạn mua một đôi giày trên Shopee</div>
+      <div class="example-steps">
+        <div class="example-step">
+          <div class="step-num" style="background:var(--user-color)">1</div>
+          <div>
+            <div class="step-layer" style="color:var(--user-color)">👤 Người Dùng</div>
+            <div class="step-action">Bạn nhấn nút <strong>"Mua Ngay"</strong> → chọn size → nhấn <strong>"Đặt Hàng"</strong></div>
+          </div>
+        </div>
+        <div class="example-step">
+          <div class="step-num" style="background:var(--frontend-color)">2</div>
+          <div>
+            <div class="step-layer" style="color:var(--frontend-color)">🖥️ Frontend</div>
+            <div class="step-action">Giao diện kiểm tra: địa chỉ đã nhập chưa? Chọn size chưa? Nếu OK → đóng gói thông tin → gửi lên Internet</div>
+          </div>
+        </div>
+        <div class="example-step">
+          <div class="step-num" style="background:var(--backend-color)">3</div>
+          <div>
+            <div class="step-layer" style="color:var(--backend-color)">⚙️ Backend</div>
+            <div class="step-action">Nhận yêu cầu → kiểm tra bạn đã đăng nhập chưa → tính tổng tiền + phí ship + voucher giảm giá</div>
+          </div>
+        </div>
+        <div class="example-step">
+          <div class="step-num" style="background:var(--db-color)">4</div>
+          <div>
+            <div class="step-layer" style="color:var(--db-color)">🗄️ Database</div>
+            <div class="step-action">Tra cứu: giày size 42 còn hàng không? → Trừ tồn kho → Lưu đơn hàng mới vào hệ thống</div>
+          </div>
+        </div>
+        <div class="example-step">
+          <div class="step-num" style="background:var(--integration-color)">5</div>
+          <div>
+            <div class="step-layer" style="color:var(--integration-color)">🔗 Tích Hợp</div>
+            <div class="step-action">Gọi VNPay để xử lý thanh toán → Gọi Giao Hàng Nhanh để tạo vận đơn → Gửi SMS/email xác nhận cho bạn</div>
+          </div>
+        </div>
+        <div class="example-step">
+          <div class="step-num" style="background:var(--frontend-color)">6</div>
+          <div>
+            <div class="step-layer" style="color:var(--frontend-color)">🖥️ Frontend → 👤 Người Dùng</div>
+            <div class="step-action">Màn hình hiển thị: <strong>"Đặt hàng thành công! Mã đơn #SH12345 — Giao trong 2 ngày"</strong> 🎉</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KEY CONCEPTS -->
+  <div class="concepts-section">
+    <div class="section-title">📚 Thuật Ngữ Cần Nhớ</div>
+    <p class="section-sub">Những khái niệm bạn sẽ thường xuyên nghe trong ngành CNTT</p>
+    <div class="concepts-grid">
+      <div class="concept-card">
+        <div class="concept-term">API (Application Programming Interface)</div>
+        <div class="concept-def">Cầu nối để các tầng giao tiếp với nhau — như "ngôn ngữ chung" để frontend và backend "nói chuyện"</div>
+      </div>
+      <div class="concept-card">
+        <div class="concept-term">Server (Máy Chủ)</div>
+        <div class="concept-def">Máy tính cực mạnh chạy backend & database 24/7, không bao giờ tắt — như "nhà máy hoạt động liên tục"</div>
+      </div>
+      <div class="concept-card">
+        <div class="concept-term">Request / Response</div>
+        <div class="concept-def">Frontend gửi "Yêu cầu" (Request), Backend trả về "Phản hồi" (Response) — giống gọi điện và nghe máy trả lời</div>
+      </div>
+      <div class="concept-card">
+        <div class="concept-term">Authentication (Xác thực)</div>
+        <div class="concept-def">Kiểm tra "Bạn là ai?" — đăng nhập bằng email/mật khẩu, Google, hoặc Face ID</div>
+      </div>
+      <div class="concept-card">
+        <div class="concept-term">Cloud (Điện Toán Đám Mây)</div>
+        <div class="concept-def">Server đặt ở trung tâm dữ liệu khổng lồ thay vì mua máy chủ riêng — như thuê kho thay vì xây kho</div>
+      </div>
+      <div class="concept-card">
+        <div class="concept-term">Microservice</div>
+        <div class="concept-def">Tách backend thành nhiều dịch vụ nhỏ chuyên biệt — như chia nhà hàng thành bếp lạnh, bếp nóng, bếp bánh riêng biệt</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUMMARY -->
+  <div class="intro-box" style="border-left-color:var(--accent2); margin-bottom:0;">
+    <span class="emoji">🎯</span>
+    <h2>Tóm Tắt — Bức Tranh Tổng Thể</h2>
+    <p>Mọi ứng dụng — dù là Zalo, TikTok, hay hệ thống bệnh viện — đều hoạt động theo nguyên tắc này:<br><br>
+    <strong style="color:var(--user-color)">Người dùng</strong> tương tác với <strong style="color:var(--frontend-color)">Giao diện đẹp</strong> → Giao diện gửi yêu cầu đến <strong style="color:var(--backend-color)">Bộ xử lý thông minh</strong> → Bộ xử lý truy xuất <strong style="color:var(--db-color)">Kho dữ liệu</strong> và gọi <strong style="color:var(--integration-color)">Dịch vụ bên ngoài</strong> → Kết quả trả về màn hình trong vài giây.<br><br>
+    <em>Hiểu được bức tranh này, bạn đã nắm được nền tảng để học bất kỳ công nghệ nào trong ngành CNTT!</em></p>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <strong>Tài Liệu Giảng Dạy CNTT</strong> · Biên soạn bởi giảng viên với 30 năm kinh nghiệm · Dành cho người mới bắt đầu
+</div>
+
+</body>
+</html>

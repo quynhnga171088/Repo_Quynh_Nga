@@ -1,0 +1,46 @@
+{
+  "module_name": "Tên màn hình / chức năng (vd: Login Screen)",
+  "feature": "Tên module lớn (vd: User Management)",
+  "creator": "Tên người tạo",
+  "test_cases": [
+    {
+      "category": "Nhóm test case (vd: Đăng nhập thành công, Validation)",
+      "name": "Mô tả ngắn test case",
+      "precondition": "Điều kiện tiền đề (để trống nếu không có)",
+      "steps": "1. Bước đầu tiên\n2. Bước thứ hai\n3. Bước thứ ba",
+      "test_data": "Dữ liệu đầu vào (vd: Username: admin@school.com | Password: Admin@123)",
+      "expected_result": "Kết quả mong đợi cụ thể (vd: Hiển thị popup 'Lưu thành công')",
+      "priority": "Normal",
+      "note": "",
+      "results": {
+        "round1": {
+          "bug_id": "",
+          "env1": {"result": "", "tester": "", "date": ""},
+          "env2": {"result": "", "tester": "", "date": ""},
+          "env3": {"result": "", "tester": "", "date": ""},
+          "env4": {"result": "", "tester": "", "date": ""},
+          "env5": {"result": "", "tester": "", "date": ""},
+          "env6": {"result": "", "tester": "", "date": ""}
+        },
+        "round2": {
+          "bug_id": "",
+          "env1": {"result": "", "tester": "", "date": ""},
+          "env2": {"result": "", "tester": "", "date": ""},
+          "env3": {"result": "", "tester": "", "date": ""},
+          "env4": {"result": "", "tester": "", "date": ""},
+          "env5": {"result": "", "tester": "", "date": ""},
+          "env6": {"result": "", "tester": "", "date": ""}
+        },
+        "round3": {
+          "bug_id": "",
+          "env1": {"result": "", "tester": "", "date": ""},
+          "env2": {"result": "", "tester": "", "date": ""},
+          "env3": {"result": "", "tester": "", "date": ""},
+          "env4": {"result": "", "tester": "", "date": ""},
+          "env5": {"result": "", "tester": "", "date": ""},
+          "env6": {"result": "", "tester": "", "date": ""}
+        }
+      }
+    }
+  ]
+}

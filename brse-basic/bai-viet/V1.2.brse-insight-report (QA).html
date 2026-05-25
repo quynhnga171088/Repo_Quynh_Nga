@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Báo cáo Insight & Đề xuất Khoá học BrSE</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --ink:#16161e;
+  --ink2:#2c2c3a;
+  --muted:#6b6b82;
+  --muted2:#9898aa;
+  --border:#e4e4ec;
+  --bg:#f8f8fc;
+  --white:#ffffff;
+  --blue:#2563eb;
+  --blue-s:#eff6ff;
+  --blue-b:#bfdbfe;
+  --green:#16a34a;
+  --green-s:#f0fdf4;
+  --green-b:#bbf7d0;
+  --amber:#d97706;
+  --amber-s:#fffbeb;
+  --amber-b:#fde68a;
+  --red:#dc2626;
+  --red-s:#fef2f2;
+  --red-b:#fecaca;
+  --purple:#7c3aed;
+  --purple-s:#f5f3ff;
+  --purple-b:#ddd6fe;
+  --coral:#e55a2b;
+  --coral-s:#fff4f0;
+  --font:'Be Vietnam Pro',sans-serif;
+  --jp:'Noto Serif JP',serif;
+}
+body{font-family:var(--font);background:var(--bg);color:var(--ink);font-size:14px;line-height:1.6;}
+
+/* ── COVER ── */
+.cover{
+  background:var(--ink);
+  padding:64px 72px 56px;
+  position:relative;
+  overflow:hidden;
+}
+.cover::before{
+  content:'橋';
+  position:absolute;right:-20px;top:-30px;
+  font-family:var(--jp);font-size:280px;color:rgba(255,255,255,0.03);
+  font-weight:700;line-height:1;pointer-events:none;
+}
+.cover-label{
+  font-size:11px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;
+  color:rgba(255,255,255,0.35);margin-bottom:20px;
+}
+.cover-title{
+  font-size:38px;font-weight:800;color:#fff;
+  line-height:1.15;letter-spacing:-1px;margin-bottom:12px;
+}
+.cover-title em{font-style:italic;font-family:var(--jp);font-weight:400;color:rgba(255,255,255,0.5);}
+.cover-sub{font-size:15px;color:rgba(255,255,255,0.45);margin-bottom:40px;font-weight:400;}
+.cover-meta{display:flex;gap:32px;flex-wrap:wrap;}
+.cm-item{display:flex;flex-direction:column;gap:4px;}
+.cm-label{font-size:10.5px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.3);}
+.cm-val{font-size:14px;font-weight:600;color:rgba(255,255,255,0.8);}
+
+/* ── LAYOUT ── */
+.container{max-width:900px;margin:0 auto;padding:56px 40px 80px;}
+
+/* ── SECTION HEADING ── */
+.section{margin-bottom:56px;}
+.sec-eyebrow{
+  font-size:10.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:var(--muted2);margin-bottom:10px;display:flex;align-items:center;gap:10px;
+}
+.sec-eyebrow::after{content:'';flex:1;height:1px;background:var(--border);}
+.sec-h2{font-size:24px;font-weight:800;color:var(--ink);letter-spacing:-.5px;margin-bottom:6px;}
+.sec-desc{font-size:13.5px;color:var(--muted);line-height:1.7;margin-bottom:28px;}
+
+/* ── STAT ROW ── */
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px;}
+.stat-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:20px 18px;text-align:center;}
+.stat-n{font-size:36px;font-weight:800;color:var(--ink);line-height:1;margin-bottom:6px;}
+.stat-l{font-size:12px;color:var(--muted);line-height:1.4;}
+
+/* ── INSIGHT GROUPS ── */
+.insight-group{margin-bottom:16px;border-radius:14px;overflow:hidden;background:var(--white);border:1px solid var(--border);}
+.ig-hdr{padding:16px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border);}
+.ig-stripe{width:4px;height:36px;border-radius:2px;flex-shrink:0;}
+.ig-info{flex:1;}
+.ig-name{font-size:14px;font-weight:700;color:var(--ink);}
+.ig-sub{font-size:12px;color:var(--muted);margin-top:2px;}
+.ig-count{font-size:12px;font-weight:600;padding:4px 12px;border-radius:20px;white-space:nowrap;}
+.ig-body{padding:4px 0;}
+.q-row{display:flex;gap:12px;padding:11px 20px;border-bottom:1px solid var(--bg);}
+.q-row:last-child{border-bottom:none;}
+.q-num{
+  width:22px;height:22px;border-radius:6px;flex-shrink:0;
+  font-size:10.5px;font-weight:700;display:flex;align-items:center;justify-content:center;
+  background:var(--bg);color:var(--muted);margin-top:1px;
+}
+.q-text{font-size:13px;color:var(--ink2);line-height:1.55;}
+
+/* ── KEY FINDINGS ── */
+.findings{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:28px;}
+.finding-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:20px;}
+.fc-tag{display:inline-block;font-size:10.5px;font-weight:700;padding:3px 10px;border-radius:6px;margin-bottom:12px;letter-spacing:.3px;}
+.fc-title{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:6px;}
+.fc-desc{font-size:12.5px;color:var(--muted);line-height:1.6;}
+.fc-qs{display:flex;gap:5px;flex-wrap:wrap;margin-top:10px;}
+.fc-q{font-size:11px;font-weight:600;background:var(--bg);color:var(--muted);padding:2px 8px;border-radius:4px;}
+
+/* ── ALERT ── */
+.alert{display:flex;gap:14px;border-radius:12px;padding:16px 18px;margin-bottom:28px;border:1px solid;}
+.al-icon{font-size:18px;flex-shrink:0;margin-top:1px;}
+.al-title{font-size:13.5px;font-weight:700;color:var(--ink);margin-bottom:4px;}
+.al-desc{font-size:13px;color:var(--muted);line-height:1.6;}
+
+/* ── DIVIDER ── */
+.divider{height:1px;background:var(--border);margin:48px 0;}
+
+/* ── COURSE CONCEPT ── */
+.concept-header{
+  background:linear-gradient(135deg,#1e293b 0%,#0f172a 100%);
+  border-radius:18px;padding:36px 40px;margin-bottom:28px;position:relative;overflow:hidden;
+}
+.concept-header::after{
+  content:'BrSE';position:absolute;right:-10px;bottom:-20px;
+  font-size:120px;font-weight:800;color:rgba(255,255,255,0.04);
+  letter-spacing:-4px;line-height:1;
+}
+.ch-label{font-size:10.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:12px;}
+.ch-name{font-size:28px;font-weight:800;color:#fff;line-height:1.2;letter-spacing:-.5px;margin-bottom:8px;}
+.ch-name em{font-style:italic;font-family:var(--jp);font-weight:400;color:rgba(255,255,255,0.5);}
+.ch-tagline{font-size:14px;color:rgba(255,255,255,0.5);margin-bottom:24px;line-height:1.6;}
+.ch-pills{display:flex;gap:8px;flex-wrap:wrap;}
+.ch-pill{
+  background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);
+  color:rgba(255,255,255,0.65);font-size:12px;font-weight:500;
+  padding:5px 14px;border-radius:20px;
+}
+
+/* ── 2 TRACKS ── */
+.tracks{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:28px;}
+.track{background:var(--white);border:1.5px solid var(--border);border-radius:14px;overflow:hidden;}
+.track-hdr{padding:18px 20px 14px;border-bottom:1px solid var(--border);}
+.track-badge{display:inline-block;font-size:10.5px;font-weight:700;padding:3px 10px;border-radius:6px;margin-bottom:10px;}
+.track-name{font-size:16px;font-weight:800;color:var(--ink);margin-bottom:4px;}
+.track-who{font-size:12.5px;color:var(--muted);line-height:1.5;}
+.track-body{padding:16px 20px;}
+.tl{font-size:10.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted2);margin-bottom:10px;}
+.track-items{list-style:none;display:flex;flex-direction:column;gap:7px;}
+.track-items li{font-size:12.5px;color:var(--ink2);padding-left:16px;position:relative;line-height:1.5;}
+.track-items li::before{content:'→';position:absolute;left:0;font-size:11px;color:var(--muted2);}
+.track-pain{
+  margin-top:14px;padding:12px 14px;border-radius:8px;
+  font-size:12.5px;font-style:italic;color:var(--muted);line-height:1.55;
+  background:var(--bg);border-left:3px solid;
+}
+
+/* ── MODULES ── */
+.modules{display:flex;flex-direction:column;gap:10px;margin-bottom:28px;}
+.mod{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.mod-hdr{display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:0;padding:0;}
+.mod-num{
+  width:44px;height:100%;display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;color:var(--white);padding:16px 0;
+}
+.mod-info{padding:14px 16px;}
+.mod-name{font-size:13.5px;font-weight:700;color:var(--ink);margin-bottom:3px;}
+.mod-desc{font-size:12px;color:var(--muted);line-height:1.5;}
+.mod-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px;}
+.mod-meta{padding:14px 16px;text-align:right;white-space:nowrap;}
+.mod-duration{font-size:12px;font-weight:600;color:var(--muted);}
+.mod-track{font-size:11px;color:var(--muted2);margin-top:3px;}
+
+/* ── TAG ── */
+.tag{font-size:11px;font-weight:600;padding:2px 8px;border-radius:5px;}
+.tag-blue{background:var(--blue-s);color:var(--blue);}
+.tag-green{background:var(--green-s);color:var(--green);}
+.tag-amber{background:var(--amber-s);color:var(--amber);}
+.tag-red{background:var(--red-s);color:var(--red);}
+.tag-purple{background:var(--purple-s);color:var(--purple);}
+.tag-gray{background:var(--bg);color:var(--muted);}
+
+/* ── ANSWERS TABLE ── */
+.ans-table{width:100%;border-collapse:collapse;background:var(--white);border-radius:14px;overflow:hidden;border:1px solid var(--border);}
+.ans-table th{background:var(--bg);font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;padding:11px 16px;text-align:left;border-bottom:1px solid var(--border);}
+.ans-table td{padding:13px 16px;font-size:12.5px;color:var(--ink2);border-bottom:1px solid var(--bg);vertical-align:top;line-height:1.55;}
+.ans-table tr:last-child td{border-bottom:none;}
+.ans-table tr:hover td{background:var(--bg);}
+.concern{font-size:12px;color:var(--muted);font-style:italic;margin-top:3px;}
+
+/* ── KPI ── */
+.kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px;}
+.kpi-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:18px;}
+.kpi-phase{font-size:10.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;}
+.kpi-north{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:6px;}
+.kpi-val{font-size:32px;font-weight:800;line-height:1;margin-bottom:6px;}
+.kpi-desc{font-size:11.5px;color:var(--muted);line-height:1.5;}
+
+/* ── FOOTER ── */
+.report-footer{background:var(--ink);border-radius:16px;padding:28px 32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:gap;}
+.rf-left .rf-label{font-size:11px;color:rgba(255,255,255,0.3);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;}
+.rf-left .rf-val{font-size:15px;font-weight:600;color:rgba(255,255,255,0.8);}
+.rf-note{font-size:12px;color:rgba(255,255,255,0.25);max-width:320px;line-height:1.6;text-align:right;}
+
+@media(max-width:700px){
+  .cover{padding:40px 28px 36px;}
+  .container{padding:36px 20px 60px;}
+  .stat-row,.findings,.tracks,.kpi-row{grid-template-columns:1fr;}
+  .cover-title{font-size:26px;}
+  .sec-h2{font-size:20px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ COVER ══ -->
+<div class="cover">
+  <div class="cover-label">Báo cáo nội bộ · Nghiên cứu người dùng</div>
+  <h1 class="cover-title">Insight Khách Hàng &<br>Đề xuất Concept <em>Khoá học BrSE</em></h1>
+  <div class="cover-sub">Phân tích 20 câu hỏi từ khách hàng tiềm năng có N2 — đề xuất cấu trúc khoá học phù hợp</div>
+  <div class="cover-meta">
+    <div class="cm-item"><div class="cm-label">Đối tượng khảo sát</div><div class="cm-val">Có JLPT N2, đang tìm hiểu BrSE</div></div>
+    <div class="cm-item"><div class="cm-label">Số câu hỏi</div><div class="cm-val">20 câu · 5 nhóm chủ đề</div></div>
+    <div class="cm-item"><div class="cm-label">Mục đích</div><div class="cm-val">Định hình concept khoá học</div></div>
+    <div class="cm-item"><div class="cm-label">Phiên bản</div><div class="cm-val">v1.0 · Tháng 4/2025</div></div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ══ PHẦN 1: INSIGHT ══ -->
+  <div class="section">
+    <div class="sec-eyebrow">Phần 01 · Phân tích insight</div>
+    <h2 class="sec-h2">Tổng hợp 20 câu hỏi từ khách hàng</h2>
+    <p class="sec-desc">Toàn bộ câu hỏi giữ nguyên ý nghĩa gốc, được phân nhóm theo 5 chủ đề để dễ phân tích và ưu tiên xử lý.</p>
+
+    <div class="stat-row">
+      <div class="stat-card"><div class="stat-n">20</div><div class="stat-l">câu hỏi thu thập</div></div>
+      <div class="stat-card"><div class="stat-n">5</div><div class="stat-l">nhóm chủ đề</div></div>
+      <div class="stat-card"><div class="stat-n">7</div><div class="stat-l">câu hỏi về đãi ngộ & phúc lợi</div></div>
+      <div class="stat-card"><div class="stat-n">4</div><div class="stat-l">câu hỏi về yêu cầu chuyên môn</div></div>
+    </div>
+
+    <!-- GROUP 1 -->
+    <div class="insight-group">
+      <div class="ig-hdr">
+        <div class="ig-stripe" style="background:#2563eb;"></div>
+        <div class="ig-info">
+          <div class="ig-name">Nhóm 1 — Yêu cầu chuyên môn & kỹ năng</div>
+          <div class="ig-sub">Khách hàng cần biết mình đang đứng ở đâu so với yêu cầu thực tế</div>
+        </div>
+        <span class="ig-count tag-blue">4 câu</span>
+      </div>
+      <div class="ig-body">
+        <div class="q-row"><div class="q-num">1</div><div class="q-text">Trình độ tiếng Nhật yêu cầu tối thiểu là gì? Có cần bằng chứng chỉ quốc tế không?</div></div>
+        <div class="q-row"><div class="q-num">3</div><div class="q-text">Chuyên về nghe dịch hay chỉ cần giao tiếp bình thường là được?</div></div>
+        <div class="q-row"><div class="q-num">5</div><div class="q-text">Có cần biết code chuyên sâu không? Hay chỉ cần biết sơ qua là được?</div></div>
+        <div class="q-row"><div class="q-num">6</div><div class="q-text">Kỹ năng cần có là gì? (phân tích nghiệp vụ?)</div></div>
+      </div>
+    </div>
+
+    <!-- GROUP 2 -->
+    <div class="insight-group">
+      <div class="ig-hdr">
+        <div class="ig-stripe" style="background:#16a34a;"></div>
+        <div class="ig-info">
+          <div class="ig-name">Nhóm 2 — Nội dung & phương thức làm việc</div>
+          <div class="ig-sub">Khách hàng cần hình dung cụ thể công việc hàng ngày trông như thế nào</div>
+        </div>
+        <span class="ig-count tag-green">4 câu</span>
+      </div>
+      <div class="ig-body">
+        <div class="q-row"><div class="q-num">2</div><div class="q-text">Có file tổng hợp từ vựng hay dùng cho IT không? Nếu có các trường hợp ví dụ cụ thể trong công việc thì tốt.</div></div>
+        <div class="q-row"><div class="q-num">4</div><div class="q-text">Báo cáo cho bên VN bằng tiếng Việt hay cả Việt–Nhật? Tài liệu báo cáo làm bằng PowerPoint, Excel hay các phần mềm khác?</div></div>
+        <div class="q-row"><div class="q-num">7</div><div class="q-text">Có làm việc theo team không? Hay mỗi team chỉ cần 1 người biết tiếng Nhật hỗ trợ?</div></div>
+        <div class="q-row"><div class="q-num">8</div><div class="q-text">Đối với người mới làm BrSE khi có vấn đề không biết xử lý thì có người hỗ trợ không?</div></div>
+      </div>
+    </div>
+
+    <!-- GROUP 3 -->
+    <div class="insight-group">
+      <div class="ig-hdr">
+        <div class="ig-stripe" style="background:#7c3aed;"></div>
+        <div class="ig-info">
+          <div class="ig-name">Nhóm 3 — Đào tạo & học tập</div>
+          <div class="ig-sub">Khách hàng đang đánh giá xem khoá học có đáp ứng đúng nhu cầu phát triển của họ không</div>
+        </div>
+        <span class="ig-count tag-purple">3 câu</span>
+      </div>
+      <div class="ig-body">
+        <div class="q-row"><div class="q-num">9</div><div class="q-text">Có được dạy kiến thức nền tảng cho IT không? Có chuyên về 1 mảng nào đó không? (ví dụ: làm app điện thoại, apps điều khiển phương tiện giao thông, nhà thông minh...)</div></div>
+        <div class="q-row"><div class="q-num">10</div><div class="q-text">Thời gian đào tạo có linh hoạt không? (học online hay offline, học ngày hay tối?)</div></div>
+        <div class="q-row"><div class="q-num">11</div><div class="q-text">Có được cấp chứng chỉ sau khi học xong không?</div></div>
+      </div>
+    </div>
+
+    <!-- GROUP 4 -->
+    <div class="insight-group">
+      <div class="ig-hdr">
+        <div class="ig-stripe" style="background:#d97706;"></div>
+        <div class="ig-info">
+          <div class="ig-name">Nhóm 4 — Điều kiện & môi trường làm việc</div>
+          <div class="ig-sub">Khách hàng đang cân nhắc tính phù hợp với cuộc sống cá nhân</div>
+        </div>
+        <span class="ig-count tag-amber">5 câu</span>
+      </div>
+      <div class="ig-body">
+        <div class="q-row"><div class="q-num">12</div><div class="q-text">Thời gian làm việc thế nào? (đến công ty làm hay WFH?) Có yêu cầu laptop cá nhân hay sử dụng máy công ty cung cấp?</div></div>
+        <div class="q-row"><div class="q-num">13</div><div class="q-text">Có phải làm thứ 7 không? Nếu làm thì làm mấy buổi/tháng?</div></div>
+        <div class="q-row"><div class="q-num">15</div><div class="q-text">Có giới hạn độ tuổi tuyển dụng không?</div></div>
+        <div class="q-row"><div class="q-num">16</div><div class="q-text">Đi làm ở nội thành hay khu công nghiệp? Nếu xa thì có xe đưa đón không?</div></div>
+        <div class="q-row"><div class="q-num">18</div><div class="q-text">Lịch đi làm của công ty như thế nào? Có phải đi làm thứ 7 không? Nếu làm thì làm bao nhiêu ngày 1 tháng?</div></div>
+      </div>
+    </div>
+
+    <!-- GROUP 5 -->
+    <div class="insight-group">
+      <div class="ig-hdr">
+        <div class="ig-stripe" style="background:#e55a2b;"></div>
+        <div class="ig-info">
+          <div class="ig-name">Nhóm 5 — Lương, đãi ngộ & phúc lợi</div>
+          <div class="ig-sub">Nhóm câu hỏi nhiều nhất — khách hàng đang tính toán tổng thu nhập thực nhận</div>
+        </div>
+        <span class="ig-count" style="background:var(--coral-s);color:var(--coral);">4 câu</span>
+      </div>
+      <div class="ig-body">
+        <div class="q-row"><div class="q-num">14</div><div class="q-text">Ngoài lương thì còn có các trợ cấp gì không? (ngoại ngữ, đi lại, ăn trưa?)</div></div>
+        <div class="q-row"><div class="q-num">17</div><div class="q-text">Lương đầu vào là bao nhiêu? Làm thêm có được tính lương ngoài giờ không? Có hay phải làm thêm không? Công ty đóng bảo hiểm bao nhiêu %?</div></div>
+        <div class="q-row"><div class="q-num">19</div><div class="q-text">Ngoài làm việc ra thì công ty có chương trình gì cân bằng cuộc sống cho nhân viên không? (liên hoan, du lịch, hoạt động cho gia đình nhân viên...)</div></div>
+        <div class="q-row"><div class="q-num">20</div><div class="q-text">Có được khám bệnh hàng năm không? Công ty có hoạt động gì giúp nhân viên giảm thiểu các bệnh văn phòng như đau lưng, thoái hoá khớp cổ... không?</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ PHẦN 2: KEY FINDINGS ══ -->
+  <div class="section">
+    <div class="sec-eyebrow">Phần 02 · Nhận định</div>
+    <h2 class="sec-h2">4 điểm nổi bật từ insight</h2>
+    <p class="sec-desc">Các pattern quan trọng cần lưu ý khi thiết kế khoá học và chiến lược tiếp cận.</p>
+
+    <div class="findings">
+      <div class="finding-card">
+        <span class="fc-tag tag-red">⚠ Nỗi lo lớn nhất</span>
+        <div class="fc-title">Thứ 7 và giờ làm được hỏi hai lần</div>
+        <div class="fc-desc">Câu hỏi về thứ 7 xuất hiện ở câu 13 và lặp lại ở câu 18 theo cách khác nhau. Đây không phải hỏi cho có — khách hàng đang thực sự lo ngại về cân bằng cuộc sống. Cần giải đáp rõ và sớm.</div>
+        <div class="fc-qs"><span class="fc-q">Câu 13</span><span class="fc-q">Câu 18</span></div>
+      </div>
+      <div class="finding-card">
+        <span class="fc-tag tag-amber">💡 Nhận thức chưa rõ</span>
+        <div class="fc-title">Chưa phân biệt được BrSE Tech và Non-tech</div>
+        <div class="fc-desc">Câu hỏi "có cần code không" và "kỹ năng cần gì" cho thấy khách hàng chưa biết con đường nào phù hợp với mình. Đây là cơ hội để khoá học định vị rõ 2 track ngay từ đầu.</div>
+        <div class="fc-qs"><span class="fc-q">Câu 5</span><span class="fc-q">Câu 6</span></div>
+      </div>
+      <div class="finding-card">
+        <span class="fc-tag tag-blue">📊 Đang tính toán ROI</span>
+        <div class="fc-title">Quan tâm tổng thu nhập, không chỉ lương cơ bản</div>
+        <div class="fc-desc">7/20 câu hỏi liên quan đến tiền — trợ cấp, OT, bảo hiểm, phúc lợi. Khách hàng đang so sánh tổng thu nhập thực nhận với công việc hiện tại trước khi quyết định chuyển nghề.</div>
+        <div class="fc-qs"><span class="fc-q">Câu 14</span><span class="fc-q">Câu 17</span><span class="fc-q">Câu 19</span><span class="fc-q">Câu 20</span></div>
+      </div>
+      <div class="finding-card">
+        <span class="fc-tag tag-green">✅ Tín hiệu tốt</span>
+        <div class="fc-title">Hỏi về tài liệu học — sẵn sàng bắt đầu ngay</div>
+        <div class="fc-desc">Câu hỏi xin file từ vựng IT kèm ví dụ thực tế (câu 2) cho thấy khách hàng không chỉ tìm hiểu chung — họ đang ở giai đoạn sẵn sàng bắt đầu học nếu được cung cấp tài liệu phù hợp.</div>
+        <div class="fc-qs"><span class="fc-q">Câu 2</span><span class="fc-q">Câu 9</span><span class="fc-q">Câu 11</span></div>
+      </div>
+    </div>
+
+    <div class="alert" style="background:var(--amber-s);border-color:var(--amber-b);">
+      <div class="al-icon">&#128161;</div>
+      <div>
+        <div class="al-title">Nhận định tổng thể: Khách hàng đang ở giai đoạn "cân nhắc nghiêm túc", chưa phải "đã quyết định"</div>
+        <div class="al-desc">Câu hỏi thiên về điều kiện làm việc và đãi ngộ nhiều hơn nội dung học cho thấy họ đang đánh giá xem BrSE có phải lựa chọn đúng không — trước khi hỏi học cái gì. Khoá học cần trả lời câu hỏi "tại sao nên làm BrSE" trước khi đi vào "học như thế nào".</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ══ PHẦN 3: CONCEPT KHOÁ HỌC ══ -->
+  <div class="section">
+    <div class="sec-eyebrow">Phần 03 · Đề xuất concept</div>
+    <h2 class="sec-h2">Concept khoá học BrSE</h2>
+    <p class="sec-desc">Được thiết kế trực tiếp từ các câu hỏi trên — mỗi module trả lời ít nhất 1 nỗi lo cụ thể của khách hàng.</p>
+
+    <div class="concept-header">
+      <div class="ch-label">Tên khoá học đề xuất</div>
+      <div class="ch-name">Lộ trình BrSE <em>Thực chiến</em><br>từ Nhật ngữ đến Bridge Engineer</div>
+      <div class="ch-tagline">Khoá học duy nhất có 2 track rõ ràng — dành cho người có nền Nhật ngữ (N2+)<br>muốn trở thành BrSE trong môi trường IT Nhật một cách có hệ thống</div>
+      <div class="ch-pills">
+        <span class="ch-pill">Online linh hoạt</span>
+        <span class="ch-pill">2 track: Tech & Non-tech</span>
+        <span class="ch-pill">Tài liệu thực chiến</span>
+        <span class="ch-pill">Cấp chứng chỉ</span>
+        <span class="ch-pill">Mentor 1-1</span>
+      </div>
+    </div>
+
+    <!-- 2 TRACKS -->
+    <div class="tracks">
+      <div class="track" style="border-color:var(--blue-b);">
+        <div class="track-hdr">
+          <span class="track-badge tag-blue">⚙ Track 1 — BrSE Tech</span>
+          <div class="track-name">Từ Dev / Tester → BrSE</div>
+          <div class="track-who">Đã có nền lập trình, có N2–N1. Cần thêm kỹ năng bridge và tiếng Nhật IT chuyên ngành.</div>
+        </div>
+        <div class="track-body">
+          <div class="tl">Điều kiện đầu vào</div>
+          <ul class="track-items">
+            <li>Kinh nghiệm Dev / Tester 1 năm trở lên</li>
+            <li>Tiếng Nhật JLPT N3 trở lên</li>
+            <li>Hiểu cơ bản quy trình phát triển phần mềm</li>
+          </ul>
+          <div class="track-pain" style="border-color:var(--blue);">"Mình code được, tiếng Nhật tạm ổn — nhưng không biết BrSE thực sự làm gì và bắt đầu từ đâu."</div>
+        </div>
+      </div>
+      <div class="track" style="border-color:var(--purple-b);">
+        <div class="track-hdr">
+          <span class="track-badge tag-purple">🇯🇵 Track 2 — BrSE Non-tech</span>
+          <div class="track-name">Từ Nhật ngữ → BrSE</div>
+          <div class="track-who">Nhật ngữ tốt (N2+), ít hoặc chưa có kinh nghiệm IT. Cần kiến thức IT nền tảng và kỹ năng bridge.</div>
+        </div>
+        <div class="track-body">
+          <div class="tl">Điều kiện đầu vào</div>
+          <ul class="track-items">
+            <li>Tiếng Nhật JLPT N2 trở lên</li>
+            <li>Không yêu cầu biết lập trình</li>
+            <li>Có khả năng giao tiếp tốt, tư duy logic</li>
+          </ul>
+          <div class="track-pain" style="border-color:var(--purple);">"Tiếng Nhật mình tốt nhưng không biết IT — công ty Nhật có nhận không? BrSE có cần phải code không?"</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODULES -->
+    <div class="sec-eyebrow" style="margin-bottom:16px;">Cấu trúc chương trình — 6 module</div>
+    <div class="modules">
+
+      <div class="mod">
+        <div class="mod-hdr">
+          <div class="mod-num" style="background:#2563eb;">M1</div>
+          <div class="mod-info">
+            <div class="mod-name">BrSE là gì — Vai trò, lộ trình và cơ hội nghề nghiệp</div>
+            <div class="mod-desc">Giải đáp toàn bộ câu hỏi "tại sao": lương, career path, môi trường làm việc thực tế. Khách hàng tự xác định track phù hợp với bản thân.</div>
+            <div class="mod-tags">
+              <span class="tag tag-blue">Cả 2 track</span>
+              <span class="tag tag-gray">Trả lời câu 1, 5, 6, 7</span>
+            </div>
+          </div>
+          <div class="mod-meta"><div class="mod-duration">2 tuần</div><div class="mod-track">Bắt buộc</div></div>
+        </div>
+      </div>
+
+      <div class="mod">
+        <div class="mod-hdr">
+          <div class="mod-num" style="background:#16a34a;">M2</div>
+          <div class="mod-info">
+            <div class="mod-name">Tiếng Nhật IT thực chiến — Từ vựng, keigo và tài liệu kỹ thuật</div>
+            <div class="mod-desc">Bộ từ vựng IT theo domain (banking, logistics, app...) kèm ví dụ tình huống thật. Cách đọc spec, viết email, dẫn họp bằng tiếng Nhật.</div>
+            <div class="mod-tags">
+              <span class="tag tag-purple">Nhấn mạnh Track 2</span>
+              <span class="tag tag-gray">Trả lời câu 2, 3, 4</span>
+            </div>
+          </div>
+          <div class="mod-meta"><div class="mod-duration">3 tuần</div><div class="mod-track">Cốt lõi</div></div>
+        </div>
+      </div>
+
+      <div class="mod">
+        <div class="mod-hdr">
+          <div class="mod-num" style="background:#7c3aed;">M3</div>
+          <div class="mod-info">
+            <div class="mod-name">Kiến thức IT nền tảng dành cho BrSE Non-tech</div>
+            <div class="mod-desc">Không cần học code — cần hiểu đủ để bridge hiệu quả: quy trình phát triển phần mềm, các loại testing, database cơ bản, đọc tài liệu kỹ thuật.</div>
+            <div class="mod-tags">
+              <span class="tag tag-purple">Track 2</span>
+              <span class="tag tag-gray">Trả lời câu 5, 9</span>
+            </div>
+          </div>
+          <div class="mod-meta"><div class="mod-duration">3 tuần</div><div class="mod-track">Track 2 only</div></div>
+        </div>
+      </div>
+
+      <div class="mod">
+        <div class="mod-hdr">
+          <div class="mod-num" style="background:#d97706;">M4</div>
+          <div class="mod-info">
+            <div class="mod-name">Kỹ năng bridge — Phân tích nghiệp vụ, quản lý kỳ vọng, xử lý conflict</div>
+            <div class="mod-desc">Kỹ năng mềm quan trọng nhất của BrSE: viết tài liệu báo cáo (PowerPoint/Excel), làm cầu nối giữa khách Nhật và dev Việt, xử lý tình huống khó.</div>
+            <div class="mod-tags">
+              <span class="tag tag-blue">Cả 2 track</span>
+              <span class="tag tag-gray">Trả lời câu 4, 6, 7, 8</span>
+            </div>
+          </div>
+          <div class="mod-meta"><div class="mod-duration">3 tuần</div><div class="mod-track">Cốt lõi</div></div>
+        </div>
+      </div>
+
+      <div class="mod">
+        <div class="mod-hdr">
+          <div class="mod-num" style="background:#e55a2b;">M5</div>
+          <div class="mod-info">
+            <div class="mod-name">Thực chiến theo domain — Case study dự án thật</div>
+            <div class="mod-desc">Chọn 1 trong 3 domain: Banking/Finance · Logistics/E-commerce · Smart Device/IoT. Thực hành với tài liệu và tình huống thật từ các dự án Nhật–Việt.</div>
+            <div class="mod-tags">
+              <span class="tag tag-blue">Cả 2 track</span>
+              <span class="tag tag-gray">Trả lời câu 9</span>
+            </div>
+          </div>
+          <div class="mod-meta"><div class="mod-duration">2 tuần</div><div class="mod-track">Chuyên sâu</div></div>
+        </div>
+      </div>
+
+      <div class="mod">
+        <div class="mod-hdr">
+          <div class="mod-num" style="background:#475569;">M6</div>
+          <div class="mod-info">
+            <div class="mod-name">Chuẩn bị đi làm — CV, phỏng vấn và tuần đầu làm BrSE</div>
+            <div class="mod-desc">Viết CV BrSE chuẩn Nhật, luyện phỏng vấn với câu hỏi thật, cấp chứng chỉ hoàn thành. Kết nối với cộng đồng BrSE alumni để hỗ trợ sau khoá.</div>
+            <div class="mod-tags">
+              <span class="tag tag-green">Cả 2 track</span>
+              <span class="tag tag-gray">Trả lời câu 8, 11</span>
+            </div>
+          </div>
+          <div class="mod-meta"><div class="mod-duration">1 tuần</div><div class="mod-track">Tốt nghiệp</div></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ANSWER TABLE -->
+    <div class="sec-eyebrow" style="margin-bottom:16px;">Khoá học trả lời trực tiếp các nỗi lo của khách hàng</div>
+    <table class="ans-table">
+      <thead>
+        <tr>
+          <th style="width:180px;">Câu hỏi khách hàng</th>
+          <th>Khoá học giải quyết bằng cách nào</th>
+          <th style="width:100px;">Module</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Cần trình độ tiếng Nhật tối thiểu nào?<div class="concern">Câu 1</div></td>
+          <td>Mô tả rõ điều kiện đầu vào theo từng track. Track 2 yêu cầu N2 — phù hợp với khách hàng hiện tại.</td>
+          <td><span class="tag tag-blue">M1</span></td>
+        </tr>
+        <tr>
+          <td>Có file từ vựng IT kèm ví dụ thực tế?<div class="concern">Câu 2</div></td>
+          <td>Module 2 cung cấp bộ từ vựng IT theo domain, có ví dụ câu trong tình huống thật (họp, email, ticket).</td>
+          <td><span class="tag tag-green">M2</span></td>
+        </tr>
+        <tr>
+          <td>Có cần code chuyên sâu không?<div class="concern">Câu 5</div></td>
+          <td>Track 2 không yêu cầu code. Module 3 dạy đủ kiến thức IT để bridge hiệu quả mà không cần lập trình.</td>
+          <td><span class="tag tag-purple">M3</span></td>
+        </tr>
+        <tr>
+          <td>Người mới có được hỗ trợ không?<div class="concern">Câu 8</div></td>
+          <td>Mentor 1-1 trong suốt khoá. Cộng đồng alumni hỗ trợ sau khi tốt nghiệp. Không bị "thả trôi".</td>
+          <td><span class="tag tag-gray">M4, M6</span></td>
+        </tr>
+        <tr>
+          <td>Đào tạo có linh hoạt không?<div class="concern">Câu 10</div></td>
+          <td>100% online, học theo tốc độ cá nhân. Video học lại được. Live session tối 2 buổi/tuần để không ảnh hưởng giờ làm.</td>
+          <td><span class="tag tag-gray">Toàn khoá</span></td>
+        </tr>
+        <tr>
+          <td>Có cấp chứng chỉ không?<div class="concern">Câu 11</div></td>
+          <td>Chứng chỉ hoàn thành khoá học. Có thể dùng trong CV khi apply BrSE.</td>
+          <td><span class="tag tag-gray">M6</span></td>
+        </tr>
+        <tr>
+          <td>Chuyên về domain nào?<div class="concern">Câu 9</div></td>
+          <td>Module 5 cho phép chọn 1 trong 3 domain: Banking · Logistics · Smart Device/IoT.</td>
+          <td><span class="tag tag-red">M5</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ══ PHẦN 4: KPI ══ -->
+  <div class="section">
+    <div class="sec-eyebrow">Phần 04 · Mục tiêu</div>
+    <h2 class="sec-h2">North Star Metric theo giai đoạn</h2>
+    <p class="sec-desc">Từ insight này đến khi khoá học vận hành ổn định — 3 mốc đo lường quan trọng nhất.</p>
+
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-phase" style="color:var(--blue);">Tháng 1–2 · Xây trust</div>
+        <div class="kpi-north">Waitlist đăng ký</div>
+        <div class="kpi-val" style="color:var(--blue);">50</div>
+        <div class="kpi-desc">Người đăng ký danh sách chờ khoá học. Ưu tiên từ nhóm có N2 như khách hàng này.</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-phase" style="color:var(--amber);">Tháng 3–4 · Launch</div>
+        <div class="kpi-north">Học viên đầu tiên</div>
+        <div class="kpi-val" style="color:var(--amber);">20</div>
+        <div class="kpi-desc">Học viên khoá pilot. Đủ để validate curriculum và thu thập feedback chỉnh sửa trước khi scale.</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-phase" style="color:var(--green);">Tháng 5–6 · Tối ưu</div>
+        <div class="kpi-north">Tỷ lệ giới thiệu</div>
+        <div class="kpi-val" style="color:var(--green);">40%</div>
+        <div class="kpi-desc">Học viên giới thiệu người quen. Chỉ số sức khoẻ dài hạn — khoá tốt thì học viên tự trở thành kênh marketing.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ PHẦN 5: PAIN POINTS CHI TIẾT ══ -->
+  <div class="section">
+    <div class="sec-eyebrow">Phần 05 · Insight bổ sung</div>
+    <h2 class="sec-h2">Khó khăn thực tế & Mong muốn học cụ thể</h2>
+    <p class="sec-desc">Insight bổ sung từ cùng khách hàng — đây là lớp thông tin sâu hơn, phản ánh đúng pain point trong công việc BrSE hàng ngày, không phải câu hỏi tuyển dụng.</p>
+
+    <div class="alert" style="background:var(--green-s);border-color:var(--green-b);margin-bottom:28px;">
+      <div class="al-icon">&#128276;</div>
+      <div>
+        <div class="al-title">Đây là insight có giá trị nhất trong toàn bộ dữ liệu thu được</div>
+        <div class="al-desc">Khác với 20 câu hỏi trước phần lớn là hỏi về điều kiện tuyển dụng — phần này phản ánh <strong>trải nghiệm thật trong công việc</strong>. Người này đã hoặc đang làm BrSE và đang gặp khó khăn cụ thể. Đây chính xác là nội dung cần thiết kế khoá học.</div>
+      </div>
+    </div>
+
+    <!-- NHÓM 1: KHÓ KHĂN -->
+    <div class="sec-eyebrow" style="margin-bottom:16px;">Nhóm A — Khó khăn đang gặp phải</div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:28px;">
+
+      <div class="insight-group">
+        <div class="ig-hdr">
+          <div class="ig-stripe" style="background:#2563eb;"></div>
+          <div class="ig-info">
+            <div class="ig-name">Ngôn ngữ & Giao tiếp</div>
+            <div class="ig-sub">Rào cản cơ bản nhất — ảnh hưởng trực tiếp đến hiệu quả công việc</div>
+          </div>
+          <span class="ig-count tag-blue">3 điểm</span>
+        </div>
+        <div class="ig-body">
+          <div class="q-row">
+            <div class="q-num" style="background:var(--blue-s);color:var(--blue);">A</div>
+            <div class="q-text">Ngôn ngữ chưa tốt — chưa biết nên dùng ngữ pháp, từ vựng, câu văn nào để truyền đạt đúng ý</div>
+          </div>
+          <div class="q-row">
+            <div class="q-num" style="background:var(--blue-s);color:var(--blue);">B</div>
+            <div class="q-text">Nghe hiểu chưa tốt — không nghe kịp, người Nhật nói mơ hồ hoặc nói nhanh</div>
+          </div>
+          <div class="q-row">
+            <div class="q-num" style="background:var(--blue-s);color:var(--blue);">C</div>
+            <div class="q-text">Chưa diễn đạt được theo kiểu business — lịch sự, chuyên nghiệp, đúng ngữ cảnh công việc</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="insight-group">
+        <div class="ig-hdr">
+          <div class="ig-stripe" style="background:#d97706;"></div>
+          <div class="ig-info">
+            <div class="ig-name">Kỹ năng Bridge thực chiến</div>
+            <div class="ig-sub">Không phải vấn đề tiếng Nhật — là vấn đề xử lý tình huống</div>
+          </div>
+          <span class="ig-count tag-amber">2 điểm</span>
+        </div>
+        <div class="ig-body">
+          <div class="q-row">
+            <div class="q-num" style="background:var(--amber-s);color:var(--amber);">A</div>
+            <div class="q-text">Trình bày thế nào để ngắn gọn — đủ ý — rõ ràng trong văn phòng Nhật</div>
+          </div>
+          <div class="q-row">
+            <div class="q-num" style="background:var(--amber-s);color:var(--amber);">B</div>
+            <div class="q-text">Cách nói tránh làm mất lòng, tránh bị đánh giá tiêu cực trong văn hoá Nhật</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="insight-group" style="grid-column:span 2;">
+        <div class="ig-hdr">
+          <div class="ig-stripe" style="background:#7c3aed;"></div>
+          <div class="ig-info">
+            <div class="ig-name">Lăn tăn trong công việc hàng ngày</div>
+            <div class="ig-sub">Các tình huống cụ thể chưa biết xử lý — đây là nội dung khoá học cần giải quyết trực tiếp</div>
+          </div>
+          <span class="ig-count tag-purple">3 tình huống</span>
+        </div>
+        <div class="ig-body">
+          <div class="q-row">
+            <div class="q-num" style="background:var(--purple-s);color:var(--purple);">1</div>
+            <div class="q-text"><strong>Khi muốn hỏi hoặc đề xuất:</strong> không biết mở đầu như thế nào cho đúng ngữ cảnh và lịch sự</div>
+          </div>
+          <div class="q-row">
+            <div class="q-num" style="background:var(--purple-s);color:var(--purple);">2</div>
+            <div class="q-text"><strong>Cách nói giảm nói tránh mà không làm sai nội dung:</strong> ví dụ thay vì nói thẳng できません thì diễn đạt thế nào để lịch sự nhưng vẫn đúng nghĩa</div>
+          </div>
+          <div class="q-row">
+            <div class="q-num" style="background:var(--purple-s);color:var(--purple);">3</div>
+            <div class="q-text"><strong>Nhận yêu cầu và truyền đạt lại cho team:</strong> nên dịch sát tiếng Nhật hay truyền đạt theo cách hiểu của mình? Nếu hiểu sai dẫn đến làm sai yêu cầu</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- NHÓM 2: MUỐN BIẾT -->
+    <div class="sec-eyebrow" style="margin-bottom:16px;">Nhóm B — Muốn được học cụ thể</div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:28px;">
+
+      <div class="insight-group">
+        <div class="ig-hdr">
+          <div class="ig-stripe" style="background:#16a34a;"></div>
+          <div class="ig-info">
+            <div class="ig-name">Ngữ pháp theo tình huống cụ thể</div>
+            <div class="ig-sub">Không muốn học ngữ pháp trừu tượng — muốn mẫu câu dùng được ngay</div>
+          </div>
+          <span class="ig-count tag-green">3 case</span>
+        </div>
+        <div class="ig-body">
+          <div class="q-row">
+            <div class="q-num" style="background:var(--green-s);color:var(--green);">1</div>
+            <div class="q-text">Câu ngữ pháp khi <strong>báo cáo tiến độ</strong> với khách Nhật</div>
+          </div>
+          <div class="q-row">
+            <div class="q-num" style="background:var(--green-s);color:var(--green);">2</div>
+            <div class="q-text">Câu ngữ pháp khi <strong>muốn xác nhận</strong> yêu cầu hoặc thông tin</div>
+          </div>
+          <div class="q-row">
+            <div class="q-num" style="background:var(--green-s);color:var(--green);">3</div>
+            <div class="q-text">Câu ngữ pháp khi <strong>nhờ vả / xin thêm thông tin</strong>: log, database, tài liệu...</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="insight-group">
+        <div class="ig-hdr">
+          <div class="ig-stripe" style="background:#e55a2b;"></div>
+          <div class="ig-info">
+            <div class="ig-name">Mẫu câu trình bày thực chiến</div>
+            <div class="ig-sub">Những câu dùng hàng ngày trong văn phòng IT Nhật — học viên đưa ví dụ cụ thể</div>
+          </div>
+          <span class="ig-count" style="background:var(--coral-s);color:var(--coral);">6 mẫu</span>
+        </div>
+        <div class="ig-body">
+          <div class="q-row">
+            <div class="q-num" style="background:var(--coral-s);color:var(--coral);">→</div>
+            <div class="q-text">Liên quan tới... / Ở tại màn hình, chức năng...</div>
+          </div>
+          <div class="q-row">
+            <div class="q-num" style="background:var(--coral-s);color:var(--coral);">→</div>
+            <div class="q-text">Tôi hiểu rằng... / Tôi đang băn khoăn về...</div>
+          </div>
+          <div class="q-row">
+            <div class="q-num" style="background:var(--coral-s);color:var(--coral);">→</div>
+            <div class="q-text">Chúng tôi dự định sẽ làm như này...</div>
+          </div>
+          <div class="q-row">
+            <div class="q-num" style="background:var(--coral-s);color:var(--coral);">→</div>
+            <div class="q-text">Như dưới đây / Như ví dụ dưới đây / Xét về...</div>
+          </div>
+          <div class="q-row">
+            <div class="q-num" style="background:var(--coral-s);color:var(--coral);">→</div>
+            <div class="q-text">Nơi xảy ra: tại phạm vi, tại màn hình, tại chức năng...</div>
+          </div>
+          <div class="q-row">
+            <div class="q-num" style="background:var(--coral-s);color:var(--coral);">→</div>
+            <div class="q-text">Cách trình bày viết và nói có những lưu ý gì?</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="insight-group" style="grid-column:span 2;">
+        <div class="ig-hdr">
+          <div class="ig-stripe" style="background:#0891b2;"></div>
+          <div class="ig-info">
+            <div class="ig-name">Từ vựng IT thường dùng</div>
+            <div class="ig-sub">Từ vựng theo ngữ cảnh thực tế — không phải danh sách từ điển chung chung</div>
+          </div>
+          <span class="ig-count" style="background:#ecfeff;color:#0891b2;">Nền tảng</span>
+        </div>
+        <div class="ig-body">
+          <div class="q-row">
+            <div class="q-num" style="background:#ecfeff;color:#0891b2;">→</div>
+            <div class="q-text">Các từ vựng hay được sử dụng trong môi trường IT — đặc biệt trong giao tiếp với khách Nhật hàng ngày</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- NHÓM 3: MONG MUỐN VỀ MENTOR -->
+    <div class="sec-eyebrow" style="margin-bottom:16px;">Nhóm C — Kỳ vọng cụ thể về Mentor</div>
+
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:28px;">
+      <div style="padding:16px 20px;background:var(--ink);display:flex;align-items:center;gap:12px;">
+        <div style="font-size:13px;font-weight:700;color:#fff;">Đây là insight quan trọng nhất để thiết kế phần Mentor trong khoá học</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;">
+
+        <div style="padding:18px 20px;border-right:1px solid var(--border);">
+          <div style="font-size:10.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--blue);margin-bottom:12px;">Nội dung mentor cần có</div>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;">
+            <li style="font-size:12.5px;color:var(--ink2);padding-left:16px;position:relative;line-height:1.5;"><span style="position:absolute;left:0;color:var(--muted2);">→</span>Tình huống thường xuyên gặp: làm rõ yêu cầu, báo cáo, confirm spec</li>
+            <li style="font-size:12.5px;color:var(--ink2);padding-left:16px;position:relative;line-height:1.5;"><span style="position:absolute;left:0;color:var(--muted2);">→</span>Ngữ pháp và từ vựng theo tình huống thực tế</li>
+            <li style="font-size:12.5px;color:var(--ink2);padding-left:16px;position:relative;line-height:1.5;"><span style="position:absolute;left:0;color:var(--muted2);">→</span>Cách trình bày và đưa ra vấn đề đúng ngữ cảnh</li>
+          </ul>
+        </div>
+
+        <div style="padding:18px 20px;border-right:1px solid var(--border);">
+          <div style="font-size:10.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--amber);margin-bottom:12px;">Hình thức luyện tập</div>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;">
+            <li style="font-size:12.5px;color:var(--ink2);padding-left:16px;position:relative;line-height:1.5;"><span style="position:absolute;left:0;color:var(--muted2);">→</span>Practice theo tình huống thực tế</li>
+            <li style="font-size:12.5px;color:var(--ink2);padding-left:16px;position:relative;line-height:1.5;"><span style="position:absolute;left:0;color:var(--muted2);">→</span>Luyện nói và viết trong ngữ cảnh IT</li>
+            <li style="font-size:12.5px;color:var(--ink2);padding-left:16px;position:relative;line-height:1.5;"><span style="position:absolute;left:0;color:var(--muted2);">→</span>Nghe và truyền đạt lại bằng tiếng Nhật</li>
+          </ul>
+        </div>
+
+        <div style="padding:18px 20px;">
+          <div style="font-size:10.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--green);margin-bottom:12px;">Kỳ vọng về feedback</div>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;">
+            <li style="font-size:12.5px;color:var(--ink2);padding-left:16px;position:relative;line-height:1.5;"><span style="position:absolute;left:0;color:var(--muted2);">→</span>Được review cách nói và cách viết</li>
+            <li style="font-size:12.5px;color:var(--ink2);padding-left:16px;position:relative;line-height:1.5;"><span style="position:absolute;left:0;color:var(--muted2);">→</span>Được chỉnh sửa trực tiếp</li>
+            <li style="font-size:12.5px;color:var(--ink2);padding-left:16px;position:relative;line-height:1.5;"><span style="position:absolute;left:0;color:var(--muted2);">→</span>Feedback cụ thể: sai ở đâu, sửa thế nào</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- NHẬN ĐỊNH BỔ SUNG -->
+    <div class="findings">
+      <div class="finding-card">
+        <span class="fc-tag tag-green">✅ Xác nhận nhu cầu thật</span>
+        <div class="fc-title">Pain point rõ ràng hơn nhiều so với 20 câu hỏi đầu</div>
+        <div class="fc-desc">Không còn hỏi về lương hay WFH — đây là người đang thực sự làm việc và đang gặp khó khăn cụ thể trong từng tình huống. Nhu cầu học là có thật và cấp thiết.</div>
+      </div>
+      <div class="finding-card">
+        <span class="fc-tag tag-blue">💡 Điểm vàng cho khoá học</span>
+        <div class="fc-title">Tình huống "dịch sát hay diễn đạt theo ý hiểu" là chủ đề khoá học đắt giá</div>
+        <div class="fc-desc">Đây là vấn đề cốt lõi của BrSE mà không sách giáo khoa nào dạy. Ai giải quyết được vấn đề này bằng nội dung thực chiến — người đó có lợi thế cạnh tranh lớn nhất.</div>
+      </div>
+      <div class="finding-card">
+        <span class="fc-tag tag-amber">⚡ Thiết kế khoá học ngay từ đây</span>
+        <div class="fc-title">Mẫu câu theo tình huống là sản phẩm miễn phí đầu tiên có thể làm ngay</div>
+        <div class="fc-desc">Học viên đã đưa sẵn 6 mẫu câu muốn học. Làm bộ 30–50 mẫu câu IT tiếng Nhật theo tình huống thực chiến — đây là lead magnet tốt nhất để thu waitlist.</div>
+      </div>
+      <div class="finding-card">
+        <span class="fc-tag tag-purple">🎯 Định hình phần Mentor</span>
+        <div class="fc-title">Học viên không cần mentor giải thích lý thuyết — cần người review và sửa bài thực tế</div>
+        <div class="fc-desc">Kỳ vọng rất cụ thể: practice theo tình huống, được review, được sửa, được biết sai ở đâu. Đây là mô hình coaching 1-1 — không phải giảng dạy trên lớp.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="report-footer">
+    <div class="rf-left">
+      <div class="rf-label">Tài liệu nội bộ</div>
+      <div class="rf-val">Báo cáo Insight & Concept Khoá học BrSE · v1.1</div>
+    </div>
+    <div class="rf-note">Cập nhật v1.1: Bổ sung insight chi tiết về khó khăn thực tế và mong muốn học cụ thể từ cùng khách hàng.</div>
+  </div>
+
+</div>
+</body>
+</html>

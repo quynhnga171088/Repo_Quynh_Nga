@@ -1,0 +1,9 @@
+{
+  "name": "sbu1-skills",
+  "version": "1.0.0",
+  "description": "Internal Claude Code skills for Kaopiz SBU1 team: Git workflow, Bitbucket PR review, Basic Design docs, Presale proposal",
+  "author": {
+    "name": "Kaopiz SBU1"
+  },
+  "repository": "ssh://git@bitbucket.kaopiz.com:7999/coba/sbu1-skills.git"
+}

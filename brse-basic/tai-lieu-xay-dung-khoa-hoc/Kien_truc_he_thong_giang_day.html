@@ -1,0 +1,1376 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kiến Trúc Hệ Thống - Hướng Dẫn Giảng Dạy BrSE & BA</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: #f5f7fa;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            margin-bottom: 40px;
+            border-radius: 0 0 20px 20px;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        nav {
+            background: white;
+            padding: 20px 0;
+            margin-bottom: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 10px;
+            z-index: 100;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            padding: 0 20px;
+        }
+
+        nav a {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #f0f2f5;
+            color: #333;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.3s;
+            font-weight: 500;
+            font-size: 0.95em;
+        }
+
+        nav a:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        section {
+            background: white;
+            margin-bottom: 30px;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            scroll-margin-top: 80px;
+        }
+
+        h2 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #667eea;
+            font-weight: 700;
+        }
+
+        h3 {
+            color: #555;
+            font-size: 1.4em;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        h4 {
+            color: #667eea;
+            font-size: 1.1em;
+            margin-top: 20px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #555;
+            line-height: 1.8;
+        }
+
+        .highlight {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 6px;
+        }
+
+        .highlight-info {
+            background: #cfe2ff;
+            border-left: 4px solid #0d6efd;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 6px;
+            color: #084298;
+        }
+
+        .highlight-success {
+            background: #d1e7dd;
+            border-left: 4px solid #198754;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 6px;
+            color: #0f5132;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        thead {
+            background: #667eea;
+            color: white;
+        }
+
+        th {
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        tbody tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .example-box {
+            background: #f0f2f5;
+            border: 2px dashed #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .example-title {
+            color: #667eea;
+            font-weight: 700;
+            margin-bottom: 10px;
+            font-size: 1.05em;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .card {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border: 1px solid #667eea;
+            padding: 20px;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.15);
+        }
+
+        .card h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 5px 5px 5px 0;
+        }
+
+        .badge-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .badge-success {
+            background: #198754;
+            color: white;
+        }
+
+        .badge-warning {
+            background: #ffc107;
+            color: black;
+        }
+
+        .badge-info {
+            background: #0dcaf0;
+            color: white;
+        }
+
+        .diagram {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .flow-box {
+            display: inline-block;
+            background: white;
+            border: 2px solid #667eea;
+            padding: 15px 25px;
+            border-radius: 8px;
+            margin: 10px;
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .flow-arrow {
+            display: inline-block;
+            margin: 0 10px;
+            color: #667eea;
+            font-size: 1.5em;
+        }
+
+        .learning-objective {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .learning-objective h3 {
+            color: white;
+            margin-top: 0;
+        }
+
+        .learning-objective ul {
+            margin-left: 20px;
+        }
+
+        .learning-objective li {
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .summary-box {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 20px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+
+        .summary-box h4 {
+            color: #1976D2;
+        }
+
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 30px;
+            margin-top: 50px;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .key-point {
+            background: #fff3cd;
+            border-left: 4px solid #ff9800;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .comparison-table th {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+
+        .comparison-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            nav ul {
+                flex-direction: column;
+            }
+
+            nav a {
+                width: 100%;
+                text-align: center;
+            }
+
+            section {
+                padding: 20px;
+            }
+
+            h2 {
+                font-size: 1.6em;
+            }
+
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .print-section {
+            page-break-inside: avoid;
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+
+            nav {
+                display: none;
+            }
+
+            section {
+                box-shadow: none;
+                border: 1px solid #ccc;
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>📊 Kiến Trúc Hệ Thống</h1>
+        <p>Hướng dẫn toàn diện cho BrSE & BA</p>
+    </header>
+
+    <nav class="container">
+        <ul>
+            <li><a href="#overview">Tổng Quan</a></li>
+            <li><a href="#roles">Các Vai Trò</a></li>
+            <li><a href="#functions">Danh Sách Chức Năng</a></li>
+            <li><a href="#screens">Chi Tiết Màn Hình</a></li>
+            <li><a href="#best-practices">Best Practices</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <!-- OVERVIEW SECTION -->
+        <section id="overview">
+            <h2>1. Tổng Quan về Kiến Trúc Hệ Thống</h2>
+
+            <div class="learning-objective">
+                <h3>🎯 Mục Tiêu Học Tập</h3>
+                <ul>
+                    <li>Hiểu cấu trúc và các thành phần chính của một hệ thống</li>
+                    <li>Nắm vững quan hệ giữa các module khác nhau</li>
+                    <li>Xác định các điểm tích hợp (Integration Points)</li>
+                    <li>Phân tích luồng dữ liệu trong hệ thống</li>
+                </ul>
+            </div>
+
+            <h3>1.1 Định Nghĩa Kiến Trúc Hệ Thống</h3>
+            <p>Kiến trúc hệ thống là <strong>bản thiết kế tổng thể</strong> của một ứng dụng/platform, mô tả:</p>
+            <ul>
+                <li><strong>Cấu trúc:</strong> Các thành phần chính (modules, services)</li>
+                <li><strong>Quan hệ:</strong> Cách các thành phần tương tác với nhau</li>
+                <li><strong>Luồng dữ liệu:</strong> Dữ liệu chuyển động như thế nào</li>
+                <li><strong>Người dùng:</strong> Ai là những người sử dụng hệ thống</li>
+            </ul>
+
+            <div class="highlight-info">
+                <strong>💡 Ví dụ thực tế:</strong> Nếu bạn xây dựng một hệ thống quản lý bán hàng, kiến trúc sẽ bao gồm: Module Sản Phẩm, Module Đơn Hàng, Module Khách Hàng, Module Thanh Toán, và cách chúng kết nối với nhau.
+            </div>
+
+            <h3>1.2 Các Thành Phần Chính của Kiến Trúc</h3>
+            
+            <div class="diagram">
+                <div style="text-align: center; font-size: 14px;">
+                    <div style="margin-bottom: 20px;">
+                        <div class="flow-box">Người Dùng & Actors</div>
+                    </div>
+                    <div style="font-size: 24px; color: #667eea; margin: 10px 0;">↓</div>
+                    <div style="margin-bottom: 20px;">
+                        <div class="flow-box">Giao Diện Người Dùng (UI)</div>
+                    </div>
+                    <div style="font-size: 24px; color: #667eea; margin: 10px 0;">↓</div>
+                    <div style="margin-bottom: 20px;">
+                        <div class="flow-box">Các Chức Năng (Functions)</div>
+                    </div>
+                    <div style="font-size: 24px; color: #667eea; margin: 10px 0;">↓</div>
+                    <div style="margin-bottom: 20px;">
+                        <div class="flow-box">Dữ Liệu (Database)</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>1.3 Lợi Ích của Kiến Trúc Rõ Ràng</h3>
+            <div class="card-grid">
+                <div class="card">
+                    <h4>📐 Clarity</h4>
+                    <p>Giúp toàn bộ team hiểu rõ hệ thống, từ BrSE đến Developers</p>
+                </div>
+                <div class="card">
+                    <h4>🎯 Alignment</h4>
+                    <p>Đảm bảo tất cả mọi người đi cùng một hướng</p>
+                </div>
+                <div class="card">
+                    <h4>⚙️ Scalability</h4>
+                    <p>Dễ dàng mở rộng hệ thống khi có yêu cầu mới</p>
+                </div>
+                <div class="card">
+                    <h4>🛠️ Maintenance</h4>
+                    <p>Dễ dàng bảo trì và sửa lỗi trong tương lai</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ROLES SECTION -->
+        <section id="roles">
+            <h2>2. Các Vai Trò & Actors trong Hệ Thống</h2>
+
+            <div class="learning-objective">
+                <h3>🎯 Mục Tiêu Học Tập</h3>
+                <ul>
+                    <li>Xác định tất cả các loại người dùng trong hệ thống</li>
+                    <li>Mô tả trách nhiệm chính của mỗi vai trò</li>
+                    <li>Hiểu các quy tắc ủy quyền (Authorization rules)</li>
+                </ul>
+            </div>
+
+            <h3>2.1 Khái Niệm: Role & Actor</h3>
+            <p><strong>Role:</strong> Là một nhóm quyền hạn được gán cho người dùng (e.g., Admin, Manager, User)</p>
+            <p><strong>Actor:</strong> Là một cá nhân hoặc hệ thống thực hiện một hành động cụ thể</p>
+
+            <h3>2.2 Ví Dụ: Hệ Thống Quản Lý Học Tập Online</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Vai Trò / Actor</th>
+                        <th>Trách Nhiệm Chính</th>
+                        <th>Quyền Hạn Chính</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Học Sinh (Student)</strong></td>
+                        <td>Tham gia khóa học, làm bài tập, xem điểm</td>
+                        <td>Xem khóa học, nộp bài, xem kết quả</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Giáo Viên (Teacher)</strong></td>
+                        <td>Tạo khóa học, chấm bài, tương tác học sinh</td>
+                        <td>Tạo/sửa khóa học, chấm điểm, gửi thông báo</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Quản Trị Viên (Admin)</strong></td>
+                        <td>Quản lý toàn bộ hệ thống, người dùng, quyền hạn</td>
+                        <td>Quản lý tài khoản, thiết lập hệ thống, báo cáo</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Hỗ Trợ Khách Hàng (Support)</strong></td>
+                        <td>Hỗ trợ học sinh, giáo viên</td>
+                        <td>Xem thông tin người dùng, hỗ trợ kỹ thuật</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>2.3 Ví Dụ: Hệ Thống Ngân Hàng Số</h3>
+            <div class="example-box">
+                <div class="example-title">💼 Hệ Thống DigitalBank</div>
+                
+                <h4>Actors & Responsibilities:</h4>
+                <table class="comparison-table">
+                    <tr>
+                        <th style="background: #667eea; color: white;">Actor</th>
+                        <th style="background: #667eea; color: white;">Hoạt Động Chính</th>
+                        <th style="background: #667eea; color: white;">Ví Dụ</th>
+                    </tr>
+                    <tr>
+                        <td><strong>👤 Khách Hàng Cá Nhân</strong></td>
+                        <td>Chuyển tiền, thanh toán hóa đơn, xem tài khoản</td>
+                        <td>Chuyển 500K đến bạn bè, thanh toán điện nước</td>
+                    </tr>
+                    <tr>
+                        <td><strong>🏢 Doanh Nghiệp</strong></td>
+                        <td>Quản lý tài khoản đơn vị, thanh toán lương, quản lý nhân viên</td>
+                        <td>Thanh toán lương cho 100 nhân viên hàng tháng</td>
+                    </tr>
+                    <tr>
+                        <td><strong>⚙️ Hệ Thống Bên Thứ Ba</strong></td>
+                        <td>Gửi/nhận dữ liệu qua API</td>
+                        <td>Ứng dụng thanh toán thứ ba kết nối vào để xử lý giao dịch</td>
+                    </tr>
+                    <tr>
+                        <td><strong>👨‍💼 Nhân Viên Support</strong></td>
+                        <td>Xác minh tài khoản, hỗ trợ khách hàng</td>
+                        <td>Giúp khách hàng reset mật khẩu, xác minh danh tính</td>
+                    </tr>
+                    <tr>
+                        <td><strong>🔐 Admin Hệ Thống</strong></td>
+                        <td>Quản lý toàn bộ hệ thống, cấu hình, người dùng</td>
+                        <td>Tạo tài khoản nhân viên, cấu hình giới hạn giao dịch</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="key-point">
+                🔑 <strong>Quan Trọng:</strong> Mỗi vai trò phải có <strong>quyền hạn rõ ràng</strong>. Không phải người dùng nào cũng có quyền làm mọi thứ. Đây là nguyên tắc "Least Privilege" - chỉ cấp quyền cần thiết.
+            </div>
+
+            <h3>2.4 Authorization & Authentication</h3>
+            <div class="highlight-info">
+                <strong>🔒 Khác biệt quan trọng:</strong>
+                <ul>
+                    <li><strong>Authentication (Xác Thực):</strong> Xác nhận "bạn là ai?" - Đăng nhập bằng username/password, OTP, hay khuôn mặt</li>
+                    <li><strong>Authorization (Phân Quyền):</strong> Xác nhận "bạn được phép làm gì?" - Sau khi đăng nhập, ai có quyền xem/sửa/xóa gì</li>
+                </ul>
+            </div>
+
+            <h3>2.5 Matrix Vai Trò - Quyền Hạn</h3>
+            <table class="comparison-table">
+                <tr>
+                    <th style="background: #667eea; color: white;">Chức Năng</th>
+                    <th style="background: #667eea; color: white;">Admin</th>
+                    <th style="background: #667eea; color: white;">Manager</th>
+                    <th style="background: #667eea; color: white;">User</th>
+                </tr>
+                <tr>
+                    <td><strong>Xem Danh Sách Người Dùng</strong></td>
+                    <td>✅ Được</td>
+                    <td>✅ Được (chỉ trong phòng ban)</td>
+                    <td>❌ Không</td>
+                </tr>
+                <tr>
+                    <td><strong>Tạo Tài Khoản</strong></td>
+                    <td>✅ Được</td>
+                    <td>❌ Không</td>
+                    <td>❌ Không</td>
+                </tr>
+                <tr>
+                    <td><strong>Duyệt Đơn Hàng</strong></td>
+                    <td>✅ Được</td>
+                    <td>✅ Được</td>
+                    <td>❌ Không</td>
+                </tr>
+                <tr>
+                    <td><strong>Tạo Đơn Hàng</strong></td>
+                    <td>✅ Được</td>
+                    <td>✅ Được</td>
+                    <td>✅ Được</td>
+                </tr>
+                <tr>
+                    <td><strong>Xem Báo Cáo</strong></td>
+                    <td>✅ Được</td>
+                    <td>✅ Được</td>
+                    <td>❌ Không</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- FUNCTIONS SECTION -->
+        <section id="functions">
+            <h2>3. Danh Sách Chức Năng (Function List)</h2>
+
+            <div class="learning-objective">
+                <h3>🎯 Mục Tiêu Học Tập</h3>
+                <ul>
+                    <li>Phân loại các chức năng trong hệ thống</li>
+                    <li>Hiểu quy tắc CRUD (Create, Read, Update, Delete)</li>
+                    <li>Phân biệt giữa Basic Function, Workflow Function, và Other Function</li>
+                    <li>Lập danh sách chức năng hiệu quả</li>
+                </ul>
+            </div>
+
+            <h3>3.1 Các Loại Chức Năng</h3>
+
+            <div class="card-grid">
+                <div class="card">
+                    <h4>📝 Basic Functions</h4>
+                    <p>Các thao tác cơ bản trên dữ liệu:</p>
+                    <ul style="margin-top: 10px; font-size: 0.9em;">
+                        <li><strong>Create:</strong> Tạo mới</li>
+                        <li><strong>Read:</strong> Xem chi tiết</li>
+                        <li><strong>Update:</strong> Cập nhật</li>
+                        <li><strong>Delete:</strong> Xóa</li>
+                        <li><strong>Search:</strong> Tìm kiếm</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>🔄 Workflow Functions</h4>
+                    <p>Các chức năng theo quy trình kinh doanh:</p>
+                    <ul style="margin-top: 10px; font-size: 0.9em;">
+                        <li><strong>Submit:</strong> Gửi yêu cầu</li>
+                        <li><strong>Approve:</strong> Duyệt</li>
+                        <li><strong>Reject:</strong> Từ chối</li>
+                        <li><strong>Assign:</strong> Giao việc</li>
+                        <li><strong>Complete:</strong> Hoàn thành</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>⚙️ Other Functions</h4>
+                    <p>Các chức năng khác:</p>
+                    <ul style="margin-top: 10px; font-size: 0.9em;">
+                        <li><strong>Report:</strong> Báo cáo</li>
+                        <li><strong>Export:</strong> Xuất dữ liệu</li>
+                        <li><strong>Notification:</strong> Thông báo</li>
+                        <li><strong>Settings:</strong> Cài đặt</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>3.2 Quy Tắc CRUD</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Hoạt Động</th>
+                        <th>Mô Tả</th>
+                        <th>Ví Dụ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="badge badge-primary">CREATE</span></td>
+                        <td>Tạo một record mới trong hệ thống</td>
+                        <td>Tạo một khách hàng mới, tạo đơn hàng</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge badge-primary">READ</span></td>
+                        <td>Đọc/Xem thông tin từ hệ thống</td>
+                        <td>Xem danh sách khách hàng, xem chi tiết đơn hàng</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge badge-primary">UPDATE</span></td>
+                        <td>Cập nhật/Sửa thông tin có sẵn</td>
+                        <td>Cập nhật địa chỉ khách hàng, sửa thông tin đơn hàng</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge badge-primary">DELETE</span></td>
+                        <td>Xóa một record</td>
+                        <td>Xóa khách hàng, hủy đơn hàng</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>3.3 Ví Dụ: Danh Sách Chức Năng Hệ Thống Bán Hàng Online</h3>
+
+            <h4>📦 Module: Sản Phẩm</h4>
+            <table class="comparison-table">
+                <tr>
+                    <th style="background: #667eea; color: white; width: 30%;">Chức Năng</th>
+                    <th style="background: #667eea; color: white; width: 20%;">Loại</th>
+                    <th style="background: #667eea; color: white; width: 50%;">Mô Tả</th>
+                </tr>
+                <tr>
+                    <td><strong>Tạo Sản Phẩm</strong></td>
+                    <td><span class="badge badge-warning">CREATE</span></td>
+                    <td>Cho phép Admin tạo sản phẩm mới với thông tin: Tên, Mô tả, Giá, Ảnh</td>
+                </tr>
+                <tr>
+                    <td><strong>Xem Danh Sách Sản Phẩm</strong></td>
+                    <td><span class="badge badge-success">READ</span></td>
+                    <td>Hiển thị danh sách sản phẩm với hỗ trợ tìm kiếm, lọc theo danh mục, sắp xếp theo giá</td>
+                </tr>
+                <tr>
+                    <td><strong>Xem Chi Tiết Sản Phẩm</strong></td>
+                    <td><span class="badge badge-success">READ</span></td>
+                    <td>Hiển thị toàn bộ thông tin sản phẩm, ảnh, review, đánh giá sao</td>
+                </tr>
+                <tr>
+                    <td><strong>Cập Nhật Sản Phẩm</strong></td>
+                    <td><span class="badge badge-info">UPDATE</span></td>
+                    <td>Cho phép Admin sửa tên, mô tả, giá, hình ảnh sản phẩm</td>
+                </tr>
+                <tr>
+                    <td><strong>Xóa Sản Phẩm</strong></td>
+                    <td><span class="badge badge-warning">DELETE</span></td>
+                    <td>Cho phép Admin xóa sản phẩm khỏi hệ thống (thường chỉ xóa logic)</td>
+                </tr>
+                <tr>
+                    <td><strong>Xuất Báo Cáo Sản Phẩm</strong></td>
+                    <td><span class="badge">OTHER</span></td>
+                    <td>Xuất danh sách sản phẩm ra file Excel/PDF với thông tin: Tên, SKU, Giá, Tồn Kho</td>
+                </tr>
+            </table>
+
+            <h4>🛒 Module: Đơn Hàng</h4>
+            <table class="comparison-table">
+                <tr>
+                    <th style="background: #667eea; color: white; width: 30%;">Chức Năng</th>
+                    <th style="background: #667eea; color: white; width: 20%;">Loại</th>
+                    <th style="background: #667eea; color: white; width: 50%;">Mô Tả</th>
+                </tr>
+                <tr>
+                    <td><strong>Tạo Đơn Hàng</strong></td>
+                    <td><span class="badge badge-warning">CREATE</span></td>
+                    <td>Khách hàng chọn sản phẩm, nhập địa chỉ giao hàng, chọn phương thức thanh toán</td>
+                </tr>
+                <tr>
+                    <td><strong>Xem Đơn Hàng</strong></td>
+                    <td><span class="badge badge-success">READ</span></td>
+                    <td>Hiển thị danh sách đơn hàng của khách hàng, hỗ trợ lọc theo trạng thái</td>
+                </tr>
+                <tr>
+                    <td><strong>Gửi Yêu Cầu Hàng</strong></td>
+                    <td><span class="badge">WORKFLOW</span></td>
+                    <td>Khách hàng xác nhận đơn hàng, chuyển trạng thái từ "Chờ xác nhận" → "Đã xác nhận"</td>
+                </tr>
+                <tr>
+                    <td><strong>Duyệt Đơn Hàng</strong></td>
+                    <td><span class="badge">WORKFLOW</span></td>
+                    <td>Admin xem xét đơn hàng, duyệt (Confirm) hoặc từ chối (Reject) đơn</td>
+                </tr>
+                <tr>
+                    <td><strong>Cập Nhật Trạng Thái Giao Hàng</strong></td>
+                    <td><span class="badge">WORKFLOW</span></td>
+                    <td>Cập nhật trạng thái: Chờ giao → Đang giao → Đã giao → Hoàn thành</td>
+                </tr>
+                <tr>
+                    <td><strong>Hủy Đơn Hàng</strong></td>
+                    <td><span class="badge">WORKFLOW</span></td>
+                    <td>Cho phép hủy nếu đơn chưa được xác nhận hoặc đang chờ xử lý</td>
+                </tr>
+                <tr>
+                    <td><strong>Xuất Báo Cáo Doanh Thu</strong></td>
+                    <td><span class="badge">OTHER</span></td>
+                    <td>Xuất báo cáo doanh thu theo ngày/tháng/năm, theo sản phẩm</td>
+                </tr>
+            </table>
+
+            <h4>👤 Module: Người Dùng & Xác Thực</h4>
+            <table class="comparison-table">
+                <tr>
+                    <th style="background: #667eea; color: white; width: 30%;">Chức Năng</th>
+                    <th style="background: #667eea; color: white; width: 20%;">Loại</th>
+                    <th style="background: #667eea; color: white; width: 50%;">Mô Tả</th>
+                </tr>
+                <tr>
+                    <td><strong>Đăng Ký</strong></td>
+                    <td><span class="badge badge-warning">CREATE</span></td>
+                    <td>Người dùng tạo tài khoản mới với email hoặc số điện thoại, gửi OTP để xác minh</td>
+                </tr>
+                <tr>
+                    <td><strong>Đăng Nhập</strong></td>
+                    <td><span class="badge">OTHER</span></td>
+                    <td>Người dùng đăng nhập bằng email/mật khẩu hoặc số điện thoại/mật khẩu</td>
+                </tr>
+                <tr>
+                    <td><strong>Quên Mật Khẩu</strong></td>
+                    <td><span class="badge">OTHER</span></td>
+                    <td>Gửi link reset mật khẩu qua email, hoặc mã OTP qua SMS</td>
+                </tr>
+                <tr>
+                    <td><strong>Đổi Mật Khẩu</strong></td>
+                    <td><span class="badge badge-info">UPDATE</span></td>
+                    <td>Người dùng đổi mật khẩu sau khi đã đăng nhập</td>
+                </tr>
+                <tr>
+                    <td><strong>Cập Nhật Hồ Sơ</strong></td>
+                    <td><span class="badge badge-info">UPDATE</span></td>
+                    <td>Cập nhật thông tin cá nhân: Tên, Ảnh, Số điện thoại, Địa chỉ</td>
+                </tr>
+                <tr>
+                    <td><strong>Xóa Tài Khoản</strong></td>
+                    <td><span class="badge badge-warning">DELETE</span></td>
+                    <td>Cho phép người dùng xóa tài khoản của mình (vô hiệu hóa vĩnh viễn)</td>
+                </tr>
+            </table>
+
+            <h3>3.4 Quy Tắc Lập Danh Sách Chức Năng</h3>
+            <div class="highlight-success">
+                <strong>✅ Quy Tắc Tốt:</strong>
+                <ul>
+                    <li>✓ Chức năng phải <strong>spesifik</strong> và <strong>rõ ràng</strong></li>
+                    <li>✓ Nên liên kết với một <strong>loại</strong> (Basic, Workflow, Other)</li>
+                    <li>✓ Phải có <strong>mô tả chi tiết</strong> về mục đích</li>
+                    <li>✓ Nên <strong>phân nhóm</strong> theo module/data object</li>
+                    <li>✓ Mỗi chức năng phải có <strong>vai trò có quyền thực hiện</strong></li>
+                </ul>
+            </div>
+
+            <div class="highlight">
+                <strong>❌ Tránh:</strong>
+                <ul>
+                    <li>✗ Mô tả quá chung chung (e.g., "Quản lý đơn hàng" → Quá rộng)</li>
+                    <li>✗ Quên liên kết với vai trò</li>
+                    <li>✗ Không có mô tả hoặc mô tả quá ngắn</li>
+                    <li>✗ Trùng lặp chức năng</li>
+                    <li>✗ Quên các chức năng bổ trợ (e.g., Thông báo, Báo cáo)</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- SCREENS SECTION -->
+        <section id="screens">
+            <h2>4. Chi Tiết Màn Hình (Screen & UI Design)</h2>
+
+            <div class="learning-objective">
+                <h3>🎯 Mục Tiêu Học Tập</h3>
+                <ul>
+                    <li>Hiểu cấu trúc của một màn hình (Screen)</li>
+                    <li>Mô tả các thành phần trên màn hình</li>
+                    <li>Xác định luồng người dùng (User Flow)</li>
+                    <li>Viết wireframe/mockup chi tiết</li>
+                </ul>
+            </div>
+
+            <h3>4.1 Khái Niệm: Screen & UI Element</h3>
+            <p><strong>Screen:</strong> Là một trang/màn hình mà người dùng nhìn thấy trên ứng dụng</p>
+            <p><strong>UI Element:</strong> Các thành phần trên màn hình như: Button, Input Field, Table, Card, v.v.</p>
+
+            <div class="example-box">
+                <div class="example-title">📱 Ví Dụ: Màn Hình Danh Sách Đơn Hàng</div>
+                
+                <h4>Tên Màn Hình:</h4>
+                <p><strong>Order List Screen</strong> - Hiển thị danh sách tất cả đơn hàng của khách hàng</p>
+
+                <h4>Các Thành Phần (UI Elements):</h4>
+                <table class="comparison-table">
+                    <tr>
+                        <th style="background: #667eea; color: white; width: 25%;">Thành Phần</th>
+                        <th style="background: #667eea; color: white; width: 25%;">Loại</th>
+                        <th style="background: #667eea; color: white; width: 50%;">Mô Tả & Hành Động</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Header</strong></td>
+                        <td>Container</td>
+                        <td>Tiêu đề "Đơn Hàng Của Tôi", nút quay lại, nút menu</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Search Bar</strong></td>
+                        <td>Input Field</td>
+                        <td>Cho phép người dùng tìm kiếm đơn hàng theo mã đơn hoặc sản phẩm</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Filter Buttons</strong></td>
+                        <td>Button Group</td>
+                        <td>Bộ lọc: "Tất cả" | "Chờ xác nhận" | "Đang giao" | "Đã giao" | "Đã hủy"</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Order List</strong></td>
+                        <td>Table/Card List</td>
+                        <td>Hiển thị danh sách đơn hàng với cột: Mã Đơn, Tên Sản Phẩm, Ngày, Tổng Tiền, Trạng Thái</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Order Item Card</strong></td>
+                        <td>Card</td>
+                        <td>Mỗi dòng hiển thị 1 đơn hàng. Bấm để xem chi tiết. Hiển thị: Mã, Tên SP, Giá, Trạng Thái</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Status Badge</strong></td>
+                        <td>Badge</td>
+                        <td>Hiển thị trạng thái với màu khác nhau: Xanh (Đã giao), Cam (Đang giao), Đỏ (Hủy)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Action Buttons</strong></td>
+                        <td>Button</td>
+                        <td>"Xem Chi Tiết" - Chuyển đến trang chi tiết đơn hàng</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Empty State</strong></td>
+                        <td>Message</td>
+                        <td>Nếu không có đơn hàng, hiển thị "Chưa có đơn hàng. Mua sắm ngay!"</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Floating Action Button</strong></td>
+                        <td>Button</td>
+                        <td>Nút "Tạo Đơn Hàng Mới" (nổi ở góc dưới phải)</td>
+                    </tr>
+                </table>
+
+                <h4>Luồng Nghiệp Vụ (User Flow):</h4>
+                <div class="diagram">
+                    <div class="flow-box">Vào Danh Sách Đơn</div>
+                    <div class="flow-arrow">↓</div>
+                    <div class="flow-box">Tìm Kiếm / Lọc</div>
+                    <div class="flow-arrow">↓</div>
+                    <div class="flow-box">Bấm Vào 1 Đơn</div>
+                    <div class="flow-arrow">↓</div>
+                    <div class="flow-box">Xem Chi Tiết</div>
+                    <div class="flow-arrow">↓</div>
+                    <div class="flow-box">Hủy / Theo Dõi / Quay Lại</div>
+                </div>
+            </div>
+
+            <h3>4.2 Ví Dụ: Màn Hình Tạo Đơn Hàng (Create Order)</h3>
+
+            <div class="example-box">
+                <div class="example-title">📝 Màn Hình: Create Order</div>
+
+                <h4>Tên & Mục Đích:</h4>
+                <p><strong>Create Order Screen</strong> - Cho phép khách hàng tạo một đơn hàng mới</p>
+
+                <h4>Layout & Thành Phần:</h4>
+                <div style="background: #f0f2f5; padding: 20px; border-radius: 8px; font-size: 0.9em; line-height: 1.6;">
+                    <pre style="font-family: monospace; color: #333;">
+┌─────────────────────────────────────┐
+│ 📝 Tạo Đơn Hàng Mới                │
+├─────────────────────────────────────┤
+│                                     │
+│ 🛒 Thông Tin Đơn Hàng              │
+│ ─────────────────────────────────   │
+│ Chọn Sản Phẩm:  [Dropdown ▼]       │
+│ Số Lượng:       [___1___] [+] [-]  │
+│ Giá:            1,500,000 đ        │
+│ Thêm Sản Phẩm [+ Button]           │
+│                                     │
+│ 📍 Địa Chỉ Giao Hàng               │
+│ ─────────────────────────────────   │
+│ Tên Người Nhận: [____________]      │
+│ Số ĐT:          [____________]      │
+│ Địa Chỉ:        [____________]      │
+│ Thành Phố:      [____________]      │
+│ Quận/Huyện:     [____________]      │
+│                                     │
+│ 💳 Phương Thức Thanh Toán          │
+│ ─────────────────────────────────   │
+│ ○ Thanh Toán Khi Nhận             │
+│ ○ Chuyển Khoản Ngân Hàng          │
+│ ○ Ví Điện Tử                      │
+│                                     │
+│ 💰 Tóm Tắt Đơn Hàng                │
+│ ─────────────────────────────────   │
+│ Tổng Giá:       1,500,000 đ        │
+│ Phí Giao Hàng:    100,000 đ        │
+│ TỔNG CỘNG:      1,600,000 đ        │
+│                                     │
+│ [← Quay Lại]  [✓ Xác Nhận Đơn]    │
+└─────────────────────────────────────┘
+                    </pre>
+                </div>
+
+                <h4>Mô Tả Chi Tiết Các Phần:</h4>
+                
+                <h5>1️⃣ Phần Thông Tin Sản Phẩm:</h5>
+                <ul>
+                    <li><strong>Chọn Sản Phẩm:</strong> Dropdown cho phép chọn từ danh sách sản phẩm có sẵn</li>
+                    <li><strong>Số Lượng:</strong> Input số lượng, có nút +/- để tăng/giảm</li>
+                    <li><strong>Giá:</strong> Hiển thị giá đơn vị, tổng giá tự động cập nhật</li>
+                    <li><strong>Thêm Sản Phẩm:</strong> Cho phép thêm nhiều sản phẩm trong 1 đơn</li>
+                </ul>
+
+                <h5>2️⃣ Phần Địa Chỉ Giao Hàng:</h5>
+                <ul>
+                    <li><strong>Tên Người Nhận:</strong> Bắt buộc nhập</li>
+                    <li><strong>Số Điện Thoại:</strong> Bắt buộc, dùng để liên lạc giao hàng</li>
+                    <li><strong>Địa Chỉ Chi Tiết:</strong> Số nhà, đường phố</li>
+                    <li><strong>Thành Phố & Quận/Huyện:</strong> Dùng để tính phí giao hàng</li>
+                </ul>
+
+                <h5>3️⃣ Phần Thanh Toán:</h5>
+                <ul>
+                    <li><strong>3 Tùy Chọn:</strong> Thanh toán khi nhận, chuyển khoản, ví điện tử</li>
+                    <li><strong>Radio Button:</strong> Chỉ chọn được 1 phương thức</li>
+                </ul>
+
+                <h5>4️⃣ Phần Tóm Tắt:</h5>
+                <ul>
+                    <li><strong>Hiển thị:</strong> Tổng giá sản phẩm, phí giao hàng, tổng cộng</li>
+                    <li><strong>Mục đích:</strong> Cho khách hàng xem lại trước khi xác nhận</li>
+                </ul>
+
+                <h4>Luồng & Quy Tắc Xác Thực:</h4>
+                <ul>
+                    <li>Sản phẩm phải được chọn (bắt buộc)</li>
+                    <li>Số lượng phải > 0</li>
+                    <li>Các trường địa chỉ phải được điền đầy đủ</li>
+                    <li>Phương thức thanh toán phải được chọn</li>
+                    <li>Nếu lỗi, hiển thị thông báo lỗi màu đỏ dưới từng field</li>
+                    <li>Nút "Xác Nhận" sẽ bị disable (mờ) nếu chưa điền đầy đủ</li>
+                </ul>
+            </div>
+
+            <h3>4.3 Best Practices cho Screen Design</h3>
+            <div class="card-grid">
+                <div class="card">
+                    <h4>🎯 Clarity</h4>
+                    <p>Mỗi screen phải có tiêu đề rõ ràng, người dùng biết mình ở đâu</p>
+                </div>
+                <div class="card">
+                    <h4>📐 Consistency</h4>
+                    <p>Các thành phần tương tự phải có giao diện giống nhau trên các screen</p>
+                </div>
+                <div class="card">
+                    <h4>♿ Accessibility</h4>
+                    <p>Font đủ lớn, màu sắc tương phản, hỗ trợ keyboard, hỗ trợ screen reader</p>
+                </div>
+                <div class="card">
+                    <h4>⚡ Performance</h4>
+                    <p>Load nhanh, không lag, dữ liệu hiển thị đầy đủ</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- BEST PRACTICES -->
+        <section id="best-practices">
+            <h2>5. Best Practices & Tips Thực Tiễn</h2>
+
+            <div class="learning-objective">
+                <h3>🎯 Mục Tiêu Học Tập</h3>
+                <ul>
+                    <li>Học các quy tắc tốt nhất trong thiết kế kiến trúc hệ thống</li>
+                    <li>Tránh các lỗi phổ biến</li>
+                    <li>Lên kế hoạch hiệu quả cho dự án</li>
+                </ul>
+            </div>
+
+            <h3>5.1 Quy Tắc Vàng trong Kiến Trúc Hệ Thống</h3>
+
+            <h4>✅ LUÔN LÀM:</h4>
+            <ul>
+                <li><strong>Xác định rõ Actors/Roles:</strong> Trước khi thiết kế chức năng, phải biết ai sẽ dùng</li>
+                <li><strong>Lập danh sách chức năng Chi Tiết:</strong> Không được mơ hồ, mỗi chức năng phải có mô tả cụ thể</li>
+                <li><strong>Vẽ Sơ Đồ Kiến Trúc:</strong> Hình ảnh hơn 1000 từ, giúp người khác hiểu dễ hơn</li>
+                <li><strong>Xác định luồng dữ liệu:</strong> Dữ liệu chuyển động như thế nào giữa các module</li>
+                <li><strong>Lập wireframe/mockup:</strong> Trước khi code, phải thiết kế giao diện</li>
+                <li><strong>Phân loại chức năng:</strong> Tách biệt Basic, Workflow, Other để dễ quản lý</li>
+                <li><strong>Đảm bảo Security:</strong> Kiểm tra quyền hạn, xác thực, mã hóa dữ liệu</li>
+                <li><strong>Tài liệu hóa rõ ràng:</strong> Viết tài liệu chi tiết để team hiểu</li>
+            </ul>
+
+            <h4>❌ TRÁNH LÀM:</h4>
+            <ul>
+                <li><strong>Không vẽ sơ đồ:</strong> Để team phải tự suy luận → nhầm lẫn, thành phố</li>
+                <li><strong>Mô tả quá chung chung:</strong> "Quản lý người dùng" → Quá rộng, không rõ</li>
+                <li><strong>Quên các vai trò:</strong> Chỉ thiết kế cho 1 loại người dùng → bất công bằng</li>
+                <li><strong>Thiết kế không có quy tắc xác thực:</strong> Bất kỳ ai cũng có thể làm bất cứ gì</li>
+                <li><strong>Không xem xét hiệu suất:</strong> Hệ thống chậm, users bỏ đi</li>
+                <li><strong>Thiếu error handling:</strong> Hệ thống crash khi có lỗi</li>
+                <li><strong>Không lên kế hoạch mở rộng:</strong> Không thể thêm tính năng mới sau</li>
+                <li><strong>Tài liệu không rõ ràng:</strong> Người khác không hiểu, phải hỏi hoài</li>
+            </ul>
+
+            <h3>5.2 Quy Trình Phân Tích Kiến Trúc (Recommended Process)</h3>
+
+            <div class="diagram">
+                <div style="text-align: left; margin-left: 40px;">
+                    <div style="margin-bottom: 20px; font-weight: 600; color: #667eea;">
+                        📋 Bước 1: Thu Thập Yêu Cầu
+                    </div>
+                    <p style="margin-left: 20px; margin-bottom: 20px; font-size: 0.95em;">
+                        Hỏi stakeholder: Hệ thống này dùng để làm gì? Ai là users? Tính năng chính là gì?
+                    </p>
+
+                    <div style="margin-bottom: 20px; font-weight: 600; color: #667eea;">
+                        👥 Bước 2: Xác Định Actors & Roles
+                    </div>
+                    <p style="margin-left: 20px; margin-bottom: 20px; font-size: 0.95em;">
+                        Liệt kê tất cả loại người dùng, mô tả trách nhiệm của mỗi loại
+                    </p>
+
+                    <div style="margin-bottom: 20px; font-weight: 600; color: #667eea;">
+                        📋 Bước 3: Lập Danh Sách Chức Năng
+                    </div>
+                    <p style="margin-left: 20px; margin-bottom: 20px; font-size: 0.95em;">
+                        Với mỗi vai trò, liệt kê những gì họ cần làm (Create, Read, Update, Delete, etc.)
+                    </p>
+
+                    <div style="margin-bottom: 20px; font-weight: 600; color: #667eea;">
+                        🎨 Bước 4: Thiết Kế Giao Diện (Wireframe/Mockup)
+                    </div>
+                    <p style="margin-left: 20px; margin-bottom: 20px; font-size: 0.95em;">
+                        Vẽ các màn hình chính, liệt kê các thành phần, mô tả luồng người dùng
+                    </p>
+
+                    <div style="margin-bottom: 20px; font-weight: 600; color: #667eea;">
+                        🏗️ Bước 5: Vẽ Sơ Đồ Kiến Trúc
+                    </div>
+                    <p style="margin-left: 20px; margin-bottom: 20px; font-size: 0.95em;">
+                        Hiển thị các module, cách chúng kết nối, luồng dữ liệu
+                    </p>
+
+                    <div style="margin-bottom: 20px; font-weight: 600; color: #667eea;">
+                        📄 Bước 6: Tài Liệu Hóa & Đánh Giá
+                    </div>
+                    <p style="margin-left: 20px; margin-bottom: 20px; font-size: 0.95em;">
+                        Viết tài liệu chi tiết, lấy feedback từ team, điều chỉnh nếu cần
+                    </p>
+                </div>
+            </div>
+
+            <h3>5.3 Câu Hỏi Kiểm Tra Chất Lượng Kiến Trúc</h3>
+
+            <div class="summary-box">
+                <h4>📋 Kiểm Tra List:</h4>
+                <ul>
+                    <li>✓ Tôi có xác định rõ tất cả các vai trò/actors không?</li>
+                    <li>✓ Mỗi role có quyền hạn rõ ràng không?</li>
+                    <li>✓ Tôi có lập danh sách chức năng chi tiết không?</li>
+                    <li>✓ Mỗi chức năng có mô tả rõ ràng không?</li>
+                    <li>✓ Tôi có vẽ sơ đồ kiến trúc không?</li>
+                    <li>✓ Luồng dữ liệu có rõ ràng không?</li>
+                    <li>✓ Tôi có thiết kế giao diện chính không?</li>
+                    <li>✓ Tôi có xem xét security không?</li>
+                    <li>✓ Tôi có xem xét scalability không?</li>
+                    <li>✓ Tôi có tài liệu hóa tất cả không?</li>
+                </ul>
+            </div>
+
+            <h3>5.4 Ví Dụ: Phân Tích Kiến Trúc Hoàn Chỉnh</h3>
+
+            <div class="example-box">
+                <div class="example-title">🏢 Hệ Thống Quản Lý Thư Viện Số</div>
+
+                <h4>📋 Yêu Cầu:</h4>
+                <p>Xây dựng hệ thống cho phép sinh viên mượn sách điện tử, quản lý hạn chế mượn, quản lý sách</p>
+
+                <h4>👥 Actors & Roles:</h4>
+                <table class="comparison-table">
+                    <tr>
+                        <th style="background: #667eea; color: white;">Role</th>
+                        <th style="background: #667eea; color: white;">Trách Nhiệm</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Sinh Viên</strong></td>
+                        <td>Mượn sách, trả sách, xem lịch sử mượn, đánh giá sách</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Thủ Thư (Librarian)</strong></td>
+                        <td>Quản lý danh sách sách, duyệt yêu cầu mượn, quản lý hạn chế</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Admin</strong></td>
+                        <td>Quản lý người dùng, hệ thống, báo cáo</td>
+                    </tr>
+                </table>
+
+                <h4>📋 Danh Sách Chức Năng:</h4>
+                
+                <h5>Cho Sinh Viên:</h5>
+                <ul>
+                    <li>🔐 Đăng ký, đăng nhập, đổi mật khẩu</li>
+                    <li>📚 Xem danh sách sách (với tìm kiếm, lọc theo thể loại)</li>
+                    <li>👀 Xem chi tiết sách (tác giả, thể loại, mô tả, bình luận)</li>
+                    <li>📤 Yêu cầu mượn sách (gửi yêu cầu, chờ duyệt)</li>
+                    <li>📥 Trả sách (xác nhận trả, hệ thống tính phí nếu quá hạn)</li>
+                    <li>📜 Xem lịch sử mượn</li>
+                    <li>⭐ Đánh giá sách</li>
+                </ul>
+
+                <h5>Cho Thủ Thư:</h5>
+                <ul>
+                    <li>📚 Quản lý sách (thêm, sửa, xóa)</li>
+                    <li>✅ Duyệt yêu cầu mượn</li>
+                    <li>❌ Từ chối yêu cầu mượn</li>
+                    <li>📊 Xem báo cáo (sách phổ biến, người mượn nhiều)</li>
+                    <li>⚙️ Cài đặt quy tắc mượn (số sách tối đa, thời gian mượn)</li>
+                </ul>
+
+                <h5>Cho Admin:</h5>
+                <ul>
+                    <li>👥 Quản lý tài khoản người dùng</li>
+                    <li>🔐 Quản lý vai trò & quyền hạn</li>
+                    <li>📊 Xem báo cáo toàn hệ thống</li>
+                    <li>⚙️ Cài đặt hệ thống</li>
+                </ul>
+
+                <h4>🎨 Các Màn Hình Chính:</h4>
+                <ul>
+                    <li><strong>Màn Hình Danh Sách Sách:</strong> Hiển thị tất cả sách, tìm kiếm, lọc</li>
+                    <li><strong>Màn Hình Chi Tiết Sách:</strong> Hiển thị thông tin chi tiết, button "Mượn"</li>
+                    <li><strong>Màn Hình Yêu Cầu Mượn:</strong> Xác nhận yêu cầu, nhập ngày dự kiến trả</li>
+                    <li><strong>Màn Hình Lịch Sử Mượn:</strong> Danh sách sách đã mượn, trạng thái, hạn chế</li>
+                    <li><strong>Màn Hình Quản Lý Sách (Thủ Thư):</strong> CRUD sách, cài đặt quy tắc</li>
+                    <li><strong>Màn Hình Duyệt Yêu Cầu:</strong> Danh sách yêu cầu, duyệt hoặc từ chối</li>
+                </ul>
+
+                <h4>🏗️ Sơ Đồ Kiến Trúc:</h4>
+                <div class="diagram">
+                    <pre style="text-align: left; font-size: 12px; line-height: 1.4;">
+┌──────────────────────────────────────────────┐
+│              NGƯỜI DÙNG                      │
+│  Sinh Viên | Thủ Thư | Admin                 │
+└──────────────────────────────────────────────┘
+              ↓
+┌──────────────────────────────────────────────┐
+│         GIAO DIỆN NGƯỜI DÙNG (UI)            │
+│     Web & Mobile Application                 │
+└──────────────────────────────────────────────┘
+              ↓
+┌──────────────────────────────────────────────┐
+│     CÁC MODULE & CHỨC NĂNG CHÍNH             │
+│  ┌─────────────┬──────────┬──────────────┐   │
+│  │  Auth       │  Book    │  Borrow      │   │
+│  │  Module     │  Module  │  Module      │   │
+│  ├─────────────┼──────────┼──────────────┤   │
+│  │ User        │ Catalog  │ Requests     │   │
+│  │ Management  │ Search   │ History      │   │
+│  │ Roles       │ Details  │ Notifications    │
+│  └─────────────┴──────────┴──────────────┘   │
+└──────────────────────────────────────────────┘
+              ↓
+┌──────────────────────────────────────────────┐
+│     CƠ SỞ DỮ LIỆU (DATABASE)                │
+│  Users | Books | Borrow_Requests | History   │
+└──────────────────────────────────────────────┘
+                    </pre>
+                </div>
+
+                <h4>✅ Lợi Ích của Kiến Trúc Này:</h4>
+                <ul>
+                    <li>✓ Rõ ràng: Mọi người biết hệ thống gồm phần nào</li>
+                    <li>✓ Dễ mở rộng: Thêm role mới, thêm chức năng không ảnh hưởng tới phần khác</li>
+                    <li>✓ Dễ kiểm tra: Có danh sách chức năng để test</li>
+                    <li>✓ Dễ bảo trì: Tìm bug dễ hơn vì module rõ ràng</li>
+                </ul>
+            </div>
+
+            <h3>5.5 Các Công Cụ Hỗ Trợ</h3>
+
+            <div class="card-grid">
+                <div class="card">
+                    <h4>📊 Draw.io / Lucidchart</h4>
+                    <p>Vẽ sơ đồ kiến trúc, flowchart, wireframe dễ dàng</p>
+                </div>
+                <div class="card">
+                    <h4>🎨 Figma</h4>
+                    <p>Thiết kế UI/UX, tạo mockup, wireframe, prototype</p>
+                </div>
+                <div class="card">
+                    <h4>📋 Confluence / Notion</h4>
+                    <p>Tài liệu hóa kiến trúc, danh sách chức năng, quy tắc</p>
+                </div>
+                <div class="card">
+                    <h4>🔄 Jira / Azure DevOps</h4>
+                    <p>Quản lý yêu cầu, task, backlog</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONCLUSION -->
+        <section>
+            <h2>6. Kết Luận & Tổng Kết</h2>
+
+            <div class="highlight-success">
+                <h3>🎓 Những Điều Bạn Đã Học:</h3>
+                <ul>
+                    <li>✅ Kiến trúc hệ thống là gì và tại sao nó quan trọng</li>
+                    <li>✅ Cách xác định các vai trò (Roles) & người dùng (Actors)</li>
+                    <li>✅ Cách lập danh sách chức năng chi tiết (Function List)</li>
+                    <li>✅ Cách thiết kế màn hình (Screen Design)</li>
+                    <li>✅ Best practices và quy trình phân tích</li>
+                    <li>✅ Các ví dụ thực tế áp dụng vào dự án</li>
+                </ul>
+            </div>
+
+            <h3>💼 Áp Dụng Vào Công Việc</h3>
+            <p>Khi bắt tay vào dự án mới, hãy luôn:</p>
+            <ol>
+                <li><strong>Thu thập yêu cầu rõ ràng</strong> từ stakeholder</li>
+                <li><strong>Xác định tất cả actors & roles</strong>, mô tả trách nhiệm của mỗi người</li>
+                <li><strong>Lập danh sách chức năng chi tiết</strong>, phân loại (Basic, Workflow, Other)</li>
+                <li><strong>Vẽ sơ đồ kiến trúc</strong> để hiển thị các module & quan hệ</li>
+                <li><strong>Thiết kế wireframe/mockup</strong> cho các màn hình chính</li>
+                <li><strong>Tài liệu hóa đầy đủ</strong> và lấy feedback từ team</li>
+                <li><strong>Xem xét security, scalability, performance</strong> từ đầu</li>
+            </ol>
+
+            <h3>🚀 Bước Tiếp Theo</h3>
+            <ul>
+                <li><strong>Thực hành:</strong> Chọn 1 hệ thống quen thuộc, hãy phân tích kiến trúc của nó</li>
+                <li><strong>Phân tích:</strong> Hỏi "Các vai trò là gì? Các chức năng chính là gì?"</li>
+                <li><strong>Ghi chép:</strong> Viết lại kiến trúc dựa trên hiểu biết của bạn</li>
+                <li><strong>So sánh:</strong> Gặp senior để xem phân tích của bạn có đúng không</li>
+                <li><strong>Lặp lại:</strong> Càng nhiều ví dụ, bạn càng giỏi phân tích</li>
+            </ul>
+
+            <div class="key-point">
+                🎯 <strong>Thông Điệp Chính:</strong> Kiến trúc hệ thống rõ ràng là nền tảng của mọi dự án thành công. Đầu tư thời gian để phân tích kỹ ở giai đoạn đầu sẽ tiết kiệm rất nhiều công sức và chi phí sau này.
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <p><strong>📚 Tài Liệu Giảng Dạy - Kiến Trúc Hệ Thống</strong></p>
+        <p>Dành cho Business Requirements Specialist (BrSE) & Business Analyst (BA)</p>
+        <p style="margin-top: 20px; font-size: 0.9em; opacity: 0.8;">
+            Cập nhật lần cuối: Tháng 4 năm 2025
+        </p>
+    </footer>
+
+</body>
+</html>

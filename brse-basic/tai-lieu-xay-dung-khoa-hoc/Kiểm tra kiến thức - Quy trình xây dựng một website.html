@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kiểm tra kiến thức | Quy trình xây dựng một website</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #F8F7F3;
+            --bg-card: #FFFFFF;
+            --bg-step: #FAFAF7;
+            --text-primary: #1C1C1C;
+            --text-secondary: #404040;
+            --text-muted: #767676;
+            --accent-blue: #1D4ED8;
+            --accent-blue-light: #DBEAFE;
+            --border-light: #E5E3DC;
+            --shadow-sm: 0 1px 4px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Lexend', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.8;
+            font-weight: 400;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .page-wrapper {
+            max-width: 920px;
+            margin: 0 auto;
+            padding: 40px 24px 100px;
+        }
+
+        /* HEADER */
+        .header {
+            text-align: center;
+            background: linear-gradient(135deg, #FFFFFF 0%, #F0EDE6 50%, #E8F4EC 100%);
+            border-radius: 20px;
+            padding: 56px 48px;
+            margin-bottom: 32px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow-md);
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -60px; right: -60px;
+            width: 200px; height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(22,101,52,0.07) 0%, transparent 70%);
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -40px; left: -40px;
+            width: 150px; height: 150px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(29,78,216,0.06) 0%, transparent 70%);
+        }
+
+        .header-badge {
+            display: inline-block;
+            background: #2D8B5E;
+            color: #fff;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 6px 18px;
+            border-radius: 20px;
+            margin-bottom: 18px;
+        }
+
+        .header h1 {
+            font-family: 'Source Serif 4', serif;
+            font-size: 2.0rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.25;
+            margin-bottom: 12px;
+        }
+
+        .header-sub {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            line-height: 1.7;
+        }
+
+        .header-trainer {
+            font-size: 0.95rem;
+            color: #2D8B5E;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+
+        .header-meta {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+
+        /* TOP NAV */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin: 14px 0 28px;
+        }
+
+        .nav-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            color: var(--accent-blue);
+            font-weight: 600;
+            background: #EFF6FF;
+            border: 1px solid #BFDBFE;
+            padding: 10px 14px;
+            border-radius: 12px;
+        }
+
+        .nav-link:hover { background: #DBEAFE; }
+
+        .nav-note {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* QUIZ */
+        .quiz-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 20px;
+            padding: 40px 44px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .quiz-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 2px solid var(--border-light);
+        }
+
+        .quiz-icon {
+            width: 52px;
+            height: 52px;
+            background: linear-gradient(135deg, #1D4ED8, #7C3AED);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .quiz-title { font-size: 22px; font-weight: 800; color: var(--text-primary); }
+        .quiz-subtitle { font-size: 14px; color: var(--text-muted); margin-top: 3px; }
+
+        .question-block {
+            margin-bottom: 32px;
+            padding-bottom: 32px;
+            border-bottom: 1px solid #F0EEE8;
+        }
+
+        .question-block:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .question-num {
+            display: inline-block;
+            background: var(--accent-blue-light);
+            color: var(--accent-blue);
+            font-size: 12px;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+
+        .question-text {
+            font-size: 15.5px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 14px;
+            line-height: 1.5;
+        }
+
+        .options {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 16px;
+            border: 1.5px solid var(--border-light);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            background: var(--bg-step);
+            font-size: 14.5px;
+            color: var(--text-secondary);
+            user-select: none;
+        }
+
+        .option:hover {
+            border-color: #93C5FD;
+            background: #EFF6FF;
+            color: var(--accent-blue);
+        }
+
+        .option.selected {
+            border-color: #93C5FD;
+            background: #EFF6FF;
+            color: var(--accent-blue);
+        }
+
+        .option.correct {
+            border-color: #86EFAC;
+            background: #F0FDF4;
+            color: #166534;
+        }
+
+        .option.wrong {
+            border-color: #FECACA;
+            background: #FEF2F2;
+            color: #991B1B;
+        }
+
+        .option-letter {
+            width: 26px;
+            height: 26px;
+            border-radius: 6px;
+            background: var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            flex-shrink: 0;
+            color: var(--text-muted);
+        }
+
+        .option.correct .option-letter { background: #BBF7D0; color: #166534; }
+        .option.wrong .option-letter { background: #FECACA; color: #991B1B; }
+        .option.selected .option-letter { background: #BFDBFE; color: #1D4ED8; }
+
+        .answer-feedback {
+            margin-top: 10px;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 13.5px;
+            display: none;
+        }
+
+        .answer-feedback.show { display: block; }
+        .answer-feedback.correct { background: #F0FDF4; border: 1px solid #BBF7D0; color: #166534; }
+        .answer-feedback.wrong { background: #FEF2F2; border: 1px solid #FECACA; color: #991B1B; }
+
+        .check-btn {
+            margin-top: 12px;
+            padding: 9px 22px;
+            background: var(--accent-blue);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Lexend', sans-serif;
+            font-size: 13.5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.15s ease;
+        }
+
+        .check-btn:hover { background: #1E40AF; }
+        .check-btn:disabled { background: #9CA3AF; cursor: default; }
+
+        .quiz-result-box {
+            margin-top: 32px;
+            padding: 28px 32px;
+            background: linear-gradient(135deg, #1D4ED8, #7C3AED);
+            border-radius: 14px;
+            text-align: center;
+            color: #fff;
+            display: none;
+        }
+
+        .quiz-result-box.show { display: block; }
+
+        .result-score {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .result-label {
+            font-size: 16px;
+            color: rgba(255,255,255,0.85);
+            margin-bottom: 16px;
+        }
+
+        .result-comment {
+            font-size: 14px;
+            color: rgba(255,255,255,0.75);
+            line-height: 1.6;
+        }
+
+        .retake-btn {
+            margin-top: 20px;
+            padding: 10px 28px;
+            background: rgba(255,255,255,0.15);
+            border: 1.5px solid rgba(255,255,255,0.35);
+            border-radius: 8px;
+            color: #fff;
+            font-family: 'Lexend', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.15s ease;
+        }
+
+        .retake-btn:hover { background: rgba(255,255,255,0.25); }
+
+        /* FOOTER */
+        .footer {
+            text-align: center;
+            padding: 32px;
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-top: 24px;
+        }
+
+        .footer strong { color: var(--text-secondary); }
+
+        @media (max-width: 680px) {
+            .header { padding: 36px 28px; }
+            .header h1 { font-size: 24px; }
+            .quiz-section { padding: 28px 24px; }
+            .top-nav { flex-direction: column; align-items: flex-start; }
+        }
+
+        @media print {
+            body { background: #fff; }
+            .quiz-section, .header { box-shadow: none; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="page-wrapper">
+    <div class="header">
+        <div class="header-badge">Kiểm tra kiến thức</div>
+        <h1>Quy trình xây dựng<br>một website</h1>
+        <p class="header-sub">10 câu hỏi — chọn đáp án đúng rồi bấm “Kiểm tra”.</p>
+        <p class="header-trainer">Quỳnh Nga BrSE Japan — Đồng Hành Cùng Bạn</p>
+        <p class="header-meta">Dành cho người mới &bull; Tự chấm điểm &bull; Có giải thích</p>
+    </div>
+
+    <div class="top-nav">
+        <a class="nav-link" href="./Quy trình xây dựng một website.html">← Quay lại tài liệu bài học</a>
+        <div class="nav-note">Gợi ý: làm lần 1 để kiểm tra, làm lần 2 để nhớ lâu.</div>
+    </div>
+
+    <div class="quiz-section">
+        <div class="quiz-header">
+            <div class="quiz-icon">📝</div>
+            <div>
+                <div class="quiz-title">Kiểm tra kiến thức</div>
+                <div class="quiz-subtitle">10 câu hỏi — chọn đáp án đúng rồi bấm \"Kiểm tra\"</div>
+            </div>
+        </div>
+
+        <!-- Q1 -->
+        <div class="question-block" id="q1">
+            <div class="question-num">Câu 1</div>
+            <div class="question-text">Bước nào được coi là quan trọng nhất trong quy trình xây dựng website?</div>
+            <ul class="options" data-correct="b">
+                <li class="option" data-val="a" onclick="selectOption(this)"><span class="option-letter">A</span> Coding</li>
+                <li class="option" data-val="b" onclick="selectOption(this)"><span class="option-letter">B</span> Requirement và Specs</li>
+                <li class="option" data-val="c" onclick="selectOption(this)"><span class="option-letter">C</span> Deploy</li>
+                <li class="option" data-val="d" onclick="selectOption(this)"><span class="option-letter">D</span> Testing</li>
+            </ul>
+            <button class="check-btn" onclick="checkAnswer(this, 'q1')">Kiểm tra</button>
+            <div class="answer-feedback" id="fb-q1"></div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="question-block" id="q2">
+            <div class="question-num">Câu 2</div>
+            <div class="question-text">Output (kết quả đầu ra) của bước Requirement gồm những gì?</div>
+            <ul class="options" data-correct="c">
+                <li class="option" data-val="a" onclick="selectOption(this)"><span class="option-letter">A</span> Source code và database</li>
+                <li class="option" data-val="b" onclick="selectOption(this)"><span class="option-letter">B</span> Server và domain</li>
+                <li class="option" data-val="c" onclick="selectOption(this)"><span class="option-letter">C</span> Spec, Wireframe, Flow nghiệp vụ</li>
+                <li class="option" data-val="d" onclick="selectOption(this)"><span class="option-letter">D</span> Unit test và Integration test</li>
+            </ul>
+            <button class="check-btn" onclick="checkAnswer(this, 'q2')">Kiểm tra</button>
+            <div class="answer-feedback" id="fb-q2"></div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="question-block" id="q3">
+            <div class="question-num">Câu 3</div>
+            <div class="question-text">API trong hệ thống web có vai trò gì?</div>
+            <ul class="options" data-correct="b">
+                <li class="option" data-val="a" onclick="selectOption(this)"><span class="option-letter">A</span> Lưu trữ toàn bộ dữ liệu của website</li>
+                <li class="option" data-val="b" onclick="selectOption(this)"><span class="option-letter">B</span> Làm cầu nối giữa Frontend và Backend</li>
+                <li class="option" data-val="c" onclick="selectOption(this)"><span class="option-letter">C</span> Hiển thị giao diện cho người dùng</li>
+                <li class="option" data-val="d" onclick="selectOption(this)"><span class="option-letter">D</span> Quản lý server và domain</li>
+            </ul>
+            <button class="check-btn" onclick="checkAnswer(this, 'q3')">Kiểm tra</button>
+            <div class="answer-feedback" id="fb-q3"></div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="question-block" id="q4">
+            <div class="question-num">Câu 4</div>
+            <div class="question-text">Môi trường nào được dùng để QA test — gần giống với hệ thống thật nhất?</div>
+            <ul class="options" data-correct="c">
+                <li class="option" data-val="a" onclick="selectOption(this)"><span class="option-letter">A</span> Local</li>
+                <li class="option" data-val="b" onclick="selectOption(this)"><span class="option-letter">B</span> Dev</li>
+                <li class="option" data-val="c" onclick="selectOption(this)"><span class="option-letter">C</span> Staging</li>
+                <li class="option" data-val="d" onclick="selectOption(this)"><span class="option-letter">D</span> Production</li>
+            </ul>
+            <button class="check-btn" onclick="checkAnswer(this, 'q4')">Kiểm tra</button>
+            <div class="answer-feedback" id="fb-q4"></div>
+        </div>
+
+        <!-- Q5 -->
+        <div class="question-block" id="q5">
+            <div class="question-num">Câu 5</div>
+            <div class="question-text">Frontend trong một website đảm nhiệm vai trò nào?</div>
+            <ul class="options" data-correct="a">
+                <li class="option" data-val="a" onclick="selectOption(this)"><span class="option-letter">A</span> Xây dựng giao diện mà user nhìn thấy và tương tác</li>
+                <li class="option" data-val="b" onclick="selectOption(this)"><span class="option-letter">B</span> Lưu trữ dữ liệu trong database</li>
+                <li class="option" data-val="c" onclick="selectOption(this)"><span class="option-letter">C</span> Quản lý domain và server</li>
+                <li class="option" data-val="d" onclick="selectOption(this)"><span class="option-letter">D</span> Viết unit test cho hệ thống</li>
+            </ul>
+            <button class="check-btn" onclick="checkAnswer(this, 'q5')">Kiểm tra</button>
+            <div class="answer-feedback" id="fb-q5"></div>
+        </div>
+
+        <!-- Q6 -->
+        <div class="question-block" id="q6">
+            <div class="question-num">Câu 6</div>
+            <div class="question-text">DNS (Domain Name System) có chức năng gì?</div>
+            <ul class="options" data-correct="b">
+                <li class="option" data-val="a" onclick="selectOption(this)"><span class="option-letter">A</span> Lưu trữ source code của website</li>
+                <li class="option" data-val="b" onclick="selectOption(this)"><span class="option-letter">B</span> Chuyển đổi tên miền thành địa chỉ IP của server</li>
+                <li class="option" data-val="c" onclick="selectOption(this)"><span class="option-letter">C</span> Kiểm tra lỗi trong code</li>
+                <li class="option" data-val="d" onclick="selectOption(this)"><span class="option-letter">D</span> Chạy unit test tự động</li>
+            </ul>
+            <button class="check-btn" onclick="checkAnswer(this, 'q6')">Kiểm tra</button>
+            <div class="answer-feedback" id="fb-q6"></div>
+        </div>
+
+        <!-- Q7 -->
+        <div class="question-block" id="q7">
+            <div class="question-num">Câu 7</div>
+            <div class="question-text">Tại sao không nên test trực tiếp trên môi trường Production?</div>
+            <ul class="options" data-correct="d">
+                <li class="option" data-val="a" onclick="selectOption(this)"><span class="option-letter">A</span> Vì Production chạy chậm hơn Staging</li>
+                <li class="option" data-val="b" onclick="selectOption(this)"><span class="option-letter">B</span> Vì Production không có database</li>
+                <li class="option" data-val="c" onclick="selectOption(this)"><span class="option-letter">C</span> Vì Production không kết nối được internet</li>
+                <li class="option" data-val="d" onclick="selectOption(this)"><span class="option-letter">D</span> Vì Production là hệ thống thật — lỗi sẽ ảnh hưởng trực tiếp đến user đang dùng</li>
+            </ul>
+            <button class="check-btn" onclick="checkAnswer(this, 'q7')">Kiểm tra</button>
+            <div class="answer-feedback" id="fb-q7"></div>
+        </div>
+
+        <!-- Q8 -->
+        <div class="question-block" id="q8">
+            <div class="question-num">Câu 8</div>
+            <div class="question-text">\"Deploy\" trong phát triển phần mềm có nghĩa là gì?</div>
+            <ul class="options" data-correct="c">
+                <li class="option" data-val="a" onclick="selectOption(this)"><span class="option-letter">A</span> Viết tài liệu kỹ thuật</li>
+                <li class="option" data-val="b" onclick="selectOption(this)"><span class="option-letter">B</span> Thiết kế giao diện website</li>
+                <li class="option" data-val="c" onclick="selectOption(this)"><span class="option-letter">C</span> Đưa source code lên server để hệ thống chạy thật</li>
+                <li class="option" data-val="d" onclick="selectOption(this)"><span class="option-letter">D</span> Xác định yêu cầu từ khách hàng</li>
+            </ul>
+            <button class="check-btn" onclick="checkAnswer(this, 'q8')">Kiểm tra</button>
+            <div class="answer-feedback" id="fb-q8"></div>
+        </div>
+
+        <!-- Q9 -->
+        <div class="question-block" id="q9">
+            <div class="question-num">Câu 9</div>
+            <div class="question-text">Giai đoạn Vận hành (Operation) bao gồm công việc nào dưới đây?</div>
+            <ul class="options" data-correct="a">
+                <li class="option" data-val="a" onclick="selectOption(this)"><span class="option-letter">A</span> Monitor hệ thống, fix bug, cập nhật tính năng, backup dữ liệu</li>
+                <li class="option" data-val="b" onclick="selectOption(this)"><span class="option-letter">B</span> Viết spec và wireframe cho chức năng mới</li>
+                <li class="option" data-val="c" onclick="selectOption(this)"><span class="option-letter">C</span> Chọn tech stack cho hệ thống</li>
+                <li class="option" data-val="d" onclick="selectOption(this)"><span class="option-letter">D</span> Setup môi trường Local và Dev</li>
+            </ul>
+            <button class="check-btn" onclick="checkAnswer(this, 'q9')">Kiểm tra</button>
+            <div class="answer-feedback" id="fb-q9"></div>
+        </div>
+
+        <!-- Q10 -->
+        <div class="question-block" id="q10">
+            <div class="question-num">Câu 10</div>
+            <div class="question-text">Tại sao một dự án phần mềm thường thất bại — dù code không sai?</div>
+            <ul class="options" data-correct="b">
+                <li class="option" data-val="a" onclick="selectOption(this)"><span class="option-letter">A</span> Vì chọn sai ngôn ngữ lập trình</li>
+                <li class="option" data-val="b" onclick="selectOption(this)"><span class="option-letter">B</span> Vì requirement không rõ ràng từ đầu</li>
+                <li class="option" data-val="c" onclick="selectOption(this)"><span class="option-letter">C</span> Vì không dùng cloud server</li>
+                <li class="option" data-val="d" onclick="selectOption(this)"><span class="option-letter">D</span> Vì không viết đủ unit test</li>
+            </ul>
+            <button class="check-btn" onclick="checkAnswer(this, 'q10')">Kiểm tra</button>
+            <div class="answer-feedback" id="fb-q10"></div>
+        </div>
+
+        <!-- Result -->
+        <div class="quiz-result-box" id="quiz-result">
+            <div class="result-score" id="result-score">0/10</div>
+            <div class="result-label" id="result-label">Kết quả</div>
+            <div class="result-comment" id="result-comment"></div>
+            <button class="retake-btn" onclick="retakeQuiz()">Làm lại từ đầu</button>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p><strong>Quỳnh Nga BrSE Japan</strong> · Đồng Hành Cùng Bạn</p>
+        <p style="margin-top:6px;">Quiz · Quy trình xây dựng một website</p>
+    </div>
+</div>
+
+<script>
+    const answers = {
+        q1: 'b', q2: 'c', q3: 'b', q4: 'c', q5: 'a',
+        q6: 'b', q7: 'd', q8: 'c', q9: 'a', q10: 'b'
+    };
+
+    const feedbacks = {
+        q1: { correct: 'Đúng rồi! Requirement là nền tảng — làm sai ở đây thì mọi bước sau đều sai theo.', wrong: 'Chưa đúng. Đáp án là Requirement. Coding chỉ là 1 trong 8 bước, và không phải bước quan trọng nhất.' },
+        q2: { correct: 'Chính xác! Ba tài liệu này là kết quả bắt buộc phải có sau bước Requirement.', wrong: 'Chưa đúng. Output của Requirement gồm: Spec (tài liệu mô tả), Wireframe (bản phác thảo màn hình), và Flow nghiệp vụ.' },
+        q3: { correct: 'Đúng! API là cầu nối giữa Frontend và Backend — như bồi bàn trong nhà hàng.', wrong: 'Chưa đúng. API làm cầu nối giữa Frontend (giao diện) và Backend (xử lý logic/dữ liệu).' },
+        q4: { correct: 'Đúng rồi! Staging được thiết kế giống Production nhất có thể, để QA test trong điều kiện gần thật.', wrong: 'Chưa đúng. Môi trường dùng để test gần giống thật là Staging — không phải Production (dễ ảnh hưởng user thật).' },
+        q5: { correct: 'Chính xác! Frontend xây dựng tất cả những gì user nhìn thấy và tương tác trên trình duyệt.', wrong: 'Chưa đúng. Frontend là phần giao diện người dùng — những gì hiển thị trên trình duyệt.' },
+        q6: { correct: 'Đúng! DNS như danh bạ điện thoại: bạn tìm tên miền, DNS trả về địa chỉ IP để kết nối đến server.', wrong: 'Chưa đúng. DNS chuyển đổi tên miền (vd: google.com) thành địa chỉ IP của server tương ứng.' },
+        q7: { correct: 'Chính xác! Production đang phục vụ user thật — bất kỳ lỗi nào cũng ảnh hưởng ngay đến người dùng thực.', wrong: 'Chưa đúng. Lý do là Production là môi trường thật, user thật đang dùng — không được phép gây lỗi ở đây.' },
+        q8: { correct: 'Đúng rồi! Deploy là quá trình đưa code đã được test lên server để chạy thật cho user.', wrong: 'Chưa đúng. Deploy là đưa source code lên server để hệ thống chạy thật trên internet.' },
+        q9: { correct: 'Chính xác! Vận hành là giai đoạn dài nhất và không bao giờ kết thúc trong vòng đời của một sản phẩm.', wrong: 'Chưa đúng. Vận hành gồm: monitor hệ thống, fix bug, cập nhật tính năng, và backup dữ liệu.' },
+        q10: { correct: 'Đúng! Requirement mờ nhạt là nguyên nhân số 1 khiến dự án thất bại — dù team dev rất giỏi.', wrong: 'Chưa đúng. Dự án thất bại thường do requirement không rõ ràng — xây đúng kỹ thuật nhưng sai thứ khách hàng cần.' }
+    };
+
+    let answered = {};
+    let score = 0;
+
+    function selectOption(el) {
+        const block = el.closest('.question-block');
+        const qId = block.id;
+        if (answered[qId]) return;
+        block.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+        el.classList.add('selected');
+    }
+
+    function checkAnswer(btn, qId) {
+        if (answered[qId]) return;
+        const block = document.getElementById(qId);
+        const selected = block.querySelector('.option.selected');
+        if (!selected) {
+            const fb = document.getElementById('fb-' + qId);
+            fb.textContent = 'Bạn chưa chọn đáp án nào.';
+            fb.className = 'answer-feedback wrong show';
+            return;
+        }
+
+        const userVal = selected.getAttribute('data-val');
+        const correctVal = answers[qId];
+        const fb = document.getElementById('fb-' + qId);
+
+        answered[qId] = userVal;
+
+        block.querySelectorAll('.option').forEach(o => {
+            if (o.getAttribute('data-val') === correctVal) o.classList.add('correct');
+        });
+
+        if (userVal === correctVal) {
+            selected.classList.add('correct');
+            fb.textContent = '✓ ' + feedbacks[qId].correct;
+            fb.className = 'answer-feedback correct show';
+            score++;
+        } else {
+            selected.classList.add('wrong');
+            fb.textContent = '✗ ' + feedbacks[qId].wrong;
+            fb.className = 'answer-feedback wrong show';
+        }
+
+        btn.disabled = true;
+
+        if (Object.keys(answered).length === 10) showResult();
+    }
+
+    function showResult() {
+        const resultBox = document.getElementById('quiz-result');
+        const scoreEl = document.getElementById('result-score');
+        const labelEl = document.getElementById('result-label');
+        const commentEl = document.getElementById('result-comment');
+
+        scoreEl.textContent = score + '/10';
+
+        if (score === 10) {
+            labelEl.textContent = 'Xuất sắc!';
+            commentEl.textContent = 'Bạn đã nắm vững toàn bộ quy trình. Tiếp tục học sâu hơn về từng bước nhé!';
+        } else if (score >= 8) {
+            labelEl.textContent = 'Rất tốt!';
+            commentEl.textContent = 'Bạn hiểu tốt quy trình. Xem lại những câu sai để nắm chắc hơn.';
+        } else if (score >= 6) {
+            labelEl.textContent = 'Khá — cần ôn thêm';
+            commentEl.textContent = 'Bạn đã hiểu nền tảng. Đọc lại phần bạn trả lời sai và làm lại quiz nhé.';
+        } else {
+            labelEl.textContent = 'Cần học lại';
+            commentEl.textContent = 'Đừng nản — đọc lại tài liệu từ đầu, chú ý các ví dụ thực tế, rồi thử lại.';
+        }
+
+        resultBox.classList.add('show');
+        resultBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function retakeQuiz() {
+        answered = {};
+        score = 0;
+        document.querySelectorAll('.question-block').forEach(block => {
+            block.querySelectorAll('.option').forEach(o => {
+                o.className = 'option';
+            });
+            const fb = block.querySelector('.answer-feedback');
+            fb.className = 'answer-feedback';
+            fb.textContent = '';
+            const btn = block.querySelector('.check-btn');
+            btn.disabled = false;
+        });
+        document.getElementById('quiz-result').classList.remove('show');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>

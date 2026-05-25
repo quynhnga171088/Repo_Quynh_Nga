@@ -1,0 +1,80 @@
+Tôi đang làm việc trong ngành công nghệ thông tin, phát triển phần mềm thị trường Nhật Bản. 
+Vai trò của tôi là BrSE - kỹ sư cầu nối, yêu cầu tiếng Nhật phải thật giỏi, giao tiếp tốt. 
+Từ Br là viết tắt của từng tiếng Anh là bridge, còn SE là system engineer. 
+Nhưng tôi không phải là system engineer nên không hiểu về các nội dung technical, kỹ thuật. 
+Do vậy vài trò của tôi sẽ là BA - phân tích hệ thống, phân tích nghiệp vụ, 
+đảm bảo chất lượng, quản lý dự án. 
+
+Trong ngành tiếng Nhật cũng có nhiều bạn tiếng Nhật giao tiếp tốt, muốn làm trong ngành IT nhưng lại không có nền tảng kỹ thuật.
+Do vậy tôi muốn tạo khóa học đào tạo cho các bạn có tiếng Nhật tốt, có thể hiểu về các nội dung phát triển phần mềm, về kỹ thuật hệ thống bằng ngôn ngữ và cách giảng dễ hiểu cho người không biết kỹ thuật. 
+
+Các khóa tôi dự định tạo là: 
+- BrSE Career Builder (chuyên về việc làm cầu nối, phân tích nghiệp vụ trong ngành IT)
+- IT Comtor (chuyên về biên phiên dịch trong ngành IT)
+
+Ngoài ra, tôi cũng muốn là người tạo content khích lệ động viên người học. 
+Nên tôi cũng dự định tạo: 
+- Blog/Notebook về BrSE: viết các case study thực chiến nhỏ, chia sẻ các câu chuyện về nghề.
+
+Tôi muốn là người dạy lý thuyết dễ hiểu nhất, và có ví dụ thực chiến nhất, giúp học viên có thể hiểu và thực hành ngay trong công việc.
+Trở thành người dạy có tâm nhất.
+Tôi muốn là người viết content thật - đúng - chạm.
+
+----------
+Câu chuyện của tôi: 
+Về mình - một BrSE “đi vòng” 
+Mình không bắt đầu từ chuyên ngành IT.
+Mình xuất phát điểm là dân tiếng Nhật.
+Trước đây mình bước chân vào ngành IT với vị trí là Comtor - một vị trí mà nếu nhìn từ bên ngoài, mọi thứ có vẻ cũng khá ổn: công việc hoàn thành tròn vai, “chạy” được với team phát triển. Lương cũng gọi là ổn định hơn so với các ngành nghề khác trên thị trường nói chung. 
+Nhưng khi đó mình luôn biết rõ là: Mình làm việc trong trạng thái không thật sự hiểu. Bạn nào làm Comtor chắc cũng đồng điệu với nhau ở điểm này. 
+Không phải là không làm được. Mà là làm mà không nắm được bản chất hệ thống, không hiểu sâu về kỹ thuật, không biết phía sau những gì mình đang truyền đạt thực sự vận hành như thế nào.
+Cảm giác “không thật sự hiểu” đó, nó khiến mình bị bí bách, bị bực tức, bị khó chịu…Nói điều mà mình không thực sự clear, có lúc mình cảm giác cái ý mà người nói muốn mình phải truyền đạt ấy - nó không đúng đâu, nó sai sai thế nào - mà mình vẫn phải truyền đạt… nó thật sự là một sự khó chịu day dứt và âm ỉ đấy bạn ạ. 
+■　Con đường mình đã đi - và những vòng lặp không cần thiết
+Mình bắt đầu tìm cách tự bù lấp những chỗ “không thật sự hiểu” đó. Mình học lung tung cả lên, mỗi thứ một tí, mỗi lúc 1 kiểu, ko có hệ thống. 
+Mình học test - tăng cường hỏi tester, chủ động tự tham gia vào việc test hệ thống để hiểu cách mọi thứ hoạt động.
+Mình học BA - phân tích nghiệp vụ, chức năng, học cách một hệ thống được thiết kế và vận hành từ góc nhìn tổng thể.
+Mình học PM - quản lý kế hoạch, quản lý dự án, quản lý tiến độ chất lượng, quản lý con người.
+Vân vân và mây mây…
+Nhìn lại cả quá trình, thật sự là một hành trình tự mò mẫm dò dẫm mà bước đi. 
+Học cái này một chút, thử cái kia một chút, lan man lý thuyết không có môi trường thực hành. Học mà không có hành, không có thực chiến thì kiến thức cũng chỉ là trên giấy mà thôi. Có những thứ đáng ra nên học sớm hơn thì lại học muộn. Có những thứ chỉ cần hiểu sơ bộ thì lại bị lún vào mất quá nhiều thời gian.
+Không có một bản đồ rõ ràng. Không có mentor định hướng cho mình biết: “Ở giai đoạn này, nên tập trung vào cái gì?”. Và mình đã mất khá nhiều thời gian để đi vòng như vậy.
+■　Điều mình nhận ra sau nhiều năm làm trong ngành
+Có rất nhiều người giống mình ngày trước. Đặc biệt là những bạn trái ngành bước vào IT, các bạn ngành ngôn ngữ học tiếng Nhật, các bạn Comtor. 
+Làm việc chăm chỉ. Có trách nhiệm - nhưng luôn có cảm giác thiếu, cảm giác không thật sự hiểu. Và không rõ nên đi tiếp theo hướng nào.
+Vấn đề không phải là bạn không đủ năng lực.
+Mà là bạn không có định hướng đúng, không có đủ thông tin đúng, vào thời điểm đúng.
+Nếu có một nơi:
+Tổng hợp lại kinh nghiệm thực tế
+Chỉ ra nên học gì, ở mức nào là đủ
+Và giúp bạn nhìn rõ các hướng đi trong ngành
+…thì rất nhiều người có thể tiết kiệm được vài năm “đi vòng”.
+■　Đây là lý do page này tồn tại
+Mình tạo page này để chia sẻ lại:
+Những gì mình đã trải qua trong công việc
+Những kỹ năng thực sự cần thiết khi làm BrSE
+Những sai lầm mình từng gặp để bạn tránh lặp lại
+Và cách công việc này diễn ra ngoài thực tế
+Mình không tô vẽ màu hồng về nghề, cũng không nói quá về những khó khăn. Mình muốn bạn nhìn thấy nó đúng như nó là.
+Để bạn có thể tự trả lời:
+Công việc này có phù hợp với mình không?
+Nếu phù hợp, mình nên bắt đầu từ đâu?
+Và làm thế nào để đi nhanh hơn/hoặc từ tốn cũng được, nhưng chắc chắn hơn
+(Mình là type có xu hướng đi theo cửa này: từ tốn cũng được, nhưng chắc chắn và chill chill)
+■　Page này dành cho ai
+Page này có thể phù hợp với bạn nếu:
+Bạn giao tiếp tiếng Nhật tốt nhưng xuất phát điểm không phải chuyên ngành IT
+Bạn đang làm Comtor /Dev / BA /Tester
+Bạn đã đi làm một thời gian nhưng vẫn thấy mơ hồ về định hướng
+Hoặc bạn đang muốn chuyển hướng nhưng chưa biết bắt đầu từ đâu
+Nếu bạn đang ở một trong những điểm đó, có thể bạn sẽ thấy mình đâu đó trong những gì mình chia sẻ.
+■　Điều mình hướng đến (và cũng là giới hạn của page này)
+Mình không hứa sẽ đưa bạn đến một con đường “nhanh nhất”. 
+Vì trong sự nghiệp, “nhanh” nhưng sai hướng thì chỉ khiến bạn đi xa hơn khỏi điểm mình muốn đến.
+Nhưng mình tin mình có thể giúp bạn:
+Hiểu rõ hơn về ngành về nghề
+Biết mình đang ở đâu
+Và rút ngắn một phần con đường mà mình đã từng phải đi vòng
+Chỉ vậy thôi.
+■　Tinh thần chung - Xây dựng và Tích cực
+Mọi bài viết và quan điểm ở trang của mình, đều xuất phát từ trải nghiệm/kinh nghiệm/tầm nhìn và đúc kết cá nhân. Với tư cách là người đi trước chia sẻ lại cho người đi sau. 
+Nếu bạn có quan điểm khác, hoặc quan điểm trái chiều -  mình rất welcome. Hãy comment chia sẻ với tinh thần xây dựng - tích cực - thiện chí, để mình mở rộng viewpoint với nhé. Và cũng là để cho các bạn khác đang tìm hiểu về ngành về nghề có góc nhìn đa dạng hơn.

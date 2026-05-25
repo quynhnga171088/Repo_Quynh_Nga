@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đào tạo: Labo vs Project Base</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 40px 30px;
+        }
+        
+        .intro-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 40px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .intro-section h2 {
+            color: #667eea;
+            font-size: 20px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+        
+        .intro-section p {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #555;
+        }
+        
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            border-color: #667eea;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.15);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-right: 15px;
+        }
+        
+        .card.labo .card-icon {
+            background: #e3f2fd;
+            color: #667eea;
+        }
+        
+        .card.project .card-icon {
+            background: #f3e5f5;
+            color: #764ba2;
+        }
+        
+        .card h3 {
+            font-size: 22px;
+            font-weight: 700;
+            margin: 0;
+        }
+        
+        .card-subtitle {
+            font-size: 13px;
+            color: #999;
+            margin-top: 5px;
+            font-style: italic;
+        }
+        
+        .card-content {
+            margin-top: 25px;
+        }
+        
+        .info-block {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .info-block:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .info-label {
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .info-value {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #666;
+        }
+        
+        .labo .info-label {
+            color: #667eea;
+        }
+        
+        .project .info-label {
+            color: #764ba2;
+        }
+        
+        .highlight {
+            background: #fffacd;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+        
+        .advantages {
+            background: #f0f7ff;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            border-radius: 6px;
+            margin-top: 20px;
+        }
+        
+        .advantages h4 {
+            color: #667eea;
+            font-size: 14px;
+            margin-bottom: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .advantages ul {
+            list-style: none;
+            margin: 0;
+        }
+        
+        .advantages li {
+            padding: 8px 0;
+            font-size: 14px;
+            color: #555;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .advantages li:before {
+            content: "✓";
+            color: #667eea;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 16px;
+        }
+        
+        .comparison-table {
+            margin-top: 40px;
+        }
+        
+        .comparison-table h2 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        th {
+            padding: 18px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        td {
+            padding: 18px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        tr:hover {
+            background: #f8f9ff;
+        }
+        
+        .feature-type {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .footer {
+            background: #f8f9fa;
+            padding: 30px;
+            text-align: center;
+            border-top: 1px solid #e0e0e0;
+            font-size: 13px;
+            color: #999;
+        }
+        
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .header h1 {
+                font-size: 24px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 Mô Hình Hợp Đồng Phố Biến</h1>
+            <p>Tìm hiểu về Labo (Jun-inin) và Project Base (Ukeoi)</p>
+        </div>
+        
+        <div class="content">
+            <div class="intro-section">
+                <h2>📌 Giới Thiệu</h2>
+                <p>Tại ITO Nhật, có hai mô hình hợp đồng chính mà các nhân viên mới cần hiểu rõ. Mỗi mô hình có cách quản lý công việc và tính chất khác nhau. Hãy cùng tìm hiểu chi tiết từng loại hợp đồng để hiểu rõ đặc điểm, ưu điểm của từng mô hình.</p>
+            </div>
+            
+            <div class="comparison">
+                <!-- LABO CARD -->
+                <div class="card labo">
+                    <div class="card-header">
+                        <div class="card-icon">準</div>
+                        <div>
+                            <h3>Labo</h3>
+                            <p class="card-subtitle">Hợp đồng Jun-inin</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card-content">
+                        <div class="info-block">
+                            <div class="info-label">Định Nghĩa</div>
+                            <div class="info-value">Cung cấp nhân lực theo tháng với mức effort cố định</div>
+                        </div>
+                        
+                        <div class="info-block">
+                            <div class="info-label">Kiểu Hợp Đồng</div>
+                            <div class="info-value">
+                                Cung cấp nhân sự ổn định, dài hạn. Khách hàng thuê một số lượng nhân viên nhất định với mức effort cụ thể hàng tháng.
+                            </div>
+                        </div>
+                        
+                        <div class="info-block">
+                            <div class="info-label">Ví Dụ Thực Tế</div>
+                            <div class="info-value">
+                                Khách hàng thuê:
+                                <br>• <span class="highlight">2 Developer</span> với effort 100% mỗi người
+                                <br>• <span class="highlight">2 Tester</span> với effort 50% mỗi người
+                                <br><br>Chúng tôi cung cấp đúng như vậy hàng tháng
+                            </div>
+                        </div>
+                        
+                        <div class="info-block">
+                            <div class="info-label">Hạn Chế</div>
+                            <div class="info-value">
+                                Công việc bị giới hạn bởi số lượng nhân sự. Nếu dự án cần 3 developer và 3 tester để hoàn thành nhưng chỉ có 2 dev và 2 tester, thì sẽ không thể thực hiện được.
+                            </div>
+                        </div>
+                        
+                        <div class="advantages">
+                            <h4>⭐ Ưu Điểm</h4>
+                            <ul>
+                                <li>Dự án ổn định, member hiểu rõ nghiệp vụ</li>
+                                <li>Có người hướng dẫn chuyên môn cho nhân viên mới</li>
+                                <li>Môi trường làm việc lâu dài, ổn định</li>
+                                <li>Dễ phát triển kỹ năng chuyên sâu</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- PROJECT BASE CARD -->
+                <div class="card project">
+                    <div class="card-header">
+                        <div class="card-icon">請</div>
+                        <div>
+                            <h3>Project Base</h3>
+                            <p class="card-subtitle">Hợp đồng Ukeoi</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card-content">
+                        <div class="info-block">
+                            <div class="info-label">Định Nghĩa</div>
+                            <div class="info-value">Làm thầu dự án với deadline và scope cụ thể</div>
+                        </div>
+                        
+                        <div class="info-block">
+                            <div class="info-label">Kiểu Hợp Đồng</div>
+                            <div class="info-value">
+                                Thỏa thuận hoàn thành sản phẩm/tính năng trong khung thời gian nhất định. Khách hàng chỉ quan tâm đến kết quả final và deadline.
+                            </div>
+                        </div>
+                        
+                        <div class="info-block">
+                            <div class="info-label">Ví Dụ Thực Tế</div>
+                            <div class="info-value">
+                                Thỏa thuận với khách:
+                                <br>• Hoàn thành sản phẩm trong <span class="highlight">5 tháng</span>
+                                <br>• Release vào tháng 5
+                                <br><br>Chúng tôi có thể thêm bao nhiêu người vào dự án tùy ý (5 người, 10 người...)
+                            </div>
+                        </div>
+                        
+                        <div class="info-block">
+                            <div class="info-label">Linh Hoạt</div>
+                            <div class="info-value">
+                                Khách hàng không quan tâm đến số lượng nhân sự, chỉ quan tâm kết quả. Chúng tôi có thể điều chỉnh số lượng team member để đáp ứng tiến độ.
+                            </div>
+                        </div>
+                        
+                        <div class="advantages">
+                            <h4>⭐ Ưu Điểm</h4>
+                            <ul>
+                                <li>Linh hoạt về số lượng nhân viên</li>
+                                <li>Có cơ hội làm dự án mới, đa dạng</li>
+                                <li>Khó khăn sẽ được giải quyết bằng cách thêm nhân sự</li>
+                                <li>Phát triển kỹ năng xử lý nhiều dự án khác nhau</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="comparison-table">
+                <h2>📊 Bảng So Sánh Chi Tiết</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tiêu Chí</th>
+                            <th>Labo (Jun-inin)</th>
+                            <th>Project Base (Ukeoi)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="feature-type">Loại Hợp Đồng</td>
+                            <td>Cung cấp nhân lực</td>
+                            <td>Làm thầu dự án</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-type">Chu Kỳ</td>
+                            <td>Theo tháng, dài hạn</td>
+                            <td>Theo dự án, có deadline</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-type">Số Lượng Nhân Sự</td>
+                            <td>Cố định theo hợp đồng</td>
+                            <td>Linh hoạt, có thể thay đổi</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-type">Mục Tiêu Khách Hàng</td>
+                            <td>Có đủ nhân sự làm việc</td>
+                            <td>Hoàn thành sản phẩm đúng deadline</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-type">Hạn Chế Công Việc</td>
+                            <td>Có hạn chế, phụ thuộc vào effort</td>
+                            <td>Không hạn chế, có thể mở rộng team</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-type">Điều Kiện Thích Hợp</td>
+                            <td>Dự án ổn định, lâu dài</td>
+                            <td>Dự án ngắn hạn, scope rõ ràng</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-type">Rủi Ro</td>
+                            <td>Dự án không hoàn thành toàn bộ</td>
+                            <td>Chi phí có thể tăng do thêm nhân sự</td>
+                        </tr>
+                        <tr>
+                            <td class="feature-type">Tính Ổn Định</td>
+                            <td>Rất ổn định</td>
+                            <td>Có tính chất thay đổi</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="intro-section" style="margin-top: 40px; background: #f0f7ff; border-left-color: #764ba2;">
+                <h2 style="color: #764ba2;">💡 Lời Khuyên Cho Nhân Viên Mới</h2>
+                <p><strong>Hầu hết nhân viên mới sẽ được phân vào dự án Labo</strong> vì đây là điều kiện tối ưu để học hỏi. Dự án Labo đã chạy ổn định, các thành viên trong team hiểu rõ nghiệp vụ và yêu cầu, nên sẽ có người hướng dẫn bạn một cách kỹ lưỡng. Đây là cơ hội tuyệt vời để phát triển kỹ năng chuyên sâu trong lĩnh vực bạn chọn.</p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>📖 Tài Liệu Đào Tạo Nội Bộ | Phòng Nhân Sự ITO | © 2024</p>
+        </div>
+    </div>
+</body>
+</html>

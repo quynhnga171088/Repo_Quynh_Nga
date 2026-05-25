@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrSE trong Project Base - Tài Liệu Đào Tạo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 40px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        .header p {
+            font-size: 16px;
+            opacity: 0.95;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .intro-box {
+            background: white;
+            border-left: 5px solid #667eea;
+            padding: 30px;
+            margin-bottom: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .intro-box h2 {
+            color: #667eea;
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+        
+        .intro-box p {
+            font-size: 15px;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 10px;
+        }
+        
+        .phase-timeline {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+        }
+        
+        .phase-timeline h2 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 35px;
+            text-align: center;
+        }
+        
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, #667eea, #764ba2);
+        }
+        
+        .timeline-item {
+            margin-bottom: 50px;
+            position: relative;
+        }
+        
+        .timeline-item:nth-child(odd) {
+            padding-right: calc(50% + 30px);
+        }
+        
+        .timeline-item:nth-child(even) {
+            padding-left: calc(50% + 30px);
+        }
+        
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            background: white;
+            border: 4px solid #667eea;
+            border-radius: 50%;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .timeline-content {
+            background: linear-gradient(135deg, #f0f4ff 0%, #fff5f7 100%);
+            padding: 25px;
+            border-radius: 8px;
+            border: 1px solid #e0e0ff;
+        }
+        
+        .timeline-content h3 {
+            color: #667eea;
+            font-size: 18px;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+        
+        .timeline-content h4 {
+            color: #764ba2;
+            font-size: 14px;
+            margin-top: 15px;
+            margin-bottom: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .timeline-content ul {
+            list-style: none;
+            margin: 10px 0 0 0;
+        }
+        
+        .timeline-content li {
+            padding: 8px 0;
+            font-size: 14px;
+            color: #555;
+            display: flex;
+            align-items: flex-start;
+            line-height: 1.6;
+        }
+        
+        .timeline-content li:before {
+            content: "→";
+            margin-right: 10px;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+        
+        .document-badge {
+            display: inline-block;
+            background: #ffeaa7;
+            color: #d63031;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+        
+        .key-responsibility {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .key-responsibility h2 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .responsibility-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+        
+        .responsibility-card {
+            background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+            padding: 25px;
+            border-radius: 8px;
+            border-left: 5px solid #667eea;
+        }
+        
+        .responsibility-card h3 {
+            color: #667eea;
+            font-size: 16px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        .responsibility-card ul {
+            list-style: none;
+        }
+        
+        .responsibility-card li {
+            padding: 10px 0;
+            font-size: 14px;
+            color: #555;
+            line-height: 1.6;
+            border-bottom: 1px solid rgba(102, 126, 234, 0.2);
+        }
+        
+        .responsibility-card li:last-child {
+            border-bottom: none;
+        }
+        
+        .example-box {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .example-box h2 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 25px;
+        }
+        
+        .example-scenario {
+            background: #f8f9fa;
+            border-left: 5px solid #667eea;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+        }
+        
+        .example-scenario h3 {
+            color: #667eea;
+            font-size: 15px;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+        
+        .example-scenario p {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.7;
+            margin-bottom: 8px;
+        }
+        
+        .example-scenario strong {
+            color: #333;
+        }
+        
+        .daily-tasks {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .daily-tasks h2 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 25px;
+        }
+        
+        .tasks-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .task-card {
+            background: linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 100%);
+            padding: 20px;
+            border-radius: 8px;
+            border-top: 4px solid #388e3c;
+        }
+        
+        .task-card h3 {
+            color: #1b5e20;
+            font-size: 14px;
+            margin-bottom: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        
+        .task-card ul {
+            list-style: none;
+        }
+        
+        .task-card li {
+            padding: 6px 0;
+            font-size: 13px;
+            color: #555;
+        }
+        
+        .task-card li:before {
+            content: "✓ ";
+            color: #388e3c;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+        
+        .skills-box {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .skills-box h2 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 25px;
+        }
+        
+        .skills-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+        
+        .skill-category {
+            background: linear-gradient(135deg, #fce4ec 0%, #fff3e0 100%);
+            padding: 25px;
+            border-radius: 8px;
+            border-left: 5px solid #e91e63;
+        }
+        
+        .skill-category h3 {
+            color: #c2185b;
+            font-size: 16px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        .skill-category ul {
+            list-style: none;
+        }
+        
+        .skill-category li {
+            padding: 10px 0;
+            font-size: 14px;
+            color: #555;
+            line-height: 1.6;
+            border-bottom: 1px solid rgba(233, 30, 99, 0.2);
+        }
+        
+        .skill-category li:last-child {
+            border-bottom: none;
+        }
+        
+        .highlight {
+            background: #fff3cd;
+            padding: 3px 8px;
+            border-radius: 3px;
+            color: #856404;
+            font-weight: 500;
+        }
+        
+        .footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 30px;
+            margin-top: 60px;
+            font-size: 13px;
+        }
+        
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 15px;
+            }
+            
+            .timeline-item:nth-child(odd),
+            .timeline-item:nth-child(even) {
+                padding-left: 60px;
+                padding-right: 0;
+            }
+            
+            .timeline-dot {
+                left: 15px;
+            }
+            
+            .responsibility-grid,
+            .tasks-grid,
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 28px;
+            }
+            
+            .phase-timeline h2,
+            .key-responsibility h2,
+            .example-box h2,
+            .daily-tasks h2,
+            .skills-box h2 {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎯 BrSE trong Dự Án Project Base</h1>
+        <p>Vai Trò, Trách Nhiệm và Kỹ Năng Cần Thiết</p>
+    </div>
+    
+    <div class="container">
+        <!-- GIỚI THIỆU -->
+        <div class="intro-box">
+            <h2>📖 Giới Thiệu về Project Base</h2>
+            <p>
+                <strong>Project Base</strong> là kiểu dự án làm <span class="highlight">thầu dự án</span> với deadline và scope cụ thể. 
+                Khác với Labo, trong Project Base khách hàng chỉ quan tâm đến kết quả cuối cùng và thời hạn hoàn thành, 
+                chứ không quan tâm đến số lượng nhân viên hay effort theo tháng.
+            </p>
+            <p>
+                <strong>Vai trò của BrSE:</strong> Là "cầu nối" giữa khách hàng Nhật và đội phát triển, 
+                đảm bảo dự án được thực hiện đúng theo yêu cầu, đúng tiến độ, và đáp ứng chất lượng cao nhất.
+            </p>
+        </div>
+        
+        <!-- TIMELINE CÁC GỘI VIÊN -->
+        <div class="phase-timeline">
+            <h2>📅 Các Giai Đoạn & Vai Trò BrSE</h2>
+            <div class="timeline">
+                <!-- PHASE 1 -->
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h3>① Định Nghĩa Yêu Cầu (Define Requirement)</h3>
+                        <p style="font-size: 14px; color: #666; margin-bottom: 12px;">
+                            <strong>Thời gian:</strong> Giai đoạn đầu dự án (1-3 tuần hoặc hơn)
+                        </p>
+                        
+                        <h4>🎯 Trách Nhiệm BrSE</h4>
+                        <ul>
+                            <li>Phân tích yêu cầu từ khách hàng Nhật (làm rõ các yêu cầu không rõ ràng)</li>
+                            <li>Làm rõ scope của dự án: In-Scope vs Out-Scope</li>
+                            <li>Đặt câu hỏi ngược lại cho khách để xác nhận hiểu rõ yêu cầu</li>
+                            <li>Tổng hợp và tổ chức các điểm chính (論点整理)</li>
+                        </ul>
+                        
+                        <h4>📄 Tài Liệu Tạo Ra</h4>
+                        <div>
+                            <span class="document-badge">要件定義書</span>
+                            <span class="document-badge">仕様書 (Basic Design)</span>
+                            <span class="document-badge">仕様書 (Detail Design)</span>
+                        </div>
+                        
+                        <h4>💡 Điểm Quan Trọng</h4>
+                        <ul>
+                            <li><strong>Đây là giai đoạn quan trọng nhất!</strong> Nếu bỏ sót hoặc hiểu sai yêu cầu từ đây, sẽ ảnh hưởng toàn bộ dự án</li>
+                            <li>BrSE phải "làm rõ sự mơ hồ" (曖昧な仕様を整理) để tránh khác biệt hiểu lầm sau này</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- PHASE 2 -->
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h3>② Hỗ Trợ Phát Triển (Development Support)</h3>
+                        <p style="font-size: 14px; color: #666; margin-bottom: 12px;">
+                            <strong>Thời gian:</strong> Giai đoạn coding (2-4 tháng hoặc lâu hơn)
+                        </p>
+                        
+                        <h4>🎯 Trách Nhiệm BrSE</h4>
+                        <ul>
+                            <li>Hỗ trợ đội development trả lời các câu hỏi (Q&A) về specs</li>
+                            <li>Làm rõ những đặc tả chỉ phát sinh khi vào phase coding</li>
+                            <li>Kiểm soát scope creep (ngăn chặn yêu cầu mới không lên kế hoạch)</li>
+                            <li>Liên lạc thường xuyên với khách hàng để update thông tin mới nhất</li>
+                        </ul>
+                        
+                        <h4>💡 Ví Dụ</h4>
+                        <ul>
+                            <li>Dev hỏi: "Khi user click nút này, nên hiện lỗi như thế nào?" → BrSE phải hỏi lại khách hoặc tra cứu spec để trả lời</li>
+                            <li>Khách muốn thêm tính năng mới → BrSE phải đánh giá xem có trong scope hay không, có ảnh hưởng deadline không</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- PHASE 3 -->
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h3>③ Đảm Bảo Chất Lượng (QA & Follow)</h3>
+                        <p style="font-size: 14px; color: #666; margin-bottom: 12px;">
+                            <strong>Thời gian:</strong> Giai đoạn testing (3-6 tuần trước release)
+                        </p>
+                        
+                        <h4>🎯 Trách Nhiệm BrSE</h4>
+                        <ul>
+                            <li>Định nghĩa quan điểm test (観点) cùng với team tester</li>
+                            <li>Hỗ trợ UAT (User Acceptance Testing) - khách hàng tham gia test</li>
+                            <li>Phân tích bug & feedback từ khách: Đây là bug hay change request (CR)?</li>
+                            <li>Tổng hợp kết quả để quyết định: có fixed trong release này không?</li>
+                        </ul>
+                        
+                        <h4>💡 Ví Dụ UAT</h4>
+                        <ul>
+                            <li>Khách phát hiện một hành động không như kỳ vọng → BrSE và tester kiểm tra spec, nếu đó là bug thì dev phải fix</li>
+                            <li>Khách muốn thêm tính năng mới (không trong spec ban đầu) → BrSE ghi lại để làm CR hoặc phase tiếp theo</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- PHASE 4 -->
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h3>④ Release & Bàn Giao (Release/Delivery)</h3>
+                        <p style="font-size: 14px; color: #666; margin-bottom: 12px;">
+                            <strong>Thời gian:</strong> Tuần release và sau đó 1-2 tuần
+                        </p>
+                        
+                        <h4>🎯 Trách Nhiệm BrSE</h4>
+                        <ul>
+                            <li>Kiểm tra cuối cùng (final check) để đảm bảo không miss scope</li>
+                            <li>Xác nhận với khách hàng sản phẩm sẵn sàng release</li>
+                            <li>Hỗ trợ khách hàng trong quá trình triển khai/sử dụng đầu tiên</li>
+                            <li>Xử lý các issue phát sinh sau release (hot fix nếu cần)</li>
+                        </ul>
+                        
+                        <h4>💡 Điểm Quan Trọng</h4>
+                        <ul>
+                            <li>Đây là thời điểm cuối cùng để đảm bảo khách hàng hài lòng</li>
+                            <li>BrSE phải chủ động theo dõi để phát hiện issue sớm</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- TRÁCH NHIỆM CHÍNH -->
+        <div class="key-responsibility">
+            <h2>🎯 4 Trách Nhiệm Chính của BrSE</h2>
+            <div class="responsibility-grid">
+                <div class="responsibility-card">
+                    <h3>1. Phân Tích Yêu Cầu</h3>
+                    <ul>
+                        <li>Làm rõ yêu cầu mơ hồ từ khách</li>
+                        <li>Xác định scope (in/out)</li>
+                        <li>Tạo tài liệu yêu cầu chi tiết</li>
+                        <li>Đặt câu hỏi ngược để confirm</li>
+                    </ul>
+                </div>
+                
+                <div class="responsibility-card">
+                    <h3>2. Giao Tiếp & Liên Lạc</h3>
+                    <ul>
+                        <li>Là cầu nối giữa khách & team</li>
+                        <li>Update thông tin mới từ khách cho team</li>
+                        <li>Giải đáp câu hỏi từ dev/tester</li>
+                        <li>Báo cáo tiến độ cho khách</li>
+                    </ul>
+                </div>
+                
+                <div class="responsibility-card">
+                    <h3>3. Kiểm Soát Chất Lượng</h3>
+                    <ul>
+                        <li>Định nghĩa quan điểm test</li>
+                        <li>Hỗ trợ UAT</li>
+                        <li>Phân tích bug vs CR</li>
+                        <li>Đảm bảo output đáp ứng yêu cầu</li>
+                    </ul>
+                </div>
+                
+                <div class="responsibility-card">
+                    <h3>4. Quản Lý Scope & Tiến Độ</h3>
+                    <ul>
+                        <li>Ngăn chặn scope creep</li>
+                        <li>Theo dõi timeline</li>
+                        <li>Điều chỉnh plan khi cần</li>
+                        <li>Report tới PM/khách</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- CÔNG VIỆC HÀNG NGÀY -->
+        <div class="daily-tasks">
+            <h2>📆 Công Việc Hàng Ngày Của BrSE</h2>
+            <p style="color: #666; margin-bottom: 25px;">
+                Ngoài 4 giai đoạn chính trên, BrSE vẫn thực hiện các công việc daily như:
+            </p>
+            <div class="tasks-grid">
+                <div class="task-card">
+                    <h3>📊 Báo Cáo</h3>
+                    <ul>
+                        <li>Report tiến độ hàng ngày</li>
+                        <li>Log các issue phát sinh</li>
+                        <li>Track milestones</li>
+                        <li>Cập nhật status</li>
+                    </ul>
+                </div>
+                
+                <div class="task-card">
+                    <h3>🤝 Meeting</h3>
+                    <ul>
+                        <li>Họp với khách Nhật</li>
+                        <li>Discuss schedule/scope</li>
+                        <li>Daily standup với team</li>
+                        <li>Sync với PM</li>
+                    </ul>
+                </div>
+                
+                <div class="task-card">
+                    <h3>🔄 Điều Chỉnh</h3>
+                    <ul>
+                        <li>Cập nhật info mới từ khách</li>
+                        <li>Share cho team</li>
+                        <li>Lên plan mới nếu cần</li>
+                        <li>Giải quyết conflict</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- VÍ DỤ THỰC TẾ -->
+        <div class="example-box">
+            <h2>💼 Ví Dụ Thực Tế Trong Project Base</h2>
+            
+            <div class="example-scenario">
+                <h3>Tình Huống 1: Giai Đoạn Define Requirement</h3>
+                <p>
+                    <strong>Khách hàng:</strong> "Chúng tôi muốn một hệ thống quản lý kho hàng"
+                </p>
+                <p>
+                    <strong>BrSE phải làm:</strong>
+                </p>
+                <ul style="list-style: none; padding-left: 20px; margin: 10px 0;">
+                    <li>❓ Hỏi: "Khách muốn quản lý cái gì trong kho? Hàng hóa? Vị trí? Số lượng?"</li>
+                    <li>❓ Hỏi: "Cần tích hợp với hệ thống nào không? (ERP, accounting system...)"</li>
+                    <li>❓ Hỏi: "Có bao nhiêu user sẽ dùng? Ở đâu?"</li>
+                    <li>📋 Tạo tài liệu "要件定義書" liệt kê tất cả yêu cầu, scope in/out</li>
+                    <li>✅ Confirm lại với khách để chắc chắn cùng hiểu</li>
+                </ul>
+            </div>
+            
+            <div class="example-scenario">
+                <h3>Tình Huống 2: Giai Đoạn Development Support</h3>
+                <p>
+                    <strong>Dev hỏi:</strong> "Khi scan barcode sai, nên hiện cái gì?"
+                </p>
+                <p>
+                    <strong>BrSE phải:</strong>
+                </p>
+                <ul style="list-style: none; padding-left: 20px; margin: 10px 0;">
+                    <li>🔍 Tra cứu spec có viết gì không</li>
+                    <li>📞 Nếu không có, hỏi khách (thường là business analyst của khách)</li>
+                    <li>💬 Trả lời dev: "Phải hiện popup warning, sau 3s tự đóng, không allow continue"</li>
+                    <li>🛡️ Ngăn chặn scope creep: Nếu dev muốn thêm tính năng phức tạp lên, BrSE phải evaluate xem có trong scope không</li>
+                </ul>
+            </div>
+            
+            <div class="example-scenario">
+                <h3>Tình Huống 3: Giai Đoạn QA & UAT</h3>
+                <p>
+                    <strong>Khách phát hiện:</strong> "Khi lọc theo ngày, kết quả không đúng"
+                </p>
+                <p>
+                    <strong>BrSE phải:</strong>
+                </p>
+                <ul style="list-style: none; padding-left: 20px; margin: 10px 0;">
+                    <li>🔎 Hợp tác với tester để reproduce issue</li>
+                    <li>📖 Kiểm tra spec: "Spec có nói filter ngày phải thế nào không?"</li>
+                    <li>🏷️ Quyết định: <span class="highlight">Bug</span> (nếu không match spec) hay <span class="highlight">CR</span> (nếu muốn thay đổi spec)</li>
+                    <li>📝 Ghi lại, quyết định có fix trong release này hay không</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- KỸ NĂNG CẦN THIẾT -->
+        <div class="skills-box">
+            <h2>⭐ Kỹ Năng & Tố Chất Cần Thiết</h2>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h3>🗣️ Kỹ Năng Giao Tiếp</h3>
+                    <ul>
+                        <li><strong>Tiếng Nhật:</strong> N2-N1 level để communicate tốt với khách</li>
+                        <li><strong>Listening:</strong> Nghe để hiểu sâu ý nghĩa, không chỉ từ bề mặt</li>
+                        <li><strong>Clarification:</strong> Biết đặt câu hỏi đúng để làm rõ yêu cầu</li>
+                        <li><strong>Reporting:</strong> Báo cáo rõ ràng, concise, on time</li>
+                    </ul>
+                </div>
+                
+                <div class="skill-category">
+                    <h3>📋 Kỹ Năng Phân Tích</h3>
+                    <ul>
+                        <li><strong>BA Skills:</strong> Phân tích yêu cầu giống Business Analyst</li>
+                        <li><strong>Logic Thinking:</strong> Hiểu flow, process, logic của hệ thống</li>
+                        <li><strong>Attention to Detail:</strong> Bắt được những chi tiết dễ bị missed</li>
+                        <li><strong>Problem Solving:</strong> Giải quyết conflict giữa khách & team</li>
+                    </ul>
+                </div>
+                
+                <div class="skill-category">
+                    <h3>💻 Kỹ Năng Kỹ Thuật</h3>
+                    <ul>
+                        <li><strong>Technical Understanding:</strong> Hiểu cơ bản về kiến trúc, database</li>
+                        <li><strong>Testing Knowledge:</strong> Biết cách test để confirm quality</li>
+                        <li><strong>Documentation:</strong> Viết tài liệu rõ, chính xác, structured</li>
+                        <li><strong>Tools:</strong> Thành thạo các tools (Jira, Confluence...)</li>
+                    </ul>
+                </div>
+                
+                <div class="skill-category">
+                    <h3>🎯 Tố Chất Cá Nhân</h3>
+                    <ul>
+                        <li><strong>Responsibility:</strong> Chủ động, trách nhiệm cao</li>
+                        <li><strong>Flexibility:</strong> Thích nghi với thay đổi, deadline tight</li>
+                        <li><strong>Collaboration:</strong> Làm việc tốt với cả khách lẫn team</li>
+                        <li><strong>Learning Mindset:</strong> Muốn học, phát triển bản thân</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>📖 Tài Liệu Đào Tạo BrSE trong Project Base | ITO | © 2024</p>
+    </div>
+</body>
+</html>

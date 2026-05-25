@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Release Steps</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f1f5f9;
+            color: #334155;
+            padding: 24px;
+            font-size: 14px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            color: white;
+            padding: 24px 32px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .header-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 8px;
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        .header-info span {
+            display: flex;
+            gap: 6px;
+        }
+
+        .header-info strong {
+            opacity: 0.7;
+        }
+
+        .lang-switcher {
+            position: absolute;
+            top: 20px;
+            right: 24px;
+            display: flex;
+            gap: 6px;
+        }
+
+        .lang-switcher button {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .lang-switcher button:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .lang-switcher button.active {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Action bar */
+        .action-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-excel {
+            background-color: #16a34a;
+            color: white;
+        }
+
+        .btn-excel:hover {
+            background-color: #15803d;
+        }
+
+        .btn-toggle {
+            background-color: #6366f1;
+            color: white;
+        }
+
+        .btn-toggle:hover {
+            background-color: #4f46e5;
+        }
+
+        .btn-toggle.active {
+            background-color: #dc2626;
+        }
+
+        /* Section */
+        .section {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+
+        .section-header {
+            padding: 16px 24px;
+            font-size: 18px;
+            font-weight: 700;
+            border-bottom: 2px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-header.release {
+            background-color: #eff6ff;
+            color: #1e40af;
+        }
+
+        .section-header.rollback {
+            background-color: #fef2f2;
+            color: #991b1b;
+        }
+
+        .badge {
+            font-size: 12px;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .badge-release {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+
+        .badge-rollback {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* Table */
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        thead th {
+            background-color: #f8fafc;
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #64748b;
+            border-bottom: 2px solid #e2e8f0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            white-space: nowrap;
+        }
+
+        .col-stt { width: 50px; }
+        .col-step { width: 180px; }
+        .col-overview { width: 220px; }
+        .col-action { width: 500px; }
+        .col-pic { width: 80px; }
+        .col-date { width: 130px; }
+
+        tbody td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #f1f5f9;
+            vertical-align: top;
+            line-height: 1.6;
+        }
+
+        tbody tr:hover {
+            background-color: #f8fafc;
+        }
+
+        tbody tr.group-start td {
+            border-top: 2px solid #e2e8f0;
+        }
+
+        .action-cell {
+            white-space: pre-wrap;
+            font-size: 13px;
+        }
+
+        .action-cell ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .action-cell ol li {
+            margin-bottom: 4px;
+        }
+
+        .action-cell .config-block {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin: 8px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+        }
+
+        .action-cell .label-before {
+            color: #dc2626;
+            font-weight: 600;
+        }
+
+        .action-cell .label-after {
+            color: #16a34a;
+            font-weight: 600;
+        }
+
+        .action-cell code {
+            background-color: #f1f5f9;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .stt-cell {
+            font-weight: 700;
+            color: #64748b;
+            text-align: center;
+        }
+
+        .step-cell {
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .pic-cell {
+            font-weight: 500;
+            color: #6366f1;
+        }
+
+        .date-cell {
+            font-size: 12px;
+            color: #64748b;
+            white-space: nowrap;
+        }
+
+        .footer-note {
+            text-align: center;
+            padding: 16px;
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        @media print {
+            body {
+                padding: 0;
+                background: white;
+            }
+
+            .action-bar,
+            .lang-switcher {
+                display: none;
+            }
+
+            .section {
+                box-shadow: none;
+                break-inside: avoid;
+            }
+
+            table {
+                font-size: 11px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header (values populated from window.RELEASE_CONFIG) -->
+        <div class="header">
+            <h1 id="page-title"></h1>
+            <div class="header-info">
+                <span><strong id="lbl-release-date"></strong> <span id="val-release-date"></span></span>
+                <span><strong id="lbl-pic"></strong> <span id="val-pic"></span></span>
+                <span><strong id="lbl-method"></strong> <span id="val-method"></span></span>
+            </div>
+            <div class="lang-switcher" id="langSwitcher"></div>
+        </div>
+
+        <!-- Action Bar -->
+        <div class="action-bar">
+            <button class="btn btn-excel" onclick="exportToExcel()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                </svg>
+                <span id="btn-export-label"></span>
+            </button>
+            <button class="btn btn-toggle" onclick="toggleRollback()" id="btnToggleRollback">
+                <span id="btn-toggle-label"></span>
+            </button>
+        </div>
+
+        <!-- Release Steps Table -->
+        <div class="section">
+            <div class="section-header release">
+                <span id="lbl-section-release"></span>
+                <span class="badge badge-release" id="releaseCount"></span>
+            </div>
+            <div class="table-wrapper">
+                <table id="releaseTable">
+                    <thead>
+                        <tr>
+                            <th class="col-stt" data-i18n="col_stt"></th>
+                            <th class="col-step" data-i18n="col_step"></th>
+                            <th class="col-overview" data-i18n="col_overview"></th>
+                            <th class="col-action" data-i18n="col_action"></th>
+                            <th class="col-pic" data-i18n="col_pic"></th>
+                            <th class="col-date" data-i18n="col_planned_start"></th>
+                            <th class="col-date" data-i18n="col_actual_start"></th>
+                            <th class="col-date" data-i18n="col_planned_end"></th>
+                            <th class="col-date" data-i18n="col_actual_end"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="releaseBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Rollback Steps Table -->
+        <div class="section" id="rollbackSection" style="display: none;">
+            <div class="section-header rollback">
+                <span id="lbl-section-rollback"></span>
+                <span class="badge badge-rollback" id="rollbackCount"></span>
+            </div>
+            <div class="table-wrapper">
+                <table id="rollbackTable">
+                    <thead>
+                        <tr>
+                            <th class="col-stt" data-i18n="col_stt"></th>
+                            <th class="col-step" data-i18n="col_step"></th>
+                            <th class="col-overview" data-i18n="col_overview"></th>
+                            <th class="col-action" data-i18n="col_action"></th>
+                            <th class="col-pic" data-i18n="col_pic"></th>
+                            <th class="col-date" data-i18n="col_planned_start"></th>
+                            <th class="col-date" data-i18n="col_actual_start"></th>
+                            <th class="col-date" data-i18n="col_planned_end"></th>
+                            <th class="col-date" data-i18n="col_actual_end"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="rollbackBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="footer-note">
+            Generated by Release Step Generator
+        </div>
+    </div>
+
+    <!-- SheetJS for Excel Export -->
+    <script src="xlsx.full.min.js"></script>
+
+    <script>
+        // ============================================
+        // DEFAULT I18N (Vietnamese — fallback if data.js doesn't provide window.I18N)
+        // ============================================
+        const DEFAULT_I18N = {
+            html_lang: "vi",
+            page_title: "Release Steps",
+            label_release_date: "Ngày release:",
+            label_pic: "PIC:",
+            label_method: "Phương thức:",
+            btn_export: "Xuất Excel",
+            btn_show_rollback: "Hiện Rollback Steps",
+            btn_hide_rollback: "Ẩn Rollback Steps",
+            section_release: "Release Steps",
+            section_rollback: "Rollback Steps",
+            badge_steps_suffix: "bước",
+            col_stt: "STT",
+            col_step: "Step",
+            col_overview: "Overview",
+            col_action: "Thao tác",
+            col_pic: "PIC",
+            col_planned_start: "Dự kiến bắt đầu",
+            col_actual_start: "Thực tế bắt đầu",
+            col_planned_end: "Dự kiến hoàn thành",
+            col_actual_end: "Thực tế hoàn thành",
+            label_before: "[Hiện tại]",
+            label_after: "[Update]",
+            excel_release_header: "RELEASE STEPS",
+            excel_rollback_header: "ROLLBACK STEPS",
+            excel_sheet_name: "Release Steps"
+        };
+
+        // ============================================
+        // AVAILABLE LANGUAGES
+        // The skill edits this array when adding a new language file.
+        // Keep the marker comment — it's the anchor the Edit tool uses.
+        // Use ISO 639-1 codes (vi, ja, en, zh, ko …) to match window.navigator conventions.
+        // ============================================
+        const AVAILABLE_LANGUAGES = [
+            { code: "vi", name: "Tiếng Việt", file: "release-steps-data.js" }
+            // AVAILABLE_LANGUAGES_INSERT
+        ];
+
+        // Resolve current language from URL `?lang=xx`, default to first available
+        const urlParams = new URLSearchParams(window.location.search);
+        const requestedLang = urlParams.get('lang');
+        const currentLangConfig =
+            AVAILABLE_LANGUAGES.find(l => l.code === requestedLang) || AVAILABLE_LANGUAGES[0];
+
+        let I18N = DEFAULT_I18N;
+
+        // Dynamically load the data file for the current language
+        const dataScript = document.createElement('script');
+        dataScript.src = currentLangConfig.file;
+        dataScript.onload = init;
+        dataScript.onerror = () => {
+            document.body.innerHTML =
+                '<div style="padding:40px;text-align:center;font-family:sans-serif;">' +
+                '<h2>Data file not found</h2>' +
+                '<p>Expected: <code>' + currentLangConfig.file + '</code></p>' +
+                '</div>';
+        };
+        document.head.appendChild(dataScript);
+
+        // ============================================
+        // INIT
+        // ============================================
+        function init() {
+            // Merge I18N from data.js with defaults (data.js wins on any key it defines)
+            I18N = Object.assign({}, DEFAULT_I18N, window.I18N || {});
+
+            applyI18n();
+            populateHeader();
+            buildLangSwitcher();
+            renderTable(window.releaseData || [], 'releaseBody');
+            renderTable(window.rollbackData || [], 'rollbackBody');
+            document.getElementById('releaseCount').textContent =
+                (window.releaseData || []).length + ' ' + I18N.badge_steps_suffix;
+            document.getElementById('rollbackCount').textContent =
+                (window.rollbackData || []).length + ' ' + I18N.badge_steps_suffix;
+        }
+
+        function applyI18n() {
+            // Set <html lang> for a11y / screen readers
+            document.documentElement.lang = I18N.html_lang || currentLangConfig.code || 'vi';
+
+            document.getElementById('lbl-release-date').textContent = I18N.label_release_date;
+            document.getElementById('lbl-pic').textContent = I18N.label_pic;
+            document.getElementById('lbl-method').textContent = I18N.label_method;
+            document.getElementById('btn-export-label').textContent = I18N.btn_export;
+            document.getElementById('btn-toggle-label').textContent = I18N.btn_show_rollback;
+            document.getElementById('lbl-section-release').textContent = I18N.section_release;
+            document.getElementById('lbl-section-rollback').textContent = I18N.section_rollback;
+
+            // Apply to all elements marked with data-i18n (table headers)
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (I18N[key] !== undefined) el.textContent = I18N[key];
+            });
+        }
+
+        function populateHeader() {
+            const cfg = window.RELEASE_CONFIG || {};
+            const project = cfg.project || '';
+            const releaseDate = cfg.release_date || '';
+
+            const titleText = I18N.page_title + (project ? ' - ' + project : '');
+            document.title = titleText + (releaseDate ? ' - ' + releaseDate : '');
+            document.getElementById('page-title').textContent = titleText;
+
+            document.getElementById('val-release-date').textContent = releaseDate;
+            document.getElementById('val-pic').textContent = cfg.pic_list || '';
+            document.getElementById('val-method').textContent = cfg.method || '';
+        }
+
+        function buildLangSwitcher() {
+            const container = document.getElementById('langSwitcher');
+            if (AVAILABLE_LANGUAGES.length <= 1) {
+                container.style.display = 'none';
+                return;
+            }
+            container.innerHTML = '';
+            AVAILABLE_LANGUAGES.forEach(lang => {
+                const btn = document.createElement('button');
+                btn.textContent = lang.name;
+                if (lang.code === currentLangConfig.code) btn.classList.add('active');
+                btn.onclick = () => {
+                    window.location.search = '?lang=' + lang.code;
+                };
+                container.appendChild(btn);
+            });
+        }
+
+        // ============================================
+        // RENDER
+        // ============================================
+        function formatAction(text) {
+            if (!text) return '';
+
+            let html = text
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
+
+            html = html.replace(/\[BEFORE\]/g, '<span class="label-before">' + I18N.label_before + '</span>');
+            html = html.replace(/\[AFTER\]/g, '<span class="label-after">' + I18N.label_after + '</span>');
+
+            html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+            const lines = html.split('\n');
+            let result = [];
+            let inConfigBlock = false;
+            let configLines = [];
+
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i];
+                const isConfigLine = /^\s*[-+)]\s/.test(line) || /^\s*・/.test(line) || /^\s{2,}/.test(line);
+
+                if (isConfigLine && !inConfigBlock) {
+                    inConfigBlock = true;
+                    configLines = [line];
+                } else if (isConfigLine && inConfigBlock) {
+                    configLines.push(line);
+                } else {
+                    if (inConfigBlock) {
+                        result.push('<div class="config-block">' + configLines.join('\n') + '</div>');
+                        inConfigBlock = false;
+                        configLines = [];
+                    }
+                    result.push(line);
+                }
+            }
+            if (inConfigBlock) {
+                result.push('<div class="config-block">' + configLines.join('\n') + '</div>');
+            }
+
+            html = result.join('\n');
+            html = html.replace(/\n/g, '<br>');
+            html = html.replace(/<br><div/g, '<div');
+            html = html.replace(/<\/div><br>/g, '</div>');
+
+            return html;
+        }
+
+        function renderTable(data, tbodyId) {
+            const tbody = document.getElementById(tbodyId);
+            let html = '';
+            let lastStep = '';
+
+            data.forEach((row, idx) => {
+                const isGroupStart = row.step !== lastStep;
+                lastStep = row.step;
+
+                html += `<tr class="${isGroupStart ? 'group-start' : ''}">
+                    <td class="stt-cell">${row.stt}</td>
+                    <td class="step-cell">${row.step || ''}</td>
+                    <td>${row.overview || ''}</td>
+                    <td class="action-cell">${formatAction(row.action)}</td>
+                    <td class="pic-cell">${row.pic || ''}</td>
+                    <td class="date-cell">${row.planned_start || ''}</td>
+                    <td class="date-cell">${row.actual_start || ''}</td>
+                    <td class="date-cell">${row.planned_end || ''}</td>
+                    <td class="date-cell">${row.actual_end || ''}</td>
+                </tr>`;
+            });
+
+            tbody.innerHTML = html;
+        }
+
+        // ============================================
+        // EXPORT TO EXCEL
+        // ============================================
+        function exportToExcel() {
+            const excelRows = [];
+            const headers = {
+                STT: I18N.col_stt,
+                Step: I18N.col_step,
+                Overview: I18N.col_overview,
+                Action: I18N.col_action,
+                PIC: I18N.col_pic,
+                PlannedStart: I18N.col_planned_start,
+                ActualStart: I18N.col_actual_start,
+                PlannedEnd: I18N.col_planned_end,
+                ActualEnd: I18N.col_actual_end
+            };
+
+            function pushSectionHeader(title) {
+                excelRows.push({
+                    [headers.STT]: title,
+                    [headers.Step]: '', [headers.Overview]: '', [headers.Action]: '',
+                    [headers.PIC]: '', [headers.PlannedStart]: '', [headers.ActualStart]: '',
+                    [headers.PlannedEnd]: '', [headers.ActualEnd]: ''
+                });
+            }
+
+            function pushRow(row) {
+                excelRows.push({
+                    [headers.STT]: row.stt,
+                    [headers.Step]: row.step || '',
+                    [headers.Overview]: row.overview || '',
+                    [headers.Action]: (row.action || '').replace(/`/g, ''),
+                    [headers.PIC]: row.pic || '',
+                    [headers.PlannedStart]: row.planned_start || '',
+                    [headers.ActualStart]: row.actual_start || '',
+                    [headers.PlannedEnd]: row.planned_end || '',
+                    [headers.ActualEnd]: row.actual_end || ''
+                });
+            }
+
+            pushSectionHeader(I18N.excel_release_header);
+            (window.releaseData || []).forEach(pushRow);
+
+            excelRows.push({
+                [headers.STT]: '', [headers.Step]: '', [headers.Overview]: '', [headers.Action]: '',
+                [headers.PIC]: '', [headers.PlannedStart]: '', [headers.ActualStart]: '',
+                [headers.PlannedEnd]: '', [headers.ActualEnd]: ''
+            });
+
+            pushSectionHeader(I18N.excel_rollback_header);
+            (window.rollbackData || []).forEach(pushRow);
+
+            const worksheet = XLSX.utils.json_to_sheet(excelRows);
+
+            worksheet['!cols'] = [
+                { wch: 6 }, { wch: 30 }, { wch: 40 }, { wch: 80 }, { wch: 10 },
+                { wch: 20 }, { wch: 20 }, { wch: 20 }, { wch: 20 }
+            ];
+
+            const range = XLSX.utils.decode_range(worksheet['!ref']);
+            for (let R = range.s.r; R <= range.e.r; R++) {
+                const cellAddr = XLSX.utils.encode_cell({ r: R, c: 3 });
+                if (worksheet[cellAddr]) {
+                    if (!worksheet[cellAddr].s) worksheet[cellAddr].s = {};
+                    worksheet[cellAddr].s.alignment = { wrapText: true, vertical: 'top' };
+                }
+            }
+
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, I18N.excel_sheet_name);
+
+            // Filename: release_steps_<lang>_<YYYYMMDD>.xlsx — date from RELEASE_CONFIG.release_date
+            const releaseDate = (window.RELEASE_CONFIG && window.RELEASE_CONFIG.release_date) || '';
+            const dateCompact = releaseDate.replace(/-/g, '');
+            const filename = 'release_steps_' + currentLangConfig.code +
+                (dateCompact ? '_' + dateCompact : '') + '.xlsx';
+            XLSX.writeFile(workbook, filename);
+        }
+
+        // ============================================
+        // TOGGLE ROLLBACK
+        // ============================================
+        let rollbackVisible = false;
+
+        function toggleRollback() {
+            rollbackVisible = !rollbackVisible;
+            const section = document.getElementById('rollbackSection');
+            const btn = document.getElementById('btnToggleRollback');
+            const label = document.getElementById('btn-toggle-label');
+
+            if (rollbackVisible) {
+                section.style.display = 'block';
+                label.textContent = I18N.btn_hide_rollback;
+                btn.classList.add('active');
+            } else {
+                section.style.display = 'none';
+                label.textContent = I18N.btn_show_rollback;
+                btn.classList.remove('active');
+            }
+        }
+    </script>
+</body>
+
+</html>

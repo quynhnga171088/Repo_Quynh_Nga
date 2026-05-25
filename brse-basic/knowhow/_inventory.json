@@ -1,0 +1,26 @@
+{
+  "total": 254,
+  "folders": [
+    "Kinh nghiệm PM",
+    "Kinh nghiệm phỏng vấn ứng viên (Comtor, BrSE JP)",
+    "Kinh nghiệm test",
+    "Kinh nghiệm đào tạo",
+    "Kỹ năng",
+    "Trợ lý dự án BrSE",
+    "Udemy",
+    "Đào tạo IT Comtor"
+  ],
+  "exts": {
+    ".docx": 91,
+    ".xlsx": 62,
+    ".pptx": 36,
+    ".jpg": 19,
+    ".html": 16,
+    ".pdf": 11,
+    ".mp4": 9,
+    ".md": 4,
+    ".png": 4,
+    ".doc": 1,
+    ".drawio": 1
+  }
+}
