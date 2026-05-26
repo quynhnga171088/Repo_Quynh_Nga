@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cách Một Hệ Thống Phần Mềm Hoạt Động | BrSE Career Builder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Lexend:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-page: #f1f5f9;
+      --bg-sidebar: #f8fafc;
+      --bg-main: #ffffff;
+      --bg-card: #ffffff;
+      --bg-step: #f8fafc;
+      --bg-primary: #f1f5f9;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #64748b;
+      --accent-blue: #0ea5e9;
+      --accent-blue-dark: #0284c7;
+      --accent-blue-light: #e0f2fe;
+      --accent-green: #059669;
+      --accent-green-light: #d1fae5;
+      --accent-amber: #b45309;
+      --accent-amber-light: #fffbeb;
+      --accent-orange: #ea580c;
+      --accent-orange-light: #ffedd5;
+      --accent-red: #dc2626;
+      --accent-red-light: #fef2f2;
+      --accent-purple: #5b21b6;
+      --accent-purple-light: #ede9fe;
+      --border-light: #e2e8f0;
+      --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+      --shadow-md: 0 4px 14px rgba(15, 23, 42, 0.08);
+      --radius-xl: 12px;
+      --radius-card: 12px;
+      --sidebar-width: 272px;
+      --sidebar-collapsed: 52px;
+
+      /* Layer colors */
+      --color-user: #1a6b8a;
+      --color-frontend: #059669;
+      --color-backend: #c8420a;
+      --color-db: #7a2a8a;
+      --color-integration: #b45309;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-page);
+      color: var(--text-primary);
+      line-height: 1.75;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== App shell ===== */
+    .lesson-app { display: flex; align-items: stretch; min-height: 100vh; }
+
+    .lesson-sidebar {
+      flex: 0 0 var(--sidebar-width);
+      width: var(--sidebar-width);
+      background: var(--bg-sidebar);
+      border-right: 1px solid var(--border-light);
+      position: sticky;
+      top: 0;
+      align-self: flex-start;
+      height: 100vh;
+      overflow-y: auto;
+      overflow-x: hidden;
+      z-index: 30;
+      transition: flex-basis 0.22s ease, width 0.22s ease;
+    }
+
+    .lesson-app.sidebar-collapsed .lesson-sidebar {
+      flex-basis: var(--sidebar-collapsed);
+      width: var(--sidebar-collapsed);
+    }
+
+    .sidebar-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 16px 14px 12px;
+      border-bottom: 1px solid var(--border-light);
+      background: var(--bg-sidebar);
+      position: sticky;
+      top: 0;
+      z-index: 2;
+    }
+
+    .sidebar-title {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      transition: opacity 0.15s ease;
+    }
+
+    .lesson-app.sidebar-collapsed .sidebar-title { opacity: 0; width: 0; overflow: hidden; }
+
+    .sidebar-collapse-btn {
+      flex-shrink: 0;
+      width: 34px; height: 34px;
+      border-radius: 8px;
+      border: 1px solid var(--border-light);
+      background: #fff;
+      color: var(--accent-blue);
+      font-size: 18px; font-weight: 700; line-height: 1;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s ease, transform 0.2s ease;
+    }
+    .sidebar-collapse-btn:hover { background: var(--accent-blue-light); }
+    .lesson-app.sidebar-collapsed .sidebar-collapse-btn { transform: rotate(180deg); }
+
+    .sidebar-nav { padding: 12px 10px 24px; transition: opacity 0.15s ease; }
+    .lesson-app.sidebar-collapsed .sidebar-nav {
+      opacity: 0; pointer-events: none; visibility: hidden;
+      height: 0; padding: 0; overflow: hidden;
+    }
+    .lesson-app.sidebar-collapsed .sidebar-header {
+      flex-direction: column; justify-content: flex-start;
+      padding: 12px 8px; border-bottom: none;
+    }
+
+    .nav-group { margin-bottom: 18px; }
+    .nav-group-label {
+      font-size: 10px; font-weight: 800;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--text-muted); padding: 6px 8px 8px;
+    }
+
+    .sidebar-nav a.nav-item {
+      display: block;
+      font-size: 13px; font-weight: 500;
+      color: var(--text-secondary);
+      text-decoration: none;
+      padding: 8px 10px; margin-bottom: 2px;
+      border-radius: 8px; line-height: 1.45;
+      border: 1px solid transparent;
+      transition: background 0.12s ease, color 0.12s ease, border-color 0.12s ease;
+    }
+    .sidebar-nav a.nav-item:hover {
+      background: #fff; color: var(--accent-blue-dark);
+      border-color: var(--border-light);
+    }
+    .sidebar-nav a.nav-item.is-active {
+      background: var(--accent-blue-light);
+      color: var(--accent-blue-dark);
+      font-weight: 600; border-color: #7dd3fc;
+      box-shadow: inset 3px 0 0 0 var(--accent-blue);
+    }
+
+    .lesson-main { flex: 1; min-width: 0; background: var(--bg-main); }
+    .page-wrapper { max-width: 900px; margin: 0 auto; padding: 28px 24px 96px; }
+
+    .nav-target { scroll-margin-top: 16px; }
+
+    @media (max-width: 960px) {
+      .lesson-app { flex-direction: column; }
+      .lesson-sidebar {
+        position: relative; height: auto;
+        width: 100% !important; flex: 0 0 auto !important;
+        border-right: none; border-bottom: 1px solid var(--border-light);
+      }
+      .lesson-app.sidebar-collapsed .lesson-sidebar { width: 100% !important; }
+      .lesson-app.sidebar-collapsed .sidebar-nav { display: none; }
+      .lesson-app.sidebar-collapsed .sidebar-title { opacity: 1; width: auto; }
+      .sidebar-nav {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 0 8px; padding-bottom: 16px;
+      }
+      .nav-group { margin-bottom: 12px; }
+    }
+
+    /* ===== Header ===== */
+    .header {
+      text-align: center;
+      background: linear-gradient(165deg, #ffffff 0%, #f8fafc 45%, #e0f2fe 100%);
+      border-radius: var(--radius-xl);
+      padding: 56px 44px;
+      margin-bottom: 28px;
+      position: relative; overflow: hidden;
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-md);
+      border-top: 3px solid var(--accent-blue);
+    }
+    .header::before {
+      content: '';
+      position: absolute; top: -60px; right: -60px;
+      width: 200px; height: 200px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(14,165,233,0.12) 0%, transparent 70%);
+    }
+    .header::after {
+      content: '';
+      position: absolute; bottom: -40px; left: -40px;
+      width: 150px; height: 150px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(14,165,233,0.08) 0%, transparent 70%);
+    }
+    .header-badge {
+      display: inline-block;
+      background: var(--accent-blue-dark); color: #fff;
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      padding: 6px 18px; border-radius: 20px; margin-bottom: 24px;
+    }
+    .header h1 {
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-size: 2.2rem; font-weight: 700;
+      color: var(--text-primary); line-height: 1.3; margin-bottom: 14px;
+    }
+    .header-sub {
+      font-size: 0.95rem; color: var(--text-secondary);
+      margin-bottom: 12px; line-height: 1.7;
+    }
+    .header-trainer { font-size: 0.95rem; color: #991b1b; font-weight: 600; margin-bottom: 8px; }
+    .header-meta { font-size: 0.82rem; color: var(--text-muted); font-weight: 300; }
+
+    /* ===== Cards ===== */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-sm);
+      padding: 28px 32px; margin-bottom: 20px;
+      border-top: 3px solid var(--accent-blue);
+    }
+    .card.card-accent-green { border-top-color: var(--accent-green); }
+    .card.card-accent-amber { border-top-color: #f59e0b; }
+    .card.card-accent-purple { border-top-color: #7c3aed; }
+    .card.card-accent-red { border-top-color: var(--accent-red); }
+    .card.card-accent-orange { border-top-color: var(--accent-orange); }
+
+    .section-label {
+      display: inline-block;
+      font-size: 11px; font-weight: 800;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: var(--accent-blue); margin-bottom: 10px;
+    }
+    .section-title {
+      font-size: 22px; font-weight: 800;
+      color: var(--text-primary); margin-bottom: 14px; line-height: 1.35;
+    }
+    .section-desc {
+      font-size: 15px; color: var(--text-secondary); line-height: 1.85;
+    }
+
+    .lesson-block {
+      border-top: 1px solid var(--border-light);
+      padding-top: 22px; margin-top: 22px;
+    }
+    .lesson-block:first-child { border-top: none; padding-top: 0; margin-top: 0; }
+
+    .block-title { font-size: 16px; font-weight: 800; color: var(--text-primary); margin-bottom: 8px; }
+
+    .bullets {
+      margin-top: 10px; padding-left: 18px;
+      color: var(--text-secondary); font-size: 14.5px; line-height: 1.85;
+    }
+
+    .callout {
+      margin-top: 14px; border-radius: 10px;
+      padding: 12px 14px; background: #f0f9ff;
+      border: 1px solid #bae6fd; color: #0369a1;
+      font-size: 14px; line-height: 1.7;
+    }
+    .callout-green { background: #F0FDF4; border: 1px solid #BBF7D0; color: #166534; }
+    .callout-amber { background: #FFFBEB; border: 1px solid #FDE68A; color: #92400E; }
+
+    .phase-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-blue-dark) 100%);
+      color: #fff; font-size: 11px; font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase;
+      padding: 4px 12px; border-radius: 8px; margin-bottom: 10px;
+    }
+
+    /* ===== Mapping table ===== */
+    .mapping-table {
+      width: 100%; border-collapse: collapse;
+      margin-top: 12px; font-size: 13.5px;
+    }
+    .mapping-table th {
+      background: var(--bg-sidebar); font-weight: 700;
+      text-align: left; padding: 10px 14px;
+      border-bottom: 2px solid var(--border-light);
+      color: var(--text-primary);
+    }
+    .mapping-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border-light);
+      color: var(--text-secondary); vertical-align: top;
+    }
+    .mapping-table tr:last-child td { border-bottom: none; }
+    .mapping-table .role-cell { font-weight: 700; color: var(--text-primary); white-space: nowrap; }
+
+    .tag {
+      display: inline-block;
+      font-size: 11px; font-weight: 700;
+      padding: 2px 8px; border-radius: 6px;
+      margin: 2px 2px 2px 0;
+    }
+    .tag-blue { background: var(--accent-blue-light); color: var(--accent-blue-dark); }
+    .tag-green { background: var(--accent-green-light); color: var(--accent-green); }
+    .tag-amber { background: #fef3c7; color: #92400e; }
+    .tag-purple { background: var(--accent-purple-light); color: var(--accent-purple); }
+    .tag-orange { background: var(--accent-orange-light); color: var(--accent-orange); }
+    .tag-red { background: var(--accent-red-light); color: var(--accent-red); }
+
+    /* ===== Flow visual (template) ===== */
+    .flow-visual {
+      display: flex; flex-wrap: wrap;
+      gap: 6px; align-items: center; margin-top: 14px;
+    }
+    .flow-step {
+      background: var(--accent-blue-light); color: var(--accent-blue);
+      font-size: 13px; font-weight: 600;
+      padding: 6px 14px; border-radius: 10px;
+    }
+    .flow-arrow-inline { color: var(--text-muted); font-size: 16px; }
+
+    /* ===== FLOWCHART (từ file gốc, adapted) ===== */
+    .flowchart-wrap {
+      background: var(--bg-card);
+      border-radius: var(--radius-card);
+      border: 1px solid var(--border-light);
+      padding: 36px 20px;
+      box-shadow: var(--shadow-sm);
+      overflow-x: auto;
+      margin-top: 16px;
+    }
+    .flow-container {
+      display: flex; flex-direction: column;
+      align-items: center; gap: 0;
+      min-width: 480px;
+    }
+    .fc-node {
+      width: 100%; max-width: 540px;
+      display: flex; align-items: stretch; gap: 0;
+      border-radius: 10px; overflow: hidden;
+      box-shadow: 0 3px 16px rgba(0,0,0,0.09);
+      border: 1.5px solid rgba(0,0,0,0.07);
+      animation: fadeSlide 0.5s ease both;
+    }
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fc-node:nth-child(1) { animation-delay: 0.05s; }
+    .fc-node:nth-child(3) { animation-delay: 0.15s; }
+    .fc-node:nth-child(5) { animation-delay: 0.25s; }
+    .fc-node:nth-child(7) { animation-delay: 0.35s; }
+    .fc-node:nth-child(9) { animation-delay: 0.45s; }
+
+    .fc-icon {
+      width: 64px; min-width: 64px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px; color: white;
+    }
+    .fc-body { flex: 1; padding: 14px 18px; }
+    .fc-layer {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      opacity: 0.6; margin-bottom: 3px;
+    }
+    .fc-title {
+      font-family: 'Source Serif 4', serif;
+      font-size: 15px; font-weight: 700; margin-bottom: 4px;
+    }
+    .fc-desc { font-size: 12.5px; opacity: 0.8; color: var(--text-secondary); }
+
+    .fc-user .fc-icon  { background: var(--color-user); }
+    .fc-user           { background: #e8f4fa; }
+    .fc-user .fc-title { color: var(--color-user); }
+
+    .fc-frontend .fc-icon  { background: var(--color-frontend); }
+    .fc-frontend           { background: #e8f5ec; }
+    .fc-frontend .fc-title { color: var(--color-frontend); }
+
+    .fc-backend .fc-icon  { background: var(--color-backend); }
+    .fc-backend           { background: #fdf0eb; }
+    .fc-backend .fc-title { color: var(--color-backend); }
+
+    .fc-db .fc-icon  { background: var(--color-db); }
+    .fc-db           { background: #f5ebfa; }
+    .fc-db .fc-title { color: var(--color-db); }
+
+    .fc-integration .fc-icon  { background: var(--color-integration); }
+    .fc-integration           { background: #fdf5e0; }
+    .fc-integration .fc-title { color: var(--color-integration); }
+
+    .fc-arrow {
+      display: flex; flex-direction: column;
+      align-items: center; padding: 4px 0;
+    }
+    .fc-arrow-line {
+      width: 2px; height: 20px;
+      background: linear-gradient(to bottom, #b0bec5, #607d8b);
+    }
+    .fc-arrow-head {
+      width: 0; height: 0;
+      border-left: 7px solid transparent;
+      border-right: 7px solid transparent;
+      border-top: 10px solid #607d8b;
+    }
+    .fc-arrow-label {
+      font-size: 11px; color: var(--text-muted);
+      background: var(--bg-page);
+      border: 1px solid var(--border-light);
+      border-radius: 20px; padding: 2px 12px;
+      margin-bottom: 4px; white-space: nowrap;
+    }
+    .fc-bi {
+      display: flex; flex-direction: column;
+      align-items: center; padding: 4px 0;
+    }
+    .fc-bi-up {
+      width: 0; height: 0;
+      border-left: 7px solid transparent;
+      border-right: 7px solid transparent;
+      border-bottom: 10px solid #90a4ae;
+    }
+    .fc-bi-line { width: 2px; height: 14px; background: #b0bec5; }
+
+    /* ===== Layer detail cards (tầng) ===== */
+    .layer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px; margin-top: 16px;
+    }
+    .layer-card {
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-light);
+    }
+    .layer-card-head {
+      padding: 12px 18px;
+      display: flex; align-items: center; gap: 10px;
+      color: white; font-weight: 700; font-size: 13.5px;
+    }
+    .layer-card-head .lc-icon { font-size: 18px; }
+    .layer-card-body { background: white; padding: 14px 18px; }
+    .layer-card-body ul { list-style: none; }
+    .layer-card-body ul li {
+      padding: 6px 0; border-bottom: 1px solid #f0ebe0;
+      font-size: 13px; color: var(--text-secondary);
+      display: flex; align-items: flex-start; gap: 8px;
+    }
+    .layer-card-body ul li:last-child { border-bottom: none; }
+    .lc-dot { width: 6px; height: 6px; border-radius: 50%; margin-top: 7px; flex-shrink: 0; }
+
+    /* ===== Analogy cards ===== */
+    .analogy-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(195px, 1fr));
+      gap: 14px; margin-top: 16px;
+    }
+    .analogy-card {
+      background: white; border-radius: var(--radius-card);
+      border: 1px solid var(--border-light);
+      padding: 20px 16px; text-align: center;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .analogy-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+    .analogy-emoji { font-size: 34px; margin-bottom: 10px; }
+    .analogy-from { font-weight: 700; font-size: 13.5px; color: var(--text-primary); margin-bottom: 4px; }
+    .analogy-eq { font-size: 11px; color: var(--text-muted); margin-bottom: 6px; letter-spacing: 0.5px; text-transform: uppercase; }
+    .analogy-to { font-size: 12.5px; color: var(--text-secondary); line-height: 1.55; }
+
+    /* ===== Shopee example steps ===== */
+    .example-box {
+      background: white; border-radius: var(--radius-card);
+      border: 1px solid var(--border-light); overflow: hidden;
+      box-shadow: var(--shadow-sm); margin-top: 16px;
+    }
+    .example-head {
+      background: var(--text-primary); color: white;
+      padding: 13px 22px;
+      font-family: 'Source Serif 4', serif; font-size: 14px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .ex-step {
+      display: flex; align-items: flex-start; gap: 0;
+      padding: 12px 22px; border-bottom: 1px solid var(--border-light);
+      transition: background 0.15s;
+    }
+    .ex-step:hover { background: #fafaf7; }
+    .ex-step:last-child { border-bottom: none; }
+    .ex-num {
+      width: 28px; height: 28px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700; color: white;
+      flex-shrink: 0; margin-right: 14px; margin-top: 2px;
+    }
+    .ex-layer {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase; margin-bottom: 2px;
+    }
+    .ex-action { font-size: 13.5px; color: var(--text-secondary); line-height: 1.6; }
+
+    .legend {
+      display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;
+    }
+    .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--text-secondary); }
+    .legend-dot { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+
+    /* ===== Closing ===== */
+    .closing {
+      background: linear-gradient(165deg, #ffffff 0%, #f8fafc 50%, #e0f2fe 100%);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-md);
+      padding: 36px 40px; margin-top: 32px;
+      position: relative; overflow: hidden;
+      border-top: 3px solid var(--accent-blue);
+    }
+    .closing::before {
+      content: '';
+      position: absolute; top: -60px; right: -60px;
+      width: 180px; height: 180px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(14,165,233,0.1) 0%, transparent 70%);
+    }
+    .closing-title {
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-size: 1.7rem; font-weight: 700;
+      margin-bottom: 10px; color: var(--text-primary); line-height: 1.3;
+    }
+    .closing-text {
+      color: var(--text-secondary); font-size: 15px;
+      line-height: 1.85; margin-bottom: 14px;
+    }
+    .closing-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      text-decoration: none; padding: 10px 14px;
+      border-radius: 12px; font-weight: 800; font-size: 14px;
+      border: 1px solid var(--border-light);
+      background: #fff; color: var(--text-primary);
+    }
+    .btn-primary {
+      background: var(--accent-blue); color: #fff;
+      border-color: var(--accent-blue-dark);
+    }
+    .btn-primary:hover { background: var(--accent-blue-dark); }
+
+    .footer {
+      text-align: center; padding: 32px;
+      color: var(--text-muted); font-size: 13px; margin-top: 24px;
+    }
+    .footer strong { color: var(--text-secondary); }
+
+    /* ===== Integration table variant ===== */
+    .integration-table th {
+      background: var(--accent-blue-dark); color: #fff;
+      border-bottom: none;
+    }
+    .integration-table td { vertical-align: top; }
+
+    @media (max-width: 680px) {
+      .header { padding: 36px 28px; }
+      .header h1 { font-size: 24px; }
+      .card { padding: 24px 20px; }
+      .closing { padding: 28px 24px; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      .lesson-sidebar { display: none !important; }
+      .lesson-main { width: 100% !important; }
+      .header, .card, .closing { box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="lesson-app" id="lesson-app">
+
+    <!-- SIDEBAR -->
+    <aside class="lesson-sidebar" id="lesson-sidebar" aria-label="Mục lục bài học">
+      <div class="sidebar-header">
+        <span class="sidebar-title">Mục lục</span>
+        <button type="button" class="sidebar-collapse-btn" id="btn-sidebar-collapse"
+          aria-expanded="true" aria-controls="lesson-sidebar-nav" title="Thu gọn / mở rộng menu">‹</button>
+      </div>
+      <nav class="sidebar-nav" id="lesson-sidebar-nav" aria-label="Điều hướng nội dung">
+        <div class="nav-group">
+          <div class="nav-group-label">Tổng quan</div>
+          <a class="nav-item" href="#cover">00 · Bìa</a>
+          <a class="nav-item" href="#mo-dau">01 · Mở đầu</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-group-label">Nội dung chính</div>
+          <a class="nav-item" href="#so-do-luong">02 · Sơ đồ luồng</a>
+          <a class="nav-item" href="#chi-tiet-tang">03 · Chi tiết tầng</a>
+          <a class="nav-item" href="#tich-hop">04 · Tích hợp bên ngoài</a>
+          <a class="nav-item" href="#so-sanh-thuc-te">05 · So sánh thực tế</a>
+          <a class="nav-item" href="#vi-du-shopee">06 · Ví dụ: Shopee</a>
+          <a class="nav-item" href="#thuat-ngu">07 · Thuật ngữ</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-group-label">Kết bài</div>
+          <a class="nav-item" href="#tong-ket">08 · Tổng kết</a>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="lesson-main">
+      <div class="page-wrapper" id="phan-bai-giang">
+
+        <!-- HEADER / BÌA -->
+        <div class="header nav-target" id="cover">
+          <div class="header-badge">📘 Tài Liệu Giảng Dạy · Người Mới Bắt Đầu</div>
+          <h1>Cách Một Hệ Thống Phần Mềm Hoạt Động</h1>
+          <p class="header-sub">Giải thích đơn giản, dễ hiểu — dành cho người chưa có kiến thức kỹ thuật.<br></p>
+          <p class="header-trainer">BrSE Career Builder - Đồng Hành Cùng Bạn</p>
+          <p class="header-meta">Cấp độ: Người mới bắt đầu &nbsp;·&nbsp; Thời lượng: ~45 phút &nbsp;·&nbsp/p>
+        </div>
+
+        <!-- MỞ ĐẦU -->
+        <div class="card nav-target" id="mo-dau">
+          <div class="section-label">Mở đầu</div>
+          <div class="section-title">🏪 Hãy tưởng tượng một cửa hàng tiện lợi hiện đại</div>
+          <p class="section-desc">
+            Khi bạn bước vào, bạn thấy <strong>kệ hàng đẹp đẽ</strong> (giao diện). Bạn nói với
+            <strong>nhân viên thu ngân</strong> điều bạn muốn (backend xử lý). Nhân viên tra cứu
+            <strong>kho hàng</strong> phía sau (database). Và cửa hàng còn kết nối với
+            <strong>ngân hàng, nhà cung cấp</strong> (tích hợp).<br><br>
+            Một hệ thống phần mềm hoạt động y hệt như vậy!
+          </p>
+          <div class="lesson-block">
+            <div class="block-title">Bốn tầng cơ bản của mọi hệ thống phần mềm</div>
+            <div class="flow-visual">
+              <div class="flow-step">👤 Người dùng</div>
+              <div class="flow-arrow-inline">→</div>
+              <div class="flow-step">🖥️ Frontend</div>
+              <div class="flow-arrow-inline">→</div>
+              <div class="flow-step">⚙️ Backend</div>
+              <div class="flow-arrow-inline">→</div>
+              <div class="flow-step">🗄️ Database</div>
+              <div class="flow-arrow-inline">+</div>
+              <div class="flow-step">🔗 Tích hợp</div>
+            </div>
+            <div class="callout">
+              <strong>Ghi nhớ:</strong> Dù là Zalo, TikTok hay hệ thống bệnh viện — tất cả đều hoạt động theo đúng mô hình 4 tầng này.
+            </div>
+          </div>
+        </div>
+
+        <!-- SƠ ĐỒ LUỒNG -->
+        <div class="card card-accent-green nav-target" id="so-do-luong">
+          <div class="section-label">Phần 02</div>
+          <div class="section-title">📊 Sơ Đồ Luồng Hệ Thống</div>
+          <p class="section-desc">Hành trình từ khi người dùng "nhấn nút" đến khi nhận được kết quả.</p>
+
+          <div class="flowchart-wrap">
+            <div class="flow-container">
+
+              <div class="fc-node fc-user">
+                <div class="fc-icon">👤</div>
+                <div class="fc-body">
+                  <div class="fc-layer">Tầng 1</div>
+                  <div class="fc-title">Người Dùng (User)</div>
+                  <div class="fc-desc">Bạn — người sử dụng ứng dụng trên điện thoại, máy tính, hoặc trình duyệt web</div>
+                </div>
+              </div>
+
+              <div class="fc-arrow">
+                <div class="fc-arrow-label">📱 Gõ, nhấn, chạm → Gửi yêu cầu</div>
+                <div class="fc-arrow-line"></div>
+                <div class="fc-arrow-head"></div>
+              </div>
+
+              <div class="fc-node fc-frontend">
+                <div class="fc-icon">🖥️</div>
+                <div class="fc-body">
+                  <div class="fc-layer">Tầng 2</div>
+                  <div class="fc-title">Frontend — Giao Diện</div>
+                  <div class="fc-desc">Phần bạn nhìn thấy và chạm vào: nút bấm, hình ảnh, biểu mẫu, màu sắc. Giống như "mặt tiền cửa hàng"</div>
+                </div>
+              </div>
+
+              <div class="fc-arrow">
+                <div class="fc-arrow-label">🌐 Gửi yêu cầu qua Internet (API Request)</div>
+                <div class="fc-arrow-line"></div>
+                <div class="fc-arrow-head"></div>
+              </div>
+
+              <div class="fc-node fc-backend">
+                <div class="fc-icon">⚙️</div>
+                <div class="fc-body">
+                  <div class="fc-layer">Tầng 3 — Trung Tâm Xử Lý</div>
+                  <div class="fc-title">Backend — Logic Nghiệp Vụ</div>
+                  <div class="fc-desc">Bộ não của hệ thống: kiểm tra quyền, tính toán, xử lý nghiệp vụ. Giống như "nhân viên phía sau quầy"</div>
+                </div>
+              </div>
+
+              <div class="fc-arrow">
+                <div class="fc-arrow-label">🔀 Đồng thời truy xuất dữ liệu &amp; gọi dịch vụ ngoài</div>
+                <div class="fc-arrow-line"></div>
+                <div class="fc-arrow-head"></div>
+              </div>
+
+              <!-- DB + Integration row -->
+              <div style="display:flex; gap:12px; width:100%; max-width:540px;">
+                <div class="fc-node fc-db" style="max-width:100%; flex:1;">
+                  <div class="fc-icon" style="width:52px;min-width:52px;font-size:22px;">🗄️</div>
+                  <div class="fc-body" style="padding:11px 13px;">
+                    <div class="fc-layer">Tầng 4a</div>
+                    <div class="fc-title" style="font-size:13px;">Database</div>
+                    <div class="fc-desc" style="font-size:11.5px;">Kho lưu trữ toàn bộ dữ liệu: tài khoản, đơn hàng, lịch sử</div>
+                  </div>
+                </div>
+                <div class="fc-node fc-integration" style="max-width:100%; flex:1;">
+                  <div class="fc-icon" style="width:52px;min-width:52px;font-size:22px;">🔗</div>
+                  <div class="fc-body" style="padding:11px 13px;">
+                    <div class="fc-layer">Tầng 4b</div>
+                    <div class="fc-title" style="font-size:13px;">Tích Hợp</div>
+                    <div class="fc-desc" style="font-size:11.5px;">Kết nối bên ngoài: thanh toán, SMS, bản đồ, email</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="fc-bi">
+                <div class="fc-bi-up"></div>
+                <div class="fc-bi-line"></div>
+                <div class="fc-arrow-label">↕️ Trả kết quả về Backend → Frontend → Màn hình</div>
+                <div class="fc-bi-line"></div>
+                <div class="fc-arrow-head"></div>
+              </div>
+
+              <div class="fc-node fc-user">
+                <div class="fc-icon">✅</div>
+                <div class="fc-body">
+                  <div class="fc-layer">Kết Quả</div>
+                  <div class="fc-title">Người Dùng Nhận Phản Hồi</div>
+                  <div class="fc-desc">Màn hình cập nhật: thông báo thành công, hiển thị dữ liệu, chuyển trang — tất cả trong vài giây!</div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- CHI TIẾT TỪNG TẦNG — dạng bảng so sánh -->
+        <div class="card nav-target" id="chi-tiet-tang">
+          <div class="section-label">Phần 03</div>
+          <div class="section-title">🔍 Chi Tiết Từng Tầng</div>
+          <p class="section-desc">Mỗi tầng có vai trò riêng — như các bộ phận của một nhà hàng.</p>
+
+          <table class="mapping-table" style="margin-top:18px;">
+            <thead>
+              <tr>
+                <th style="width:18%;">Tầng</th>
+                <th style="width:27%;">Chức năng chính</th>
+                <th style="width:32%;">Ví dụ thực tế</th>
+                <th style="width:23%;">Công nghệ tiêu biểu</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="role-cell">
+                  <span style="color:var(--color-user);">👤 Người dùng</span>
+                </td>
+                <td>Dùng thiết bị (điện thoại, laptop, tablet) để gửi yêu cầu và nhận kết quả</td>
+                <td>Nhấn nút, điền form, vuốt màn hình — không thấy bất cứ thứ gì phía hậu trường</td>
+                <td><span class="tag tag-blue">Trình duyệt</span> <span class="tag tag-blue">App Store</span></td>
+              </tr>
+              <tr>
+                <td class="role-cell">
+                  <span style="color:var(--color-frontend);">🖥️ Frontend</span>
+                </td>
+                <td>Hiển thị giao diện, nhận input từ người dùng, gửi yêu cầu API lên backend</td>
+                <td>Nút bấm, hình ảnh, màu sắc, bố cục; kiểm tra lỗi cơ bản (thiếu mật khẩu, email sai định dạng)</td>
+                <td>
+                  <span class="tag tag-green">HTML/CSS</span>
+                  <span class="tag tag-green">React</span>
+                  <span class="tag tag-green">Flutter</span>
+                  <span class="tag tag-green">Vue</span>
+                </td>
+              </tr>
+              <tr>
+                <td class="role-cell">
+                  <span style="color:var(--color-backend);">⚙️ Backend</span>
+                </td>
+                <td>Bộ não xử lý: xác thực quyền, tính toán nghiệp vụ, điều phối database &amp; tích hợp</td>
+                <td>"Người này có quyền không?" → tính tiền + thuế + chiết khấu → gọi DB và dịch vụ ngoài</td>
+                <td>
+                  <span class="tag tag-orange">Java</span>
+                  <span class="tag tag-orange">Python</span>
+                  <span class="tag tag-orange">Node.js</span>
+                  <span class="tag tag-orange">.NET</span>
+                </td>
+              </tr>
+              <tr>
+                <td class="role-cell">
+                  <span style="color:var(--color-db);">🗄️ Database</span>
+                </td>
+                <td>Lưu trữ mọi thông tin; tìm kiếm cực nhanh trong hàng triệu bản ghi; đảm bảo dữ liệu không mất, không trùng</td>
+                <td>Tài khoản, sản phẩm, đơn hàng, lịch sử giao dịch — sắp xếp ngăn nắp như kho hàng</td>
+                <td>
+                  <span class="tag tag-purple">MySQL</span>
+                  <span class="tag tag-purple">PostgreSQL</span>
+                  <span class="tag tag-purple">MongoDB</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- TÍCH HỢP BÊN NGOÀI -->
+        <div class="card card-accent-amber nav-target" id="tich-hop">
+          <div class="section-label">Phần 04</div>
+          <div class="section-title">🔗 Tích Hợp Bên Ngoài (Third-party Integration)</div>
+          <p class="section-desc">Backend không làm tất cả một mình — nó kết nối với các dịch vụ chuyên biệt để xử lý những tác vụ phức tạp.</p>
+
+          <table class="mapping-table integration-table" style="margin-top:16px;">
+            <thead>
+              <tr>
+                <th>Loại dịch vụ</th>
+                <th>Ví dụ cụ thể</th>
+                <th>Khi nào cần?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="role-cell">💳 Cổng thanh toán</td>
+                <td>VNPay, MoMo, Stripe, ZaloPay</td>
+                <td>Người dùng mua hàng, nạp tiền, đặt cọc</td>
+              </tr>
+              <tr>
+                <td class="role-cell">📧 Email tự động</td>
+                <td>SendGrid, AWS SES, Mailchimp</td>
+                <td>Xác nhận đơn hàng, quên mật khẩu, thông báo</td>
+              </tr>
+              <tr>
+                <td class="role-cell">📱 SMS / OTP</td>
+                <td>Twilio, ESMS, eSMS.vn</td>
+                <td>Xác thực đăng nhập 2 bước, giao dịch ngân hàng</td>
+              </tr>
+              <tr>
+                <td class="role-cell">🗺️ Bản đồ / Định vị</td>
+                <td>Google Maps, HERE, OpenStreetMap</td>
+                <td>Tính đường giao hàng, hiển thị cửa hàng gần nhất</td>
+              </tr>
+              <tr>
+                <td class="role-cell">🤖 AI / ML</td>
+                <td>OpenAI, Google Vision, AWS Rekognition</td>
+                <td>Chatbot, nhận diện khuôn mặt, gợi ý sản phẩm</td>
+              </tr>
+              <tr>
+                <td class="role-cell">📦 Logistics</td>
+                <td>Giao Hàng Nhanh, GHTK, J&amp;T</td>
+                <td>Tạo vận đơn, tra cứu trạng thái vận chuyển</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- SO SÁNH THỰC TẾ -->
+        <div class="card card-accent-purple nav-target" id="so-sanh-thuc-te">
+          <div class="section-label">Phần 05</div>
+          <div class="section-title">🏪 Tương Tự Trong Thực Tế</div>
+          <p class="section-desc">Các tầng phần mềm giống y hệt một nhà hàng — giúp bạn nhớ mãi không quên.</p>
+
+          <div class="analogy-grid">
+            <div class="analogy-card">
+              <div class="analogy-emoji">🪑</div>
+              <div class="analogy-from">Frontend</div>
+              <div class="analogy-eq">tương đương</div>
+              <div class="analogy-to">Không gian nhà hàng, thực đơn, bàn ghế đẹp — thứ khách nhìn thấy</div>
+            </div>
+            <div class="analogy-card">
+              <div class="analogy-emoji">🧑‍🍳</div>
+              <div class="analogy-from">Backend</div>
+              <div class="analogy-eq">tương đương</div>
+              <div class="analogy-to">Đầu bếp trong bếp — nhận order, nấu đúng công thức, kiểm tra chất lượng</div>
+            </div>
+            <div class="analogy-card">
+              <div class="analogy-emoji">🏪</div>
+              <div class="analogy-from">Database</div>
+              <div class="analogy-eq">tương đương</div>
+              <div class="analogy-to">Kho chứa nguyên liệu — tủ đông, kệ thức ăn được sắp xếp ngăn nắp</div>
+            </div>
+            <div class="analogy-card">
+              <div class="analogy-emoji">🚚</div>
+              <div class="analogy-from">Tích Hợp</div>
+              <div class="analogy-eq">tương đương</div>
+              <div class="analogy-to">Nhà cung cấp bên ngoài: hàng cá, rau củ, dịch vụ giao hàng...</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- VÍ DỤ SHOPEE -->
+        <div class="card card-accent-orange nav-target" id="vi-du-shopee">
+          <div class="section-label">Phần 06 · Ví dụ thực tế</div>
+          <div class="section-title">📖 Đặt Hàng Trên Shopee</div>
+          <p class="section-desc" style="margin-bottom:16px;">Theo dõi từng bước khi bạn nhấn "Đặt Mua" — điều gì xảy ra phía sau màn hình?</p>
+
+          <div class="legend">
+            <div class="legend-item"><div class="legend-dot" style="background:var(--color-user)"></div> Người dùng</div>
+            <div class="legend-item"><div class="legend-dot" style="background:var(--color-frontend)"></div> Frontend</div>
+            <div class="legend-item"><div class="legend-dot" style="background:var(--color-backend)"></div> Backend</div>
+            <div class="legend-item"><div class="legend-dot" style="background:var(--color-db)"></div> Database</div>
+            <div class="legend-item"><div class="legend-dot" style="background:var(--color-integration)"></div> Tích hợp</div>
+          </div>
+
+          <div class="example-box">
+            <div class="example-head">🛒 Kịch bản: Bạn mua một đôi giày trên Shopee</div>
+
+            <div class="ex-step">
+              <div class="ex-num" style="background:var(--color-user)">1</div>
+              <div>
+                <div class="ex-layer" style="color:var(--color-user)">👤 Người Dùng</div>
+                <div class="ex-action">Bạn nhấn nút <strong>"Mua Ngay"</strong> → chọn size → nhấn <strong>"Đặt Hàng"</strong></div>
+              </div>
+            </div>
+            <div class="ex-step">
+              <div class="ex-num" style="background:var(--color-frontend)">2</div>
+              <div>
+                <div class="ex-layer" style="color:var(--color-frontend)">🖥️ Frontend</div>
+                <div class="ex-action">Giao diện kiểm tra: địa chỉ đã nhập chưa? Chọn size chưa? Nếu OK → đóng gói thông tin → gửi lên Internet</div>
+              </div>
+            </div>
+            <div class="ex-step">
+              <div class="ex-num" style="background:var(--color-backend)">3</div>
+              <div>
+                <div class="ex-layer" style="color:var(--color-backend)">⚙️ Backend</div>
+                <div class="ex-action">Nhận yêu cầu → kiểm tra bạn đã đăng nhập chưa → tính tổng tiền + phí ship + voucher giảm giá</div>
+              </div>
+            </div>
+            <div class="ex-step">
+              <div class="ex-num" style="background:var(--color-db)">4</div>
+              <div>
+                <div class="ex-layer" style="color:var(--color-db)">🗄️ Database</div>
+                <div class="ex-action">Tra cứu: giày size 42 còn hàng không? → Trừ tồn kho → Lưu đơn hàng mới vào hệ thống</div>
+              </div>
+            </div>
+            <div class="ex-step">
+              <div class="ex-num" style="background:var(--color-integration)">5</div>
+              <div>
+                <div class="ex-layer" style="color:var(--color-integration)">🔗 Tích Hợp</div>
+                <div class="ex-action">Gọi VNPay để xử lý thanh toán → Gọi Giao Hàng Nhanh để tạo vận đơn → Gửi SMS/email xác nhận cho bạn</div>
+              </div>
+            </div>
+            <div class="ex-step">
+              <div class="ex-num" style="background:var(--color-frontend)">6</div>
+              <div>
+                <div class="ex-layer" style="color:var(--color-frontend)">🖥️ Frontend → 👤 Người Dùng</div>
+                <div class="ex-action">Màn hình hiển thị: <strong>"Đặt hàng thành công! Mã đơn #SH12345 — Giao trong 2 ngày"</strong> 🎉</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- THUẬT NGỮ — dạng bảng -->
+        <div class="card nav-target" id="thuat-ngu">
+          <div class="section-label">Phần 07 · Từ vựng</div>
+          <div class="section-title">📚 Thuật Ngữ Cần Nhớ</div>
+          <p class="section-desc">Những khái niệm bạn sẽ thường xuyên nghe trong ngành CNTT.</p>
+
+          <table class="mapping-table" style="margin-top:16px;">
+            <thead>
+              <tr>
+                <th style="width:28%;">Thuật ngữ</th>
+                <th>Giải thích đơn giản</th>
+                <th style="width:28%;">Ví dụ / hình ảnh dễ nhớ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="role-cell">🔌 API<br><small style="font-weight:400;color:var(--text-muted);">Application Programming Interface</small></td>
+                <td>Cầu nối để các tầng giao tiếp với nhau — "ngôn ngữ chung" để frontend và backend nói chuyện</td>
+                <td>Như ổ cắm điện tiêu chuẩn: ai cắm vào cũng dùng được, không cần biết bên trong hoạt động thế nào</td>
+              </tr>
+              <tr>
+                <td class="role-cell">🖥️ Server<br><small style="font-weight:400;color:var(--text-muted);">Máy chủ</small></td>
+                <td>Máy tính cực mạnh chạy backend &amp; database 24/7, không bao giờ tắt</td>
+                <td>Như nhà máy hoạt động liên tục ngày đêm — không bao giờ nghỉ lễ</td>
+              </tr>
+              <tr>
+                <td class="role-cell">📨 Request / Response<br><small style="font-weight:400;color:var(--text-muted);">Yêu cầu / Phản hồi</small></td>
+                <td>Frontend gửi "Yêu cầu" (Request), Backend trả về "Phản hồi" (Response)</td>
+                <td>Giống gọi điện đến tổng đài: bạn hỏi (request), tổng đài trả lời (response)</td>
+              </tr>
+              <tr>
+                <td class="role-cell">🔒 Authentication<br><small style="font-weight:400;color:var(--text-muted);">Xác thực danh tính</small></td>
+                <td>Kiểm tra "Bạn là ai?" — đăng nhập bằng email/mật khẩu, Google, hoặc Face ID</td>
+                <td>Như nhân viên bảo vệ kiểm tra thẻ trước khi cho vào tòa nhà</td>
+              </tr>
+              <tr>
+                <td class="role-cell">☁️ Cloud<br><small style="font-weight:400;color:var(--text-muted);">Điện toán đám mây</small></td>
+                <td>Server đặt ở trung tâm dữ liệu khổng lồ thay vì mua máy chủ riêng</td>
+                <td>Như thuê kho bãi thay vì xây kho riêng — thuê bao nhiêu dùng bấy nhiêu</td>
+              </tr>
+              <tr>
+                <td class="role-cell">🧩 Microservice<br><small style="font-weight:400;color:var(--text-muted);">Kiến trúc vi dịch vụ</small></td>
+                <td>Tách backend thành nhiều dịch vụ nhỏ chuyên biệt, hoạt động độc lập</td>
+                <td>Như chia nhà hàng thành bếp lạnh, bếp nóng, bếp bánh riêng biệt — mỗi bếp chuyên một món</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- TỔNG KẾT / CLOSING -->
+        <section id="tong-ket" class="nav-target">
+          <div class="closing">
+            <div class="section-label">Kết bài</div>
+            <div class="closing-title">🎯 Bức Tranh Tổng Thể</div>
+            <p class="closing-text">
+              Mọi ứng dụng — dù là Zalo, TikTok, hay hệ thống bệnh viện — đều hoạt động theo nguyên tắc này:
+            </p>
+            <div class="flow-visual" style="margin-bottom:16px;">
+              <div class="flow-step" style="background:#e0f2fe;color:#0284c7;">👤 Người dùng</div>
+              <div class="flow-arrow-inline">→</div>
+              <div class="flow-step" style="background:#d1fae5;color:#059669;">🖥️ Giao diện đẹp</div>
+              <div class="flow-arrow-inline">→</div>
+              <div class="flow-step" style="background:#ffedd5;color:#c8420a;">⚙️ Xử lý thông minh</div>
+              <div class="flow-arrow-inline">→</div>
+              <div class="flow-step" style="background:#ede9fe;color:#7a2a8a;">🗄️ Kho dữ liệu</div>
+              <div class="flow-arrow-inline">+</div>
+              <div class="flow-step" style="background:#fef3c7;color:#b45309;">🔗 Dịch vụ ngoài</div>
+            </div>
+            <p class="closing-text">
+              Kết quả trả về màn hình trong vài giây.<br>
+              <em>Hiểu được bức tranh này, bạn đã nắm được nền tảng để học bất kỳ công nghệ nào trong ngành CNTT!</em>
+            </p>
+            <div class="closing-actions">
+              <a class="btn btn-primary" href="#cover">↑ Về đầu trang</a>
+              <a class="btn" href="#so-do-luong">📊 Xem lại sơ đồ</a>
+            </div>
+          </div>
+        </section>
+
+        <div class="footer">
+          <p class="header-trainer" style="font-size:0.95rem;color:#991b1b;font-weight:600;margin-bottom:6px;">BrSE Career Builder - Đồng Hành Cùng Bạn</p>
+          <p><strong>Tài Liệu Giảng Dạy CNTT</strong>  · Dành cho người mới bắt đầu</p>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      var app = document.getElementById('lesson-app');
+      var btn = document.getElementById('btn-sidebar-collapse');
+      if (app && btn) {
+        btn.addEventListener('click', function () {
+          var collapsed = app.classList.toggle('sidebar-collapsed');
+          btn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+        });
+      }
+
+      var nav = document.getElementById('lesson-sidebar-nav');
+      if (!nav) return;
+
+      var navLinks = nav.querySelectorAll('a.nav-item');
+      var sectionIds = [];
+
+      function collectSectionIds() {
+        var seen = {};
+        var list = [];
+        nav.querySelectorAll('a.nav-item[href^="#"]').forEach(function (a) {
+          var id = (a.getAttribute('href') || '').slice(1);
+          if (!id || seen[id]) return;
+          seen[id] = true;
+          list.push(id);
+        });
+        list.sort(function (a, b) {
+          var ea = document.getElementById(a);
+          var eb = document.getElementById(b);
+          if (!ea && !eb) return 0;
+          if (!ea) return 1;
+          if (!eb) return -1;
+          return ea.getBoundingClientRect().top - eb.getBoundingClientRect().top;
+        });
+        return list;
+      }
+
+      function clearActive() {
+        navLinks.forEach(function (a) {
+          a.classList.remove('is-active');
+          a.removeAttribute('aria-current');
+        });
+      }
+
+      function setActiveById(id) {
+        clearActive();
+        var link = nav.querySelector('a.nav-item[href="#' + id + '"]');
+        if (link) {
+          link.classList.add('is-active');
+          link.setAttribute('aria-current', 'location');
+        }
+      }
+
+      function documentTop(el) {
+        return el.getBoundingClientRect().top + (window.scrollY || document.documentElement.scrollTop);
+      }
+
+      var lastActiveId = '';
+
+      function refreshSectionIds() { sectionIds = collectSectionIds(); }
+
+      navLinks.forEach(function (a) {
+        a.addEventListener('click', function () {
+          var href = a.getAttribute('href');
+          if (href && href.charAt(0) === '#') {
+            lastActiveId = href.slice(1);
+            setActiveById(lastActiveId);
+          }
+        });
+      });
+
+      function updateActiveFromScroll() {
+        refreshSectionIds();
+        if (!sectionIds.length) return;
+        var scrollY = window.scrollY || document.documentElement.scrollTop;
+        var vh = window.innerHeight || 0;
+        var docEl = document.documentElement;
+        var docH = Math.max(docEl.scrollHeight, docEl.offsetHeight,
+          document.body ? document.body.scrollHeight : 0);
+        var activateLine = scrollY + Math.min(200, Math.max(96, vh * 0.28));
+        var current = sectionIds[0];
+        for (var i = 0; i < sectionIds.length; i++) {
+          var el = document.getElementById(sectionIds[i]);
+          if (!el) continue;
+          if (documentTop(el) <= activateLine) current = sectionIds[i];
+        }
+        if (docH > vh + 80 && scrollY + vh >= docH - 24) {
+          for (var j = sectionIds.length - 1; j >= 0; j--) {
+            if (document.getElementById(sectionIds[j])) { current = sectionIds[j]; break; }
+          }
+        }
+        if (current !== lastActiveId) { lastActiveId = current; setActiveById(current); }
+      }
+
+      var scrollTick = false;
+      function onScrollOrResize() {
+        if (scrollTick) return;
+        scrollTick = true;
+        requestAnimationFrame(function () { scrollTick = false; updateActiveFromScroll(); });
+      }
+
+      function init() {
+        refreshSectionIds();
+        window.addEventListener('scroll', onScrollOrResize, { passive: true });
+        window.addEventListener('resize', onScrollOrResize, { passive: true });
+        if (document.fonts && document.fonts.ready) {
+          document.fonts.ready.then(onScrollOrResize).catch(onScrollOrResize);
+        }
+        onScrollOrResize();
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
+    })();
+  </script>
+</body>
+</html>

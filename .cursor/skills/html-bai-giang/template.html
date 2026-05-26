@@ -1234,6 +1234,7 @@
     #quiz-inline .quiz-result-box.show { display: block; }
     #quiz-inline .quiz-result-box.basic { background: linear-gradient(135deg, #1D4ED8, #3B82F6); }
     #quiz-inline .quiz-result-box.advanced { background: linear-gradient(135deg, #7C3AED, #5B21B6); }
+    #quiz-inline .quiz-result-box.total { background: linear-gradient(135deg, #065f46, #059669); }
     #quiz-inline .result-score { font-size: 44px; font-weight: 800; margin-bottom: 8px; }
     #quiz-inline .result-label { font-size: 16px; color: rgba(255,255,255,0.9); margin-bottom: 12px; }
     #quiz-inline .result-comment { font-size: 14px; color: rgba(255,255,255,0.78); line-height: 1.65; }
@@ -1318,6 +1319,34 @@
     #quiz-inline .quiz-section { padding: 24px 20px; }
     #quiz-inline .top-nav { flex-direction: column; align-items: flex-start; }
   }
+
+    #quiz-incomplete-toast {
+      display: none;
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 20000;
+      background: #7f1d1d;
+      color: #fff;
+      padding: 14px 22px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.5;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      text-align: center;
+      max-width: 420px;
+      width: calc(100% - 40px);
+    }
+    #quiz-incomplete-toast.show {
+      display: block;
+      animation: toastIn 0.25s ease;
+    }
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+      to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
 
     .btn-quiz-open {
       background: var(--accent-blue-dark);
@@ -1484,7 +1513,8 @@
         </div>
         <div class="nav-group">
           <div class="nav-group-label">Kết bài</div>
-          <a class="nav-item" href="#closing">XX · Tổng kết</a>
+          <a class="nav-item" href="#closing">Tổng kết</a>
+          <a class="nav-item" href="#btn-quiz-open">Kiểm tra kiến thức</a>
         </div>
       </nav>
     </aside>
@@ -1566,6 +1596,9 @@
 
             <div class="closing-actions" id="ket-bai">
               <a class="btn btn-primary" href="#cover">↑ Về đầu trang</a>
+              <button class="btn btn-quiz-open" id="btn-quiz-open" onclick="openQuiz()">
+                🧪 Kiểm tra kiến thức
+              </button>
             </div>
           </div>
         </section>
@@ -1581,6 +1614,100 @@
 
       </div>
     </main>
+  </div>
+
+
+  <!-- =========================================
+       QUIZ SHELL — hiện fullscreen khi click "Kiểm tra kiến thức"
+       Đặt sau thẻ đóng </div> của .lesson-app, trước thẻ script
+       ========================================= -->
+  <div class="quiz-shell" id="quiz-shell">
+    <div class="quiz-shell-top">
+      <button class="btn" onclick="closeQuiz()" style="font-size:13px;background:var(--accent-blue);color:#fff;border-color:var(--accent-blue-dark);">← Quay lại bài giảng</button>
+      <span>[Tên bài] — Kiểm tra kiến thức</span>
+      <button class="btn" onclick="closeQuiz()" style="background:var(--accent-blue);color:#fff;border-color:var(--accent-blue-dark);">✕ Đóng</button>
+    </div>
+    <div id="quiz-incomplete-toast">⚠️ Bạn chưa trả lời hết tất cả câu hỏi.<br>Hãy hoàn thành các câu còn bỏ sót trước khi nộp bài.</div>
+    <div class="quiz-shell-scroll">
+      <div id="quiz-inline">
+        <div class="header">
+          <div class="header-badge">QUIZ · [LEVEL/TÊN BÀI]</div>
+          <h1>Kiểm Tra Kiến Thức</h1>
+          <p class="header-sub">2 phần · Cơ bản &amp; Nâng cao · Tổng [N] câu</p>
+          <p class="header-trainer">BrSE Career Builder - Đồng Hành Cùng Bạn</p>
+        </div>
+
+        <!-- ===== PHẦN 1: CƠ BẢN ===== -->
+        <div class="quiz-section" id="quiz-basic">
+          <div class="quiz-header">
+            <div class="quiz-icon basic">📘</div>
+            <div>
+              <div class="quiz-title">Phần 1 - Cơ bản</div>
+              <div class="quiz-subtitle">[N] câu · Kiến thức nền của bài</div>
+            </div>
+          </div>
+
+          <!-- Câu hỏi cơ bản — lặp lại pattern này cho mỗi câu -->
+          <div class="question-block" data-level="basic" data-answer="B">
+            <span class="question-num">Câu 1</span>
+            <div class="question-text">Nội dung câu hỏi cơ bản?</div>
+            <ul class="options">
+              <li class="option" onclick="selectOption(this)"><span class="option-letter">A</span> Đáp án A</li>
+              <li class="option" onclick="selectOption(this)"><span class="option-letter">B</span> Đáp án B (đúng)</li>
+              <li class="option" onclick="selectOption(this)"><span class="option-letter">C</span> Đáp án C</li>
+              <li class="option" onclick="selectOption(this)"><span class="option-letter">D</span> Đáp án D</li>
+            </ul>
+            <div class="answer-feedback correct">✅ [Giải thích tại sao đáp án đúng]</div>
+            <div class="answer-feedback wrong">❌ [Giải thích + gợi ý đáp án đúng]</div>
+          </div>
+          <!-- TODO: Thêm câu hỏi cơ bản tiếp theo... -->
+        </div>
+
+        <!-- ===== PHẦN 2: NÂNG CAO ===== -->
+        <div class="quiz-section" id="quiz-advanced" style="border-top-color:#7c3aed;">
+          <div class="quiz-header">
+            <div class="quiz-icon advanced">🧠</div>
+            <div>
+              <div class="quiz-title">Phần 2 - Nâng cao</div>
+              <div class="quiz-subtitle">[N] câu · Tình huống thực tế &amp; phân tích</div>
+            </div>
+          </div>
+
+          <!-- Câu hỏi nâng cao — lặp lại pattern này cho mỗi câu -->
+          <div class="question-block" data-level="advanced" data-answer="C">
+            <span class="question-num">Câu 1</span>
+            <div class="question-text">Tình huống / câu hỏi phân tích nâng cao?</div>
+            <ul class="options">
+              <li class="option" onclick="selectOption(this)"><span class="option-letter">A</span> Đáp án A</li>
+              <li class="option" onclick="selectOption(this)"><span class="option-letter">B</span> Đáp án B</li>
+              <li class="option" onclick="selectOption(this)"><span class="option-letter">C</span> Đáp án C (đúng)</li>
+              <li class="option" onclick="selectOption(this)"><span class="option-letter">D</span> Đáp án D</li>
+            </ul>
+            <div class="answer-feedback correct">✅ [Giải thích chuyên sâu]</div>
+            <div class="answer-feedback wrong">❌ [Giải thích + hướng dẫn tư duy đúng]</div>
+          </div>
+          <!-- TODO: Thêm câu hỏi nâng cao tiếp theo... -->
+
+          <!-- NÚT NỘP BÀI — đặt cuối phần nâng cao, chấm điểm cả 2 phần -->
+          <div class="quiz-final-actions">
+            <button class="check-btn" onclick="submitAll()">Nộp bài</button>
+          </div>
+          <div class="quiz-result-box total" id="result-total">
+            <div class="result-score" id="score-total">0/[N]</div>
+            <div class="result-comment" id="comment-total"></div>
+            <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px;">
+              <button class="retake-btn" onclick="retakeAll()">Làm lại</button>
+              <button class="retake-btn" style="background:rgba(255,255,255,0.25);border-color:rgba(255,255,255,0.5);" onclick="showAnswers()">Xem đáp án</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer">
+          <p class="header-trainer">BrSE Career Builder - Đồng Hành Cùng Bạn</p>
+          <p style="margin-top:6px;">Training IT cho người mới · Thực tế · Dễ hiểu · Có chiều sâu</p>
+        </div>
+      </div>
+    </div>
   </div>
 
 
@@ -1632,8 +1759,16 @@
         a.addEventListener('click', function () {
           var href = a.getAttribute('href');
           if (href && href.charAt(0) === '#') {
-            lastActiveId = href.slice(1);
+            var targetId = href.slice(1);
+            lastActiveId = targetId;
             setActiveById(lastActiveId);
+            // Link "Kiểm tra kiến thức" → focus vào nút quiz sau khi scroll xong
+            if (targetId === 'btn-quiz-open') {
+              var quizBtn = document.getElementById('btn-quiz-open');
+              if (quizBtn) {
+                setTimeout(function () { quizBtn.focus({ preventScroll: true }); }, 400);
+              }
+            }
           }
         });
       });
@@ -1670,6 +1805,167 @@
 
       updateActiveFromScroll();
     })();
+
+  // ===== QUIZ FUNCTIONS =====
+
+  function openQuiz() {
+    document.getElementById('quiz-shell').classList.add('is-open');
+    restoreQuizState();
+  }
+
+  function closeQuiz() {
+    saveQuizState();
+    document.getElementById('quiz-shell').classList.remove('is-open');
+  }
+
+  function saveQuizState() {
+    var state = {};
+    ['quiz-basic', 'quiz-advanced'].forEach(function (sectionId) {
+      var section = document.getElementById(sectionId);
+      if (!section) return;
+      var selections = [];
+      section.querySelectorAll('.question-block').forEach(function (block) {
+        var idx = -1;
+        block.querySelectorAll('.option').forEach(function (o, j) {
+          if (o.classList.contains('selected')) idx = j;
+        });
+        selections.push(idx);
+      });
+      state[sectionId] = selections;
+    });
+    // TODO: Thay '[slug]' bằng slug bài học thực tế (ví dụ: 'level-0', 'level-1')
+    sessionStorage.setItem('quizState_[slug]', JSON.stringify(state));
+  }
+
+  function restoreQuizState() {
+    var saved = sessionStorage.getItem('quizState_[slug]');
+    if (!saved) return;
+    var state;
+    try { state = JSON.parse(saved); } catch (e) { return; }
+    ['quiz-basic', 'quiz-advanced'].forEach(function (sectionId) {
+      if (!state[sectionId]) return;
+      var section = document.getElementById(sectionId);
+      if (!section) return;
+      section.querySelectorAll('.question-block').forEach(function (block, i) {
+        var idx = state[sectionId][i];
+        if (idx < 0) return;
+        var options = block.querySelectorAll('.option');
+        if (options[idx]) {
+          options.forEach(function (o) { o.classList.remove('selected'); });
+          options[idx].classList.add('selected');
+        }
+      });
+    });
+  }
+
+  function selectOption(el) {
+    var block = el.closest('.question-block');
+    block.querySelectorAll('.option').forEach(function (o) { o.classList.remove('selected'); });
+    el.classList.add('selected');
+    block.classList.remove('question-unanswered');
+  }
+
+  function gradeSection(sectionId) {
+    var section = document.getElementById(sectionId);
+    var blocks = section.querySelectorAll('.question-block');
+    var correct = 0;
+    blocks.forEach(function (block) {
+      var answer = block.getAttribute('data-answer');
+      var selected = block.querySelector('.option.selected');
+      block.querySelectorAll('.answer-feedback').forEach(function (f) { f.classList.remove('show'); });
+      if (!selected) { block.classList.add('question-unanswered'); return; }
+      block.classList.remove('question-unanswered');
+      var letter = selected.querySelector('.option-letter').textContent.trim();
+      block.querySelectorAll('.option').forEach(function (o) {
+        if (o.querySelector('.option-letter').textContent.trim() === answer) {
+          o.classList.add('option-answer-key');
+        }
+      });
+      if (letter === answer) {
+        selected.classList.add('correct');
+        correct++;
+        block.querySelectorAll('.answer-feedback')[0].classList.add('show');
+      } else {
+        selected.classList.add('wrong');
+        block.querySelectorAll('.answer-feedback')[1].classList.add('show');
+      }
+    });
+    return { correct: correct, total: blocks.length };
+  }
+
+  function submitAll() {
+    var allBlocks = document.querySelectorAll('#quiz-basic .question-block, #quiz-advanced .question-block');
+    var unanswered = [];
+    allBlocks.forEach(function (block) {
+      if (!block.querySelector('.option.selected')) {
+        block.classList.add('question-unanswered');
+        unanswered.push(block);
+      }
+    });
+    if (unanswered.length > 0) {
+      var toast = document.getElementById('quiz-incomplete-toast');
+      toast.classList.add('show');
+      clearTimeout(toast._timer);
+      toast._timer = setTimeout(function () { toast.classList.remove('show'); }, 4000);
+      var scrollEl = document.querySelector('.quiz-shell-scroll');
+      if (scrollEl) scrollEl.scrollTo({ top: unanswered[0].offsetTop - 80, behavior: 'smooth' });
+      return;
+    }
+    var r1 = gradeSection('quiz-basic');
+    var r2 = gradeSection('quiz-advanced');
+    var totalCorrect = r1.correct + r2.correct;
+    var totalQ = r1.total + r2.total;
+    document.getElementById('score-total').textContent = totalCorrect + '/' + totalQ;
+    var pct = totalCorrect / totalQ;
+    document.getElementById('comment-total').textContent =
+      pct === 1  ? 'Xuất sắc! Bạn nắm vững toàn bộ kiến thức bài này.' :
+      pct >= 0.8 ? 'Rất tốt! Bạn đã hiểu phần lớn nội dung. Xem lại các câu sai để hoàn thiện.' :
+      pct >= 0.6 ? 'Tốt! Xem lại các câu sai và ôn thêm phần còn yếu nhé.' :
+                   'Hãy xem lại nội dung bài học và thử lại nhé.';
+    document.getElementById('result-total').classList.add('show');
+    var scrollEl = document.querySelector('.quiz-shell-scroll');
+    if (scrollEl) {
+      var target = document.getElementById('result-total');
+      if (target) scrollEl.scrollTo({ top: target.offsetTop - 20, behavior: 'smooth' });
+    }
+  }
+
+  function showAnswers() {
+    ['quiz-basic', 'quiz-advanced'].forEach(function (sectionId) {
+      var section = document.getElementById(sectionId);
+      if (!section) return;
+      section.querySelectorAll('.question-block').forEach(function (block) {
+        var answer = block.getAttribute('data-answer');
+        block.querySelectorAll('.option').forEach(function (o) {
+          if (o.querySelector('.option-letter').textContent.trim() === answer) {
+            o.classList.add('option-answer-key');
+          }
+        });
+        var feedbacks = block.querySelectorAll('.answer-feedback');
+        feedbacks.forEach(function (f) { f.classList.remove('show'); });
+        feedbacks[0].classList.add('show');
+      });
+    });
+    var scrollEl = document.querySelector('.quiz-shell-scroll');
+    if (scrollEl) setTimeout(function () { scrollEl.scrollTo({ top: 0, behavior: 'smooth' }); }, 50);
+  }
+
+  function retakeAll() {
+    ['quiz-basic', 'quiz-advanced'].forEach(function (sectionId) {
+      var section = document.getElementById(sectionId);
+      section.querySelectorAll('.option').forEach(function (o) {
+        o.className = 'option';
+        o.onclick = function () { selectOption(this); };
+      });
+      section.querySelectorAll('.question-block').forEach(function (b) {
+        b.classList.remove('question-unanswered');
+      });
+      section.querySelectorAll('.answer-feedback').forEach(function (f) { f.classList.remove('show'); });
+    });
+    document.getElementById('result-total').classList.remove('show');
+    var scrollEl = document.querySelector('.quiz-shell-scroll');
+    if (scrollEl) scrollEl.scrollTo({ top: 0, behavior: 'smooth' });
+  }
   </script>
 
 </body>

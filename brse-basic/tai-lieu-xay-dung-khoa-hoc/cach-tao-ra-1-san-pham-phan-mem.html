@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cách tạo ra 1 sản phẩm phần mềm trong công ty Outsource | BrSE Career Builder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Lexend:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-page: #f1f5f9;
+      --bg-sidebar: #f8fafc;
+      --bg-main: #ffffff;
+      --bg-card: #ffffff;
+      --bg-step: #f8fafc;
+      --bg-primary: #f1f5f9;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #64748b;
+      --accent-blue: #0ea5e9;
+      --accent-blue-dark: #0284c7;
+      --accent-blue-light: #e0f2fe;
+      --accent-green: #059669;
+      --accent-green-light: #d1fae5;
+      --accent-amber: #b45309;
+      --accent-amber-light: #fffbeb;
+      --accent-orange: #ea580c;
+      --accent-orange-light: #ffedd5;
+      --accent-red: #dc2626;
+      --accent-red-light: #fef2f2;
+      --accent-purple: #5b21b6;
+      --accent-purple-light: #ede9fe;
+      --border-light: #e2e8f0;
+      --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+      --shadow-md: 0 4px 14px rgba(15, 23, 42, 0.08);
+      --radius-xl: 12px;
+      --radius-card: 12px;
+      --sidebar-width: 272px;
+      --sidebar-collapsed: 52px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-page);
+      color: var(--text-primary);
+      line-height: 1.75;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .lesson-app { display: flex; align-items: stretch; min-height: 100vh; }
+
+    .lesson-sidebar {
+      flex: 0 0 var(--sidebar-width);
+      width: var(--sidebar-width);
+      background: var(--bg-sidebar);
+      border-right: 1px solid var(--border-light);
+      position: sticky;
+      top: 0;
+      align-self: flex-start;
+      height: 100vh;
+      overflow-y: auto;
+      overflow-x: hidden;
+      z-index: 30;
+      transition: flex-basis 0.22s ease, width 0.22s ease;
+    }
+
+    .lesson-app.sidebar-collapsed .lesson-sidebar {
+      flex-basis: var(--sidebar-collapsed);
+      width: var(--sidebar-collapsed);
+    }
+
+    .sidebar-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 16px 14px 12px;
+      border-bottom: 1px solid var(--border-light);
+      background: var(--bg-sidebar);
+      position: sticky;
+      top: 0;
+      z-index: 2;
+    }
+
+    .sidebar-title {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      transition: opacity 0.15s ease;
+    }
+
+    .lesson-app.sidebar-collapsed .sidebar-title { opacity: 0; width: 0; overflow: hidden; }
+
+    .sidebar-collapse-btn {
+      flex-shrink: 0;
+      width: 34px; height: 34px;
+      border-radius: 8px;
+      border: 1px solid var(--border-light);
+      background: #fff;
+      color: var(--accent-blue);
+      font-size: 18px; font-weight: 700;
+      line-height: 1;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s ease, transform 0.2s ease;
+    }
+
+    .sidebar-collapse-btn:hover { background: var(--accent-blue-light); }
+    .lesson-app.sidebar-collapsed .sidebar-collapse-btn { transform: rotate(180deg); }
+
+    .sidebar-nav { padding: 12px 10px 24px; transition: opacity 0.15s ease; }
+
+    .lesson-app.sidebar-collapsed .sidebar-nav {
+      opacity: 0; pointer-events: none; visibility: hidden;
+      height: 0; padding: 0; overflow: hidden;
+    }
+
+    .lesson-app.sidebar-collapsed .sidebar-header {
+      flex-direction: column; justify-content: flex-start;
+      padding: 12px 8px; border-bottom: none;
+    }
+
+    .nav-group { margin-bottom: 18px; }
+
+    .nav-group-label {
+      font-size: 10px; font-weight: 800;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--text-muted); padding: 6px 8px 8px;
+    }
+
+    .sidebar-nav a.nav-item {
+      display: block; font-size: 13px; font-weight: 500;
+      color: var(--text-secondary); text-decoration: none;
+      padding: 8px 10px; margin-bottom: 2px;
+      border-radius: 8px; line-height: 1.45;
+      border: 1px solid transparent;
+      transition: background 0.12s ease, color 0.12s ease, border-color 0.12s ease;
+    }
+
+    .sidebar-nav a.nav-item:hover {
+      background: #fff; color: var(--accent-blue-dark); border-color: var(--border-light);
+    }
+
+    .sidebar-nav a.nav-item.is-active {
+      background: var(--accent-blue-light); color: var(--accent-blue-dark);
+      font-weight: 600; border-color: #7dd3fc;
+      box-shadow: inset 3px 0 0 0 var(--accent-blue);
+    }
+
+    .lesson-main { flex: 1; min-width: 0; background: var(--bg-main); }
+
+    .page-wrapper { max-width: 900px; margin: 0 auto; padding: 28px 24px 96px; }
+
+    #cover, #muc-tieu,
+    #module-1, #lesson-1-1, #lesson-1-2,
+    #module-2, #lesson-2-1, #lesson-2-2,
+    #module-3, #lesson-3-1, #lesson-3-2,
+    #module-4, #lesson-4-1, #lesson-4-2,
+    #closing { scroll-margin-top: 16px; }
+
+    @media (max-width: 960px) {
+      .lesson-app { flex-direction: column; }
+      .lesson-sidebar { position: relative; height: auto; width: 100% !important; flex: 0 0 auto !important; border-right: none; border-bottom: 1px solid var(--border-light); }
+      .lesson-app.sidebar-collapsed .lesson-sidebar { width: 100% !important; }
+      .lesson-app.sidebar-collapsed .sidebar-nav { display: none; }
+      .lesson-app.sidebar-collapsed .sidebar-title { opacity: 1; width: auto; }
+      .sidebar-nav { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0 8px; padding-bottom: 16px; }
+      .nav-group { margin-bottom: 12px; }
+    }
+
+    /* Cover */
+    .header {
+      text-align: center;
+      background: linear-gradient(165deg, #ffffff 0%, #f8fafc 45%, #e0f2fe 100%);
+      border-radius: var(--radius-xl);
+      padding: 56px 44px; margin-bottom: 28px;
+      position: relative; overflow: hidden;
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-md);
+      border-top: 3px solid var(--accent-blue);
+    }
+
+    .header::before {
+      content: ''; position: absolute; top: -60px; right: -60px;
+      width: 200px; height: 200px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(14,165,233,0.12) 0%, transparent 70%);
+    }
+
+    .header::after {
+      content: ''; position: absolute; bottom: -40px; left: -40px;
+      width: 150px; height: 150px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(14,165,233,0.08) 0%, transparent 70%);
+    }
+
+    .header-badge {
+      display: inline-block; background: var(--accent-blue-dark); color: #fff;
+      font-size: 11px; font-weight: 600; letter-spacing: 1.5px;
+      text-transform: uppercase; padding: 6px 18px; border-radius: 20px; margin-bottom: 24px;
+    }
+
+    .header h1 {
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-size: 2.2rem; font-weight: 700; color: var(--text-primary);
+      line-height: 1.3; margin-bottom: 14px;
+    }
+
+    .header-sub { font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7; }
+    .header-trainer { font-size: 0.95rem; color: #991b1b; font-weight: 600; margin-bottom: 8px; }
+    .header-meta { font-size: 0.82rem; color: var(--text-muted); font-weight: 300; }
+
+    /* Cards */
+    .card {
+      background: var(--bg-card); border: 1px solid var(--border-light);
+      border-radius: var(--radius-card); box-shadow: var(--shadow-sm);
+      padding: 28px 32px; margin-bottom: 20px;
+      border-top: 3px solid var(--accent-blue);
+    }
+
+    .card.card-accent-green  { border-top-color: var(--accent-green); }
+    .card.card-accent-amber  { border-top-color: #f59e0b; }
+    .card.card-accent-purple { border-top-color: #7c3aed; }
+    .card.card-accent-red    { border-top-color: var(--accent-red); }
+
+    .section-label {
+      display: inline-block; font-size: 11px; font-weight: 800;
+      letter-spacing: 2px; text-transform: uppercase; color: var(--accent-blue); margin-bottom: 10px;
+    }
+
+    .section-title { font-size: 22px; font-weight: 800; color: var(--text-primary); margin-bottom: 14px; line-height: 1.35; }
+    .section-desc  { font-size: 15px; color: var(--text-secondary); line-height: 1.85; }
+
+    .lesson-block { border-top: 1px solid var(--border-light); padding-top: 22px; margin-top: 22px; }
+    .lesson-block:first-child { border-top: none; padding-top: 0; margin-top: 0; }
+
+    .block-title { font-size: 16px; font-weight: 800; color: var(--text-primary); margin-bottom: 8px; }
+
+    .subsection-bar {
+      background: linear-gradient(135deg, var(--accent-blue-dark) 0%, #0369a1 100%);
+      color: #fff; font-size: 14px; font-weight: 600;
+      padding: 10px 16px; border-radius: 8px; margin-top: 20px; margin-bottom: 12px;
+    }
+
+    .bullets { margin-top: 10px; padding-left: 18px; color: var(--text-secondary); font-size: 14.5px; line-height: 1.85; }
+
+    .callout {
+      margin-top: 14px; border-radius: 10px; padding: 12px 14px;
+      background: #f0f9ff; border: 1px solid #bae6fd; color: #0369a1;
+      font-size: 14px; line-height: 1.7;
+    }
+
+    .callout-green  { background: #F0FDF4; border: 1px solid #BBF7D0; color: #166534; }
+    .callout-amber  { background: #FFFBEB; border: 1px solid #FDE68A; color: #92400E; }
+    .callout-purple { background: var(--accent-purple-light); border: 1px solid #C4B5FD; color: var(--accent-purple); }
+
+    .flow-visual { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 14px; }
+    .flow-step { background: var(--accent-blue-light); color: var(--accent-blue); font-size: 13px; font-weight: 600; padding: 6px 14px; border-radius: 10px; }
+    .flow-arrow { color: var(--text-muted); font-size: 16px; }
+
+    /* Role cards */
+    .role-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-top: 14px; }
+    .role-card { border-radius: var(--radius-card); padding: 14px 16px; border: 1px solid var(--border-light); background: var(--bg-main); border-top: 3px solid var(--accent-blue); }
+    .role-card .role-icon { font-size: 28px; margin-bottom: 6px; }
+    .role-card .role-name { font-size: 14px; font-weight: 800; margin-bottom: 4px; }
+    .role-card .role-desc { font-size: 12.5px; color: var(--text-muted); line-height: 1.55; }
+
+    /* Mapping table */
+    .mapping-table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 13.5px; }
+    .mapping-table th { background: var(--bg-sidebar); font-weight: 700; text-align: left; padding: 10px 14px; border-bottom: 2px solid var(--border-light); color: var(--text-primary); }
+    .mapping-table td { padding: 10px 14px; border-bottom: 1px solid var(--border-light); color: var(--text-secondary); vertical-align: top; }
+    .mapping-table tr:last-child td { border-bottom: none; }
+    .mapping-table .role-cell { font-weight: 700; color: var(--text-primary); white-space: nowrap; }
+
+    .tag { display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 6px; margin: 2px 2px 2px 0; }
+    .tag-blue   { background: var(--accent-blue-light); color: var(--accent-blue); }
+    .tag-green  { background: var(--accent-green-light); color: var(--accent-green); }
+    .tag-amber  { background: #fef3c7; color: #92400E; }
+    .tag-purple { background: var(--accent-purple-light); color: var(--accent-purple); }
+
+    /* Diagram grid */
+    .diagram-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px; }
+    @media (max-width: 600px) { .diagram-grid { grid-template-columns: 1fr; } }
+
+    .diagram-card { border-radius: var(--radius-card); padding: 16px 18px; border: 1px solid var(--border-light); }
+    .diagram-card.admin { background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-color: #bae6fd; }
+    .diagram-card.user  { background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border-color: #6ee7b7; }
+    .diagram-card h4 { font-size: 14px; font-weight: 800; margin-bottom: 8px; }
+    .diagram-card.admin h4 { color: var(--accent-blue-dark); }
+    .diagram-card.user  h4 { color: var(--accent-green); }
+    .diagram-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.65; }
+
+    /* Outcomes hub */
+    .outcomes-hub { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 14px; }
+    .out-pill {
+      flex: 1 1 130px; max-width: 168px; min-width: 118px;
+      text-align: center; padding: 14px 10px 12px;
+      border-radius: var(--radius-card); border: 1px solid var(--border-light);
+      background: #fff; box-shadow: var(--shadow-sm);
+      border-top: 3px solid var(--accent-blue);
+    }
+    .out-pill .out-emoji { font-size: 26px; line-height: 1; display: block; margin-bottom: 8px; }
+    .out-pill .out-name  { font-size: 12px; font-weight: 800; color: var(--text-primary); line-height: 1.3; }
+    .out-pill .out-hint  { font-size: 10.5px; color: var(--text-muted); margin-top: 6px; line-height: 1.4; }
+
+    /* Memory grid */
+    .memory-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+    .memory-card { border-radius: var(--radius-card); padding: 14px 12px; text-align: center; border: 1px solid var(--border-light); background: #fff; }
+    .memory-card-1 { border-top: 3px solid #f59e0b; }
+    .memory-card-2 { border-top: 3px solid var(--accent-blue); }
+    .memory-card-3 { border-top: 3px solid var(--accent-green); }
+    .memory-card-4 { border-top: 3px solid #6366f1; }
+    .memory-card-5 { border-top: 3px solid #ec4899; }
+    .memory-card-icon { width: 44px; height: 44px; margin: 0 auto 10px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; }
+    .memory-card-num   { font-size: 10px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
+    .memory-card-title { font-size: 13px; font-weight: 700; color: var(--text-primary); line-height: 1.35; margin-bottom: 4px; }
+    .memory-card-hint  { font-size: 11px; color: var(--text-muted); line-height: 1.45; }
+    .memory-card-1 .memory-card-icon { background: #fef3c7; }
+    .memory-card-2 .memory-card-icon { background: #e0f2fe; }
+    .memory-card-3 .memory-card-icon { background: #d1fae5; }
+    .memory-card-4 .memory-card-icon { background: #e0e7ff; }
+    .memory-card-5 .memory-card-icon { background: #fce7f3; }
+    @media (max-width: 900px) { .memory-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+    @media (max-width: 720px) { .memory-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .memory-grid { grid-template-columns: 1fr; } }
+
+    /* Closing */
+    .closing {
+      background: linear-gradient(165deg, #ffffff 0%, #f8fafc 50%, #e0f2fe 100%);
+      border-radius: var(--radius-xl); border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-md); padding: 36px 40px; margin-top: 32px;
+      position: relative; overflow: hidden; border-top: 3px solid var(--accent-blue);
+    }
+    .closing::before {
+      content: ''; position: absolute; top: -60px; right: -60px;
+      width: 180px; height: 180px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(14,165,233,0.1) 0%, transparent 70%);
+    }
+    .closing-title { font-family: 'Source Serif 4', Georgia, serif; font-size: 1.7rem; font-weight: 700; margin-bottom: 10px; color: var(--text-primary); line-height: 1.3; }
+    .closing-text  { color: var(--text-secondary); font-size: 15px; line-height: 1.85; margin-bottom: 14px; }
+    .closing-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px; text-decoration: none;
+      padding: 10px 14px; border-radius: 12px; font-weight: 800; font-size: 14px;
+      border: 1px solid var(--border-light); background: #fff; color: var(--text-primary);
+      cursor: pointer; font-family: inherit;
+    }
+    .btn-primary { background: var(--accent-blue); color: #fff; border-color: var(--accent-blue-dark); }
+    .btn-primary:hover { background: var(--accent-blue-dark); }
+    .btn-quiz-open { background: var(--accent-blue-dark); color: #fff; border-color: #0369a1; cursor: pointer; font-family: inherit; }
+    .btn-quiz-open:hover { background: #0369a1; }
+
+    /* Footer */
+    .footer { text-align: center; padding: 32px; color: var(--text-muted); font-size: 13px; margin-top: 24px; }
+    .footer strong { color: var(--text-secondary); }
+
+    /* Quiz shell */
+    .quiz-shell { display: none; position: fixed; inset: 0; z-index: 10000; flex-direction: column; background: var(--bg-primary); }
+    .quiz-shell.is-open { display: flex; }
+
+    .quiz-shell-top {
+      flex-shrink: 0; display: flex; align-items: center;
+      justify-content: space-between; gap: 12px; flex-wrap: wrap;
+      padding: 12px 20px; background: #fff;
+      border-bottom: 1px solid var(--border-light); box-shadow: var(--shadow-sm);
+    }
+    .quiz-shell-top span { font-size: 13px; color: var(--text-muted); font-weight: 500; }
+    .quiz-shell-scroll { flex: 1; width: 100%; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; background: var(--bg-primary); }
+
+    #quiz-inline {
+      max-width: 900px; margin: 0 auto; padding: 16px 24px 48px;
+      --accent-green: #059669; --accent-purple: #7c3aed; --accent-purple-light: #ede9fe;
+    }
+
+    #quiz-inline .header {
+      text-align: center;
+      background: linear-gradient(165deg, #ffffff 0%, #f8fafc 45%, #e0f2fe 100%);
+      border-radius: var(--radius-xl); padding: 56px 48px; margin-bottom: 28px;
+      position: relative; overflow: hidden; border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-md); border-top: 3px solid var(--accent-blue);
+    }
+    #quiz-inline .header-badge {
+      display: inline-block; background: var(--accent-blue-dark); color: #fff;
+      font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+      padding: 6px 18px; border-radius: 20px; margin-bottom: 18px;
+    }
+    #quiz-inline .header h1 { font-family: 'Source Serif 4', serif; font-size: 2rem; font-weight: 700; line-height: 1.3; margin-bottom: 12px; }
+    #quiz-inline .header-sub { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.7; }
+    #quiz-inline .header-trainer { font-size: 0.95rem; color: #991b1b; font-weight: 600; margin-top: 14px; }
+
+    #quiz-inline .quiz-section {
+      background: var(--bg-card); border: 1px solid var(--border-light);
+      border-radius: var(--radius-card); border-top: 3px solid var(--accent-blue);
+      padding: 36px 40px; box-shadow: var(--shadow-sm); margin-bottom: 28px;
+    }
+    #quiz-inline .quiz-header {
+      display: flex; align-items: center; gap: 16px;
+      margin-bottom: 28px; padding-bottom: 20px; border-bottom: 2px solid var(--border-light);
+    }
+    #quiz-inline .quiz-icon {
+      width: 52px; height: 52px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; flex-shrink: 0; color: #fff;
+    }
+    #quiz-inline .quiz-icon.basic    { background: linear-gradient(135deg, #1D4ED8, #3B82F6); }
+    #quiz-inline .quiz-icon.advanced { background: linear-gradient(135deg, #7C3AED, #5B21B6); }
+    #quiz-inline .quiz-title    { font-size: 22px; font-weight: 800; }
+    #quiz-inline .quiz-subtitle { font-size: 14px; color: var(--text-muted); margin-top: 4px; }
+
+    #quiz-inline .level-pill {
+      display: inline-block; font-size: 11px; font-weight: 700;
+      letter-spacing: 0.5px; padding: 4px 12px; border-radius: 20px; margin-bottom: 20px;
+    }
+    #quiz-inline .level-pill.basic    { background: var(--accent-blue-light); color: var(--accent-blue); }
+    #quiz-inline .level-pill.advanced { background: var(--accent-purple-light); color: var(--accent-purple); }
+
+    #quiz-inline .question-block { margin-bottom: 28px; padding-bottom: 28px; border-bottom: 1px solid #F0EEE8; }
+    #quiz-inline .question-block:last-of-type { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+
+    #quiz-inline .question-num {
+      display: inline-block; font-size: 12px; font-weight: 700;
+      padding: 3px 10px; border-radius: 6px; margin-bottom: 10px;
+    }
+    #quiz-inline .question-block[data-level="basic"]    .question-num { background: var(--accent-blue-light); color: var(--accent-blue); }
+    #quiz-inline .question-block[data-level="advanced"] .question-num { background: var(--accent-purple-light); color: var(--accent-purple); }
+
+    #quiz-inline .question-block.question-unanswered {
+      outline: 2px solid #DC2626; outline-offset: 4px; border-radius: 10px; background: #FEF2F2;
+    }
+    #quiz-inline .question-block.question-unanswered .question-num::after {
+      content: ' - Chua tra loi'; color: #B91C1C; font-weight: 800;
+    }
+
+    #quiz-inline .question-text { font-size: 15.5px; font-weight: 600; margin-bottom: 14px; line-height: 1.5; }
+    #quiz-inline .options { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    #quiz-inline .option {
+      display: flex; align-items: center; gap: 12px; padding: 11px 16px;
+      border: 1.5px solid var(--border-light); border-radius: 10px; cursor: pointer;
+      transition: all 0.15s ease; background: var(--bg-step);
+      font-size: 14.5px; color: var(--text-secondary); user-select: none;
+    }
+    #quiz-inline .option:hover { border-color: #93C5FD; background: #EFF6FF; color: var(--accent-blue); }
+    #quiz-inline .option.selected { border-color: #93C5FD; background: #EFF6FF; color: var(--accent-blue); }
+    #quiz-inline .option.correct  { border-color: #86EFAC; background: #F0FDF4; color: #166534; }
+    #quiz-inline .option.wrong    { border-color: #FECACA; background: #FEF2F2; color: #991B1B; }
+    #quiz-inline .option-letter {
+      width: 26px; height: 26px; border-radius: 6px;
+      background: var(--border-light); display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700; flex-shrink: 0; color: var(--text-muted);
+    }
+    #quiz-inline .option.correct  .option-letter { background: #BBF7D0; color: #166534; }
+    #quiz-inline .option.wrong    .option-letter { background: #FECACA; color: #991B1B; }
+    #quiz-inline .option.selected .option-letter { background: #BFDBFE; color: #1D4ED8; }
+    #quiz-inline .option.option-answer-key {
+      border: 2px solid #15803D !important;
+      background: linear-gradient(135deg, #DCFCE7 0%, #BBF7D0 100%) !important;
+      box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.22), 0 6px 18px rgba(22, 101, 52, 0.12);
+      color: #14532d !important; font-weight: 700;
+    }
+    #quiz-inline .option.option-answer-key .option-letter { background: #15803D !important; color: #fff !important; }
+    #quiz-inline .option.option-answer-key::after {
+      content: 'Dap an dung'; margin-left: auto; padding-left: 10px;
+      font-size: 11px; font-weight: 800; letter-spacing: 0.04em;
+      text-transform: uppercase; color: #166534; flex-shrink: 0;
+    }
+
+    #quiz-inline .answer-feedback {
+      margin-top: 10px; padding: 10px 16px; border-radius: 8px;
+      font-size: 13.5px; display: none; line-height: 1.65;
+    }
+    #quiz-inline .answer-feedback.show { display: block; }
+    #quiz-inline .answer-feedback.correct { background: #F0FDF4; border: 1px solid #BBF7D0; color: #166534; }
+    #quiz-inline .answer-feedback.wrong   { background: #FEF2F2; border: 1px solid #FECACA; color: #991B1B; }
+
+    #quiz-inline .check-btn {
+      margin-top: 12px; padding: 9px 22px; background: var(--accent-blue);
+      color: #fff; border: none; border-radius: 8px; font-family: inherit;
+      font-size: 13.5px; font-weight: 600; cursor: pointer;
+    }
+    #quiz-inline .check-btn:hover { background: var(--accent-blue-dark); }
+
+    #quiz-inline .quiz-result-box {
+      margin-top: 28px; padding: 28px 32px; border-radius: 14px;
+      text-align: center; color: #fff; display: none;
+    }
+    #quiz-inline .quiz-result-box.show { display: block; }
+    #quiz-inline .quiz-result-box.basic    { background: linear-gradient(135deg, #1D4ED8, #3B82F6); }
+    #quiz-inline .quiz-result-box.advanced { background: linear-gradient(135deg, #7C3AED, #5B21B6); }
+    #quiz-inline .quiz-result-box.total    { background: linear-gradient(135deg, #065f46, #059669); }
+    #quiz-inline .result-score   { font-size: 44px; font-weight: 800; margin-bottom: 8px; }
+    #quiz-inline .result-label   { font-size: 16px; color: rgba(255,255,255,0.9); margin-bottom: 12px; }
+    #quiz-inline .result-comment { font-size: 14px; color: rgba(255,255,255,0.78); line-height: 1.65; }
+    #quiz-inline .retake-btn {
+      margin-top: 18px; padding: 10px 28px;
+      background: rgba(255,255,255,0.15); border: 1.5px solid rgba(255,255,255,0.35);
+      border-radius: 8px; color: #fff; font-family: 'Lexend', sans-serif;
+      font-size: 14px; font-weight: 600; cursor: pointer;
+    }
+    #quiz-inline .retake-btn:hover { background: rgba(255,255,255,0.25); }
+    #quiz-inline .quiz-final-actions {
+      display: flex; flex-wrap: wrap; gap: 12px;
+      justify-content: center; align-items: center; margin-top: 24px;
+    }
+    #quiz-inline .quiz-final-actions .check-btn { margin-top: 0; }
+    #quiz-inline .footer { text-align: center; padding: 32px; color: var(--text-muted); font-size: 13px; }
+    #quiz-inline .footer .header-trainer { margin-top: 0; margin-bottom: 8px; color: #991b1b; }
+
+    #quiz-incomplete-toast {
+      display: none; position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+      z-index: 20000; background: #7f1d1d; color: #fff; padding: 14px 22px;
+      border-radius: 12px; font-size: 14px; font-weight: 600; line-height: 1.5;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3); text-align: center;
+      max-width: 420px; width: calc(100% - 40px);
+    }
+    #quiz-incomplete-toast.show { display: block; animation: toastIn 0.25s ease; }
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+      to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+
+    @media (max-width: 680px) {
+      .header { padding: 36px 28px; }
+      .header h1 { font-size: 24px; }
+      .card { padding: 24px 22px; }
+      .closing { padding: 28px 24px; }
+      #quiz-inline .header { padding: 36px 28px; }
+      #quiz-inline .header h1 { font-size: 1.5rem; }
+      #quiz-inline .quiz-section { padding: 24px 20px; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      .lesson-sidebar { display: none !important; }
+      .lesson-main { width: 100% !important; }
+      .header, .card, .closing { box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+<div class="lesson-app" id="lesson-app">
+
+  <!-- SIDEBAR -->
+  <aside class="lesson-sidebar" id="lesson-sidebar" aria-label="Muc luc bai hoc">
+    <div class="sidebar-header">
+      <span class="sidebar-title">Mục lục</span>
+      <button type="button" class="sidebar-collapse-btn" id="btn-sidebar-collapse"
+        aria-expanded="true" aria-controls="lesson-sidebar-nav"
+        title="Thu gon / mo rong menu">&#x2039;</button>
+    </div>
+    <nav class="sidebar-nav" id="lesson-sidebar-nav" aria-label="Dieu huong noi dung">
+      <div class="nav-group">
+        <div class="nav-group-label">Tổng quan</div>
+        <a class="nav-item" href="#cover">00 · Bìa &amp; giới thiệu</a>
+        <a class="nav-item" href="#muc-tieu">01 · Mục tiêu &amp; lộ trình</a>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-label">Module 1 - Bức tranh tổng thể</div>
+        <a class="nav-item" href="#lesson-1-1">1.1 · Tại sao cần hiểu quy trình?</a>
+        <a class="nav-item" href="#lesson-1-2">1.2 · Quy trình 4 bước tổng quan</a>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-label">Module 2 - Sales &amp; Bidding</div>
+        <a class="nav-item" href="#lesson-2-1">2.1 · Bước 1 - Sales</a>
+        <a class="nav-item" href="#lesson-2-2">2.2 · Bước 2 - Bidding</a>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-label">Module 3 - Kickoff &amp; Triển khai</div>
+        <a class="nav-item" href="#lesson-3-1">3.1 · Kickoff &amp; Tạo Specs</a>
+        <a class="nav-item" href="#lesson-3-2">3.2 · Coding → Test → UAT</a>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-label">Module 4 - Release &amp; BrSE</div>
+        <a class="nav-item" href="#lesson-4-1">4.1 · Bước 4 - Release &amp; Bảo hành</a>
+        <a class="nav-item" href="#lesson-4-2">4.2 · Vai trò BrSE trong quy trình</a>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-label">Kết bài</div>
+        <a class="nav-item" href="#closing">Tổng kết &amp; Kiểm tra</a>
+      </div>
+    </nav>
+  </aside>
+
+  <main class="lesson-main">
+    <div class="page-wrapper" id="phan-bai-giang">
+
+      <!-- COVER -->
+      <div class="header" id="cover">
+        <div class="header-badge">BrSE Basics · Quy trình phần mềm</div>
+        <h1>Cách tạo ra 1 sản phẩm phần mềm<br>trong công ty Outsource</h1>
+        <p class="header-sub">Từ lúc khách hàng có ý tưởng đến khi sản phẩm hoàn thành - toàn bộ quy trình được giải thích rõ ràng, dễ hiểu.</p>
+        <p class="header-trainer">BrSE Career Builder - Đồng Hành Cùng Bạn</p>
+        <p class="header-meta">Dành cho người mới · ~25 phút · 4 module · 8 lesson</p>
+      </div>
+
+      <!-- MỤC TIÊU -->
+      <div class="card" id="muc-tieu">
+        <div class="section-label">Mục tiêu</div>
+        <div class="section-title">Sau bài này, bạn sẽ làm được gì?</div>
+        <p class="section-desc">Bạn sẽ hiểu toàn bộ vòng đời của một dự án phần mềm outsource - từ lúc Sales tiếp cận khách hàng, qua giai đoạn Bidding, triển khai, cho đến khi bàn giao và bảo hành. Quan trọng hơn, bạn sẽ biết BrSE đứng ở đâu trong bức tranh đó.</p>
+
+        <div class="outcomes-hub">
+          <div class="out-pill">
+            <span class="out-emoji">🗺️</span>
+            <div class="out-name">Nắm quy trình 4 bước</div>
+            <div class="out-hint">Sales → Bidding → Dev → Release</div>
+          </div>
+          <div class="out-pill">
+            <span class="out-emoji">📄</span>
+            <div class="out-name">Biết tài liệu từng giai đoạn</div>
+            <div class="out-hint">Proposal, Specs, SRS, Basic Design...</div>
+          </div>
+          <div class="out-pill">
+            <span class="out-emoji">👥</span>
+            <div class="out-name">Ai làm gì, khi nào?</div>
+            <div class="out-hint">Sales, PM, BA, Dev, Tester, Khách hàng</div>
+          </div>
+          <div class="out-pill">
+            <span class="out-emoji">🎯</span>
+            <div class="out-name">BrSE tham gia bước nào?</div>
+            <div class="out-hint">Phân biệt BrSE giỏi vs thông thường</div>
+          </div>
+        </div>
+
+        <div class="lesson-block">
+          <div class="block-title">Lộ trình bài học</div>
+          <div class="flow-visual">
+            <span class="flow-step">① Bức tranh tổng thể</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step">② Sales &amp; Bidding</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step">③ Kickoff &amp; Triển khai</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step">④ Release &amp; BrSE</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODULE 1 -->
+      <div class="card" id="module-1">
+        <div class="section-label">MODULE 1</div>
+        <div class="section-title">Bức tranh tổng thể</div>
+        <p class="section-desc">Trước khi đi vào từng bước, hãy hiểu tại sao người mới cần nắm quy trình này - và quy trình đó trông như thế nào ở tầng cao nhất.</p>
+
+        <div class="lesson-block" id="lesson-1-1">
+          <div class="subsection-bar">1.1 · Tại sao cần hiểu quy trình?</div>
+          <div class="block-title">Người mới vào công ty outsource thường bị lost ngay từ đầu</div>
+          <p class="section-desc">Bạn đã bao giờ thắc mắc: từ lúc khách hàng có một ý tưởng, đến khi phần mềm được hoàn thành và sử dụng - quá trình đó diễn ra như thế nào trong một công ty outsource?</p>
+          <p class="section-desc" style="margin-top:10px;">Bài học này sẽ giúp bạn hiểu toàn bộ quy trình tạo ra một sản phẩm phần mềm, từ bước đầu tiên đến bước cuối cùng. Kể cả bạn là người ngoài ngành, chưa biết gì về IT, cũng có thể nắm bắt được.</p>
+          <div class="callout callout-amber" style="margin-top:14px;">
+            <strong>💡 Tại sao BrSE cần biết toàn bộ quy trình?</strong><br>
+            BrSE là cầu nối giữa khách hàng Nhật và đội kỹ thuật Việt. Nếu không hiểu mỗi giai đoạn ai làm gì, bạn sẽ không thể truyền đạt đúng thông tin, đặt câu hỏi đúng chỗ, hay hỗ trợ PM kịp thời khi dự án gặp vấn đề.
+          </div>
+        </div>
+
+        <div class="lesson-block" id="lesson-1-2">
+          <div class="subsection-bar">1.2 · Quy trình 4 bước tổng quan</div>
+          <div class="block-title">Nhìn từ trên cao: một dự án outsource đi qua 4 bước lớn</div>
+          <div class="flow-visual" style="justify-content:center; padding:18px; background:#f8fafc; border-radius:10px; border:1px solid var(--border-light);">
+            <span class="flow-step" style="background:#fef3c7;color:#92400E;">① Sales</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step" style="background:#e0f2fe;color:#0284c7;">② Bidding</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step" style="background:#d1fae5;color:#059669;">③ Kickoff &amp; Dev</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-step" style="background:#ede9fe;color:#5b21b6;">④ Release</span>
+          </div>
+          <p class="section-desc" style="margin-top:14px;">Bốn bước này tuy đơn giản trên giấy, nhưng mỗi bước lại chia thành nhiều giai đoạn nhỏ hơn, với người chịu trách nhiệm và tài liệu riêng. Chúng ta sẽ đi vào chi tiết từng bước ở các module tiếp theo.</p>
+        </div>
+      </div>
+
+      <!-- MODULE 2 -->
+      <div class="card card-accent-green" id="module-2">
+        <div class="section-label">MODULE 2</div>
+        <div class="section-title">Sales &amp; Bidding - Trước khi dự án bắt đầu</div>
+        <p class="section-desc">Mọi dự án phần mềm đều bắt đầu trước khi đội kỹ thuật biết đến sự tồn tại của nó. Sales tìm kiếm khách hàng, rồi đội kỹ thuật thuyết phục khách hàng chọn mình.</p>
+
+        <div class="lesson-block" id="lesson-2-1">
+          <div class="subsection-bar">2.1 · Bước 1 - Sales, tiếp cận khách hàng</div>
+          <div class="block-title">Sales là người mở cánh cửa cho dự án</div>
+          <p class="section-desc">Mọi dự án đều bắt đầu từ <strong>bộ phận Sales</strong>. Nhiệm vụ của Sales là tìm kiếm và tiếp cận khách hàng tiềm năng, giới thiệu năng lực của công ty, và đưa dự án về cho đội phát triển.</p>
+          <table class="mapping-table" style="margin-top:16px;">
+            <thead>
+              <tr><th>Ai làm?</th><th>Làm gì?</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="role-cell"><span class="tag tag-green">Sales</span></td>
+                <td>Tiếp cận khách hàng, giới thiệu công ty, thu thập nhu cầu ban đầu, đưa dự án về đội phát triển</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="lesson-block" id="lesson-2-2">
+          <div class="subsection-bar">2.2 · Bước 2 - Bidding, đấu thầu dự án</div>
+          <div class="block-title">Thuyết phục khách hàng chọn bạn - bằng số liệu và hình ảnh trực quan</div>
+          <p class="section-desc">Khi Sales đưa dự án về, đội ngũ kỹ thuật sẽ phân tích yêu cầu và tạo ra bộ tài liệu <strong>Proposal</strong> (đề xuất) và <strong>Estimate</strong> (ước lượng chi phí, thời gian) để gửi cho khách hàng.</p>
+          <div class="callout callout-amber" style="margin-top:14px;">
+            <strong>💡 Mẹo: Tạo Draft Prototype trong giai đoạn Bidding</strong><br>
+            Nếu tạo được một <strong>draft prototype</strong> (bản mẫu giao diện sơ bộ) cho khách hàng thì rất tốt. Khi khách hàng nhìn thấy hình ảnh trực quan của sản phẩm, họ sẽ dễ dàng hình dung và ra quyết định nhanh hơn.
+          </div>
+          <table class="mapping-table" style="margin-top:16px;">
+            <thead>
+              <tr><th>Ai làm?</th><th>Làm gì?</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="role-cell"><span class="tag tag-blue">Presales / PM / BrSE</span></td>
+                <td>Phân tích yêu cầu, tạo Proposal, Estimate, Draft Prototype gửi khách hàng</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="callout" style="margin-top:14px;">
+            <strong>📌 Bộ phận phụ trách Bidding:</strong> Presales / BU / SBU / PM / BrSE - tùy cơ cấu từng công ty. Ở công ty nhỏ hơn, BrSE thường là người làm Proposal và Estimate chính.
+          </div>
+        </div>
+      </div>
+
+      <!-- MODULE 3 -->
+      <div class="card card-accent-amber" id="module-3">
+        <div class="section-label">MODULE 3</div>
+        <div class="section-title">Kickoff &amp; Triển khai dự án</div>
+        <p class="section-desc">Sau khi khách hàng đồng ý, dự án chính thức bắt đầu. Giai đoạn này chia thành 2 phần: tạo tài liệu đặc tả (Specs) và phát triển thực tế (Coding → Test → UAT).</p>
+
+        <div class="lesson-block" id="lesson-3-1">
+          <div class="subsection-bar">3.1 · Kickoff Meeting &amp; Tạo tài liệu Specs</div>
+          <div class="block-title">Buổi Kickoff - ngày dự án chính thức "sống"</div>
+          <p class="section-desc">Sau khi khách hàng đồng ý, dự án chính thức bắt đầu bằng một buổi <strong>Kickoff Meeting</strong> giữa khách hàng, Sales, PM và cả team dự án. Đây là nơi mọi người gặp mặt, xác nhận phạm vi, lịch trình và cách làm việc.</p>
+          <div class="block-title" style="margin-top:18px;">Tài liệu Specs - bản vẽ thiết kế của phần mềm</div>
+          <p class="section-desc"><strong>BA (Business Analyst) / BrSE</strong> sẽ hearing (lắng nghe) khách hàng để nắm bắt yêu cầu chi tiết, sau đó tạo ra các tài liệu đặc tả:</p>
+          <ul class="bullets">
+            <li><strong>Function List</strong> - Danh sách chức năng của hệ thống</li>
+            <li><strong>Prototype</strong> - Bản mẫu giao diện người dùng</li>
+            <li><strong>SRS</strong> (Software Requirement Specification) - Tài liệu đặc tả yêu cầu phần mềm</li>
+            <li><strong>Basic Design</strong> - Thiết kế cơ bản về kiến trúc hệ thống</li>
+          </ul>
+          <div class="callout callout-green" style="margin-top:14px;">
+            <strong>✅ Bước quan trọng:</strong> Sau khi hoàn thành các tài liệu Specs, gửi cho khách hàng <strong>phê duyệt (approve)</strong> trước khi bắt tay vào phát triển. Không có chữ ký approve = không bắt đầu code.
+          </div>
+          <table class="mapping-table" style="margin-top:16px;">
+            <thead>
+              <tr><th>Ai làm?</th><th>Làm gì?</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="role-cell"><span class="tag tag-amber">BA / BrSE</span></td>
+                <td>Hearing khách hàng, tạo Function List, Prototype, SRS, Basic Design</td>
+              </tr>
+              <tr>
+                <td class="role-cell"><span class="tag tag-blue">Khách hàng</span></td>
+                <td>Review và phê duyệt (approve) tài liệu Specs</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="lesson-block" id="lesson-3-2">
+          <div class="subsection-bar">3.2 · Phát triển: Coding → Test → UAT</div>
+          <div class="block-title">Specs được approve - đội kỹ thuật bắt tay vào làm</div>
+          <p class="section-desc">Giai đoạn phát triển gồm 3 lớp kiểm soát chất lượng lồng nhau: Developer code, Tester kiểm thử, và cuối cùng khách hàng nghiệm thu qua UAT.</p>
+          <table class="mapping-table" style="margin-top:16px;">
+            <thead>
+              <tr><th>Giai đoạn</th><th>Ai làm?</th><th>Mô tả</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Coding</strong></td>
+                <td><span class="tag tag-green">Developer</span></td>
+                <td>Lập trình viên viết code để xây dựng sản phẩm theo specs đã được phê duyệt</td>
+              </tr>
+              <tr>
+                <td><strong>Test (QA)</strong></td>
+                <td><span class="tag tag-blue">Tester / QA</span></td>
+                <td>Kiểm thử sản phẩm xem có hoạt động đúng theo specs không. Nếu có bug → yêu cầu Dev fix rồi test lại</td>
+              </tr>
+              <tr>
+                <td><strong>UAT</strong></td>
+                <td><span class="tag tag-amber">Khách hàng</span></td>
+                <td>User Acceptance Testing - khách hàng test nghiệm thu sản phẩm, quyết định chấp nhận hay yêu cầu chỉnh sửa</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="callout callout-amber" style="margin-top:14px;">
+            <strong>📋 Case study thực tế:</strong> Trong một dự án outsource Nhật-Việt, khách hàng phát hiện tính năng A hoạt động sai trong UAT dù Tester đã pass. Nguyên nhân: Tester test theo specs tiếng Việt, còn khách hàng kỳ vọng theo spec tiếng Nhật với một điều kiện edge-case không được dịch đầy đủ. BrSE phải vào cuộc làm trung gian, xác nhận lại yêu cầu gốc và phối hợp sửa trong 1 ngày.<br><br>
+            <strong>Bài học:</strong> UAT không chỉ là test kỹ thuật - đó là test về sự hiểu nhau giữa khách hàng và đội phát triển.
+          </div>
+        </div>
+      </div>
+
+      <!-- MODULE 4 -->
+      <div class="card card-accent-purple" id="module-4">
+        <div class="section-label">MODULE 4</div>
+        <div class="section-title">Release, Bảo hành &amp; Vai trò của BrSE</div>
+        <p class="section-desc">Sau khi khách hàng nghiệm thu xong, dự án bước vào giai đoạn cuối - bàn giao và bảo hành. Phần này cũng làm rõ BrSE ở cấp độ nào thì tham gia được ở đâu.</p>
+
+        <div class="lesson-block" id="lesson-4-1">
+          <div class="subsection-bar">4.1 · Bước 4 - Release &amp; Bảo hành (Maintain)</div>
+          <div class="block-title">Sản phẩm lên production - dự án chưa thực sự kết thúc</div>
+          <p class="section-desc">Sau khi khách hàng nghiệm thu và chấp nhận sản phẩm qua UAT, tiến hành <strong>bàn giao phần mềm</strong> (release lên môi trường production).</p>
+          <p class="section-desc" style="margin-top:10px;">Khi khách hàng đưa sản phẩm vào sử dụng, công ty sẽ <strong>bảo hành</strong> trong khoảng <strong>3 tháng đến 1 năm</strong> (tùy hợp đồng). Trong thời gian bảo hành, nếu phát hiện bug nằm trong phạm vi (scope) thì phải fix <strong>miễn phí</strong> cho khách.</p>
+          <div class="callout" style="margin-top:14px;">
+            <strong>📌 Lưu ý quan trọng:</strong> Bug nằm trong scope = fix miễn phí. Bug do khách hàng thêm yêu cầu mới (out of scope) = lập change request mới và tính phí riêng. BrSE cần biết phân biệt điều này để báo cáo đúng cho PM và khách hàng.
+          </div>
+        </div>
+
+        <div class="lesson-block" id="lesson-4-2">
+          <div class="subsection-bar">4.2 · BrSE có thể đảm nhận những bước nào?</div>
+          <div class="block-title">Cùng vị trí BrSE, nhưng phạm vi trách nhiệm rất khác nhau</div>
+          <p class="section-desc">Tùy vào năng lực và kinh nghiệm, BrSE có thể tham gia sâu hay nông vào quy trình dự án.</p>
+          <div class="diagram-grid" style="margin-top:16px;">
+            <div class="diagram-card admin">
+              <h4>⭐ BrSE giỏi</h4>
+              <p>Có thể phụ trách từ <strong>Bước 2 (Bidding)</strong> đến hết <strong>Bước 3.1 (Tạo Specs)</strong> - tức là tham gia ngay từ giai đoạn đấu thầu, phân tích yêu cầu, đến việc tạo tài liệu đặc tả.</p>
+              <div style="margin-top:10px;">
+                <span class="tag tag-blue">Bidding</span>
+                <span class="tag tag-blue">Proposal</span>
+                <span class="tag tag-blue">Specs</span>
+                <span class="tag tag-blue">SRS</span>
+              </div>
+            </div>
+            <div class="diagram-card user">
+              <h4>💼 BrSE thông thường</h4>
+              <p>Phụ trách từ <strong>Bước 3.2 đến Bước 4</strong> - hỗ trợ trong giai đoạn phát triển, kiểm thử, giao tiếp với khách hàng, bàn giao và giai đoạn bảo hành.</p>
+              <div style="margin-top:10px;">
+                <span class="tag tag-green">Dev support</span>
+                <span class="tag tag-green">UAT</span>
+                <span class="tag tag-green">Release</span>
+                <span class="tag tag-green">Maintain</span>
+              </div>
+            </div>
+          </div>
+          <div class="callout callout-green" style="margin-top:16px;">
+            <strong>🎯 Mục tiêu của bạn:</strong> Dù hiện tại bạn đang ở mức BrSE thông thường, hãy học thêm kỹ năng viết Specs và Proposal để tiến lên mức BrSE giỏi - đó là nơi giá trị của bạn tăng gấp đôi.
+          </div>
+        </div>
+      </div>
+
+
+      <!-- CLOSING -->
+      <section id="closing">
+        <div class="closing">
+          <div class="section-label">Kết bài</div>
+          <div class="closing-title">Bạn đã nắm được vòng đời của một dự án phần mềm!</div>
+          <p class="closing-text">Từ bây giờ, khi nghe ai đó nhắc đến "Bidding", "Specs", "UAT" hay "bảo hành", bạn đã biết nó nằm ở đâu trong bức tranh lớn. Đây là nền tảng để bạn hiểu sâu hơn về từng bước trong các bài tiếp theo.</p>
+
+          <div class="lesson-block">
+            <div class="block-title">5 điểm cốt lõi cần nhớ</div>
+            <div class="memory-grid">
+              <div class="memory-card memory-card-1">
+                <div class="memory-card-icon">🤝</div>
+                <div class="memory-card-num">Bước 1</div>
+                <div class="memory-card-title">Sales</div>
+                <div class="memory-card-hint">Tìm và tiếp cận khách hàng</div>
+              </div>
+              <div class="memory-card memory-card-2">
+                <div class="memory-card-icon">📊</div>
+                <div class="memory-card-num">Bước 2</div>
+                <div class="memory-card-title">Bidding</div>
+                <div class="memory-card-hint">Proposal + Estimate + Prototype</div>
+              </div>
+              <div class="memory-card memory-card-3">
+                <div class="memory-card-icon">📝</div>
+                <div class="memory-card-num">Bước 3.1</div>
+                <div class="memory-card-title">Specs</div>
+                <div class="memory-card-hint">Function List, SRS, Basic Design</div>
+              </div>
+              <div class="memory-card memory-card-4">
+                <div class="memory-card-icon">⚙️</div>
+                <div class="memory-card-num">Bước 3.2</div>
+                <div class="memory-card-title">Dev &amp; Test</div>
+                <div class="memory-card-hint">Code → QA Test → UAT</div>
+              </div>
+              <div class="memory-card memory-card-5">
+                <div class="memory-card-icon">🚀</div>
+                <div class="memory-card-num">Bước 4</div>
+                <div class="memory-card-title">Release</div>
+                <div class="memory-card-hint">Bàn giao + Bảo hành 3-12 tháng</div>
+              </div>
+            </div>
+            <div class="callout callout-green" style="margin-top:16px;">
+              <strong>Bước tiếp theo:</strong> Ở các bài sau, chúng ta sẽ đi sâu vào từng bước: ai, ở đâu, làm gì, làm như thế nào - đặc biệt là kỹ năng viết Specs và Proposal mà BrSE giỏi cần thành thạo.
+            </div>
+          </div>
+
+          <div class="closing-actions">
+            <a class="btn btn-primary" href="#cover">↑ Về đầu trang</a>
+            <button class="btn btn-quiz-open" onclick="openQuiz()">🧪 Kiểm tra kiến thức</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <div class="footer">
+        <p class="header-trainer">BrSE Career Builder - Đồng Hành Cùng Bạn</p>
+        <p style="margin-top:6px;">Training IT cho người mới · Thực tế · Dễ hiểu · Có chiều sâu</p>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+
+<!-- QUIZ SHELL -->
+<div class="quiz-shell" id="quiz-shell">
+  <div class="quiz-shell-top">
+    <button class="btn" onclick="closeQuiz()" style="font-size:13px;background:var(--accent-blue);color:#fff;border-color:var(--accent-blue-dark);">← Quay lại bài giảng</button>
+    <span>Cách tạo ra 1 sản phẩm phần mềm - Kiểm tra kiến thức</span>
+    <button class="btn" onclick="closeQuiz()" style="background:var(--accent-blue);color:#fff;border-color:var(--accent-blue-dark);">✕ Đóng</button>
+  </div>
+  <div id="quiz-incomplete-toast">⚠️ Bạn chưa trả lời hết tất cả câu hỏi.<br>Hãy hoàn thành các câu còn bỏ sót trước khi nộp bài.</div>
+  <div class="quiz-shell-scroll">
+    <div id="quiz-inline">
+      <div class="header">
+        <div class="header-badge">QUIZ · BrSE Basics</div>
+        <h1>Kiểm Tra Kiến Thức</h1>
+        <p class="header-sub">2 phần · Cơ bản &amp; Nâng cao · Tổng 8 câu</p>
+        <p class="header-trainer">BrSE Career Builder - Đồng Hành Cùng Bạn</p>
+      </div>
+
+      <!-- PHAN 1: CO BAN -->
+      <div class="quiz-section" id="quiz-basic">
+        <div class="quiz-header">
+          <div class="quiz-icon basic">📘</div>
+          <div>
+            <div class="quiz-title">Phần 1 - Cơ bản</div>
+            <div class="quiz-subtitle">4 câu · Kiến thức nền về quy trình phần mềm</div>
+          </div>
+        </div>
+        <span class="level-pill basic">CƠ BẢN</span>
+
+        <div class="question-block" data-level="basic" data-answer="B">
+          <span class="question-num">Câu 1</span>
+          <div class="question-text">Bước đầu tiên để một dự án phần mềm bắt đầu trong công ty outsource là gì?</div>
+          <ul class="options">
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">A</span> Kickoff meeting với team dự án</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">B</span> Sales tiếp cận khách hàng để lấy dự án</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">C</span> Developer bắt đầu coding ngay</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">D</span> Tester kiểm thử sản phẩm</li>
+          </ul>
+          <div class="answer-feedback correct">✅ Chính xác! Sales là bộ phận khởi đầu, tiếp cận khách hàng và đưa dự án về cho đội phát triển. Không có Sales đi tìm dự án thì không có gì để phát triển cả.</div>
+          <div class="answer-feedback wrong">❌ Chưa đúng. Bước đầu tiên là Sales tiếp cận khách hàng để lấy dự án về. Đội kỹ thuật chỉ vào cuộc sau khi Sales đã có lead.</div>
+        </div>
+
+        <div class="question-block" data-level="basic" data-answer="C">
+          <span class="question-num">Câu 2</span>
+          <div class="question-text">Trong giai đoạn Bidding, đội ngũ cần tạo ra những tài liệu nào để gửi khách hàng?</div>
+          <ul class="options">
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">A</span> Source code và test case</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">B</span> Hợp đồng bảo hành</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">C</span> Proposal (đề xuất) và Estimate (ước lượng)</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">D</span> SRS và Basic Design</li>
+          </ul>
+          <div class="answer-feedback correct">✅ Đúng rồi! Giai đoạn Bidding cần tạo Proposal (đề xuất giải pháp) và Estimate (ước lượng chi phí, thời gian) để thuyết phục khách hàng chọn mình.</div>
+          <div class="answer-feedback wrong">❌ Chưa đúng. Giai đoạn Bidding cần tạo Proposal và Estimate - SRS và Basic Design là tài liệu của giai đoạn Specs sau khi đã ký hợp đồng.</div>
+        </div>
+
+        <div class="question-block" data-level="basic" data-answer="A">
+          <span class="question-num">Câu 3</span>
+          <div class="question-text">Ai là người tham gia Kickoff Meeting?</div>
+          <ul class="options">
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">A</span> Khách hàng + Sales + PM + Team dự án</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">B</span> Chỉ có PM và Developer</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">C</span> Chỉ có Sales và khách hàng</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">D</span> Chỉ có BrSE và Tester</li>
+          </ul>
+          <div class="answer-feedback correct">✅ Đúng! Kickoff Meeting cần có đầy đủ khách hàng, Sales, PM và team dự án. Đây là buổi họp quan trọng để mọi người cùng xác nhận phạm vi và cách làm việc.</div>
+          <div class="answer-feedback wrong">❌ Chưa đúng. Kickoff Meeting bao gồm khách hàng + Sales + PM + team dự án - không phải chỉ một nhóm nhỏ.</div>
+        </div>
+
+        <div class="question-block" data-level="basic" data-answer="B">
+          <span class="question-num">Câu 4</span>
+          <div class="question-text">Thời gian bảo hành phần mềm sau khi bàn giao thường là bao lâu?</div>
+          <ul class="options">
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">A</span> 1 tuần đến 1 tháng</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">B</span> 3 tháng đến 1 năm (tùy hợp đồng)</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">C</span> Bảo hành vĩnh viễn</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">D</span> Không có bảo hành</li>
+          </ul>
+          <div class="answer-feedback correct">✅ Đúng! Thời gian bảo hành thường từ 3 tháng đến 1 năm, tùy theo hợp đồng ký kết. Trong thời gian này, bug trong scope được fix miễn phí.</div>
+          <div class="answer-feedback wrong">❌ Chưa đúng. Thời gian bảo hành thường là 3 tháng đến 1 năm, tùy vào hợp đồng - không phải ngắn quá hay vĩnh viễn.</div>
+        </div>
+
+        <div class="quiz-final-actions">
+          <button class="check-btn" onclick="submitAll()">Nộp bài (cả 2 phần)</button>
+        </div>
+      </div>
+
+      <!-- PHAN 2: NANG CAO -->
+      <div class="quiz-section" id="quiz-advanced" style="border-top-color:#7c3aed;">
+        <div class="quiz-header">
+          <div class="quiz-icon advanced">🧠</div>
+          <div>
+            <div class="quiz-title">Phần 2 - Nâng cao</div>
+            <div class="quiz-subtitle">4 câu · Tình huống thực tế &amp; phân tích sâu</div>
+          </div>
+        </div>
+        <span class="level-pill advanced">NÂNG CAO</span>
+
+        <div class="question-block" data-level="advanced" data-answer="B">
+          <span class="question-num">Câu 5</span>
+          <div class="question-text">Tại sao nên tạo draft prototype trong giai đoạn Bidding, dù chưa ký hợp đồng?</div>
+          <ul class="options">
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">A</span> Vì đó là yêu cầu bắt buộc của mọi dự án outsource</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">B</span> Vì khách hàng nhìn trực quan sẽ dễ dàng ra quyết định và ký hợp đồng nhanh hơn</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">C</span> Vì developer cần prototype để bắt đầu coding ngay</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">D</span> Vì tester cần prototype để viết test case từ trước</li>
+          </ul>
+          <div class="answer-feedback correct">✅ Chính xác! Prototype giúp khách hàng hình dung sản phẩm một cách trực quan thay vì đọc văn bản khô khan, từ đó dễ ra quyết định và tăng tỷ lệ chốt hợp đồng.</div>
+          <div class="answer-feedback wrong">❌ Chưa đúng. Lý do chính là prototype trực quan giúp khách hàng dễ hình dung và quyết định nhanh hơn - không phải yêu cầu bắt buộc hay phục vụ đội kỹ thuật.</div>
+        </div>
+
+        <div class="question-block" data-level="advanced" data-answer="D">
+          <span class="question-num">Câu 6</span>
+          <div class="question-text">Tài liệu nào KHÔNG thuộc giai đoạn tạo Specs (bước 3.1)?</div>
+          <ul class="options">
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">A</span> Function List</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">B</span> SRS (Software Requirement Specification)</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">C</span> Basic Design</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">D</span> Test Report</li>
+          </ul>
+          <div class="answer-feedback correct">✅ Đúng! Test Report là tài liệu thuộc giai đoạn kiểm thử (bước 3.2), do Tester / QA tạo ra sau khi test. Giai đoạn Specs chỉ bao gồm Function List, Prototype, SRS và Basic Design.</div>
+          <div class="answer-feedback wrong">❌ Chưa đúng. Test Report là tài liệu của giai đoạn Test (bước 3.2), không phải giai đoạn tạo Specs. Specs chỉ gồm: Function List, Prototype, SRS, Basic Design.</div>
+        </div>
+
+        <div class="question-block" data-level="advanced" data-answer="C">
+          <span class="question-num">Câu 7</span>
+          <div class="question-text">UAT là gì và ai là người thực hiện?</div>
+          <ul class="options">
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">A</span> Unit Acceptance Testing - do Developer thực hiện</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">B</span> User Application Testing - do Tester thực hiện</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">C</span> User Acceptance Testing - do khách hàng thực hiện để nghiệm thu sản phẩm</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">D</span> Unified Automated Testing - do hệ thống tự động thực hiện</li>
+          </ul>
+          <div class="answer-feedback correct">✅ Chính xác! UAT = User Acceptance Testing. Khách hàng tự test nghiệm thu sản phẩm và quyết định chấp nhận hay yêu cầu chỉnh sửa. Đây là lớp kiểm soát cuối cùng trước khi bàn giao.</div>
+          <div class="answer-feedback wrong">❌ Chưa đúng. UAT = User Acceptance Testing - khách hàng (người dùng thực tế) test nghiệm thu, không phải Developer hay hệ thống tự động.</div>
+        </div>
+
+        <div class="question-block" data-level="advanced" data-answer="A">
+          <span class="question-num">Câu 8</span>
+          <div class="question-text">BrSE giỏi khác BrSE thông thường ở điểm nào trong quy trình dự án?</div>
+          <ul class="options">
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">A</span> BrSE giỏi tham gia từ Bước 2 (Bidding) đến hết Bước 3.1 (Specs) - trước cả khi có code</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">B</span> BrSE giỏi chỉ làm ở Bước 1 (Sales), BrSE thông thường làm từ Bước 2 trở đi</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">C</span> BrSE giỏi chỉ cần biết tiếng Nhật tốt hơn, không liên quan đến bước nào</li>
+            <li class="option" onclick="selectOption(this)"><span class="option-letter">D</span> BrSE giỏi và thông thường đều làm các bước như nhau, chỉ khác tốc độ</li>
+          </ul>
+          <div class="answer-feedback correct">✅ Chính xác! BrSE giỏi tham gia từ Bước 2 (Bidding, Proposal, Estimate) đến Bước 3.1 (Specs, SRS). BrSE thông thường tham gia từ Bước 3.2 (Dev support, UAT, Release). Đây là sự khác biệt về giá trị thực sự mang lại.</div>
+          <div class="answer-feedback wrong">❌ Chưa đúng. Điểm khác biệt là BrSE giỏi tham gia sớm hơn - từ Bước 2 đến Bước 3.1, trong khi BrSE thông thường vào từ Bước 3.2 trở đi.</div>
+        </div>
+
+        <div class="quiz-final-actions">
+          <button class="check-btn" onclick="submitAll()">Nộp bài</button>
+        </div>
+        <div class="quiz-result-box total" id="result-total">
+          <div class="result-score" id="score-total">0/8</div>
+          <div class="result-label">tổng điểm (Cơ bản + Nâng cao)</div>
+          <div class="result-comment" id="comment-total"></div>
+          <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px;">
+            <button class="retake-btn" onclick="retakeAll()">Làm lại</button>
+            <button class="retake-btn" style="background:rgba(255,255,255,0.25);border-color:rgba(255,255,255,0.5);" onclick="showAnswers()">Xem đáp án</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <p class="header-trainer">BrSE Career Builder - Đồng Hành Cùng Bạn</p>
+        <p style="margin-top:6px;">Training IT cho người mới · Thực tế · Dễ hiểu · Có chiều sâu</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  (function () {
+    var app = document.getElementById('lesson-app');
+    var btn = document.getElementById('btn-sidebar-collapse');
+    if (app && btn) {
+      btn.addEventListener('click', function () {
+        var collapsed = app.classList.toggle('sidebar-collapsed');
+        btn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+      });
+    }
+
+    var nav = document.getElementById('lesson-sidebar-nav');
+    if (!nav) return;
+    var navLinks = nav.querySelectorAll('a.nav-item');
+
+    var sectionIds = [
+      'cover', 'muc-tieu',
+      'module-1', 'lesson-1-1', 'lesson-1-2',
+      'module-2', 'lesson-2-1', 'lesson-2-2',
+      'module-3', 'lesson-3-1', 'lesson-3-2',
+      'module-4', 'lesson-4-1', 'lesson-4-2',
+      'closing'
+    ];
+
+    function clearActive() {
+      navLinks.forEach(function (a) { a.classList.remove('is-active'); a.removeAttribute('aria-current'); });
+    }
+
+    function setActiveById(id) {
+      clearActive();
+      var link = nav.querySelector('a.nav-item[href="#' + id + '"]');
+      if (link) { link.classList.add('is-active'); link.setAttribute('aria-current', 'location'); }
+    }
+
+    function documentTop(el) {
+      return el.getBoundingClientRect().top + (window.scrollY || document.documentElement.scrollTop);
+    }
+
+    var lastActiveId = '';
+
+    navLinks.forEach(function (a) {
+      a.addEventListener('click', function () {
+        var href = a.getAttribute('href');
+        if (href && href.charAt(0) === '#') {
+          lastActiveId = href.slice(1);
+          setActiveById(lastActiveId);
+        }
+      });
+    });
+
+    function updateActiveFromScroll() {
+      var scrollY = window.scrollY || document.documentElement.scrollTop;
+      var vh = window.innerHeight || 0;
+      var docH = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
+      var activateLine = scrollY + Math.min(200, Math.max(96, vh * 0.28));
+      var current = sectionIds[0];
+      for (var i = 0; i < sectionIds.length; i++) {
+        var el = document.getElementById(sectionIds[i]);
+        if (!el) continue;
+        if (documentTop(el) <= activateLine) current = sectionIds[i];
+      }
+      if (docH > vh + 80 && scrollY + vh >= docH - 24) {
+        for (var j = sectionIds.length - 1; j >= 0; j--) {
+          if (document.getElementById(sectionIds[j])) { current = sectionIds[j]; break; }
+        }
+      }
+      if (current !== lastActiveId) { lastActiveId = current; setActiveById(current); }
+    }
+
+    var ticking = false;
+    window.addEventListener('scroll', function () {
+      if (!ticking) {
+        requestAnimationFrame(function () { updateActiveFromScroll(); ticking = false; });
+        ticking = true;
+      }
+    }, { passive: true });
+
+    updateActiveFromScroll();
+  })();
+
+  function openQuiz() {
+    document.getElementById('quiz-shell').classList.add('is-open');
+  }
+
+  function closeQuiz() {
+    document.getElementById('quiz-shell').classList.remove('is-open');
+  }
+
+  function selectOption(el) {
+    var block = el.closest('.question-block');
+    block.querySelectorAll('.option').forEach(function (o) { o.classList.remove('selected'); });
+    el.classList.add('selected');
+    block.classList.remove('question-unanswered');
+  }
+
+  function gradeSection(sectionId) {
+    var section = document.getElementById(sectionId);
+    var blocks = section.querySelectorAll('.question-block');
+    var correct = 0;
+    blocks.forEach(function (block) {
+      var answer = block.getAttribute('data-answer');
+      var selected = block.querySelector('.option.selected');
+      block.querySelectorAll('.answer-feedback').forEach(function (f) { f.classList.remove('show'); });
+      if (!selected) { block.classList.add('question-unanswered'); return; }
+      block.classList.remove('question-unanswered');
+      var letter = selected.querySelector('.option-letter').textContent.trim();
+      block.querySelectorAll('.option').forEach(function (o) {
+        if (o.querySelector('.option-letter').textContent.trim() === answer) {
+          o.classList.add('option-answer-key');
+        }
+      });
+      if (letter === answer) {
+        selected.classList.add('correct'); correct++;
+        block.querySelectorAll('.answer-feedback')[0].classList.add('show');
+      } else {
+        selected.classList.add('wrong');
+        block.querySelectorAll('.answer-feedback')[1].classList.add('show');
+      }
+    });
+    return { correct: correct, total: blocks.length };
+  }
+
+  function submitAll() {
+    var allBlocks = document.querySelectorAll('#quiz-basic .question-block, #quiz-advanced .question-block');
+    var unanswered = [];
+    allBlocks.forEach(function (block) {
+      if (!block.querySelector('.option.selected')) {
+        block.classList.add('question-unanswered');
+        unanswered.push(block);
+      }
+    });
+    if (unanswered.length > 0) {
+      var toast = document.getElementById('quiz-incomplete-toast');
+      toast.classList.add('show');
+      clearTimeout(toast._timer);
+      toast._timer = setTimeout(function () { toast.classList.remove('show'); }, 4000);
+      var scrollEl = document.querySelector('.quiz-shell-scroll');
+      if (scrollEl) scrollEl.scrollTo({ top: unanswered[0].offsetTop - 80, behavior: 'smooth' });
+      return;
+    }
+    var r1 = gradeSection('quiz-basic');
+    var r2 = gradeSection('quiz-advanced');
+    var totalCorrect = r1.correct + r2.correct;
+    var totalQ = r1.total + r2.total;
+    document.getElementById('score-total').textContent = totalCorrect + '/' + totalQ;
+    var pct = totalCorrect / totalQ;
+    document.getElementById('comment-total').textContent =
+      pct === 1  ? 'Xuất sắc! Bạn nắm vững toàn bộ kiến thức bài này.' :
+      pct >= 0.8 ? 'Rất tốt! Bạn đã hiểu phần lớn nội dung. Xem lại các câu sai để hoàn thiện.' :
+      pct >= 0.6 ? 'Tốt! Xem lại các câu sai và ôn thêm phần còn yếu nhé.' :
+                   'Hãy xem lại nội dung bài học và thử lại nhé.';
+    document.getElementById('result-total').classList.add('show');
+    var scrollEl = document.querySelector('.quiz-shell-scroll');
+    if (scrollEl) {
+      var target = document.getElementById('result-total');
+      if (target) scrollEl.scrollTo({ top: target.offsetTop - 20, behavior: 'smooth' });
+    }
+  }
+
+  function showAnswers() {
+    ['quiz-basic', 'quiz-advanced'].forEach(function (sectionId) {
+      var section = document.getElementById(sectionId);
+      if (!section) return;
+      section.querySelectorAll('.question-block').forEach(function (block) {
+        var answer = block.getAttribute('data-answer');
+        block.querySelectorAll('.option').forEach(function (o) {
+          if (o.querySelector('.option-letter').textContent.trim() === answer) {
+            o.classList.add('option-answer-key');
+          }
+        });
+        var feedbacks = block.querySelectorAll('.answer-feedback');
+        feedbacks.forEach(function (f) { f.classList.remove('show'); });
+        feedbacks[0].classList.add('show');
+      });
+    });
+    var scrollEl = document.querySelector('.quiz-shell-scroll');
+    if (scrollEl) setTimeout(function () { scrollEl.scrollTo({ top: 0, behavior: 'smooth' }); }, 50);
+  }
+
+  function retakeAll() {
+    ['quiz-basic', 'quiz-advanced'].forEach(function (sectionId) {
+      var section = document.getElementById(sectionId);
+      section.querySelectorAll('.option').forEach(function (o) {
+        o.className = 'option';
+        o.onclick = function () { selectOption(this); };
+      });
+      section.querySelectorAll('.question-block').forEach(function (b) {
+        b.classList.remove('question-unanswered');
+      });
+      section.querySelectorAll('.answer-feedback').forEach(function (f) { f.classList.remove('show'); });
+    });
+    document.getElementById('result-total').classList.remove('show');
+    var scrollEl = document.querySelector('.quiz-shell-scroll');
+    if (scrollEl) scrollEl.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,18 @@
+---
+description: Quy ước viết văn bản cho project này
+alwaysApply: true
+---
+
+# Quy ước viết văn bản
+
+## Dấu câu
+
+- **KHÔNG dùng dấu `—` (em dash)**. Thay bằng dấu `-` (hyphen).
+
+```
+❌ Sales — Tiếp cận khách hàng
+✅ Sales - Tiếp cận khách hàng
+
+❌ Bidding — Đấu thầu dự án
+✅ Bidding - Đấu thầu dự án
+```
